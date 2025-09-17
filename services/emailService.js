@@ -1,29 +1,39 @@
-const sgMail = require("@sendgrid/mail");
+const { SendMailClient } = require("zeptomail");
 
-// Set SendGrid API key
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+// Initialize ZeptoMail client
+const client = new SendMailClient({
+  url: "api.zeptomail.com/",
+  token: process.env.ZEPTOMAIL_TOKEN,
+});
 
 // Generate 4-digit verification code
 function generateVerificationCode() {
   return Math.floor(1000 + Math.random() * 9000).toString();
 }
 
-// Send verification email using SendGrid
+// Send verification email using ZeptoMail
 async function sendVerificationEmail(email, code, username) {
-  const msg = {
-    to: email,
+  const mailData = {
     from: {
-      email: process.env.SENDGRID_FROM_EMAIL || "noreply@damourmuslim.com",
-      name: "D'amour Muslim",
+      address: process.env.ZEPTOMAIL_FROM_EMAIL || "noreply@shadiamour.com",
+      name: "ShadiAmour",
     },
-    subject: "Email Verification - D'amour Muslim",
-    html: `
+    to: [
+      {
+        email_address: {
+          address: email,
+          name: username,
+        },
+      },
+    ],
+    subject: "Email Verification - ShadiAmour",
+    htmlbody: `
       <!DOCTYPE html>
       <html>
       <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Email Verification - D'amour Muslim</title>
+        <title>Email Verification - ShadiAmour</title>
         <style>
           body { font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f9f9f9; }
           .container { max-width: 600px; margin: 0 auto; background: white; }
@@ -54,14 +64,14 @@ async function sendVerificationEmail(email, code, username) {
       <body>
         <div class="container">
           <div class="header">
-            <h1>D'amour Muslim</h1>
+            <h1>ShadiAmour</h1>
             <p>Email Verification Required</p>
           </div>
           
           <div class="content">
             <div class="welcome">Welcome ${username}! 🌟</div>
             <div class="message">
-              Thank you for joining D'amour Muslim, the trusted platform for Muslim matrimony. 
+              Thank you for joining ShadiAmour, the trusted platform for Muslim matrimony. 
               To complete your registration and secure your account, please verify your email address using the verification code below:
             </div>
             
@@ -75,26 +85,25 @@ async function sendVerificationEmail(email, code, username) {
               <ul>
                 <li><strong>This code expires in 10 minutes</strong> for your security</li>
                 <li><strong>Never share this code</strong> with anyone - we will never ask for it</li>
-                <li><strong>Use this code only on D'amour Muslim</strong> registration page</li>
+                <li><strong>Use this code only on ShadiAmour</strong> registration page</li>
                 <li>If you didn't create an account with us, please ignore this email</li>
               </ul>
             </div>
           </div>
           
           <div class="footer">
-            <p><strong>© 2024 D'amour Muslim</strong> - Connecting Hearts, Building Futures</p>
-            <p>Need help? Contact us at <a href="mailto:support@damourmuslim.com">support@damourmuslim.com</a></p>
+            <p><strong>© 2024 ShadiAmour</strong> - Connecting Hearts, Building Futures</p>
+            <p>Need help? Contact us at <a href="mailto:support@shadiamour.com">support@shadiamour.com</a></p>
             <p>📱 WhatsApp: <a href="https://wa.me/+447899816181">+44 7899 816181</a></p>
           </div>
         </div>
       </body>
       </html>
     `,
-    // Plain text version for better delivery
-    text: `
+    textbody: `
 Welcome ${username}!
 
-Thank you for joining D'amour Muslim. Please verify your email address using this 4-digit code:
+Thank you for joining ShadiAmour. Please verify your email address using this 4-digit code:
 
 ${code}
 
@@ -103,51 +112,60 @@ Important:
 - Never share this code with anyone
 - If you didn't create an account, please ignore this email
 
-Complete your registration at: https://damourmuslim.com/register
+Complete your registration at: https://shadiamour.com/register
 
-Need help? Contact us at support@damourmuslim.com
+Need help? Contact us at support@shadiamour.com
 
-© 2024 D'amour Muslim
+© 2024 ShadiAmour
     `,
   };
 
   try {
-    await sgMail.send(msg);
+    const response = await client.sendMail(mailData);
     console.log("Verification email sent successfully to:", email);
     return { success: true };
   } catch (error) {
-    console.error("SendGrid email error:", error);
+    console.error("ZeptoMail email error:", error);
 
     // Extract more specific error info
     let errorMessage = "Failed to send verification email";
-    if (error.response && error.response.body && error.response.body.errors) {
-      errorMessage = error.response.body.errors[0].message;
+    if (error.details) {
+      errorMessage = error.details;
+    } else if (error.message) {
+      errorMessage = error.message;
     }
 
     return { success: false, error: errorMessage };
   }
 }
 
-// Send password reset email using SendGrid
+// Send password reset email using ZeptoMail
 async function sendPasswordResetEmail(email, resetToken, username) {
   const resetUrl = `${
-    process.env.BASE_URL || "https://damourmuslim.com"
+    process.env.BASE_URL || "https://shadiamour.com"
   }/reset-password?token=${resetToken}`;
 
-  const msg = {
-    to: email,
+  const mailData = {
     from: {
-      email: process.env.SENDGRID_FROM_EMAIL || "noreply@damourmuslim.com",
-      name: "D'amour Muslim",
+      address: process.env.ZEPTOMAIL_FROM_EMAIL || "noreply@shadiamour.com",
+      name: "ShadiAmour",
     },
-    subject: "Password Reset - D'amour Muslim",
-    html: `
+    to: [
+      {
+        email_address: {
+          address: email,
+          name: username,
+        },
+      },
+    ],
+    subject: "Password Reset - ShadiAmour",
+    htmlbody: `
       <!DOCTYPE html>
       <html>
       <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Password Reset - D'amour Muslim</title>
+        <title>Password Reset - ShadiAmour</title>
         <style>
           body { font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f9f9f9; }
           .container { max-width: 600px; margin: 0 auto; background: white; }
@@ -175,14 +193,14 @@ async function sendPasswordResetEmail(email, resetToken, username) {
       <body>
         <div class="container">
           <div class="header">
-            <h1>D'amour Muslim</h1>
+            <h1>ShadiAmour</h1>
             <p>Password Reset Request</p>
           </div>
           
           <div class="content">
             <div class="welcome">Hello ${username}! 🔐</div>
             <div class="message">
-              We received a request to reset your password for your D'amour Muslim account. 
+              We received a request to reset your password for your ShadiAmour account. 
               Click the button below to create a new password:
             </div>
             
@@ -211,18 +229,18 @@ async function sendPasswordResetEmail(email, resetToken, username) {
           </div>
           
           <div class="footer">
-            <p><strong>© 2024 D'amour Muslim</strong> - Connecting Hearts, Building Futures</p>
-            <p>Need help? Contact us at <a href="mailto:support@damourmuslim.com">support@damourmuslim.com</a></p>
+            <p><strong>© 2024 ShadiAmour</strong> - Connecting Hearts, Building Futures</p>
+            <p>Need help? Contact us at <a href="mailto:support@shadiamour.com">support@shadiamour.com</a></p>
             <p>📱 WhatsApp: <a href="https://wa.me/+447899816181">+44 7899 816181</a></p>
           </div>
         </div>
       </body>
       </html>
     `,
-    text: `
+    textbody: `
 Hello ${username}!
 
-We received a request to reset your password for your D'amour Muslim account.
+We received a request to reset your password for your ShadiAmour account.
 
 Reset your password by clicking this link:
 ${resetUrl}
@@ -232,22 +250,24 @@ Important:
 - If you didn't request this reset, please ignore this email
 - Your password remains unchanged until you complete the reset
 
-Need help? Contact us at support@damourmuslim.com or WhatsApp: +44 7899 816181
+Need help? Contact us at support@shadiamour.com or WhatsApp: +44 7899 816181
 
-© 2024 D'amour Muslim
+© 2024 ShadiAmour
     `,
   };
 
   try {
-    await sgMail.send(msg);
+    const response = await client.sendMail(mailData);
     console.log("Password reset email sent successfully to:", email);
     return { success: true };
   } catch (error) {
-    console.error("SendGrid password reset email error:", error);
+    console.error("ZeptoMail password reset email error:", error);
 
     let errorMessage = "Failed to send password reset email";
-    if (error.response && error.response.body && error.response.body.errors) {
-      errorMessage = error.response.body.errors[0].message;
+    if (error.details) {
+      errorMessage = error.details;
+    } else if (error.message) {
+      errorMessage = error.message;
     }
 
     return { success: false, error: errorMessage };
@@ -257,5 +277,5 @@ Need help? Contact us at support@damourmuslim.com or WhatsApp: +44 7899 816181
 module.exports = {
   generateVerificationCode,
   sendVerificationEmail,
-  sendPasswordResetEmail, // **NEW**
+  sendPasswordResetEmail,
 };

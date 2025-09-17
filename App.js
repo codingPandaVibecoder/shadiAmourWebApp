@@ -1062,7 +1062,7 @@ app.get("/profiles/:slug", async (req, res) => {
 
     if (!foundProfile) {
       return res.status(404).render("404", {
-        title: "Profile Not Found - D'amour Muslim",
+        title: "Profile Not Found - shadiamour",
         url: req.originalUrl,
       });
     }
@@ -3150,27 +3150,27 @@ app.get("/sitemap.xml", async (req, res) => {
     let sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://www.damourmuslim.com/</loc>
+    <loc>https://www.shadiamour.com/</loc>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://www.damourmuslim.com/profiles</loc>
+    <loc>https://www.shadiamour.com/profiles</loc>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://www.damourmuslim.com/profiles?gender=male</loc>
+    <loc>https://www.shadiamour.com/profiles?gender=male</loc>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.damourmuslim.com/profiles?gender=female</loc>
+    <loc>https://www.shadiamour.com/profiles?gender=female</loc>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.damourmuslim.com/register</loc>
+    <loc>https://www.shadiamour.com/register</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>`;
@@ -3182,7 +3182,7 @@ app.get("/sitemap.xml", async (req, res) => {
         : new Date().toISOString().split("T")[0];
       sitemap += `
   <url>
-    <loc>https://www.damourmuslim.com/profiles/${user._id}</loc>
+    <loc>https://www.shadiamour.com/profiles/${user._id}</loc>
     <lastmod>${lastmod}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
@@ -3213,14 +3213,14 @@ Disallow: /account/
 Disallow: /api/
 Disallow: /logout
 
-Sitemap: https://www.damourmuslim.com/sitemap.xml`;
+Sitemap: https://www.shadiamour.com/sitemap.xml`;
 
   res.set("Content-Type", "text/plain");
   res.send(robots);
 });
 app.use((req, res) => {
   res.status(404).render("404", {
-    title: "Page Not Found - D'amour Muslim",
+    title: "Page Not Found - shadiamour",
     url: req.originalUrl,
   });
 });
