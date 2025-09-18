@@ -121,7 +121,7 @@
       <div class="flex items-center">
         <h1 class="text-2xl font-bold text-primary font-['Playfair_Display']">
           <a href="/" class="hover:text-pink-600 transition-colors duration-300 cursor-pointer">
-            shadiamour
+            shadiAmour
           </a>
         </h1>
         <span class="ml-4 px-3 py-1 bg-primary/10 text-primary text-sm rounded-full font-medium">Admin</span>
@@ -1173,10 +1173,10 @@
         });
         //min characters check
         const minCharFields = {
-          'aboutMe': 100,
-          'islamIsImportantToMeInfo': 100,
-          'describeNature': 100,
-          'lookingForASpouseThatIs': 100
+          'aboutMe': 5,
+          'islamIsImportantToMeInfo': 5,
+          'describeNature': 5,
+          'lookingForASpouseThatIs': 5
         };
 
         for (const [field, minLength] of Object.entries(minCharFields)) {
@@ -1496,7 +1496,7 @@
 
           function updateCounter() {
             const length = textarea.value.trim().length;
-            const minLength = 100;
+            const minLength = 5;
             counter.textContent = `${length}/${minLength} characters minimum`;
             counter.className = length < minLength ? 'char-counter error' : 'char-counter';
           }

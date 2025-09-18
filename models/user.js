@@ -52,19 +52,15 @@ const userSchema = new mongoose.Schema({
   },
   adress: {
     type: String,
-    // required: true,
   },
   city: {
     type: String,
-    // required: true,
   },
   contact: {
     type: Number,
-    // required: true,
   },
   gender: {
     type: String,
-    // enum: ["male", "female", "rather not say", "N/A"],
   },
   religion: {
     type: String,
@@ -107,7 +103,6 @@ const userSchema = new mongoose.Schema({
   },
   eyeColor: {
     type: String,
-    // enum: ["black", "brown", "grey", "other", "N/A"],
   },
   wearHijab: {
     type: String,
@@ -117,18 +112,15 @@ const userSchema = new mongoose.Schema({
   },
   hairColor: {
     type: String,
-    // enum: ["black", "brown", "blonde", "N/A"],
   },
   complexion: {
     type: String,
-    // enum: ["fair", "wheatish", "dark", "N/A"],
   },
   build: {
     type: String,
-    // enum: ["slim", "average", "athletic", "heavy", "N/A"],
   },
   height: {
-    type: Number, // height in centimeters or your preferred unit
+    type: Number,
   },
   languagesSpoken: [
     {
@@ -143,18 +135,16 @@ const userSchema = new mongoose.Schema({
     },
   ],
   work: {
-    type: String, // e.g., "Software Engineer", "Doctor", etc.
+    type: String,
   },
   nationality: {
     type: String,
   },
   ethnicity: {
     type: String,
-    // enum: ["bangladeshi", "pakistani", "indian", "british", "other", "N/A"],
   },
   maritalStatus: {
     type: String,
-    // enum: ["married", "unmarried", "divorced", "widowed", "separated", "N/A"],
   },
   disability: {
     type: String,
@@ -245,19 +235,19 @@ const userSchema = new mongoose.Schema({
     type: String, // e.g., "150-180 cm"
   },
   preferredCaste: {
-    type: String, // e.g., "any", "specific caste"
+    type: String, //
   },
   preferredEthnicity: {
-    type: String, // e.g.,
+    type: String, //
   },
   allowParnterToWork: {
-    type: Boolean, // true = yes, false = no
+    type: Boolean, //
   },
   allowPartnerToStudy: {
-    type: Boolean, // true = yes, false = no
+    type: Boolean, //
   },
   acceptSomeoneInOtherCountry: {
-    type: String, // true = yes, false = no
+    type: String, //
   },
   qualitiesYouNeedInYourPartner: [{ type: String }],
   lookingForASpouseThatIs: {
@@ -267,13 +257,13 @@ const userSchema = new mongoose.Schema({
     type: String,
   },
   willingToMeetUpOutside: {
-    type: String, // true = yes, false = no
+    type: String,
   },
   waliMyContactDetails: {
-    type: String, // e.g., "wali's contact details"
+    type: String,
   },
   whoCompletedProfile: {
-    type: String, // e.g., "self", "family member"
+    type: String,
   },
   siblings: {
     type: Number,
@@ -317,6 +307,9 @@ const userSchema = new mongoose.Schema({
   featuredDate: {
     type: Date,
     default: null,
+  },
+  profileFor: {
+    type: String,
   },
 });
 module.exports = mongoose.model("User", userSchema);

@@ -20,7 +20,7 @@
     <div class="flex items-center gap-4">
       <% if (user) { %>
       <!-- Logged in user dropdown -->
-      <div class="relative">
+      <div>
         <button id="notificationDropdown" class="p-2 text-gray-700 hover:text-primary transition-all duration-300 relative">
           <i class="ri-notification-line text-xl"></i>
           <!-- Notification badge -->
@@ -28,7 +28,8 @@
         </button>
 
         <!-- Notification Dropdown -->
-        <div id="notificationMenu" class="absolute right-0 mt-2 w-80 bg-white rounded-xl material-shadow border border-gray-100 py-4 hidden z-50 max-h-96 overflow-hidden">
+        <div id="notificationMenu" class="absolute inset-x-2.5 sm:right-0 sm:left-auto mt-2 sm:w-80 bg-white rounded-xl material-shadow border border-gray-100 py-4 hidden z-50 max-h-96 overflow-y-auto">
+
           <div class="px-4 pb-3 border-b border-gray-100 flex items-center justify-between">
             <h3 class="text-lg font-semibold text-gray-800 font-['Playfair_Display']">Notifications</h3>
             <button id="markAllReadBtn" class="text-sm text-primary hover:text-pink-600 transition-colors hidden">

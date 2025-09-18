@@ -191,6 +191,39 @@
 <% } %>
 
 <body class="bg-gray-50 font-['Roboto']">
+  <!-- Profile Completion Dialog -->
+  <div id="completionDialog" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+    <div class="bg-white rounded-2xl p-8 max-w-md mx-4 material-shadow-elevated">
+      <div class="text-center mb-6">
+        <div class="w-16 h-16 bg-gradient-to-r from-primary to-secondary rounded-full flex items-center justify-center mx-auto mb-4">
+          <i class="ri-user-settings-line text-2xl text-white"></i>
+        </div>
+        <h3 class="text-xl font-bold text-gray-900 mb-2">Profile Setup</h3>
+        <p class="text-gray-600">Your profile is <span id="completionPercentage" class="font-semibold text-primary">12</span>% complete </p>
+      </div>
+
+      <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+        <div class="flex items-start">
+          <i class="ri-lightbulb-line text-blue-500 text-xl mr-3 mt-0.5"></i>
+          <div>
+            <p class="text-blue-800 font-medium mb-1">Boost Your Success Rate!</p>
+            <p class="text-blue-700 text-sm">Adding more information about yourself can increase your success rate of getting proposals by up to 4 times.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="space-y-3">
+        <button id="addMoreInfoBtn" class="w-full px-6 py-3 bg-primary text-white hover:bg-pink-600 transition-all duration-300 rounded-button ripple material-shadow">
+          <i class="ri-add-circle-line mr-2"></i>
+          Yes, add more information!
+        </button>
+        <button id="browseProfilesBtn" class="w-full px-6 py-3 border-2 border-gray-300 text-gray-700 hover:border-primary hover:text-primary transition-all duration-300 rounded-button ripple">
+          <i class="ri-group-line mr-2"></i>
+          No, browse profiles
+        </button>
+      </div>
+    </div>
+  </div>
   <%- include('../partials/header') %>
 
   <main class="pt-24 pb-16 min-h-screen">
@@ -572,428 +605,428 @@
                   </select>
                 </div>
                 <% if (accountInfo.gender === 'female') { %>
-                <div id="hijabContainer" class="space-y-2"></div>
-                <label for="wearHijab" class="block text-sm font-medium text-gray-700">Do you wear hijab?</label>
-                <select id="wearHijab" name="wearHijab" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 bg-white">
-                  <option value="yes" <%= (accountInfo.wearHijab === 'yes') ? 'selected' : '' %>>Yes</option>
-                  <option value="no" <%= (accountInfo.wearHijab === 'no') ? 'selected' : '' %>>No</option>
-                </select>
-              </div>
-              <% } else { %>
-              <div id="beardContainer" class="space-y-2">
-                <label for="beard" class="block text-sm font-medium text-gray-700">Do you have a beard?</label>
-                <select id="beard" name="beard" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 bg-white">
-                  <option value="no" <%= (accountInfo.beard === 'no') ? 'selected' : '' %>>No</option>
-                  <option value="short" <%= (accountInfo.beard === 'short') ? 'selected' : '' %>>Short</option>
-                  <option value="medium" <%= (accountInfo.beard === 'medium') ? 'selected' : '' %>>Medium</option>
-                  <option value="long" <%= (accountInfo.beard === 'long') ? 'selected' : '' %>>Long</option>
-                  <option value="N/A" <%= (accountInfo.beard === 'N/A') ? 'selected' : '' %>>N/A</option>
-                </select>
-              </div>
-              <% } %>
-          </div>
-
-          <div class="grid md:grid-cols-2 gap-6">
-            <div class="space-y-2">
-              <label for="eyeColor" class="block text-sm font-medium text-gray-700">Eye Color</label>
-              <select id="eyeColor" name="eyeColor" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 bg-white">
-                <option value="black" <%= (accountInfo.eyeColor === 'black') ? 'selected' : '' %>>Black</option>
-                <option value="brown" <%= (accountInfo.eyeColor === 'brown') ? 'selected' : '' %>>Brown</option>
-                <option value="grey" <%= (accountInfo.eyeColor === 'grey') ? 'selected' : '' %>>Grey</option>
-                <option value="other" <%= (accountInfo.eyeColor === 'other') ? 'selected' : '' %>>Other</option>
-                <option value="N/A" <%= (!accountInfo.eyeColor || accountInfo.eyeColor === 'N/A') ? 'selected' : '' %>>N/A</option>
-              </select>
-            </div>
-            <div class="space-y-2">
-              <label for="hairColor" class="block text-sm font-medium text-gray-700">Hair Color</label>
-              <select id="hairColor" name="hairColor" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 bg-white">
-                <option value="black" <%= (accountInfo.hairColor === 'black') ? 'selected' : '' %>>Black</option>
-                <option value="brown" <%= (accountInfo.hairColor === 'brown') ? 'selected' : '' %>>Brown</option>
-                <option value="blonde" <%= (accountInfo.hairColor === 'blonde') ? 'selected' : '' %>>Blonde</option>
-                <option value="N/A" <%= (!accountInfo.hairColor || accountInfo.hairColor === 'N/A') ? 'selected' : '' %>>N/A</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="grid md:grid-cols-2 gap-6">
-            <div class="space-y-2">
-              <label for="complexion" class="block text-sm font-medium text-gray-700">Complexion</label>
-              <select id="complexion" name="complexion" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 bg-white">
-                <option value="fair" <%= (accountInfo.complexion === 'fair') ? 'selected' : '' %>>Fair</option>
-                <option value="wheatish" <%= (accountInfo.complexion === 'wheatish') ? 'selected' : '' %>>Wheatish</option>
-                <option value="dark" <%= (accountInfo.complexion === 'dark') ? 'selected' : '' %>>Dark</option>
-                <option value="N/A" <%= (!accountInfo.complexion || accountInfo.complexion === 'N/A') ? 'selected' : '' %>>N/A</option>
-              </select>
-            </div>
-            <div class="space-y-2">
-              <label for="ethnicity" class="block text-sm font-medium text-gray-700">Ethnicity</label>
-              <select id="ethnicity" name="ethnicity" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 bg-white">
-                <option value="bangladeshi" <%= (accountInfo.ethnicity === 'bangladeshi') ? 'selected' : '' %>>Bangladeshi</option>
-                <option value="pakistani" <%= (accountInfo.ethnicity === 'pakistani') ? 'selected' : '' %>>Pakistani</option>
-                <option value="indian" <%= (accountInfo.ethnicity === 'indian') ? 'selected' : '' %>>Indian</option>
-                <option value="british" <%= (accountInfo.ethnicity === 'british') ? 'selected' : '' %>>British</option>
-                <option value="other" <%= (accountInfo.ethnicity === 'other') ? 'selected' : '' %>>Other</option>
-                <option value="N/A" <%= (!accountInfo.ethnicity || accountInfo.ethnicity === 'N/A') ? 'selected' : '' %>>N/A</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="grid md:grid-cols-2 gap-6">
-            <div class="space-y-2">
-              <label for="disability" class="block text-sm font-medium text-gray-700">Disability</label>
-              <input type="text" id="disability" name="disability" value="no" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="Enter disability status">
-            </div>
-            <div class="space-y-2">
-              <label for="smoker" class="block text-sm font-medium text-gray-700">Smoker</label>
-              <select id="smoker" name="smoker" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 bg-white">
-                <option value="true" <%= (accountInfo.smoker === true) ? 'selected' : '' %>>Yes</option>
-                <option value="false" <%= (accountInfo.smoker === false) ? 'selected' : '' %>>No</option>
-                <option value="N/A" <%= (accountInfo.smoker === undefined || accountInfo.smoker === null) ? 'selected' : '' %>>N/A</option>
-              </select>
-            </div>
-          </div>
-          </form>
-        </div>
-
-        <!-- Religion & Faith Tab -->
-        <div id="religion-tab" class="tab-content hidden">
-          <h3 class="text-xl font-semibold text-gray-900 mb-6 font-['Playfair_Display']">Religion & Faith</h3>
-          <form class="space-y-6">
-            <div class="grid md:grid-cols-2 gap-6">
-              <div class="space-y-2">
-                <label for="religion" class="block text-sm font-medium text-gray-700">Religion</label>
-                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <i class="ri-church-line text-gray-400"></i>
+                <div id="hijabContainer" class="space-y-2">
+                  <label for="wearHijab" class="block text-sm font-medium text-gray-700">Do you wear hijab?</label>
+                  <select id="wearHijab" name="wearHijab" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 bg-white">
+                    <option value="yes" <%= (accountInfo.wearHijab === 'yes') ? 'selected' : '' %>>Yes</option>
+                    <option value="no" <%= (accountInfo.wearHijab === 'no') ? 'selected' : '' %>>No</option>
+                  </select>
                 </div>
-                <input type="text" id="religion" name="religion" class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="Enter religion">
-              </div>
-              <div class="space-y-2">
-                <label for="caste" class="block text-sm font-medium text-gray-700">Caste</label>
-                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <i class="ri-group-line text-gray-400"></i>
+                <% } else { %>
+                <div id="beardContainer" class="space-y-2">
+                  <label for="beard" class="block text-sm font-medium text-gray-700">Do you have a beard?</label>
+                  <select id="beard" name="beard" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 bg-white">
+                    <option value="no" <%= (accountInfo.beard === 'no') ? 'selected' : '' %>>No</option>
+                    <option value="short" <%= (accountInfo.beard === 'short') ? 'selected' : '' %>>Short</option>
+                    <option value="medium" <%= (accountInfo.beard === 'medium') ? 'selected' : '' %>>Medium</option>
+                    <option value="long" <%= (accountInfo.beard === 'long') ? 'selected' : '' %>>Long</option>
+                    <option value="N/A" <%= (accountInfo.beard === 'N/A') ? 'selected' : '' %>>N/A</option>
+                  </select>
                 </div>
-                <input type="text" id="caste" name="caste" class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="Enter caste">
-              </div>
-            </div>
-
-            <div class="grid md:grid-cols-2 gap-6">
-              <div class="space-y-2">
-                <label for="islamicSect" class="block text-sm font-medium text-gray-700">Islamic Sect</label>
-                <input type="text" id="islamicSect" name="islamicSect" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="Enter Islamic sect">
-              </div>
-              <div class="space-y-2">
-                <label for="bornMuslim" class="block text-sm font-medium text-gray-700">Born Muslim</label>
-                <select id="bornMuslim" name="bornMuslim" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 bg-white">
-                  <option value="true" <%= (accountInfo.bornMuslim === true) ? 'selected' : '' %>>Yes</option>
-                  <option value="false" <%= (accountInfo.bornMuslim === false) ? 'selected' : '' %>>No</option>
-                  <option value="N/A" <%= (accountInfo.bornMuslim === undefined || accountInfo.bornMuslim === null) ? 'selected' : '' %>>N/A</option>
-                </select>
-              </div>
-            </div>
-
-            <div class="grid md:grid-cols-2 gap-6">
-              <div class="space-y-2">
-                <label for="prays" class="block text-sm font-medium text-gray-700">Prays Regularly</label>
-                <select id="prays" name="prays" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 bg-white">
-                  <option value="true" <%= (accountInfo.prays === true) ? 'selected' : '' %>>Yes</option>
-                  <option value="false" <%= (accountInfo.prays === false) ? 'selected' : '' %>>No</option>
-                  <option value="N/A" <%= (accountInfo.prays === undefined || accountInfo.prays === null) ? 'selected' : '' %>>N/A</option>
-                </select>
-              </div>
-              <div class="space-y-2">
-                <label for="celebratesMilaad" class="block text-sm font-medium text-gray-700">Celebrates Milaad</label>
-                <select id="celebratesMilaad" name="celebratesMilaad" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 bg-white">
-                  <option value="true" <%= (accountInfo.celebratesMilaad === true) ? 'selected' : '' %>>Yes</option>
-                  <option value="false" <%= (accountInfo.celebratesMilaad === false) ? 'selected' : '' %>>No</option>
-                  <option value="N/A" <%= (accountInfo.celebratesMilaad === undefined || accountInfo.celebratesMilaad === null) ? 'selected' : '' %>>N/A</option>
-                </select>
-              </div>
-            </div>
-
-            <div class="grid md:grid-cols-2 gap-6">
-              <div class="space-y-2">
-                <label for="celebrateKhatams" class="block text-sm font-medium text-gray-700">Celebrates Khatams</label>
-                <select id="celebrateKhatams" name="celebrateKhatams" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 bg-white">
-                  <option value="true" <%= (accountInfo.celebrateKhatams === true) ? 'selected' : '' %>>Yes</option>
-                  <option value="false" <%= (accountInfo.celebrateKhatams === false) ? 'selected' : '' %>>No</option>
-                  <option value="N/A" <%= (accountInfo.celebrateKhatams === undefined || accountInfo.celebrateKhatams === null) ? 'selected' : '' %>>N/A</option>
-                </select>
+                <% } %>
               </div>
 
-              <div class="space-y-2">
-                <label for="islamIsImportantToMeInfo" class="block text-sm font-medium text-gray-700">How important is Islam to you?</label>
-                <textarea id="islamIsImportantToMeInfo" name="islamIsImportantToMeInfo" rows="3" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="Describe the importance of Islam in your life"></textarea>
+              <div class="grid md:grid-cols-2 gap-6">
+                <div class="space-y-2">
+                  <label for="eyeColor" class="block text-sm font-medium text-gray-700">Eye Color</label>
+                  <select id="eyeColor" name="eyeColor" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 bg-white">
+                    <option value="black" <%= (accountInfo.eyeColor === 'black') ? 'selected' : '' %>>Black</option>
+                    <option value="brown" <%= (accountInfo.eyeColor === 'brown') ? 'selected' : '' %>>Brown</option>
+                    <option value="grey" <%= (accountInfo.eyeColor === 'grey') ? 'selected' : '' %>>Grey</option>
+                    <option value="other" <%= (accountInfo.eyeColor === 'other') ? 'selected' : '' %>>Other</option>
+                    <option value="N/A" <%= (!accountInfo.eyeColor || accountInfo.eyeColor === 'N/A') ? 'selected' : '' %>>N/A</option>
+                  </select>
+                </div>
+                <div class="space-y-2">
+                  <label for="hairColor" class="block text-sm font-medium text-gray-700">Hair Color</label>
+                  <select id="hairColor" name="hairColor" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 bg-white">
+                    <option value="black" <%= (accountInfo.hairColor === 'black') ? 'selected' : '' %>>Black</option>
+                    <option value="brown" <%= (accountInfo.hairColor === 'brown') ? 'selected' : '' %>>Brown</option>
+                    <option value="blonde" <%= (accountInfo.hairColor === 'blonde') ? 'selected' : '' %>>Blonde</option>
+                    <option value="N/A" <%= (!accountInfo.hairColor || accountInfo.hairColor === 'N/A') ? 'selected' : '' %>>N/A</option>
+                  </select>
+                </div>
               </div>
-            </div>
-          </form>
-        </div>
 
-        <!-- Family & Background Tab -->
-        <div id="family-tab" class="tab-content hidden">
-          <h3 class="text-xl font-semibold text-gray-900 mb-6 font-['Playfair_Display']">Family & Background</h3>
-          <form class="space-y-6">
-            <div class="grid md:grid-cols-2 gap-6">
-              <div class="space-y-2">
-                <label for="fatherName" class="block text-sm font-medium text-gray-700">Father's Name</label>
-                <input type="text" id="fatherName" name="fatherName" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="Enter father's name">
+              <div class="grid md:grid-cols-2 gap-6">
+                <div class="space-y-2">
+                  <label for="complexion" class="block text-sm font-medium text-gray-700">Complexion</label>
+                  <select id="complexion" name="complexion" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 bg-white">
+                    <option value="fair" <%= (accountInfo.complexion === 'fair') ? 'selected' : '' %>>Fair</option>
+                    <option value="wheatish" <%= (accountInfo.complexion === 'wheatish') ? 'selected' : '' %>>Wheatish</option>
+                    <option value="dark" <%= (accountInfo.complexion === 'dark') ? 'selected' : '' %>>Dark</option>
+                    <option value="N/A" <%= (!accountInfo.complexion || accountInfo.complexion === 'N/A') ? 'selected' : '' %>>N/A</option>
+                  </select>
+                </div>
+                <div class="space-y-2">
+                  <label for="ethnicity" class="block text-sm font-medium text-gray-700">Ethnicity</label>
+                  <select id="ethnicity" name="ethnicity" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 bg-white">
+                    <option value="bangladeshi" <%= (accountInfo.ethnicity === 'bangladeshi') ? 'selected' : '' %>>Bangladeshi</option>
+                    <option value="pakistani" <%= (accountInfo.ethnicity === 'pakistani') ? 'selected' : '' %>>Pakistani</option>
+                    <option value="indian" <%= (accountInfo.ethnicity === 'indian') ? 'selected' : '' %>>Indian</option>
+                    <option value="british" <%= (accountInfo.ethnicity === 'british') ? 'selected' : '' %>>British</option>
+                    <option value="other" <%= (accountInfo.ethnicity === 'other') ? 'selected' : '' %>>Other</option>
+                    <option value="N/A" <%= (!accountInfo.ethnicity || accountInfo.ethnicity === 'N/A') ? 'selected' : '' %>>N/A</option>
+                  </select>
+                </div>
               </div>
-              <div class="space-y-2">
-                <label for="motherName" class="block text-sm font-medium text-gray-700">Mother's Name</label>
-                <input type="text" id="motherName" name="motherName" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="Enter mother's name">
-              </div>
-            </div>
 
-            <div class="grid md:grid-cols-2 gap-6">
-              <div class="space-y-2">
-                <label for="fatherProfession" class="block text-sm font-medium text-gray-700">Father's Profession</label>
-                <input type="text" id="fatherProfession" name="fatherProfession" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="Enter father's profession">
+              <div class="grid md:grid-cols-2 gap-6">
+                <div class="space-y-2">
+                  <label for="disability" class="block text-sm font-medium text-gray-700">Disability</label>
+                  <input type="text" id="disability" name="disability" value="no" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="Enter disability status">
+                </div>
+                <div class="space-y-2">
+                  <label for="smoker" class="block text-sm font-medium text-gray-700">Smoker</label>
+                  <select id="smoker" name="smoker" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 bg-white">
+                    <option value="true" <%= (accountInfo.smoker === true) ? 'selected' : '' %>>Yes</option>
+                    <option value="false" <%= (accountInfo.smoker === false) ? 'selected' : '' %>>No</option>
+                    <option value="N/A" <%= (accountInfo.smoker === undefined || accountInfo.smoker === null) ? 'selected' : '' %>>N/A</option>
+                  </select>
+                </div>
               </div>
-              <div class="space-y-2">
-                <label for="siblings" class="block text-sm font-medium text-gray-700">Number of Siblings</label>
-                <input type="number" id="siblings" name="siblings" min="0" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="Enter number of siblings">
-              </div>
-            </div>
+            </form>
+          </div>
 
-            <div class="grid md:grid-cols-2 gap-6">
-              <div class="space-y-2">
-                <label for="livingArrangementsAfterMarriage" class="block text-sm font-medium text-gray-700">Living Arrangements After Marriage</label>
-                <input type="text" id="livingArrangementsAfterMarriage" name="livingArrangementsAfterMarriage" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="Enter living arrangements after marriage" value="<%= accountInfo.livingArrangementsAfterMarriage || '' %>">
+          <!-- Religion & Faith Tab -->
+          <div id="religion-tab" class="tab-content hidden">
+            <h3 class="text-xl font-semibold text-gray-900 mb-6 font-['Playfair_Display']">Religion & Faith</h3>
+            <form class="space-y-6">
+              <div class="grid md:grid-cols-2 gap-6">
+                <div class="space-y-2">
+                  <label for="religion" class="block text-sm font-medium text-gray-700">Religion</label>
+                  <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <i class="ri-church-line text-gray-400"></i>
+                  </div>
+                  <input type="text" id="religion" name="religion" class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="Enter religion">
+                </div>
+                <div class="space-y-2">
+                  <label for="caste" class="block text-sm font-medium text-gray-700">Caste</label>
+                  <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <i class="ri-group-line text-gray-400"></i>
+                  </div>
+                  <input type="text" id="caste" name="caste" class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="Enter caste">
+                </div>
               </div>
-              <div class="space-y-2">
-                <label for="futurePlans" class="block text-sm font-medium text-gray-700">Future Plans</label>
-                <input type="text" id="futurePlans" name="futurePlans" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="Enter future plans" value="<%= accountInfo.futurePlans || '' %>">
-              </div>
-            </div>
 
-            <div class="space-y-2">
-              <label for="whoCompletedProfile" class="block text-sm font-medium text-gray-700">Who Completed Profile</label>
-              <input type="text" id="whoCompletedProfile" name="whoCompletedProfile" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="e.g., Self, Family member">
-            </div>
-
-            <!-- Education Section -->
-            <div class="space-y-4">
-              <div class="flex items-center justify-between">
-                <label class="block text-sm font-medium text-gray-700">Education</label>
-                <button type="button" id="addEducation" class="px-4 py-2 bg-secondary text-white hover:bg-purple-700 transition-all duration-300 !rounded-button text-sm ripple">
-                  <i class="ri-add-line mr-1"></i>Add Education
-                </button>
+              <div class="grid md:grid-cols-2 gap-6">
+                <div class="space-y-2">
+                  <label for="islamicSect" class="block text-sm font-medium text-gray-700">Islamic Sect</label>
+                  <input type="text" id="islamicSect" name="islamicSect" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="Enter Islamic sect">
+                </div>
+                <div class="space-y-2">
+                  <label for="bornMuslim" class="block text-sm font-medium text-gray-700">Born Muslim</label>
+                  <select id="bornMuslim" name="bornMuslim" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 bg-white">
+                    <option value="true" <%= (accountInfo.bornMuslim === true) ? 'selected' : '' %>>Yes</option>
+                    <option value="false" <%= (accountInfo.bornMuslim === false) ? 'selected' : '' %>>No</option>
+                    <option value="N/A" <%= (accountInfo.bornMuslim === undefined || accountInfo.bornMuslim === null) ? 'selected' : '' %>>N/A</option>
+                  </select>
+                </div>
               </div>
-              <div id="educationContainer" class="space-y-4">
-                <!-- Education items will be added here -->
+
+              <div class="grid md:grid-cols-2 gap-6">
+                <div class="space-y-2">
+                  <label for="prays" class="block text-sm font-medium text-gray-700">Prays Regularly</label>
+                  <select id="prays" name="prays" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 bg-white">
+                    <option value="true" <%= (accountInfo.prays === true) ? 'selected' : '' %>>Yes</option>
+                    <option value="false" <%= (accountInfo.prays === false) ? 'selected' : '' %>>No</option>
+                    <option value="N/A" <%= (accountInfo.prays === undefined || accountInfo.prays === null) ? 'selected' : '' %>>N/A</option>
+                  </select>
+                </div>
+                <div class="space-y-2">
+                  <label for="celebratesMilaad" class="block text-sm font-medium text-gray-700">Celebrates Milaad</label>
+                  <select id="celebratesMilaad" name="celebratesMilaad" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 bg-white">
+                    <option value="true" <%= (accountInfo.celebratesMilaad === true) ? 'selected' : '' %>>Yes</option>
+                    <option value="false" <%= (accountInfo.celebratesMilaad === false) ? 'selected' : '' %>>No</option>
+                    <option value="N/A" <%= (accountInfo.celebratesMilaad === undefined || accountInfo.celebratesMilaad === null) ? 'selected' : '' %>>N/A</option>
+                  </select>
+                </div>
               </div>
-            </div>
 
-            <!-- Children Section -->
-            <div class="space-y-4">
-              <div class="flex items-center justify-between">
-                <label class="block text-sm font-medium text-gray-700">Children</label>
-                <button type="button" id="addChild" class="px-4 py-2 bg-secondary text-white hover:bg-purple-700 transition-all duration-300 !rounded-button text-sm ripple">
-                  <i class="ri-add-line mr-1"></i>Add Child
-                </button>
+              <div class="grid md:grid-cols-2 gap-6">
+                <div class="space-y-2">
+                  <label for="celebrateKhatams" class="block text-sm font-medium text-gray-700">Celebrates Khatams</label>
+                  <select id="celebrateKhatams" name="celebrateKhatams" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 bg-white">
+                    <option value="true" <%= (accountInfo.celebrateKhatams === true) ? 'selected' : '' %>>Yes</option>
+                    <option value="false" <%= (accountInfo.celebrateKhatams === false) ? 'selected' : '' %>>No</option>
+                    <option value="N/A" <%= (accountInfo.celebrateKhatams === undefined || accountInfo.celebrateKhatams === null) ? 'selected' : '' %>>N/A</option>
+                  </select>
+                </div>
+
+                <div class="space-y-2">
+                  <label for="islamIsImportantToMeInfo" class="block text-sm font-medium text-gray-700">How important is Islam to you?</label>
+                  <textarea id="islamIsImportantToMeInfo" name="islamIsImportantToMeInfo" rows="3" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="Describe the importance of Islam in your life"></textarea>
+                </div>
               </div>
-              <div id="childrenContainer" class="space-y-4">
-                <!-- Children items will be added here -->
+            </form>
+          </div>
+
+          <!-- Family & Background Tab -->
+          <div id="family-tab" class="tab-content hidden">
+            <h3 class="text-xl font-semibold text-gray-900 mb-6 font-['Playfair_Display']">Family & Background</h3>
+            <form class="space-y-6">
+              <div class="grid md:grid-cols-2 gap-6">
+                <div class="space-y-2">
+                  <label for="fatherName" class="block text-sm font-medium text-gray-700">Father's Name</label>
+                  <input type="text" id="fatherName" name="fatherName" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="Enter father's name">
+                </div>
+                <div class="space-y-2">
+                  <label for="motherName" class="block text-sm font-medium text-gray-700">Mother's Name</label>
+                  <input type="text" id="motherName" name="motherName" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="Enter mother's name">
+                </div>
               </div>
-            </div>
 
-            <div class="space-y-2">
-              <label for="describeNature" class="block text-sm font-medium text-gray-700">Describe Your Nature</label>
-              <textarea id="describeNature" name="describeNature" rows="3" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="Describe your nature and personality"></textarea>
-            </div>
+              <div class="grid md:grid-cols-2 gap-6">
+                <div class="space-y-2">
+                  <label for="fatherProfession" class="block text-sm font-medium text-gray-700">Father's Profession</label>
+                  <input type="text" id="fatherProfession" name="fatherProfession" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="Enter father's profession">
+                </div>
+                <div class="space-y-2">
+                  <label for="siblings" class="block text-sm font-medium text-gray-700">Number of Siblings</label>
+                  <input type="number" id="siblings" name="siblings" min="0" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="Enter number of siblings">
+                </div>
+              </div>
 
-            <div class="space-y-2">
-              <label for="QualitiesThatYouCanBringToYourMarriage" class="block text-sm font-medium text-gray-700">Qualities You Can Bring to Marriage (comma separated)</label>
-              <input type="text" id="QualitiesThatYouCanBringToYourMarriage" name="QualitiesThatYouCanBringToYourMarriage" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="e.g., Loyalty, Compassion, Understanding">
-            </div>
+              <div class="grid md:grid-cols-2 gap-6">
+                <div class="space-y-2">
+                  <label for="livingArrangementsAfterMarriage" class="block text-sm font-medium text-gray-700">Living Arrangements After Marriage</label>
+                  <input type="text" id="livingArrangementsAfterMarriage" name="livingArrangementsAfterMarriage" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="Enter living arrangements after marriage" value="<%= accountInfo.livingArrangementsAfterMarriage || '' %>">
+                </div>
+                <div class="space-y-2">
+                  <label for="futurePlans" class="block text-sm font-medium text-gray-700">Future Plans</label>
+                  <input type="text" id="futurePlans" name="futurePlans" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="Enter future plans" value="<%= accountInfo.futurePlans || '' %>">
+                </div>
+              </div>
 
-            <div class="space-y-2">
-              <label for="anySpecialInformationPeopleShouldKnow" class="block text-sm font-medium text-gray-700">Any Special Information People Should Know</label>
-              <textarea id="anySpecialInformationPeopleShouldKnow" name="anySpecialInformationPeopleShouldKnow" rows="3" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="Any special information you'd like to share"></textarea>
-            </div>
-          </form>
-        </div>
-
-        <!-- Partner Preferences Tab -->
-        <div id="preferences-tab" class="tab-content hidden">
-          <h3 class="text-xl font-semibold text-gray-900 mb-6 font-['Playfair_Display']">Partner Preferences</h3>
-          <form class="space-y-6">
-            <div class="grid md:grid-cols-2 gap-6">
               <div class="space-y-2">
-                <label for="preferredAgeRange" class="block text-sm font-medium text-gray-700">Preferred Age Range</label>
-                <input type="text" id="preferredAgeRange" name="preferredAgeRange" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="e.g., 25-30">
+                <label for="whoCompletedProfile" class="block text-sm font-medium text-gray-700">Who Completed Profile</label>
+                <input type="text" id="whoCompletedProfile" name="whoCompletedProfile" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="e.g., Self, Family member">
               </div>
-              <div class="space-y-2">
-                <label for="preferredHeightRange" class="block text-sm font-medium text-gray-700">Preferred Height Range</label>
-                <input type="text" id="preferredHeightRange" name="preferredHeightRange" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="e.g., 160-180 cm">
-              </div>
-            </div>
 
-            <div class="grid md:grid-cols-2 gap-6">
-              <div class="space-y-2">
-                <label for="preferredCaste" class="block text-sm font-medium text-gray-700">Preferred Caste</label>
-                <input type="text" id="preferredCaste" name="preferredCaste" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="Enter preferred caste">
+              <!-- Education Section -->
+              <div class="space-y-4">
+                <div class="flex items-center justify-between">
+                  <label class="block text-sm font-medium text-gray-700">Education</label>
+                  <button type="button" id="addEducation" class="px-4 py-2 bg-secondary text-white hover:bg-purple-700 transition-all duration-300 !rounded-button text-sm ripple">
+                    <i class="ri-add-line mr-1"></i>Add Education
+                  </button>
+                </div>
+                <div id="educationContainer" class="space-y-4">
+                  <!-- Education items will be added here -->
+                </div>
               </div>
-              <div class="space-y-2">
-                <label for="preferredEthnicity" class="block text-sm font-medium text-gray-700">Preferred Ethnicity</label>
-                <input type="text" id="preferredEthnicity" name="preferredEthnicity" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="Enter preferred ethnicity">
-              </div>
-            </div>
 
-            <div class="grid md:grid-cols-2 gap-6">
-              <div class="space-y-2">
-                <label for="allowParnterToWork" class="block text-sm font-medium text-gray-700">Allow Partner to Work</label>
-                <select id="allowParnterToWork" name="allowParnterToWork" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 bg-white">
-                  <option value="true" <%= (accountInfo.allowParnterToWork === true) ? 'selected' : '' %>>Yes</option>
-                  <option value="false" <%= (accountInfo.allowParnterToWork === false) ? 'selected' : '' %>>No</option>
-                  <option value="N/A" <%= (accountInfo.allowParnterToWork === undefined || accountInfo.allowParnterToWork === null) ? 'selected' : '' %>>N/A</option>
-                </select>
+              <!-- Children Section -->
+              <div class="space-y-4">
+                <div class="flex items-center justify-between">
+                  <label class="block text-sm font-medium text-gray-700">Children</label>
+                  <button type="button" id="addChild" class="px-4 py-2 bg-secondary text-white hover:bg-purple-700 transition-all duration-300 !rounded-button text-sm ripple">
+                    <i class="ri-add-line mr-1"></i>Add Child
+                  </button>
+                </div>
+                <div id="childrenContainer" class="space-y-4">
+                  <!-- Children items will be added here -->
+                </div>
               </div>
-              <div class="space-y-2">
-                <label for="allowPartnerToStudy" class="block text-sm font-medium text-gray-700">Allow Partner to Study</label>
-                <select id="allowPartnerToStudy" name="allowPartnerToStudy" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 bg-white">
-                  <option value="true" <%= (accountInfo.allowPartnerToStudy === true) ? 'selected' : '' %>>Yes</option>
-                  <option value="false" <%= (accountInfo.allowPartnerToStudy === false) ? 'selected' : '' %>>No</option>
-                  <option value="N/A" <%= (accountInfo.allowPartnerToStudy === undefined || accountInfo.allowPartnerToStudy === null) ? 'selected' : '' %>>N/A</option>
-                </select>
-              </div>
-            </div>
 
-            <!-- Acceptance Preferences -->
-            <div class="grid md:grid-cols-2 gap-6">
               <div class="space-y-2">
-                <label for="acceptSomeoneWithChildren" class="block text-sm font-medium text-gray-700">Accept Someone with Children</label>
-                <select id="acceptSomeoneWithChildren" name="acceptSomeoneWithChildren" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 bg-white">
-                  <option value="true" <%= (accountInfo.acceptSomeoneWithChildren === true) ? 'selected' : '' %>>Yes</option>
-                  <option value="false" <%= (accountInfo.acceptSomeoneWithChildren === false) ? 'selected' : '' %>>No</option>
-                  <option value="N/A" <%= (accountInfo.acceptSomeoneWithChildren === undefined || accountInfo.acceptSomeoneWithChildren === null) ? 'selected' : '' %>>N/A</option>
-                </select>
+                <label for="describeNature" class="block text-sm font-medium text-gray-700">Describe Your Nature</label>
+                <textarea id="describeNature" name="describeNature" rows="3" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="Describe your nature and personality"></textarea>
               </div>
-              <div class="space-y-2">
-                <label for="acceptADivorcedPerson" class="block text-sm font-medium text-gray-700">Accept a Divorced Person</label>
-                <select id="acceptADivorcedPerson" name="acceptADivorcedPerson" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 bg-white">
-                  <option value="true" <%= (accountInfo.acceptADivorcedPerson === true) ? 'selected' : '' %>>Yes</option>
-                  <option value="false" <%= (accountInfo.acceptADivorcedPerson === false) ? 'selected' : '' %>>No</option>
-                  <option value="N/A" <%= (accountInfo.acceptADivorcedPerson === undefined || accountInfo.acceptADivorcedPerson === null) ? 'selected' : '' %>>N/A</option>
-                </select>
-              </div>
-            </div>
 
-            <div class="grid md:grid-cols-2 gap-6">
               <div class="space-y-2">
-                <label for="acceptAWidow" class="block text-sm font-medium text-gray-700">Accept a Widow</label>
-                <select id="acceptAWidow" name="acceptAWidow" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 bg-white">
-                  <option value="true" <%= (accountInfo.acceptAWidow === true) ? 'selected' : '' %>>Yes</option>
-                  <option value="false" <%= (accountInfo.acceptAWidow === false) ? 'selected' : '' %>>No</option>
-                  <option value="N/A" <%= (accountInfo.acceptAWidow === undefined || accountInfo.acceptAWidow === null) ? 'selected' : '' %>>N/A</option>
-                </select>
+                <label for="QualitiesThatYouCanBringToYourMarriage" class="block text-sm font-medium text-gray-700">Qualities You Can Bring to Marriage (comma separated)</label>
+                <input type="text" id="QualitiesThatYouCanBringToYourMarriage" name="QualitiesThatYouCanBringToYourMarriage" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="e.g., Loyalty, Compassion, Understanding">
               </div>
-              <div class="space-y-2">
-                <label for="agreesWithPolygamy" class="block text-sm font-medium text-gray-700">Agrees with Polygamy</label>
-                <select id="agreesWithPolygamy" name="agreesWithPolygamy" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 bg-white">
-                  <option value="true" <%= (accountInfo.agreesWithPolygamy === true) ? 'selected' : '' %>>Yes</option>
-                  <option value="false" <%= (accountInfo.agreesWithPolygamy === false) ? 'selected' : '' %>>No</option>
-                  <option value="N/A" <%= (accountInfo.agreesWithPolygamy === undefined || accountInfo.agreesWithPolygamy === null) ? 'selected' : '' %>>N/A</option>
-                </select>
-              </div>
-            </div>
 
-            <div class="grid md:grid-cols-2 gap-6">
               <div class="space-y-2">
-                <label for="AcceptSomeoneWithBeard" class="block text-sm font-medium text-gray-700">Accept Someone with Beard</label>
-                <select id="AcceptSomeoneWithBeard" name="AcceptSomeoneWithBeard" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 bg-white">
-                  <option value="true" <%= (accountInfo.AcceptSomeoneWithBeard === true) ? 'selected' : '' %>>Yes</option>
-                  <option value="false" <%= (accountInfo.AcceptSomeoneWithBeard === false) ? 'selected' : '' %>>No</option>
-                  <option value="N/A" <%= (accountInfo.AcceptSomeoneWithBeard === undefined || accountInfo.AcceptSomeoneWithBeard === null) ? 'selected' : '' %>>N/A</option>
-                </select>
+                <label for="anySpecialInformationPeopleShouldKnow" class="block text-sm font-medium text-gray-700">Any Special Information People Should Know</label>
+                <textarea id="anySpecialInformationPeopleShouldKnow" name="anySpecialInformationPeopleShouldKnow" rows="3" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="Any special information you'd like to share"></textarea>
               </div>
+            </form>
+          </div>
+
+          <!-- Partner Preferences Tab -->
+          <div id="preferences-tab" class="tab-content hidden">
+            <h3 class="text-xl font-semibold text-gray-900 mb-6 font-['Playfair_Display']">Partner Preferences</h3>
+            <form class="space-y-6">
+              <div class="grid md:grid-cols-2 gap-6">
+                <div class="space-y-2">
+                  <label for="preferredAgeRange" class="block text-sm font-medium text-gray-700">Preferred Age Range</label>
+                  <input type="text" id="preferredAgeRange" name="preferredAgeRange" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="e.g., 25-30">
+                </div>
+                <div class="space-y-2">
+                  <label for="preferredHeightRange" class="block text-sm font-medium text-gray-700">Preferred Height Range</label>
+                  <input type="text" id="preferredHeightRange" name="preferredHeightRange" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="e.g., 160-180 cm">
+                </div>
+              </div>
+
+              <div class="grid md:grid-cols-2 gap-6">
+                <div class="space-y-2">
+                  <label for="preferredCaste" class="block text-sm font-medium text-gray-700">Preferred Caste</label>
+                  <input type="text" id="preferredCaste" name="preferredCaste" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="Enter preferred caste">
+                </div>
+                <div class="space-y-2">
+                  <label for="preferredEthnicity" class="block text-sm font-medium text-gray-700">Preferred Ethnicity</label>
+                  <input type="text" id="preferredEthnicity" name="preferredEthnicity" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="Enter preferred ethnicity">
+                </div>
+              </div>
+
+              <div class="grid md:grid-cols-2 gap-6">
+                <div class="space-y-2">
+                  <label for="allowParnterToWork" class="block text-sm font-medium text-gray-700">Allow Partner to Work</label>
+                  <select id="allowParnterToWork" name="allowParnterToWork" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 bg-white">
+                    <option value="true" <%= (accountInfo.allowParnterToWork === true) ? 'selected' : '' %>>Yes</option>
+                    <option value="false" <%= (accountInfo.allowParnterToWork === false) ? 'selected' : '' %>>No</option>
+                    <option value="N/A" <%= (accountInfo.allowParnterToWork === undefined || accountInfo.allowParnterToWork === null) ? 'selected' : '' %>>N/A</option>
+                  </select>
+                </div>
+                <div class="space-y-2">
+                  <label for="allowPartnerToStudy" class="block text-sm font-medium text-gray-700">Allow Partner to Study</label>
+                  <select id="allowPartnerToStudy" name="allowPartnerToStudy" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 bg-white">
+                    <option value="true" <%= (accountInfo.allowPartnerToStudy === true) ? 'selected' : '' %>>Yes</option>
+                    <option value="false" <%= (accountInfo.allowPartnerToStudy === false) ? 'selected' : '' %>>No</option>
+                    <option value="N/A" <%= (accountInfo.allowPartnerToStudy === undefined || accountInfo.allowPartnerToStudy === null) ? 'selected' : '' %>>N/A</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Acceptance Preferences -->
+              <div class="grid md:grid-cols-2 gap-6">
+                <div class="space-y-2">
+                  <label for="acceptSomeoneWithChildren" class="block text-sm font-medium text-gray-700">Accept Someone with Children</label>
+                  <select id="acceptSomeoneWithChildren" name="acceptSomeoneWithChildren" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 bg-white">
+                    <option value="true" <%= (accountInfo.acceptSomeoneWithChildren === true) ? 'selected' : '' %>>Yes</option>
+                    <option value="false" <%= (accountInfo.acceptSomeoneWithChildren === false) ? 'selected' : '' %>>No</option>
+                    <option value="N/A" <%= (accountInfo.acceptSomeoneWithChildren === undefined || accountInfo.acceptSomeoneWithChildren === null) ? 'selected' : '' %>>N/A</option>
+                  </select>
+                </div>
+                <div class="space-y-2">
+                  <label for="acceptADivorcedPerson" class="block text-sm font-medium text-gray-700">Accept a Divorced Person</label>
+                  <select id="acceptADivorcedPerson" name="acceptADivorcedPerson" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 bg-white">
+                    <option value="true" <%= (accountInfo.acceptADivorcedPerson === true) ? 'selected' : '' %>>Yes</option>
+                    <option value="false" <%= (accountInfo.acceptADivorcedPerson === false) ? 'selected' : '' %>>No</option>
+                    <option value="N/A" <%= (accountInfo.acceptADivorcedPerson === undefined || accountInfo.acceptADivorcedPerson === null) ? 'selected' : '' %>>N/A</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="grid md:grid-cols-2 gap-6">
+                <div class="space-y-2">
+                  <label for="acceptAWidow" class="block text-sm font-medium text-gray-700">Accept a Widow</label>
+                  <select id="acceptAWidow" name="acceptAWidow" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 bg-white">
+                    <option value="true" <%= (accountInfo.acceptAWidow === true) ? 'selected' : '' %>>Yes</option>
+                    <option value="false" <%= (accountInfo.acceptAWidow === false) ? 'selected' : '' %>>No</option>
+                    <option value="N/A" <%= (accountInfo.acceptAWidow === undefined || accountInfo.acceptAWidow === null) ? 'selected' : '' %>>N/A</option>
+                  </select>
+                </div>
+                <div class="space-y-2">
+                  <label for="agreesWithPolygamy" class="block text-sm font-medium text-gray-700">Agrees with Polygamy</label>
+                  <select id="agreesWithPolygamy" name="agreesWithPolygamy" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 bg-white">
+                    <option value="true" <%= (accountInfo.agreesWithPolygamy === true) ? 'selected' : '' %>>Yes</option>
+                    <option value="false" <%= (accountInfo.agreesWithPolygamy === false) ? 'selected' : '' %>>No</option>
+                    <option value="N/A" <%= (accountInfo.agreesWithPolygamy === undefined || accountInfo.agreesWithPolygamy === null) ? 'selected' : '' %>>N/A</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="grid md:grid-cols-2 gap-6">
+                <div class="space-y-2">
+                  <label for="AcceptSomeoneWithBeard" class="block text-sm font-medium text-gray-700">Accept Someone with Beard</label>
+                  <select id="AcceptSomeoneWithBeard" name="AcceptSomeoneWithBeard" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 bg-white">
+                    <option value="true" <%= (accountInfo.AcceptSomeoneWithBeard === true) ? 'selected' : '' %>>Yes</option>
+                    <option value="false" <%= (accountInfo.AcceptSomeoneWithBeard === false) ? 'selected' : '' %>>No</option>
+                    <option value="N/A" <%= (accountInfo.AcceptSomeoneWithBeard === undefined || accountInfo.AcceptSomeoneWithBeard === null) ? 'selected' : '' %>>N/A</option>
+                  </select>
+                </div>
+                <div class="space-y-2">
+                  <label for="AcceptSomeoneWithHijab" class="block text-sm font-medium text-gray-700">Accept Someone with Hijab</label>
+                  <select id="AcceptSomeoneWithHijab" name="AcceptSomeoneWithHijab" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 bg-white">
+                    <option value="true" <%= (accountInfo.AcceptSomeoneWithHijab === true) ? 'selected' : '' %>>Yes</option>
+                    <option value="false" <%= (accountInfo.AcceptSomeoneWithHijab === false) ? 'selected' : '' %>>No</option>
+                    <option value="N/A" <%= (accountInfo.AcceptSomeoneWithHijab === undefined || accountInfo.AcceptSomeoneWithHijab === null) ? 'selected' : '' %>>N/A</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="grid md:grid-cols-2 gap-6">
+                <div class="space-y-2">
+                  <label for="ConsiderARevert" class="block text-sm font-medium text-gray-700">Consider a Revert</label>
+                  <select id="ConsiderARevert" name="ConsiderARevert" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 bg-white">
+                    <option value="true" <%= (accountInfo.ConsiderARevert === true) ? 'selected' : '' %>>Yes</option>
+                    <option value="false" <%= (accountInfo.ConsiderARevert === false) ? 'selected' : '' %>>No</option>
+                    <option value="N/A" <%= (accountInfo.ConsiderARevert === undefined || accountInfo.ConsiderARevert === null) ? 'selected' : '' %>>N/A</option>
+                  </select>
+                </div>
+                <div class="space-y-2">
+                  <label for="acceptSomeoneInOtherCountry" class="block text-sm font-medium text-gray-700">Accecpt some one in other country</label>
+                  <input type="text" id="acceptSomeoneInOtherCountry" name="acceptSomeoneInOtherCountry" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="accept someone in other country ..." value="<%= accountInfo.acceptSomeoneInOtherCountry|| '' %>">
+                </div>
+              </div>
+
+              <div class="grid md:grid-cols-2 gap-6">
+                <div class="space-y-2">
+                  <label for="willingToSharePhotosUponRequest" class="block text-sm font-medium text-gray-700">Willing to Share Photos Upon Request</label>
+                  <input type="text" id="willingToSharePhotosUponRequest" name="willingToSharePhotosUponRequest" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" value="<%= accountInfo.willingToSharePhotosUponRequest || '' %>" placeholder="Enter willingness to share photos">
+                </div>
+                <div class="space-y-2">
+                  <label for="willingToMeetUpOutside" class="block text-sm font-medium text-gray-700">Willing to Meet Up Outside</label>
+                  <input type="text" id="willingToMeetUpOutside" name="willingToMeetUpOutside" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 bg-white" value="<%= accountInfo.willingToMeetUpOutside || '' %>" placeholder="Enter willingness to meet up outside">
+                </div>
+              </div>
+
+              <div class="grid md:grid-cols-2 gap-6">
+                <div class="space-y-2">
+                  <label for="willingToConsiderANonUkCitizen" class="block text-sm font-medium text-gray-700">Willing to Consider a Non-UK Citizen</label>
+                  <input type="text" id="willingToConsiderANonUkCitizen" name="willingToConsiderANonUkCitizen" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="Enter willingness..." value="<%= accountInfo.willingToConsiderANonUkCitizen || '' %>">
+                </div>
+              </div>
+
               <div class="space-y-2">
-                <label for="AcceptSomeoneWithHijab" class="block text-sm font-medium text-gray-700">Accept Someone with Hijab</label>
-                <select id="AcceptSomeoneWithHijab" name="AcceptSomeoneWithHijab" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 bg-white">
-                  <option value="true" <%= (accountInfo.AcceptSomeoneWithHijab === true) ? 'selected' : '' %>>Yes</option>
-                  <option value="false" <%= (accountInfo.AcceptSomeoneWithHijab === false) ? 'selected' : '' %>>No</option>
-                  <option value="N/A" <%= (accountInfo.AcceptSomeoneWithHijab === undefined || accountInfo.AcceptSomeoneWithHijab === null) ? 'selected' : '' %>>N/A</option>
-                </select>
+                <label for="lookingForASpouseThatIs" class="block text-sm font-medium text-gray-700">Looking for a Spouse That Is</label>
+                <input type="text" id="lookingForASpouseThatIs" name="lookingForASpouseThatIs" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="e.g., Educated, Religious, Career-oriented" value="<%= accountInfo.lookingForASpouseThatIs || '' %>">
               </div>
-            </div>
 
-            <div class="grid md:grid-cols-2 gap-6">
               <div class="space-y-2">
-                <label for="ConsiderARevert" class="block text-sm font-medium text-gray-700">Consider a Revert</label>
-                <select id="ConsiderARevert" name="ConsiderARevert" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 bg-white">
-                  <option value="true" <%= (accountInfo.ConsiderARevert === true) ? 'selected' : '' %>>Yes</option>
-                  <option value="false" <%= (accountInfo.ConsiderARevert === false) ? 'selected' : '' %>>No</option>
-                  <option value="N/A" <%= (accountInfo.ConsiderARevert === undefined || accountInfo.ConsiderARevert === null) ? 'selected' : '' %>>N/A</option>
-                </select>
+                <label for="qualitiesYouNeedInYourPartner" class="block text-sm font-medium text-gray-700">Qualities You Need in Your Partner (comma separated)</label>
+                <input type="text" id="qualitiesYouNeedInYourPartner" name="qualitiesYouNeedInYourPartner" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="e.g., Honesty, Kindness, Intelligence" value="<%= accountInfo.qualitiesYouNeedInYourPartner || '' %>">
               </div>
-              <div class="space-y-2">
-                <label for="acceptSomeoneInOtherCountry" class="block text-sm font-medium text-gray-700">Accecpt some one in other country</label>
-                <input type="text" id="acceptSomeoneInOtherCountry" name="acceptSomeoneInOtherCountry" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="accept someone in other country ..." value="<%= accountInfo.acceptSomeoneInOtherCountry|| '' %>">
-              </div>
-            </div>
+            </form>
+          </div>
 
-            <div class="grid md:grid-cols-2 gap-6">
-              <div class="space-y-2">
-                <label for="willingToSharePhotosUponRequest" class="block text-sm font-medium text-gray-700">Willing to Share Photos Upon Request</label>
-                <input type="text" id="willingToSharePhotosUponRequest" name="willingToSharePhotosUponRequest" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" value="<%= accountInfo.willingToSharePhotosUponRequest || '' %>" placeholder="Enter willingness to share photos">
-              </div>
-              <div class="space-y-2">
-                <label for="willingToMeetUpOutside" class="block text-sm font-medium text-gray-700">Willing to Meet Up Outside</label>
-                <input type="text" id="willingToMeetUpOutside" name="willingToMeetUpOutside" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 bg-white" value="<%= accountInfo.willingToMeetUpOutside || '' %>" placeholder="Enter willingness to meet up outside">
-              </div>
-            </div>
-
-            <div class="grid md:grid-cols-2 gap-6">
-              <div class="space-y-2">
-                <label for="willingToConsiderANonUkCitizen" class="block text-sm font-medium text-gray-700">Willing to Consider a Non-UK Citizen</label>
-                <input type="text" id="willingToConsiderANonUkCitizen" name="willingToConsiderANonUkCitizen" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="Enter willingness..." value="<%= accountInfo.willingToConsiderANonUkCitizen || '' %>">
-              </div>
-            </div>
-
-            <div class="space-y-2">
-              <label for="lookingForASpouseThatIs" class="block text-sm font-medium text-gray-700">Looking for a Spouse That Is</label>
-              <input type="text" id="lookingForASpouseThatIs" name="lookingForASpouseThatIs" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="e.g., Educated, Religious, Career-oriented" value="<%= accountInfo.lookingForASpouseThatIs || '' %>">
-            </div>
-
-            <div class="space-y-2">
-              <label for="qualitiesYouNeedInYourPartner" class="block text-sm font-medium text-gray-700">Qualities You Need in Your Partner (comma separated)</label>
-              <input type="text" id="qualitiesYouNeedInYourPartner" name="qualitiesYouNeedInYourPartner" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="e.g., Honesty, Kindness, Intelligence" value="<%= accountInfo.qualitiesYouNeedInYourPartner || '' %>">
-            </div>
-          </form>
-        </div>
-
-        <!-- Save Button -->
-        <div class="flex justify-end pt-6 border-t border-gray-200 mt-8">
-          <button type="submit" class="px-8 py-2.5 bg-primary text-white hover:bg-pink-600 transition-all duration-300 !rounded-button whitespace-nowrap ripple material-shadow">
-            <i class="ri-save-line mr-2"></i>Save Changes
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <div id="sent-section" class="main-section hidden">
-      <div class="bg-white rounded-2xl p-8 material-shadow">
-        <h3 class="text-xl font-semibold text-gray-900 mb-6 font-['Playfair_Display']">Your Sent Requests</h3>
-        <div id="sentRequestsContainer">
-          <!-- Sent requests will be loaded here -->
-          <div class="text-center py-8">
-            <i class="ri-loader-4-line animate-spin text-3xl text-gray-400 mb-4"></i>
-            <p class="text-gray-500">Loading your requests...</p>
+          <!-- Save Button -->
+          <div class="flex justify-end pt-6 border-t border-gray-200 mt-8">
+            <button type="submit" class="px-8 py-2.5 bg-primary text-white hover:bg-pink-600 transition-all duration-300 !rounded-button whitespace-nowrap ripple material-shadow">
+              <i class="ri-save-line mr-2"></i>Save Changes
+            </button>
           </div>
         </div>
       </div>
-    </div>
-    <div id="received-section" class="main-section hidden">
-      <div class="bg-white rounded-2xl p-8 material-shadow">
-        <h3 class="text-xl font-semibold text-gray-900 mb-6 font-['Playfair_Display']">Received Requests</h3>
-        <div id="receivedRequestsContainer">
-          <!-- Received requests will be loaded here -->
-          <div class="text-center py-8">
-            <i class="ri-loader-4-line animate-spin text-3xl text-gray-400 mb-4"></i>
-            <p class="text-gray-500">Loading received requests...</p>
+
+      <div id="sent-section" class="main-section hidden">
+        <div class="bg-white rounded-2xl p-8 material-shadow">
+          <h3 class="text-xl font-semibold text-gray-900 mb-6 font-['Playfair_Display']">Your Sent Requests</h3>
+          <div id="sentRequestsContainer">
+            <!-- Sent requests will be loaded here -->
+            <div class="text-center py-8">
+              <i class="ri-loader-4-line animate-spin text-3xl text-gray-400 mb-4"></i>
+              <p class="text-gray-500">Loading your requests...</p>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+      <div id="received-section" class="main-section hidden">
+        <div class="bg-white rounded-2xl p-8 material-shadow">
+          <h3 class="text-xl font-semibold text-gray-900 mb-6 font-['Playfair_Display']">Received Requests</h3>
+          <div id="receivedRequestsContainer">
+            <!-- Received requests will be loaded here -->
+            <div class="text-center py-8">
+              <i class="ri-loader-4-line animate-spin text-3xl text-gray-400 mb-4"></i>
+              <p class="text-gray-500">Loading received requests...</p>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </main>
   <%- include('../partials/footer') %>
@@ -1261,10 +1294,10 @@
           submitBtn.innerHTML = '<i class="ri-loader-4-line animate-spin mr-2"></i>Saving Changes...';
           // **NEW**: Validate minimum character fields
           const minCharFields = {
-            'aboutMe': 100,
-            'islamIsImportantToMeInfo': 100,
-            'describeNature': 100,
-            'lookingForASpouseThatIs': 100
+            'aboutMe': 5,
+            'islamIsImportantToMeInfo': 5,
+            'describeNature': 5,
+            'lookingForASpouseThatIs': 5
           };
 
           for (const [field, minLength] of Object.entries(minCharFields)) {
@@ -1852,7 +1885,7 @@
 
         function updateCounter() {
           const length = textarea.value.trim().length;
-          const minLength = 100;
+          const minLength = 5;
           counter.textContent = `${length}/${minLength} characters minimum`;
 
           if (length < minLength) {
@@ -2089,6 +2122,68 @@
     function hideEmailStatus() {
       emailStatus.classList.add('hidden');
     }
+  </script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Check if user just completed onboarding
+      const urlParams = new URLSearchParams(window.location.search);
+      const fromOnboarding = urlParams.get('from') === 'onboarding';
+
+      if (fromOnboarding) {
+        // Remove the parameter from URL
+        window.history.replaceState({}, document.title, window.location.pathname);
+
+        // Show completion dialog
+        showCompletionDialog();
+      }
+
+      async function showCompletionDialog() {
+        try {
+          // Fetch profile completion data
+          const response = await fetch('/api/profile-completion');
+          const data = await response.json();
+
+          if (data.success) {
+            const {
+              completed,
+              total,
+              percentage
+            } = data.completion;
+
+            // Update dialog content
+            document.getElementById('completionPercentage').textContent = percentage;
+
+            // Show dialog
+            document.getElementById('completionDialog').classList.remove('hidden');
+          }
+        } catch (error) {
+          console.error('Error fetching profile completion:', error);
+        }
+      }
+
+      // Dialog button handlers
+      document.getElementById('addMoreInfoBtn').addEventListener('click', function() {
+        // Hide dialog and stay on info page
+        document.getElementById('completionDialog').classList.add('hidden');
+
+        // Show success message
+        showNotification('Great Choice!', 'You can now add more information to improve your profile.', 'success');
+      });
+
+      document.getElementById('browseProfilesBtn').addEventListener('click', function() {
+        // Redirect to profiles page
+        window.location.href = '/profiles';
+      });
+
+      // Close dialog on outside click
+      document.getElementById('completionDialog').addEventListener('click', function(e) {
+        if (e.target === this) {
+          this.classList.add('hidden');
+        }
+      });
+
+      // Your existing JavaScript code continues here...
+    });
   </script>
 </body>
 

@@ -154,7 +154,7 @@
       <div class="flex items-center">
         <h1 class="text-2xl font-bold text-primary font-['Playfair_Display']">
           <a href="/" class="hover:text-pink-600 transition-colors duration-300 cursor-pointer">
-            shadiamour
+            shadiAmour
           </a>
         </h1>
         <% if (isAdmin) { %>
@@ -329,8 +329,9 @@
                 <% if (user.age) { %>
                 Age: <%= user.age %> •
                 <% } %>
-                <% if (user.gender) { %>
-                <%= user.gender.charAt(0).toUpperCase() + user.gender.slice(1) %>
+                <br>
+                <% if (user.email) { %>
+                <%= user.email %>
                 <% } %>
               </p>
               <% if (user.createdAt) { %>

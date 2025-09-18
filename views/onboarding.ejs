@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Complete Your Profile - D'amour Muslim</title>
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+  <link rel="manifest" href="/images/site.webmanifest">
+  <meta name="theme-color" content="#E91E63">
+  <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#E91E63',
+            secondary: '#673AB7'
+          },
+          borderRadius: {
+            'none': '0px',
+            'sm': '4px',
+            DEFAULT: '8px',
+            'md': '12px',
+            'lg': '16px',
+            'xl': '20px',
+            '2xl': '24px',
+            '3xl': '32px',
+            'full': '9999px',
+            'button': '8px'
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Playfair+Display:wght@400;600;700&family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+  <style>
+    :where([class^="ri-"])::before {
+      content: "\f3c2";
+    }
+
+    .material-shadow {
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .material-shadow-hover {
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    }
+
+    .material-shadow-elevated {
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    }
+
+    .ripple {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .ripple::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.3);
+      transform: translate(-50%, -50%);
+      transition: width 0.6s, height 0.6s;
+    }
+
+    .ripple:active::before {
+      width: 300px;
+      height: 300px;
+    }
+
+    .gradient-bg {
+      background: linear-gradient(135deg, #E91E63 0%, #673AB7 100%);
+    }
+
+    .tab-active {
+      background-color: #E91E63;
+      color: white;
+    }
+
+    .child-item {
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 12px;
+    }
+
+    .education-item {
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 12px;
+    }
+
+    .char-counter {
+      font-size: 0.75rem;
+      color: #6b7280;
+      margin-top: 4px;
+    }
+
+    .char-counter.error {
+      color: #ef4444;
+    }
+
+    .step-content {
+      display: none;
+    }
+
+    .step-content.active {
+      display: block;
+    }
+
+    .progress-bar {
+      transition: width 0.3s ease;
+    }
+  </style>
+</head>
+
+<!-- ...existing head and header... -->
+
+<body class="bg-gray-50 font-['Roboto']">
+  <%- include('partials/header') %>
+
+  <main class="pt-24 pb-16 min-h-screen">
+    <div class="max-w-4xl mx-auto px-6">
+      <!-- Progress Section -->
+      <div class="text-center mb-8">
+        <h2 class="text-3xl font-bold text-gray-800 mb-3 font-['Playfair_Display']">Add neccessary details</h2>
+        <p class="text-gray-600 mb-6">get started with just 3 steps of information</p>
+
+        <!-- Progress Bar -->
+        <div class="bg-gray-200 rounded-full h-2 mb-4">
+          <div class="progress-bar bg-gradient-to-r from-primary to-secondary h-2 rounded-full" style="width: 25%"></div>
+        </div>
+        <div class="flex justify-between text-xs text-gray-500">
+          <span>Step <span id="currentStep">1</span> of 3</span>
+          <span id="progressPercent">25% Complete</span>
+        </div>
+      </div>
+
+      <!-- Form Container -->
+      <div class="bg-white rounded-2xl p-8 material-shadow">
+        <form id="onboardingForm" class="space-y-6">
+
+          <!-- Step 1: Basic Information -->
+          <div id="step-1" class="step-content active">
+            <div class="text-center mb-6">
+              <h3 class="text-2xl font-semibold text-gray-800 mb-2">Basic Information</h3>
+              <p class="text-gray-600">Tell us about yourself</p>
+            </div>
+
+            <div class="space-y-6">
+              <div class="space-y-2">
+                <label for="profileFor" class="block text-sm font-medium text-gray-700">This Profile is for <span class="text-red-500">*</span></label>
+                <select id="profileFor" name="profileFor" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 bg-white">
+                  <option value="">Select</option>
+                  <option value="self">Self</option>
+                  <option value="son">Son</option>
+                  <option value="daughter">Daughter</option>
+                  <option value="brother">Brother</option>
+                  <option value="sister">Sister</option>
+                  <option value="friend">Friend</option>
+                  <option value="relative">Relative</option>
+                </select>
+              </div>
+              <div class="space-y-2">
+                <label for="name" class="block text-sm font-medium text-gray-700">Full Name <span class="text-red-500"></span>*</span></label>
+                <div class="relative">
+                  <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <i class="ri-user-3-line text-gray-400"></i>
+                  </div>
+                  <input type="text" id="name" name="name" required class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="Enter full name">
+                </div>
+              </div>
+
+              <div class="grid md:grid-cols-2 gap-6">
+                <div class="space-y-2">
+                  <label for="age" class="block text-sm font-medium text-gray-700">Age <span class="text-red-500">*</span></label>
+                  <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <i class="ri-calendar-line text-gray-400"></i>
+                    </div>
+                    <input type="number" id="age" name="age" min="18" max="100" required class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="Enter age">
+                  </div>
+                </div>
+
+                <div class="space-y-2">
+                  <label for="religion" class="block text-sm font-medium text-gray-700">Religion <span class="text-red-500">*</span></label>
+                  <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <i class="ri-church-line text-gray-400"></i>
+                    </div>
+                    <select id="religion" name="religion" required class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 bg-white">
+                      <option value="">Select religion</option>
+                      <option value="islam">Islam</option>
+                      <option value="christianity">Christianity</option>
+                      <option value="hinduism">Hinduism</option>
+                      <option value="other">Other</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="space-y-2">
+                <label for="islamicSect" class="block text-sm font-medium text-gray-700">Islamic Sect</label>
+                <input type="text" id="islamicSect" name="islamicSect" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="Enter Islamic sect (e.g., Sunni, Shia)">
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 2: Location & Origin -->
+          <div id="step-2" class="step-content">
+            <div class="text-center mb-6">
+              <h3 class="text-2xl font-semibold text-gray-800 mb-2">Location & Origin</h3>
+              <p class="text-gray-600">Where are you from?</p>
+            </div>
+
+            <div class="space-y-6">
+              <div class="grid md:grid-cols-2 gap-6">
+                <div class="space-y-2">
+                  <label for="country" class="block text-sm font-medium text-gray-700">Country <span class="text-red-500">*</span></label>
+                  <select id="country" required name="country" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 bg-white">
+                    <option value="">Select Country</option>
+                    <option value="uk">United Kingdom</option>
+                    <option value="pakistan">Pakistan</option>
+                    <option value="bangladesh">Bangladesh</option>
+                    <option value="other">Other</option>
+                    <option value="N/A">N/A</option>
+                  </select>
+                </div>
+
+                <div class="space-y-2">
+                  <label for="state" class="block text-sm font-medium text-gray-700">State/Province</label>
+                  <select id="state" name="state" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 bg-white" disabled>
+                    <option value="">Select Country First</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="grid md:grid-cols-2 gap-6">
+                <div class="space-y-2">
+                  <label for="city" class="block text-sm font-medium text-gray-700">City</label>
+                  <select id="city" name="city" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 bg-white" disabled>
+                    <option value="">Select State/Province First</option>
+                  </select>
+                </div>
+
+                <div class="space-y-2">
+                  <label for="birthPlace" class="block text-sm font-medium text-gray-700">Birth Place</label>
+                  <input type="text" id="birthPlace" name="birthPlace" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="Enter birth place">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 3: What You're Looking For (Partner Preferences) -->
+          <div id="step-3" class="step-content">
+            <div class="text-center mb-6">
+              <h3 class="text-2xl font-semibold text-gray-800 mb-2">What You're Looking For</h3>
+              <p class="text-gray-600">Partner Preferences</p>
+            </div>
+
+            <div class="space-y-6">
+              <div class="grid md:grid-cols-2 gap-6">
+                <div class="space-y-2">
+                  <label for="preferredAgeRange" class="block text-sm font-medium text-gray-700">Preferred Age Range <span class="text-red-500">*</span></label>
+                  <input type="text" id="preferredAgeRange" required name="preferredAgeRange" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="e.g., 25-30">
+                </div>
+              </div>
+
+              <div class="space-y-2">
+                <label for="lookingForASpouseThatIs" class="block text-sm font-medium text-gray-700">Looking for a Spouse That Is (min 5 characters) <span class="text-red-500">*</span></label>
+                <input type="text" id="lookingForASpouseThatIs" required name="lookingForASpouseThatIs" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="e.g., Educated, Religious, Career-oriented">
+              </div>
+            </div>
+          </div>
+
+          <!-- Navigation Buttons -->
+          <div class="flex justify-between pt-6 border-t">
+            <button type="button" id="prevBtn" class="hidden px-6 py-3 border-2 border-gray-300 text-gray-700 hover:border-primary hover:text-primary transition-all duration-300 rounded-button">
+              <i class="ri-arrow-left-line mr-2"></i>
+              Previous
+            </button>
+
+            <button type="button" id="nextBtn" class="px-6 py-3 bg-primary text-white hover:bg-pink-600 transition-all duration-300 rounded-button material-shadow ml-auto" disabled>
+              <span id="nextBtnText">Next</span>
+              <i class="ri-arrow-right-line ml-2"></i>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <!-- JavaScript -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      let currentStep = 1;
+      const totalSteps = 3;
+
+      // Initialize UI
+      updateUI();
+
+      function updateUI() {
+        // Update progress bar - FIX: Calculate progress correctly
+        const progress = (currentStep / totalSteps) * 100;
+
+        const progressBar = document.querySelector('.progress-bar');
+        const currentStepElement = document.getElementById('currentStep');
+        const progressPercentElement = document.getElementById('progressPercent');
+
+        if (progressBar) {
+          progressBar.style.width = `${progress}%`;
+        }
+
+        if (currentStepElement) {
+          currentStepElement.textContent = currentStep;
+        }
+
+        if (progressPercentElement) {
+          progressPercentElement.textContent = `${Math.round(progress)}% Complete`;
+        }
+
+        // Show/hide steps
+        document.querySelectorAll('.step-content').forEach(step => {
+          step.classList.remove('active');
+        });
+
+        const currentStepDiv = document.getElementById(`step-${currentStep}`);
+        if (currentStepDiv) {
+          currentStepDiv.classList.add('active');
+        }
+
+        // Update navigation buttons
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const nextBtnText = document.getElementById('nextBtnText');
+        const nextBtnIcon = document.querySelector('#nextBtn i');
+
+        if (prevBtn) {
+          prevBtn.classList.toggle('hidden', currentStep === 1);
+        }
+
+        if (currentStep === totalSteps) {
+          if (nextBtnText) {
+            nextBtnText.textContent = 'Complete Profile';
+          }
+          if (nextBtnIcon) {
+            nextBtnIcon.className = 'ri-check-line ml-2';
+          }
+        } else {
+          if (nextBtnText) {
+            nextBtnText.textContent = 'Next';
+          }
+          if (nextBtnIcon) {
+            nextBtnIcon.className = 'ri-arrow-right-line ml-2';
+          }
+        }
+      }
+
+      // Collect form data for current step
+      function collectStepData(step) {
+        const stepElement = document.getElementById(`step-${step}`);
+        const formData = {};
+
+        const inputs = stepElement.querySelectorAll('input, select, textarea');
+        inputs.forEach(input => {
+          if (input.value && input.value.trim() !== '') {
+            formData[input.name] = input.value.trim();
+          }
+        });
+
+        return formData;
+      }
+
+      // Save step data via AJAX
+      // async function saveStepData(step, data) {
+      //   try {
+      //     const response = await fetch('/api/onboarding/save', {
+      //       method: 'POST',
+      //       headers: {
+      //         'Content-Type': 'application/json',
+      //       },
+      //       body: JSON.stringify({
+      //         step,
+      //         data
+      //       })
+      //     });
+
+      //     const result = await response.json();
+
+      //     if (!result.success) {
+      //       throw new Error(result.error || 'Failed to save step data');
+      //     }
+
+      //     return result;
+      //   } catch (error) {
+      //     console.error('Error saving step:', error);
+      //     throw error;
+      //   }
+      // }
+
+      // Save step data via AJAX
+      async function saveStepData(step, data) {
+        try {
+          console.log('Saving step data:', {
+            step,
+            data
+          }); // Debug log
+
+          const response = await fetch('/api/onboarding/save', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              step,
+              data
+            })
+          });
+
+          // Check if response is ok first
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+
+          const result = await response.json();
+          console.log('Save response:', result); // Debug log
+
+          // More specific success check
+          if (result.success !== true) {
+            throw new Error(result.error || 'Failed to save step data');
+          }
+
+          return result;
+        } catch (error) {
+          console.error('Error saving step:', error);
+          throw error;
+        }
+      }
+
+      // Complete onboarding
+      async function completeOnboarding() {
+        try {
+          console.log('Completing onboarding...'); // Debug log
+
+          const response = await fetch('/api/onboarding/complete', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            }
+          });
+
+          // Check if response is ok first
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+
+          const result = await response.json();
+          console.log('Complete response:', result); // Debug log
+
+          // More specific success check
+          if (result.success !== true) {
+            throw new Error(result.error || 'Failed to complete onboarding');
+          }
+
+          // Redirect to account info page
+          window.location.href = result.redirectUrl || '/account/info?from=onboarding';
+        } catch (error) {
+          console.error('Error completing onboarding:', error);
+          alert('Failed to complete onboarding. Please try again.');
+        }
+      }
+      // Complete onboarding
+      async function completeOnboarding() {
+        try {
+          const response = await fetch('/api/onboarding/complete', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            }
+          });
+
+          const result = await response.json();
+
+          if (result.success) {
+            // Redirect to account info page
+            window.location.href = '/account/info?from=onboarding';
+          } else {
+            throw new Error(result.error || 'Failed to complete onboarding');
+          }
+        } catch (error) {
+          console.error('Error completing onboarding:', error);
+          alert('Failed to complete onboarding. Please try again.');
+        }
+      }
+
+      // Navigation button handlers
+      document.getElementById('nextBtn').addEventListener('click', async function() {
+        const nextBtn = this;
+        const originalText = nextBtn.innerHTML;
+
+        // Validate current step
+        if (!validateStep(currentStep)) {
+          alert('Please fill in all required fields before proceeding.');
+          return;
+        }
+
+        // Disable button and show loading
+        nextBtn.disabled = true;
+        nextBtn.innerHTML = '<i class="ri-loader-4-line animate-spin mr-2"></i>Saving...';
+
+        try {
+          // Collect and save current step data
+          const stepData = collectStepData(currentStep);
+          await saveStepData(currentStep, stepData);
+
+          if (currentStep < totalSteps) {
+            currentStep++;
+            updateUI();
+          } else {
+            // Complete onboarding
+            await completeOnboarding();
+          }
+        } catch (error) {
+          console.error('Error processing step:', error);
+          alert('Failed to save your information. Please try again.');
+        } finally {
+          // Re-enable button
+          nextBtn.disabled = false;
+          nextBtn.innerHTML = originalText;
+        }
+      });
+
+      document.getElementById('prevBtn').addEventListener('click', function() {
+        if (currentStep > 1) {
+          currentStep--;
+          updateUI();
+        }
+      });
+
+      // Form validation
+      function validateStep(step) {
+        const stepElement = document.getElementById(`step-${step}`);
+        const requiredFields = stepElement.querySelectorAll('[required]');
+        let isValid = true;
+
+        requiredFields.forEach(field => {
+          if (!field.value.trim()) {
+            field.classList.add('border-red-500');
+            isValid = false;
+          } else {
+            field.classList.remove('border-red-500');
+          }
+        });
+
+        return isValid;
+      }
+
+      // Location cascading dropdowns (same as before)
+      const locationData = {
+        uk: {
+          states: {
+            england: ['London', 'Birmingham', 'Manchester', 'Liverpool', 'Bristol', 'Sheffield', 'Leeds', 'Other'],
+            scotland: ['Glasgow', 'Edinburgh', 'Aberdeen', 'Dundee', 'Other'],
+            wales: ['Cardiff', 'Swansea', 'Newport', 'Bangor', 'Other'],
+            northern_ireland: ['Belfast', 'Derry', 'Lisburn', 'Other']
+          }
+        },
+        pakistan: {
+          states: {
+            punjab: ['Lahore', 'Faisalabad', 'Rawalpindi', 'Multan', 'Gujranwala', 'Other'],
+            sindh: ['Karachi', 'Hyderabad', 'Sukkur', 'Larkana', 'Other'],
+            khyber_pakhtunkhwa: ['Peshawar', 'Mardan', 'Mingora', 'Other'],
+            balochistan: ['Quetta', 'Gwadar', 'Turbat', 'Other']
+          }
+        },
+        bangladesh: {
+          states: {
+            dhaka: ['Dhaka', 'Gazipur', 'Narayanganj', 'Other'],
+            chittagong: ['Chittagong', 'Cox\'s Bazar', 'Other'],
+            sylhet: ['Sylhet', 'Moulvibazar', 'Other'],
+            rajshahi: ['Rajshahi', 'Bogra', 'Other']
+          }
+        }
+      };
+
+      const countrySelect = document.getElementById('country');
+      const stateSelect = document.getElementById('state');
+      const citySelect = document.getElementById('city');
+
+      countrySelect.addEventListener('change', function() {
+        const country = this.value;
+        stateSelect.innerHTML = '<option value="">Select State/Province</option>';
+        citySelect.innerHTML = '<option value="">Select State/Province First</option>';
+
+        if (country && locationData[country]) {
+          stateSelect.disabled = false;
+          Object.keys(locationData[country].states).forEach(state => {
+            const option = document.createElement('option');
+            option.value = state;
+            option.textContent = state.charAt(0).toUpperCase() + state.slice(1).replace('_', ' ');
+            stateSelect.appendChild(option);
+          });
+        } else if (country === 'other') {
+          stateSelect.disabled = false;
+          stateSelect.innerHTML = '<option value="other">Other</option>';
+        } else {
+          stateSelect.disabled = true;
+          citySelect.disabled = true;
+        }
+      });
+
+      stateSelect.addEventListener('change', function() {
+        const country = countrySelect.value;
+        const state = this.value;
+        citySelect.innerHTML = '<option value="">Select City</option>';
+
+        if (country && state && locationData[country] && locationData[country].states[state]) {
+          citySelect.disabled = false;
+          locationData[country].states[state].forEach(city => {
+            const option = document.createElement('option');
+            option.value = city.toLowerCase();
+            option.textContent = city;
+            citySelect.appendChild(option);
+          });
+        } else if (state === 'other') {
+          citySelect.disabled = false;
+          citySelect.innerHTML = '<option value="other">Other</option>';
+        } else {
+          citySelect.disabled = true;
+        }
+      });
+
+      // Enable next button initially for step 1
+      document.getElementById('nextBtn').disabled = false;
+    });
+  </script>
+</body>
+
+</html>

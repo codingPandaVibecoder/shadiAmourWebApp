@@ -699,29 +699,6 @@
                       <h3 class="text-lg font-semibold text-gray-900 mb-3">Family Information</h3>
                       <div class="grid md:grid-cols-2 gap-6">
                         <div class="space-y-3">
-                          <% if (profile.fatherName) { %>
-                          <div class="bg-white rounded-lg p-3 border border-gray-200">
-                            <p class="text-sm text-gray-500">Father's Name</p>
-                            <p class="text-gray-900"><%= profile.fatherName %></p>
-                          </div>
-                          <% } %>
-
-                          <% if (profile.motherName) { %>
-                          <div class="bg-white rounded-lg p-3 border border-gray-200">
-                            <p class="text-sm text-gray-500">Mother's Name</p>
-                            <p class="text-gray-900"><%= profile.motherName %></p>
-                          </div>
-                          <% } %>
-
-                          <% if (profile.fatherProfession) { %>
-                          <div class="bg-white rounded-lg p-3 border border-gray-200">
-                            <p class="text-sm text-gray-500">Father's Profession</p>
-                            <p class="text-gray-900"><%= profile.fatherProfession %></p>
-                          </div>
-                          <% } %>
-                        </div>
-
-                        <div class="space-y-3">
                           <% if (profile.siblings !== undefined) { %>
                           <div class="bg-white rounded-lg p-3 border border-gray-200">
                             <p class="text-sm text-gray-500">Siblings</p>
@@ -748,6 +725,29 @@
                             </div>
                             <% }) %>
                           </div>
+                          <div class="space-y-3">
+                            <% if (profile.fatherName) { %>
+                            <div class="bg-white rounded-lg p-3 border border-gray-200">
+                              <p class="text-sm text-gray-500">Father's Name</p>
+                              <p class="text-gray-900"><%= profile.fatherName %></p>
+                            </div>
+                            <% } %>
+
+                            <% if (profile.motherName) { %>
+                            <div class="bg-white rounded-lg p-3 border border-gray-200">
+                              <p class="text-sm text-gray-500">Mother's Name</p>
+                              <p class="text-gray-900"><%= profile.motherName %></p>
+                            </div>
+                            <% } %>
+
+                            <% if (profile.fatherProfession) { %>
+                            <div class="bg-white rounded-lg p-3 border border-gray-200">
+                              <p class="text-sm text-gray-500">Father's Profession</p>
+                              <p class="text-gray-900"><%= profile.fatherProfession %></p>
+                            </div>
+                            <% } %>
+                          </div>
+
                           <% } %>
                         </div>
                       </div>

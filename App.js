@@ -1,3 +1,37 @@
+function calculateProfileCompletion(user) {
+  const totalFields = 64; // Total possible fields
+
+  let completedFields = 0;
+
+  // Check each field in the user object
+  Object.keys(user.toObject()).forEach((key) => {
+    const value = user[key];
+    if (
+      value !== null &&
+      value !== undefined &&
+      value !== "" &&
+      value !== "N/A"
+    ) {
+      if (Array.isArray(value) && value.length > 0) {
+        completedFields++;
+      } else if (typeof value === "object" && !Array.isArray(value)) {
+        // For nested objects like profilePic, coverPhoto
+        if (value.url || Object.keys(value).length > 0) {
+          completedFields++;
+        }
+      } else if (typeof value !== "object") {
+        completedFields++;
+      }
+    }
+  });
+
+  const percentage = Math.round((completedFields / totalFields) * 100);
+  return {
+    completed: completedFields,
+    total: totalFields,
+    percentage: percentage,
+  };
+}
 const slugify = require("slugify");
 function generateProfileSlug(user) {
   // Use name if available, otherwise username
@@ -69,6 +103,7 @@ async function generateUniqueSlug(user) {
 }
 const User = require("./models/user");
 const Newsletter = require("./models/Newsletter");
+const { countryOptions, countryPlaceholders } = require("./config/countries");
 const path = require("path");
 const Request = require("./models/Request");
 const Notification = require("./models/Notification");
@@ -195,6 +230,10 @@ const storage = new CloudinaryStorage({
       folder: "user_profiles",
       public_id: `${username}${suffix}`, // M23C or M23P
       allowed_formats: ["jpg", "jpeg", "png", "webp"],
+      transformation: [
+        { quality: "auto" }, // compress smartly
+        { fetch_format: "auto" }, // store in efficient format
+      ],
     };
   },
 });
@@ -245,7 +284,99 @@ app.get("/register", (req, res) => {
     // User is already logged in, redirect to home or dashboard
     return res.redirect("/home");
   }
-  res.render("register");
+  res.render("register", { countryOptions, countryPlaceholders });
+});
+
+app.get("/onboarding", isLoggedIn, findUser, (req, res) => {
+  const user = req.userData;
+
+  // Check if user has completed onboarding
+  // if (user.profileSlug && user.name && user.age && user.country) {
+  //   return res.redirect(`/account/info`);
+  // }
+
+  res.render("onboarding", { user });
+});
+// **NEW**: Save onboarding step
+app.post("/api/onboarding/save", isLoggedIn, findUser, async (req, res) => {
+  try {
+    const user = req.userData;
+    const { step, data } = req.body;
+
+    console.log(`Onboarding step ${step} data:`, data);
+
+    // Update user fields based on step
+    Object.keys(data).forEach((key) => {
+      if (data[key] !== undefined && data[key] !== "" && data[key] !== "N/A") {
+        user[key] = data[key];
+      }
+    });
+
+    // Generate profile slug when we have enough data (step 1)
+    if (step === 1 && user.name) {
+      user.profileSlug = await generateUniqueSlug(user);
+    }
+
+    await user.save();
+
+    // Update session
+    req.session.user = user;
+
+    res.json({
+      success: true,
+      message: `Step ${step} completed successfully!`,
+      isLastStep: step === 4,
+    });
+  } catch (error) {
+    console.error("Onboarding save error:", error);
+    res.json({
+      success: false,
+      error: `Failed to save step: ${error.message}`,
+    });
+  }
+});
+
+// **NEW**: Complete onboarding
+// Update the complete onboarding route:
+
+app.post("/api/onboarding/complete", isLoggedIn, findUser, async (req, res) => {
+  try {
+    const user = req.userData;
+
+    // Ensure user has profile slug
+    if (!user.profileSlug) {
+      user.profileSlug = await generateUniqueSlug(user);
+      await user.save();
+    }
+
+    res.json({
+      success: true,
+      redirectUrl: `/account/info?from=onboarding`,
+    });
+  } catch (error) {
+    console.error("Complete onboarding error:", error);
+    res.json({
+      success: false,
+      error: "Failed to complete onboarding",
+    });
+  }
+});
+app.get("/api/profile-completion", isLoggedIn, findUser, async (req, res) => {
+  try {
+    const user = req.userData;
+    const completion = calculateProfileCompletion(user);
+
+    res.json({
+      success: true,
+      completion,
+    });
+  } catch (error) {
+    console.error("Profile completion error:", error);
+    res.json({
+      success: false,
+      error: "Failed to calculate profile completion",
+    });
+  }
 });
 app.get("/login", (req, res) => {
   if (req.session.userId) {
@@ -264,10 +395,10 @@ app.post("/account/update", isLoggedIn, findUser, async (req, res) => {
     const formData = req.body;
     // **NEW**: Validate minimum character requirements
     const minCharFields = {
-      aboutMe: 100,
-      islamIsImportantToMeInfo: 100,
-      describeNature: 100,
-      lookingForASpouseThatIs: 100,
+      aboutMe: 5,
+      islamIsImportantToMeInfo: 5,
+      describeNature: 5,
+      lookingForASpouseThatIs: 5,
     };
 
     for (const [field, minLength] of Object.entries(minCharFields)) {
@@ -492,7 +623,7 @@ app.post("/account/update", isLoggedIn, findUser, async (req, res) => {
 app.post("/register", async (req, res) => {
   console.log("Register request body:", req.body);
 
-  const { username, email, password, passcode, gender } = req.body;
+  const { username, email, password, gender } = req.body;
   console.log("Session verification status:", {
     emailVerified: req.session.emailVerified,
     verifiedEmail: req.session.verifiedEmail,
@@ -500,10 +631,10 @@ app.post("/register", async (req, res) => {
     match: req.session.verifiedEmail === email?.toLowerCase(),
   });
 
-  if (!username || !password || !passcode || !gender) {
+  if (!username || !password || !gender) {
     console.log("required fields missing");
     return res.render("register", {
-      error: "Username, password, passcode, and gender are required.",
+      error: "Username, password, and gender are required.",
     });
   }
 
@@ -537,11 +668,15 @@ app.post("/register", async (req, res) => {
   }
 
   // Check passcode
-  if (passcode != process.env.PASSCODE) {
+  // **NEW**: Check if passcode was verified in the verification step
+  if (!req.session.passcodeVerified) {
     return res.render("register", {
-      error: "Invalid passcode, please try again.",
+      error: "Please verify your mobile number and passcode first.",
     });
   }
+
+  // **NEW**: Store the verified mobile number in user data
+  const verifiedMobile = req.session.verifiedMobile;
 
   // Check password length
   if (!password || password.length < 5) {
@@ -599,6 +734,7 @@ app.post("/register", async (req, res) => {
       password: hashedPassword,
       gender,
       registrationSource: "register",
+      contact: verifiedMobile,
     };
 
     // **OPTIONAL**: Only add email if provided
@@ -620,10 +756,10 @@ app.post("/register", async (req, res) => {
     // Clean up verification session data
     delete req.session.emailVerified;
     delete req.session.verifiedEmail;
+    delete req.session.passcodeVerified; // **NEW**
+    delete req.session.verifiedMobile; // **NEW**
 
-    return res.redirect(
-      "/account/info?msg=Please complete your profile to continue."
-    );
+    return res.redirect("/onboarding");
   } catch (error) {
     console.error("Registration error:", error);
     return res.render("register", {
@@ -631,7 +767,78 @@ app.post("/register", async (req, res) => {
     });
   }
 });
+// **NEW**: Passcode verification route
+app.post("/api/verify-passcode", async (req, res) => {
+  try {
+    const { countryCode, mobileNumber, passcode } = req.body;
 
+    if (!countryCode || !mobileNumber || !passcode) {
+      return res.json({
+        success: false,
+        error: "All fields are required",
+      });
+    }
+
+    // Clean the mobile number (remove any spaces, hyphens, etc.)
+    const cleanMobile = mobileNumber.replace(/\D/g, "");
+
+    if (cleanMobile.length < 7) {
+      return res.json({
+        success: false,
+        error: "Please enter a valid mobile number",
+      });
+    }
+
+    // Get the last 3 digits of the mobile number
+    const lastThreeDigits = cleanMobile.slice(-3);
+
+    // Base passcode is always "1111" (even length)
+    const basePasscode = process.env.PASSCODE;
+
+    // Generate expected passcode using the logic:
+    // First digit at start, second digit in middle, third digit at end
+    const firstDigit = lastThreeDigits[0];
+    const secondDigit = lastThreeDigits[1];
+    const thirdDigit = lastThreeDigits[2];
+
+    // Insert: first digit at start, second in middle (position 2), third at end
+    const expectedPasscode =
+      firstDigit +
+      basePasscode.substring(0, 2) +
+      secondDigit +
+      basePasscode.substring(2) +
+      thirdDigit;
+
+    console.log("Passcode verification:", {
+      mobile: countryCode + cleanMobile,
+      lastThreeDigits,
+      expectedPasscode,
+      providedPasscode: passcode,
+    });
+
+    if (passcode === expectedPasscode) {
+      // Store verification in session
+      req.session.passcodeVerified = true;
+      req.session.verifiedMobile = countryCode + cleanMobile;
+
+      res.json({
+        success: true,
+        message: "Mobile number and passcode verified successfully",
+      });
+    } else {
+      res.json({
+        success: false,
+        error: "Your number and passcode do not match. please, try again",
+      });
+    }
+  } catch (error) {
+    console.error("Passcode verification error:", error);
+    res.json({
+      success: false,
+      error: "Verification failed. Please try again.",
+    });
+  }
+});
 app.post("/login", async (req, res) => {
   const { username, password, remember } = req.body;
   console.log("received");
@@ -1414,10 +1621,10 @@ app.post("/admin/user/add", requireAdminOnly, async (req, res) => {
     });
   }
   const minCharFields = {
-    aboutMe: 100,
-    islamIsImportantToMeInfo: 100,
-    describeNature: 100,
-    lookingForASpouseThatIs: 100,
+    aboutMe: 5,
+    islamIsImportantToMeInfo: 5,
+    describeNature: 5,
+    lookingForASpouseThatIs: 5,
   };
 
   for (const [field, minLength] of Object.entries(minCharFields)) {
@@ -3141,6 +3348,11 @@ app.post("/reset-password", async (req, res) => {
       error: "An error occurred. Please try again later.",
     });
   }
+});
+app.get("/terms", (req, res) => {
+  res.render("terms", {
+    title: "Terms and Conditions - D'amour Muslim",
+  });
 });
 // SEO: Generate dynamic sitemap
 app.get("/sitemap.xml", async (req, res) => {

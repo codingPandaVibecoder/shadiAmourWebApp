@@ -201,6 +201,42 @@
               <button type="button" id="hasPasscodeNo" class="flex-1 py-2.5 px-4 border-2 border-gray-300 text-gray-500 hover:border-primary hover:text-primary transition-all duration-300 !rounded-button whitespace-nowrap ripple">No</button>
             </div>
           </div>
+
+          <!-- **NEW**: Passcode Verification Section -->
+          <div id="passcodeVerificationForm" class="space-y-6 hidden">
+            <div class="space-y-2">
+              <label class="block text-sm font-medium text-gray-700">Mobile Number (used to contact us) <span class="text-red-500">*</span></label>
+              <div class="flex gap-2">
+                <select id="countryCode" class="px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary bg-white text-sm">
+                  <% countryOptions.forEach(country => { %>
+                  <option value="<%= country.code %>" <%= country.country === 'UK' ? 'selected' : '' %>>
+                    <%= country.code %> (<%= country.country %>)
+                  </option>
+                  <% }) %>
+                </select>
+                <div class="relative flex-1">
+                  <input type="tel" id="mobileNumber" placeholder="3065876725" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white">
+                </div>
+              </div>
+              <p class="text-xs text-gray-500">Enter the mobile number you used to contact us on WhatsApp</p>
+            </div>
+
+            <div class="space-y-2">
+              <label for="verifyPasscode" class="block text-sm font-medium text-gray-700">Passcode <span class="text-red-500">*</span></label>
+              <div class="relative">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <i class="ri-key-line text-gray-400"></i>
+                </div>
+                <input type="text" id="verifyPasscode" class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="Enter the passcode we shared via whatsapp">
+              </div>
+            </div>
+
+            <button type="button" id="verifyDetailsBtn" class="w-full flex justify-center py-2.5 px-4 border border-transparent rounded-button shadow-sm text-sm font-medium text-white bg-secondary hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary transition-all duration-300 ripple material-shadow">
+              Verify Details
+            </button>
+          </div>
+
+          <!-- **UPDATED**: Main Registration Form (shown after verification) -->
           <div id="registrationForm" class="space-y-6 hidden">
             <div class="space-y-2">
               <label class="block text-sm font-medium text-gray-700">Gender <span class="text-red-500">*</span></label>
@@ -259,22 +295,31 @@
                 <div id="email-status" class="hidden text-sm mt-2"></div>
             </div>
 
-            <div class="space-y-2">
-              <label for="signup-password" class="block text-sm font-medium text-gray-700">Password <span class="text-red-500">*</span></label>
-              <div class="relative">
-                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <i class="ri-lock-line text-gray-400"></i>
+            <div class="space-y-4">
+              <div class="space-y-2">
+                <label for="signup-password" class="block text-sm font-medium text-gray-700">Password <span class="text-red-500">*</span></label>
+                <div class="relative">
+                  <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <i class="ri-lock-line text-gray-400"></i>
+                  </div>
+                  <input type="password" id="signup-password" name="password" required minlength="5" class="block w-full pl-10 pr-10 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="Create a password (min 5 characters)">
+                  <button type="button" class="toggle-password absolute inset-y-0 right-0 pr-3 flex items-center" data-target="signup-password">
+                    <i class="ri-eye-off-line text-gray-400 hover:text-gray-600"></i>
+                  </button>
                 </div>
-                <input type="password" id="signup-password" name="password" required minlength="5" class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="Create a password (min 5 characters)">
               </div>
-            </div>
-            <div class="space-y-2">
-              <label for="passcode" class="block text-sm font-medium text-gray-700">Passcode (we shared it with you via whatsapp) <span class="text-red-500">*</span></label>
-              <div class="relative">
-                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <i class="ri-key-line text-gray-400"></i>
+
+              <div class="space-y-2">
+                <label for="confirm-password" class="block text-sm font-medium text-gray-700">Confirm Password <span class="text-red-500">*</span></label>
+                <div class="relative">
+                  <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <i class="ri-lock-line text-gray-400"></i>
+                  </div>
+                  <input type="password" id="confirm-password" name="confirmPassword" required minlength="5" class="block w-full pl-10 pr-10 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="Confirm your password">
+                  <button type="button" class="toggle-password absolute inset-y-0 right-0 pr-3 flex items-center" data-target="confirm-password">
+                    <i class="ri-eye-off-line text-gray-400 hover:text-gray-600"></i>
+                  </button>
                 </div>
-                <input type="text" id="passcode" name="passcode" required class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="Enter your passcode">
               </div>
             </div>
             <div class="flex items-center">
@@ -286,9 +331,9 @@
             </button>
           </div>
           <div id="whatsappLink" class="hidden text-center">
-            <a href="https://wa.me/+447899816181" class="inline-flex items-center gap-2 text-green-600 hover:text-green-700 transition-colors duration-300">
+            <a href="https://wa.me/+447454516156" class="inline-flex items-center gap-2 text-green-600 hover:text-green-700 transition-colors duration-300">
               <i class="ri-whatsapp-line text-xl"></i>
-              <span>Chat with us on WhatsApp to get the passcode</span>
+              <span>Chat with us on WhatsApp to get the passcode, click here</span>
             </a>
           </div>
           <div class="text-center text-sm mt-6">
@@ -542,7 +587,9 @@
         resetPasscodeButtons();
         this.classList.remove('text-primary');
         this.classList.add('bg-primary', 'text-white');
-        registrationForm.classList.remove('hidden');
+        const passcodeVerificationForm = document.getElementById('passcodeVerificationForm');
+        passcodeVerificationForm.classList.remove('hidden');
+        registrationForm.classList.add('hidden');
         whatsappLink.classList.add('hidden');
       });
 
@@ -552,6 +599,7 @@
         this.classList.add('bg-primary', 'text-white');
         registrationForm.classList.add('hidden');
         whatsappLink.classList.remove('hidden');
+        passcodeVerificationForm.classList.add('hidden');
       });
 
       // Generate username when gender is selected
@@ -569,17 +617,193 @@
           }
         });
       });
+      // **NEW**: Passcode verification functionality
+      const verifyDetailsBtn = document.getElementById('verifyDetailsBtn');
+      const countryCode = document.getElementById('countryCode');
+      const mobileNumber = document.getElementById('mobileNumber');
+      const verifyPasscode = document.getElementById('verifyPasscode');
+      const passcodeVerificationForm = document.getElementById('passcodeVerificationForm');
+      // **NEW**: Country code to placeholder mapping
+      const countryPlaceholders = <%- JSON.stringify(countryPlaceholders) %>;
+      // **NEW**: Update placeholder when country code changes
+      const countryCodeSelect = document.getElementById('countryCode');
+      const mobileNumberInput = document.getElementById('mobileNumber');
+
+      if (countryCodeSelect && mobileNumberInput) {
+        countryCodeSelect.addEventListener('change', function() {
+          const selectedCode = this.value;
+          const placeholder = countryPlaceholders[selectedCode] || '1234567890';
+          mobileNumberInput.placeholder = placeholder;
+        });
+
+        // Set initial placeholder
+        const initialCode = countryCodeSelect.value;
+        mobileNumberInput.placeholder = countryPlaceholders[initialCode] || '1234567890';
+      }
+      if (verifyDetailsBtn) {
+        verifyDetailsBtn.addEventListener('click', async function() {
+          const country = countryCode.value;
+          const mobile = mobileNumber.value.trim();
+          const passcode = verifyPasscode.value.trim();
+
+          if (!mobile || !passcode) {
+            showError('Please enter both mobile number and passcode');
+            return;
+          }
+
+          // Show loading state
+          this.disabled = true;
+          this.innerHTML = '<i class="ri-loader-4-line animate-spin mr-2"></i>Verifying...';
+
+          try {
+            const response = await fetch('/api/verify-passcode', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                countryCode: country,
+                mobileNumber: mobile,
+                passcode: passcode
+              })
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+              document.querySelector('.space-y-4').classList.add('hidden');
+              // Hide verification form and show main registration form
+              passcodeVerificationForm.classList.add('hidden');
+              registrationForm.classList.remove('hidden');
+
+              // Store verified mobile for later use
+              sessionStorage.setItem('verifiedMobile', country + mobile);
+
+              hideError();
+            } else {
+              showError(data.error);
+            }
+          } catch (error) {
+            showError('Verification failed. Please try again.');
+          } finally {
+            this.disabled = false;
+            this.innerHTML = 'Verify Details';
+          }
+        });
+      }
+
+      // Helper functions for error display
+      function showError(message) {
+        // Remove any existing error
+        const existingError = document.querySelector('.verification-error');
+        if (existingError) {
+          existingError.remove();
+        }
+
+        // Create new error element
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'verification-error mb-4 p-4 bg-red-50 border border-red-200 rounded-lg';
+        errorDiv.innerHTML = `
+          <div class="flex items-center gap-2">
+            <i class="ri-error-warning-line text-red-500"></i>
+            <p class="text-red-600 text-sm font-medium">${message}</p>
+          </div>
+        `;
+
+        // Insert before the verify button
+        verifyDetailsBtn.parentNode.insertBefore(errorDiv, verifyDetailsBtn);
+      }
+
+      function hideError() {
+        const existingError = document.querySelector('.verification-error');
+        if (existingError) {
+          existingError.remove();
+        }
+      }
+
+      // **NEW**: Passcode verification logic
 
       if (form) {
         form.addEventListener('submit', function(e) {
-          if (!isEmailVerified) {
-            e.preventDefault();
-            showEmailStatus('Please verify your email address first', 'error');
-            return;
-          }
+          // if (!isEmailVerified) {
+          //   e.preventDefault();
+          //   showEmailStatus('Please verify your email address first', 'error');
+          //   return;
+          // }
           // Continue with existing form submission logic...
         });
       }
+
+      // Password confirmation validation
+      document.getElementById('confirm-password').addEventListener('input', function() {
+        const password = document.getElementById('signup-password').value;
+        const confirmPassword = this.value;
+
+        if (confirmPassword && password !== confirmPassword) {
+          this.classList.add('border-red-300');
+          this.classList.remove('border-gray-300');
+        } else {
+          this.classList.remove('border-red-300');
+          this.classList.add('border-gray-300');
+        }
+      });
+
+      // Add password validation on form submit
+      if (form) {
+        form.addEventListener('submit', function(e) {
+          const password = document.getElementById('signup-password').value;
+          const confirmPassword = document.getElementById('confirm-password').value;
+
+          // Check if passwords match
+          if (password !== confirmPassword) {
+            e.preventDefault();
+
+            // Remove existing error if any
+            const existingError = document.querySelector('.password-error');
+            if (existingError) {
+              existingError.remove();
+            }
+
+            // Create and show error message
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'password-error mb-4 p-4 bg-red-50 border border-red-200 rounded-lg';
+            errorDiv.innerHTML = `
+              <div class="flex items-center gap-2">
+                <i class="ri-error-warning-line text-red-500"></i>
+                <p class="text-red-600 text-sm font-medium">Passwords don't match</p>
+              </div>
+            `;
+
+            // Insert error before the submit button
+            const submitButton = form.querySelector('button[type="submit"]');
+            submitButton.parentNode.insertBefore(errorDiv, submitButton);
+
+            // Add red border to confirm password field
+            document.getElementById('confirm-password').classList.add('border-red-500');
+            document.getElementById('confirm-password').classList.remove('border-gray-300');
+
+            return;
+          }
+
+          // Continue with existing form submission logic...
+        });
+      }
+    });
+    // Password toggle functionality
+    document.querySelectorAll('.toggle-password').forEach(button => {
+      button.addEventListener('click', function() {
+        const targetId = this.getAttribute('data-target');
+        const passwordInput = document.getElementById(targetId);
+        const icon = this.querySelector('i');
+
+        if (passwordInput.type === 'password') {
+          passwordInput.type = 'text';
+          icon.className = 'ri-eye-line text-gray-400 hover:text-gray-600';
+        } else {
+          passwordInput.type = 'password';
+          icon.className = 'ri-eye-off-line text-gray-400 hover:text-gray-600';
+        }
+      });
     });
   </script>
 </body>
