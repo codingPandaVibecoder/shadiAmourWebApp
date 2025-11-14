@@ -10,32 +10,8 @@
   <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
   <link rel="manifest" href="/images/site.webmanifest">
   <meta name="theme-color" content="#E91E63">
-  <title>shadiamour - Admin Dashboard</title>
-  <script src="https://cdn.tailwindcss.com/3.4.16"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            primary: '#E91E63',
-            secondary: '#673AB7'
-          },
-          borderRadius: {
-            'none': '0px',
-            'sm': '4px',
-            DEFAULT: '8px',
-            'md': '12px',
-            'lg': '16px',
-            'xl': '20px',
-            '2xl': '24px',
-            '3xl': '32px',
-            'full': '9999px',
-            'button': '8px'
-          }
-        }
-      }
-    }
-  </script>
+  <title>shadiAmour - Admin Dashboard</title>
+  <link rel="stylesheet" href="/css/output.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Playfair+Display:wght@400;600;700&family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -193,6 +169,10 @@
               <i class="ri-mail-line text-lg"></i>
               <span>Newsletter</span>
             </button>
+            <button id="blogsBtn" class="flex items-center gap-3 px-4 py-2.5 bg-purple-600 text-white hover:bg-purple-700 transition-all duration-300 !rounded-button material-shadow hover:material-shadow-hover ripple">
+              <i class="ri-mail-line text-lg"></i>
+              <span>Manage Blogs</span>
+            </button>
             <% } %>
             <!-- **UPDATED**: Only show Add User for admins -->
             <% if (isAdmin) { %>
@@ -271,30 +251,79 @@
             </div>
           </div>
         </div>
-      </div>
-      <!-- User Profiles Grid -->
-      <div id="profileGrid" class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-        <% if (users && users.length > 0) { %>
-        <% users.forEach(user => { %>
-        <div class="profile-card bg-white rounded-xl md:rounded-2xl overflow-hidden material-shadow hover:material-shadow-hover" data-waliMyContactDetails="<%= user.waliMyContactDetails || '' %>" data-username="<%= user.username %>" data-name="<%= user.name || user.username %>" data-contact="<%= user.contact || '' %>" data-registration-source="<%= user.registrationSource || 'unknown' %>" data-featured="<%= user.isFeatured || false %>">
-          <div class="aspect-[4/1] overflow-hidden">
-            <% if (user.profilePic && user.profilePic.url) { %>
-            <img src="<%= user.profilePic.url %>" class="w-full h-full object-cover" alt="<%= user.name || user.username %>'s Profile">
-            <% } else { %>
-            <!-- Default placeholder based on gender -->
-            <% if (user.gender === 'male') { %>
-            <img src="/images/boyavatar.png" class="w-16 h-16 mx-auto my-4 rounded-full object-cover" alt="<%= user.name || user.username %>'s Profile">
-            <% } else { %>
-            <img src="/images/girlavatar.png" class="w-16 h-16 mx-auto my-4 rounded-full object-cover" alt="<%= user.name || user.username %>'s Profile">
-            <% } %>
-            <% } %>
+        <div class="bg-white rounded-xl p-6 material-shadow relative">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-2xl font-bold text-gray-900">
+                <%= Object.keys(stats.employeeStats || {}).length %>
+              </p>
+              <p class="text-sm text-gray-600 mt-1">Registered By</p>
+            </div>
+            <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+              <i class="ri-team-line text-xl text-green-600"></i>
+            </div>
           </div>
-          <div class="p-3">
-            <div class="flex items-center justify-between mb-2">
-              <h3 class="text-lg font-semibold text-gray-900">
-                <%=  user.name || user.username %>
-              </h3>
-              <% 
+
+          <!-- Dropdown Button -->
+          <div class="mt-4">
+            <button id="employeeDropdownBtn" class="w-full px-3 py-2 text-left bg-gray-50 border border-gray-200 rounded-lg hover:bg-gray-100 transition-colors duration-200 flex items-center justify-between">
+              <span class="text-sm text-gray-700">Select Employee/Referrer</span>
+              <i class="ri-arrow-down-s-line text-gray-500"></i>
+            </button>
+
+            <!-- Dropdown Menu -->
+            <div id="employeeDropdownMenu" class="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-20 hidden max-h-48 overflow-y-auto">
+              <% if (uniqueEmployees && uniqueEmployees.length > 0) { %>
+              <button class="employee-filter-btn w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 border-b border-gray-100" data-filter="all">
+                <div class="flex items-center justify-between">
+                  <span>All Registrations</span>
+                  <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-full"><%= stats.totalUsers %></span>
+                </div>
+              </button>
+
+              <% uniqueEmployees.forEach(employeeName => { %>
+              <button class="employee-filter-btn w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 border-b border-gray-100 last:border-b-0" data-filter="employee-<%= employeeName %>">
+                <div class="flex items-center justify-between">
+                  <span class="capitalize"><%= employeeName %></span>
+                  <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-full">
+                    <%= stats.employeeStats[employeeName] || 0 %>
+                  </span>
+                </div>
+              </button>
+              <% }) %>
+              <% } else { %>
+              <div class="px-4 py-3 text-sm text-gray-500 text-center">
+                No employee referrals found
+              </div>
+              <% } %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- User Profiles Grid -->
+    <div id="profileGrid" class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+      <% if (users && users.length > 0) { %>
+      <% users.forEach(user => { %>
+      <div class="profile-card bg-white rounded-xl md:rounded-2xl overflow-hidden material-shadow hover:material-shadow-hover" data-waliMyContactDetails="<%= user.waliMyContactDetails || '' %>" data-username="<%= user.username %>" data-name="<%= user.name || user.username %>" data-contact="<%= user.contact || '' %>" data-registration-source="<%= user.registrationSource || 'unknown' %>" data-featured="<%= user.isFeatured || false %>" data-passcode="<%= user.passcodeUsed || '' %>">
+        <div class="aspect-[4/1] overflow-hidden">
+          <% if (user.profilePic && user.profilePic.url) { %>
+          <img src="<%= user.profilePic.url %>" class="w-full h-full object-cover" alt="<%= user.name || user.username %>'s Profile">
+          <% } else { %>
+          <!-- Default placeholder based on gender -->
+          <% if (user.gender === 'male') { %>
+          <img src="/images/boyavatar.png" class="w-16 h-16 mx-auto my-4 rounded-full object-cover" alt="<%= user.name || user.username %>'s Profile">
+          <% } else { %>
+          <img src="/images/girlavatar.png" class="w-16 h-16 mx-auto my-4 rounded-full object-cover" alt="<%= user.name || user.username %>'s Profile">
+          <% } %>
+          <% } %>
+        </div>
+        <div class="p-3">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="text-lg font-semibold text-gray-900">
+              <%=  user.name || user.username %>
+            </h3>
+            <% 
                     // Show registration source instead of status
                     let sourceText = 'Unknown';
                     let sourceClass = 'bg-gray-100 text-gray-600';
@@ -307,105 +336,105 @@
                       sourceClass = 'bg-orange-100 text-orange-600';
                     }
                   %>
-              <span class="px-2 py-1 <%= sourceClass %> text-xs rounded-full"><%= sourceText %></span>
-            </div>
-            <div class="flex items-center text-gray-600 mb-3">
-              <i class="ri-map-pin-line mr-2"></i>
-              <span>
-                <% if (user.city && user.country) { %>
-                <%= user.city %>, <%= user.country %>
-                <% } else if (user.city) { %>
-                <%= user.city %>
-                <% } else if (user.country) { %>
-                <%= user.country %>
-                <% } else { %>
-                Location not specified
-                <% } %>
-              </span>
-            </div>
-            <div class="text-sm text-gray-500 mb-4">
-              <p>Username: <%= user.username %></p>
-              <p>
-                <% if (user.age) { %>
-                Age: <%= user.age %> •
-                <% } %>
-                <br>
-                <% if (user.email) { %>
-                <%= user.email %>
-                <% } %>
-              </p>
-              <% if (user.createdAt) { %>
-              <p class="text-xs text-gray-400 mt-1">
-                Joined: <%= new Date(user.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) %>
-              </p>
-              <% } %>
-            </div>
-            <div class="flex gap-1 md:gap-2">
-              <!-- **UPDATED**: Show different buttons based on user role -->
-              <% if (isAdmin) { %>
-              <!-- Admin sees all buttons - Mobile: Icons only, Desktop: Text -->
-              <button class="edit-btn flex-1 px-2 md:px-3 py-2 bg-blue-500 text-white hover:bg-blue-600 transition-all duration-300 !rounded-button text-sm ripple flex items-center justify-center" data-user-id="<%= user._id %>" title="Edit User">
-                <i class="ri-edit-line md:mr-1"></i>
-                <span class="hidden md:inline">Edit</span>
-              </button>
-              <button class="delete-btn flex-1 px-2 md:px-3 py-2 bg-red-500 text-white hover:bg-red-600 transition-all duration-300 !rounded-button text-sm ripple flex items-center justify-center" data-user-id="<%= user._id %>" title="Delete User">
-                <i class="ri-delete-bin-line md:mr-1"></i>
-                <span class="hidden md:inline">Delete</span>
-              </button>
-              <button class="view-btn flex-1 px-2 md:px-3 py-2 bg-primary text-white hover:bg-pink-600 transition-all duration-300 !rounded-button text-sm ripple flex items-center justify-center" data-user-id="<%= user._id %>" data-user-slug="<%= user.profileSlug %>" title="View Profile">
-                <i class="ri-eye-line md:mr-1"></i>
-                <span class="hidden md:inline">View</span>
-              </button>
-              <div class="relative">
-                <button class="feature-dropdown-btn flex items-center justify-center px-2 py-2 bg-gray-600 text-white hover:bg-gray-700 transition-all duration-300 !rounded-button text-sm" data-user-id="<%= user._id %>" title="More Options">
-                  <i class="ri-arrow-up-line text-sm"></i>
-                </button>
-
-                <!-- Dropdown Menu -->
-                <div class="feature-dropdown absolute bottom-full right-0 mb-1 bg-white border border-gray-200 rounded-lg shadow-lg z-10 min-w-48 hidden">
-                  <button class="feature-profile-btn w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 rounded-lg transition-colors flex items-center" data-user-id="<%= user._id %>" data-featured="<%= user.isFeatured || false %>">
-                    <i class="<%= user.isFeatured ? 'ri-star-line' : 'ri-star-fill' %> mr-2 text-yellow-500"></i>
-                    <%= user.isFeatured ? 'Unfeature this Profile' : 'Feature this Profile' %>
-                  </button>
-                </div>
-              </div>
-              <% } else if (isModerator) { %>
-              <!-- Moderator sees only view button -->
-              <button class="view-btn w-full px-2 md:px-3 py-2 bg-primary text-white hover:bg-pink-600 transition-all duration-300 !rounded-button text-sm ripple flex items-center justify-center" data-user-id="<%= user._id %>" data-user-slug="<%= user.profileSlug %>" title="View Profile">
-                <i class="ri-eye-line md:mr-1"></i>
-                <span class="hidden md:inline">View Profile</span>
-              </button>
-              <% } %>
-            </div>
+            <span class="px-2 py-1 <%= sourceClass %> text-xs rounded-full"><%= sourceText %></span>
           </div>
-        </div>
-        <% }) %>
-        <% } else { %>
-        <!-- No users found -->
-        <div class="col-span-3 text-center py-16">
-          <div class="max-w-md mx-auto">
-            <div class="mb-4">
-              <i class="ri-user-search-line text-6xl text-gray-300"></i>
-            </div>
-            <h3 class="text-xl font-semibold text-gray-600 mb-2">No Users Found</h3>
-            <p class="text-gray-500 mb-6">There are currently no users registered in the system.</p>
-            <button id="addFirstUserBtn" class="inline-flex items-center gap-2 px-6 py-2 bg-primary text-white rounded-button hover:bg-pink-600 transition-all duration-300">
-              <i class="ri-user-add-line"></i>
-              <span>Add First User</span>
+          <div class="flex items-center text-gray-600 mb-3">
+            <i class="ri-map-pin-line mr-2"></i>
+            <span>
+              <% if (user.city && user.country) { %>
+              <%= user.city %>, <%= user.country %>
+              <% } else if (user.city) { %>
+              <%= user.city %>
+              <% } else if (user.country) { %>
+              <%= user.country %>
+              <% } else { %>
+              Location not specified
+              <% } %>
+            </span>
+          </div>
+          <div class="text-sm text-gray-500 mb-4">
+            <p>Username: <%= user.username %></p>
+            <p>
+              <% if (user.age) { %>
+              Age: <%= user.age %> •
+              <% } %>
+              <br>
+              <% if (user.email) { %>
+              <%= user.email %>
+              <% } %>
+            </p>
+            <% if (user.createdAt) { %>
+            <p class="text-xs text-gray-400 mt-1">
+              Joined: <%= new Date(user.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) %>
+            </p>
+            <% } %>
+          </div>
+          <div class="flex gap-1 md:gap-2">
+            <!-- **UPDATED**: Show different buttons based on user role -->
+            <% if (isAdmin) { %>
+            <!-- Admin sees all buttons - Mobile: Icons only, Desktop: Text -->
+            <button class="edit-btn flex-1 px-2 md:px-3 py-2 bg-blue-500 text-white hover:bg-blue-600 transition-all duration-300 !rounded-button text-sm ripple flex items-center justify-center" data-user-id="<%= user._id %>" title="Edit User">
+              <i class="ri-edit-line md:mr-1"></i>
+              <span class="hidden md:inline">Edit</span>
             </button>
+            <button class="delete-btn flex-1 px-2 md:px-3 py-2 bg-red-500 text-white hover:bg-red-600 transition-all duration-300 !rounded-button text-sm ripple flex items-center justify-center" data-user-id="<%= user._id %>" title="Delete User">
+              <i class="ri-delete-bin-line md:mr-1"></i>
+              <span class="hidden md:inline">Delete</span>
+            </button>
+            <button class="view-btn flex-1 px-2 md:px-3 py-2 bg-primary text-white hover:bg-pink-600 transition-all duration-300 !rounded-button text-sm ripple flex items-center justify-center" data-user-id="<%= user._id %>" data-user-slug="<%= user.profileSlug %>" title="View Profile">
+              <i class="ri-eye-line md:mr-1"></i>
+              <span class="hidden md:inline">View</span>
+            </button>
+            <div class="relative">
+              <button class="feature-dropdown-btn flex items-center justify-center px-2 py-2 bg-gray-600 text-white hover:bg-gray-700 transition-all duration-300 !rounded-button text-sm" data-user-id="<%= user._id %>" title="More Options">
+                <i class="ri-arrow-up-line text-sm"></i>
+              </button>
+
+              <!-- Dropdown Menu -->
+              <div class="feature-dropdown absolute bottom-full right-0 mb-1 bg-white border border-gray-200 rounded-lg shadow-lg z-10 min-w-48 hidden">
+                <button class="feature-profile-btn w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 rounded-lg transition-colors flex items-center" data-user-id="<%= user._id %>" data-featured="<%= user.isFeatured || false %>">
+                  <i class="<%= user.isFeatured ? 'ri-star-line' : 'ri-star-fill' %> mr-2 text-yellow-500"></i>
+                  <%= user.isFeatured ? 'Unfeature this Profile' : 'Feature this Profile' %>
+                </button>
+              </div>
+            </div>
+            <% } else if (isModerator) { %>
+            <!-- Moderator sees only view button -->
+            <button class="view-btn w-full px-2 md:px-3 py-2 bg-primary text-white hover:bg-pink-600 transition-all duration-300 !rounded-button text-sm ripple flex items-center justify-center" data-user-id="<%= user._id %>" data-user-slug="<%= user.profileSlug %>" title="View Profile">
+              <i class="ri-eye-line md:mr-1"></i>
+              <span class="hidden md:inline">View Profile</span>
+            </button>
+            <% } %>
           </div>
         </div>
-        <% } %>
       </div>
-
-      <!-- Pagination -->
-      <% if (users && users.length > 0) { %>
-      <div class="flex justify-center items-center gap-4 mt-12">
-        <div class="text-sm text-gray-600">
-          Showing <%= users.length %> users
+      <% }) %>
+      <% } else { %>
+      <!-- No users found -->
+      <div class="col-span-3 text-center py-16">
+        <div class="max-w-md mx-auto">
+          <div class="mb-4">
+            <i class="ri-user-search-line text-6xl text-gray-300"></i>
+          </div>
+          <h3 class="text-xl font-semibold text-gray-600 mb-2">No Users Found</h3>
+          <p class="text-gray-500 mb-6">There are currently no users registered in the system.</p>
+          <button id="addFirstUserBtn" class="inline-flex items-center gap-2 px-6 py-2 bg-primary text-white rounded-button hover:bg-pink-600 transition-all duration-300">
+            <i class="ri-user-add-line"></i>
+            <span>Add First User</span>
+          </button>
         </div>
       </div>
       <% } %>
+    </div>
+
+    <!-- Pagination -->
+    <% if (users && users.length > 0) { %>
+    <div class="flex justify-center items-center gap-4 mt-12">
+      <div class="text-sm text-gray-600">
+        Showing <%= users.length %> users
+      </div>
+    </div>
+    <% } %>
     </div>
   </main>
   <div id="deleteModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
@@ -484,6 +513,12 @@
       if (newsletterBtn) {
         newsletterBtn.addEventListener('click', function() {
           window.location.href = '/admin/newsletter';
+        });
+      }
+      const blogsBtn = document.getElementById('blogsBtn');
+      if (blogsBtn) {
+        blogsBtn.addEventListener('click', function() {
+          window.location.href = '/admin/blogs';
         });
       }
       const searchInput = document.getElementById('searchInput');
@@ -874,6 +909,8 @@
       });
 
       // Filter indicator function
+      // Replace the existing updateFilterIndicator function with this enhanced version
+
       function updateFilterIndicator(filter, count) {
         const existingIndicator = document.getElementById('filter-indicator');
         if (existingIndicator) {
@@ -886,20 +923,34 @@
           indicator.className = 'bg-primary text-white px-4 py-2 rounded-full text-sm mb-4 inline-flex items-center gap-2';
 
           let filterText = '';
+          let filterIcon = 'ri-filter-line';
+
           switch (filter) {
             case 'admin':
               filterText = 'Admin Added Users';
+              filterIcon = 'ri-admin-line';
               break;
             case 'register':
               filterText = 'Self Registered Users';
+              filterIcon = 'ri-user-add-line';
               break;
             case 'featured':
               filterText = 'Featured Profiles';
+              filterIcon = 'ri-star-fill';
+              break;
+            default:
+              if (filter.startsWith('employee-')) {
+                const employeeName = filter.replace('employee-', '');
+                filterText = `Registered by ${employeeName.charAt(0).toUpperCase() + employeeName.slice(1)}`;
+                filterIcon = 'ri-team-line';
+              } else {
+                filterText = 'Filtered Results';
+              }
               break;
           }
 
           indicator.innerHTML = `
-            <i class="ri-filter-line"></i>
+            <i class="${filterIcon}"></i>
             <span>Showing ${filterText} (${count} users)</span>
             <button onclick="clearFilter()" class="ml-2 hover:bg-white hover:bg-opacity-20 rounded-full p-1 transition-all duration-200">
               <i class="ri-close-line"></i>
@@ -971,6 +1022,100 @@
           notification.style.opacity = '0';
           setTimeout(() => notification.remove(), 300);
         }, 3000);
+      }
+      // Add this code inside the existing DOMContentLoaded event listener, around line 700
+
+      // **NEW**: Employee dropdown functionality
+      const employeeDropdownBtn = document.getElementById('employeeDropdownBtn');
+      const employeeDropdownMenu = document.getElementById('employeeDropdownMenu');
+      const employeeFilterBtns = document.querySelectorAll('.employee-filter-btn');
+
+      if (employeeDropdownBtn && employeeDropdownMenu) {
+        // Toggle dropdown
+        employeeDropdownBtn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          employeeDropdownMenu.classList.toggle('hidden');
+
+          // Toggle arrow icon
+          const arrow = this.querySelector('i');
+          if (employeeDropdownMenu.classList.contains('hidden')) {
+            arrow.className = 'ri-arrow-down-s-line text-gray-500';
+          } else {
+            arrow.className = 'ri-arrow-up-s-line text-gray-500';
+          }
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(e) {
+          if (!employeeDropdownBtn.contains(e.target) && !employeeDropdownMenu.contains(e.target)) {
+            employeeDropdownMenu.classList.add('hidden');
+            const arrow = employeeDropdownBtn.querySelector('i');
+            arrow.className = 'ri-arrow-down-s-line text-gray-500';
+          }
+        });
+
+        // Handle employee filter selection
+        employeeFilterBtns.forEach(btn => {
+          btn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            const filter = this.getAttribute('data-filter');
+            const employeeName = filter === 'all' ? 'All Registrations' :
+              filter.replace('employee-', '').charAt(0).toUpperCase() +
+              filter.replace('employee-', '').slice(1);
+
+            console.log('Employee filter clicked:', filter);
+
+            // Update button text
+            const buttonText = employeeDropdownBtn.querySelector('span');
+            buttonText.textContent = employeeName;
+
+            // Close dropdown
+            employeeDropdownMenu.classList.add('hidden');
+            const arrow = employeeDropdownBtn.querySelector('i');
+            arrow.className = 'ri-arrow-down-s-line text-gray-500';
+
+            // Clear other active filters
+            statsFilterCards.forEach(c => {
+              c.classList.remove('ring-2', 'ring-primary', 'active');
+              c.classList.remove('border-2', 'border-primary');
+            });
+
+            // Filter profiles
+            let visibleCount = 0;
+            profileCards.forEach(profileCard => {
+              const passcodeUsed = profileCard.getAttribute('data-passcode') || '';
+              let shouldShow = false;
+
+              if (filter === 'all') {
+                shouldShow = true;
+              } else if (filter.startsWith('employee-')) {
+                const employeePrefix = filter.replace('employee-', '');
+                shouldShow = passcodeUsed.toLowerCase().startsWith(employeePrefix.toLowerCase() + '-');
+              }
+
+              if (shouldShow) {
+                profileCard.style.display = 'block';
+                visibleCount++;
+              } else {
+                profileCard.style.display = 'none';
+              }
+            });
+
+            console.log('Visible count after employee filter:', visibleCount);
+
+            // Update URL
+            const url = new URL(window.location);
+            if (filter === 'all') {
+              url.searchParams.delete('filter');
+            } else {
+              url.searchParams.set('filter', filter);
+            }
+            window.history.replaceState({}, '', url);
+
+            // Show filter indicator
+            updateFilterIndicator(filter, visibleCount);
+          });
+        });
       }
     });
   </script>

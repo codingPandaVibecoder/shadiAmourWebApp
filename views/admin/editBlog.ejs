@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit Blog - shadiAmour Admin</title>
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+  <link rel="manifest" href="/images/site.webmanifest">
+  <meta name="theme-color" content="#E91E63">
+  <link rel="stylesheet" href="/css/output.css">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.0.0/fonts/remixicon.css" rel="stylesheet">
+
+  <!-- TinyMCE CDN -->
+  <script src="https://cdn.tiny.cloud/1/lscgwn0wthuhw98tjk7iyzy5kfh3tcektjf6x3qeeg26pkxd/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+</head>
+
+<body class="bg-gray-50 font-['Roboto']">
+  <%- include('../partials/header') %>
+
+  <main class="pt-24 pb-16 min-h-screen">
+    <div class="max-w-4xl mx-auto px-6">
+
+      <!-- Page Header -->
+      <div class="flex items-center justify-between mb-8">
+        <div>
+          <h1 class="text-3xl font-bold text-gray-900 mb-2 font-['Playfair_Display']">Edit Blog</h1>
+          <p class="text-gray-600">Update your blog post</p>
+        </div>
+        <div class="flex items-center gap-3">
+          <% if (blog.isPublished) { %>
+          <a href="/blog/<%= blog.slug %>" target="_blank" class="inline-flex items-center gap-2 px-4 py-2 text-blue-600 hover:text-blue-800 transition-colors">
+            <i class="ri-external-link-line"></i>
+            View Live
+          </a>
+          <% } %>
+          <a href="/admin/blogs" class="inline-flex items-center gap-2 px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors">
+            <i class="ri-arrow-left-line"></i>
+            Back to Blogs
+          </a>
+        </div>
+      </div>
+
+      <!-- Blog Form -->
+      <form id="editBlogForm" class="space-y-6">
+        <input type="hidden" id="blogId" value="<%= blog._id %>">
+
+        <!-- Basic Information -->
+        <div class="bg-white rounded-xl p-6 material-shadow">
+          <h2 class="text-xl font-semibold text-gray-900 mb-4 font-['Playfair_Display']">Basic Information</h2>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="md:col-span-2">
+              <label for="title" class="block text-sm font-medium text-gray-700 mb-2">Title *</label>
+              <input type="text" id="title" name="title" required maxlength="120" value="<%= blog.title %>" class="w-full px-3 py-2 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary" placeholder="Enter blog title">
+              <p class="text-xs text-gray-500 mt-1">Maximum 120 characters</p>
+            </div>
+
+            <div>
+              <label for="category" class="block text-sm font-medium text-gray-700 mb-2">Category *</label>
+              <select id="category" name="category" required class="w-full px-3 py-2 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary">
+                <option value="Matrimony Tips" <%= blog.category === 'Matrimony Tips' ? 'selected' : '' %>>Matrimony Tips</option>
+                <option value="Islamic Guidance" <%= blog.category === 'Islamic Guidance' ? 'selected' : '' %>>Islamic Guidance</option>
+                <option value="Success Stories" <%= blog.category === 'Success Stories' ? 'selected' : '' %>>Success Stories</option>
+                <option value="Relationship Advice" <%= blog.category === 'Relationship Advice' ? 'selected' : '' %>>Relationship Advice</option>
+                <option value="Wedding Etiquette" <%= blog.category === 'Wedding Etiquette' ? 'selected' : '' %>>Wedding Etiquette</option>
+                <option value="Halal Lifestyle" <%= blog.category === 'Halal Lifestyle' ? 'selected' : '' %>>Halal Lifestyle</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="tags" class="block text-sm font-medium text-gray-700 mb-2">Tags</label>
+              <input type="text" id="tags" name="tags" value="<%= blog.tags ? blog.tags.join(', ') : '' %>" class="w-full px-3 py-2 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary" placeholder="nikah, marriage, halal">
+              <p class="text-xs text-gray-500 mt-1">Separate tags with commas</p>
+            </div>
+
+            <div class="md:col-span-2">
+              <label for="excerpt" class="block text-sm font-medium text-gray-700 mb-2">Excerpt</label>
+              <textarea id="excerpt" name="excerpt" rows="3" maxlength="300" class="w-full px-3 py-2 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary" placeholder="Brief description of the blog post"><%= blog.excerpt || '' %></textarea>
+              <p class="text-xs text-gray-500 mt-1">Maximum 300 characters. Used for previews and SEO.</p>
+            </div>
+          </div>
+        </div>
+        <!-- Add this section after the Basic Information div in editBlog.ejs -->
+        <!-- Featured Image -->
+        <div class="bg-white rounded-xl p-6 material-shadow">
+          <h2 class="text-xl font-semibold text-gray-900 mb-4 font-['Playfair_Display']">Featured Image</h2>
+
+          <div class="space-y-4">
+            <!-- Image Upload Area -->
+            <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-primary transition-colors" id="imageUploadArea">
+              <div id="uploadPrompt" <% if (blog.featuredImage && blog.featuredImage.url) { %>class="hidden" <% } %>>
+                <i class="ri-image-line text-4xl text-gray-400 mb-2"></i>
+                <p class="text-gray-600 mb-2">Click to upload or drag and drop</p>
+                <p class="text-sm text-gray-500">PNG, JPG, WebP up to 5MB</p>
+                <input type="file" id="featuredImageInput" name="featuredImage" accept="image/*" class="hidden">
+                <button type="button" onclick="document.getElementById('featuredImageInput').click()" class="mt-3 px-4 py-2 bg-primary text-white rounded-button hover:bg-pink-600 transition-colors">
+                  Choose Image
+                </button>
+              </div>
+
+              <!-- Image Preview -->
+              <div id="imagePreview" <% if (!blog.featuredImage || !blog.featuredImage.url) { %>class="hidden" <% } %>>
+                <img id="previewImg" src="<%= blog.featuredImage && blog.featuredImage.url ? blog.featuredImage.url : '' %>" alt="Featured image preview" class="max-w-full h-48 object-cover rounded-lg mx-auto mb-3">
+                <p id="imageName" class="text-sm text-gray-600 mb-2">
+                  <% if (blog.featuredImage && blog.featuredImage.url) { %>
+                  Current featured image
+                  <% } %>
+                </p>
+                <button type="button" onclick="removeImage()" class="px-3 py-1 text-red-600 hover:text-red-800 transition-colors">
+                  <i class="ri-delete-bin-line"></i> Remove
+                </button>
+              </div>
+            </div>
+
+            <!-- Image Alt Text -->
+            <div>
+              <label for="featuredImageAlt" class="block text-sm font-medium text-gray-700 mb-2">Alt Text</label>
+              <input type="text" id="featuredImageAlt" name="featuredImageAlt" maxlength="100" value="<%= blog.featuredImage && blog.featuredImage.alt ? blog.featuredImage.alt : '' %>" class="w-full px-3 py-2 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary" placeholder="Describe the image for accessibility">
+              <p class="text-xs text-gray-500 mt-1">Helps with SEO and accessibility</p>
+            </div>
+
+            <!-- Image Caption (Optional) -->
+            <div>
+              <label for="featuredImageCaption" class="block text-sm font-medium text-gray-700 mb-2">Caption (Optional)</label>
+              <input type="text" id="featuredImageCaption" name="featuredImageCaption" value="<%= blog.featuredImage && blog.featuredImage.caption ? blog.featuredImage.caption : '' %>" class="w-full px-3 py-2 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary" placeholder="Image caption or credit">
+            </div>
+          </div>
+        </div>
+        <!-- Content -->
+        <div class="bg-white rounded-xl p-6 material-shadow">
+          <h2 class="text-xl font-semibold text-gray-900 mb-4 font-['Playfair_Display']">Content *</h2>
+          <textarea id="content" name="content" rows="20"><%= blog.content %></textarea>
+        </div>
+
+        <!-- SEO Settings -->
+        <div class="bg-white rounded-xl p-6 material-shadow">
+          <h2 class="text-xl font-semibold text-gray-900 mb-4 font-['Playfair_Display']">SEO Settings</h2>
+
+          <div class="space-y-4">
+            <div>
+              <label for="metaTitle" class="block text-sm font-medium text-gray-700 mb-2">Meta Title</label>
+              <input type="text" id="metaTitle" name="metaTitle" maxlength="60" value="<%= blog.metaTitle || '' %>" class="w-full px-3 py-2 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary" placeholder="SEO optimized title (leave empty to use blog title)">
+              <p class="text-xs text-gray-500 mt-1">Maximum 60 characters for optimal SEO</p>
+            </div>
+
+            <div>
+              <label for="metaDescription" class="block text-sm font-medium text-gray-700 mb-2">Meta Description</label>
+              <textarea id="metaDescription" name="metaDescription" rows="2" maxlength="160" class="w-full px-3 py-2 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary" placeholder="Description for search engines (leave empty to use excerpt)"><%= blog.metaDescription || '' %></textarea>
+              <p class="text-xs text-gray-500 mt-1">Maximum 160 characters for optimal SEO</p>
+            </div>
+
+            <div>
+              <label for="keywords" class="block text-sm font-medium text-gray-700 mb-2">SEO Keywords</label>
+              <input type="text" id="keywords" name="keywords" value="<%= blog.keywords ? blog.keywords.join(', ') : '' %>" class="w-full px-3 py-2 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary" placeholder="muslim marriage, nikah, halal dating">
+              <p class="text-xs text-gray-500 mt-1">Separate keywords with commas</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Publish Settings -->
+        <div class="bg-white rounded-xl p-6 material-shadow">
+          <h2 class="text-xl font-semibold text-gray-900 mb-4 font-['Playfair_Display']">Publish Settings</h2>
+
+          <div class="flex items-center justify-between">
+            <div>
+              <h3 class="text-lg font-medium text-gray-900">Publish Blog</h3>
+              <p class="text-sm text-gray-600">Make this blog post visible to the public</p>
+            </div>
+            <label class="relative inline-flex items-center cursor-pointer">
+              <input type="checkbox" id="isPublished" name="isPublished" <%= blog.isPublished ? 'checked' : '' %> class="sr-only peer">
+              <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary/25 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+            </label>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex flex-col sm:flex-row gap-3 justify-end">
+          <button type="button" onclick="saveDraft()" class="px-6 py-3 border border-gray-300 text-gray-700 rounded-button hover:bg-gray-50 transition-colors">
+            <i class="ri-save-line mr-2"></i>
+            Save as Draft
+          </button>
+          <button type="submit" class="px-6 py-3 bg-primary text-white rounded-button hover:bg-pink-600 transition-colors">
+            <i class="ri-refresh-line mr-2"></i>
+            <span id="updateBtnText"><%= blog.isPublished ? 'Update & Publish' : 'Update Blog' %></span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </main>
+
+  <script>
+    // Initialize TinyMCE
+    // Initialize TinyMCE with enhanced image upload
+    // Replace the existing tinymce.init in createBlog.ejs
+    tinymce.init({
+      selector: '#content',
+      height: 600,
+      menubar: 'file edit view insert format tools table help',
+      plugins: [
+        'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
+        'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
+        'insertdatetime', 'media', 'table', 'help', 'wordcount', 'codesample',
+        'emoticons', 'template', 'paste', 'textcolor', 'colorpicker'
+      ],
+      toolbar: `
+    undo redo | blocks | bold italic underline | 
+    alignleft aligncenter alignright | bullist numlist outdent indent | 
+    link image media table | insertbutton insertcallout | removeformat | code preview
+  `,
+
+      // **NEW**: Paste Plugin Configuration for Style Sanitization
+      paste_enable_default_filters: true,
+      paste_remove_styles_if_webkit: true,
+      paste_remove_spans: true,
+      paste_strip_class_attributes: 'all',
+      paste_as_text: false, // Keep this false to retain structure like headings
+
+      // **NEW**: Define which block elements are allowed
+      valid_elements: 'h2,h3,h4,p,strong,em,u,a[href|target],ul,ol,li,br,img[src|alt|width|height],blockquote,div[class],span[class]',
+
+      // **NEW**: Limit the "Blocks" dropdown to your theme's styles
+      block_formats: 'Paragraph=p;Heading 2=h2;Heading 3=h3;Heading 4=h4;Blockquote=blockquote',
+
+      // **NEW**: Use external CSS file to style the editor content
+      content_css: ['/css/output.css', '/css/blog.css'],
+
+      // **UPDATED**: Simplified content_style (minimal inline styles)
+      content_style: `
+    body { 
+      font-family: 'Roboto', Arial, sans-serif; 
+      font-size: 16px; 
+      line-height: 1.7; 
+      color: #4b5563;
+      max-width: 800px;
+      margin: 20px auto;
+      padding: 20px;
+    }
+  `,
+
+      // **NEW**: Image upload handler
+      images_upload_handler: (blobInfo, progress) => new Promise((resolve, reject) => {
+        const formData = new FormData();
+        formData.append('image', blobInfo.blob(), blobInfo.filename());
+
+        fetch('/api/upload-blog-image', {
+            method: 'POST',
+            body: formData
+          })
+          .then(response => {
+            if (!response.ok) {
+              response.json().then(err => reject(`Image upload failed: ${err.error || response.statusText}`));
+              return;
+            }
+            return response.json();
+          })
+          .then(result => {
+            if (result && result.url) {
+              resolve(result.url);
+            } else {
+              reject(`Image upload failed: ${result.error || 'Invalid JSON response'}`);
+            }
+          })
+          .catch(error => {
+            reject(`Image upload failed: ${error.message}`);
+          });
+      }),
+
+      // **NEW**: Custom button configurations
+      setup: function(editor) {
+        // Add custom button for CTA buttons
+        editor.ui.registry.addButton('insertbutton', {
+          text: 'Button',
+          icon: 'bookmark',
+          onAction: function() {
+            editor.windowManager.open({
+              title: 'Insert Button',
+              body: {
+                type: 'panel',
+                items: [{
+                    type: 'input',
+                    name: 'text',
+                    label: 'Button Text',
+                    placeholder: 'Join Now'
+                  },
+                  {
+                    type: 'input',
+                    name: 'url',
+                    label: 'Button URL',
+                    placeholder: 'https://example.com'
+                  },
+                  {
+                    type: 'selectbox',
+                    name: 'style',
+                    label: 'Button Style',
+                    items: [{
+                        text: 'Primary (Pink)',
+                        value: 'primary'
+                      },
+                      {
+                        text: 'WhatsApp (Green)',
+                        value: 'whatsapp'
+                      },
+                      {
+                        text: 'Secondary (Gray)',
+                        value: 'secondary'
+                      }
+                    ]
+                  }
+                ]
+              },
+              buttons: [{
+                  type: 'cancel',
+                  text: 'Close'
+                },
+                {
+                  type: 'submit',
+                  text: 'Insert Button',
+                  primary: true
+                }
+              ],
+              onSubmit: function(api) {
+                const data = api.getData();
+                const buttonHtml = generateButtonHtml(data.text, data.url, data.style);
+                editor.insertContent(buttonHtml);
+                api.close();
+              }
+            });
+          }
+        });
+
+        // Add custom callout box button
+        editor.ui.registry.addButton('insertcallout', {
+          text: 'Callout',
+          icon: 'info',
+          onAction: function() {
+            editor.windowManager.open({
+              title: 'Insert Callout Box',
+              body: {
+                type: 'panel',
+                items: [{
+                    type: 'textarea',
+                    name: 'content',
+                    label: 'Callout Content',
+                    placeholder: 'Enter your highlighted content here...'
+                  },
+                  {
+                    type: 'selectbox',
+                    name: 'type',
+                    label: 'Callout Type',
+                    items: [{
+                        text: 'Info (Blue)',
+                        value: 'info'
+                      },
+                      {
+                        text: 'Success (Green)',
+                        value: 'success'
+                      },
+                      {
+                        text: 'Warning (Yellow)',
+                        value: 'warning'
+                      },
+                      {
+                        text: 'Primary (Pink)',
+                        value: 'primary'
+                      }
+                    ]
+                  }
+                ]
+              },
+              buttons: [{
+                  type: 'cancel',
+                  text: 'Close'
+                },
+                {
+                  type: 'submit',
+                  text: 'Insert Callout',
+                  primary: true
+                }
+              ],
+              onSubmit: function(api) {
+                const data = api.getData();
+                const calloutHtml = generateCalloutHtml(data.content, data.type);
+                editor.insertContent(calloutHtml);
+                api.close();
+              }
+            });
+          }
+        });
+
+        editor.on('change', function() {
+          editor.save();
+        });
+      },
+
+      // **NEW**: Force clean HTML output
+      force_br_newlines: false,
+      force_p_newlines: true,
+      forced_root_block: 'p',
+
+      // **NEW**: Remove unwanted attributes and classes
+      invalid_styles: 'color font-size font-family background-color',
+
+      // **NEW**: Schema restrictions
+      schema: 'html5',
+
+      // **NEW**: Additional paste cleanup
+      paste_postprocess: function(plugin, args) {
+        // Remove any remaining inline styles
+        args.node.querySelectorAll('*').forEach(function(element) {
+          element.removeAttribute('style');
+          element.removeAttribute('class');
+        });
+      }
+    });
+    // Add this JavaScript after the TinyMCE configuration in editBlog.ejs
+
+    // Initialize featuredImageUrl with existing image URL (if any)
+    let featuredImageUrl = '<%= blog.featuredImage && blog.featuredImage.url ? blog.featuredImage.url : "" %>';
+    // Add this function right after: let featuredImageUrl = '...'
+
+    // **NEW**: Extract image upload logic into a separate function
+    async function handleImageUpload(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      // Validate file type
+      if (!file.type.startsWith('image/')) {
+        alert('Please select an image file');
+        return;
+      }
+
+      // Validate file size (5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        alert('Image size must be less than 5MB');
+        return;
+      }
+
+      // Show loading state
+      const uploadPrompt = document.getElementById('uploadPrompt');
+      const imagePreview = document.getElementById('imagePreview');
+
+      uploadPrompt.innerHTML = '<i class="ri-loader-4-line text-4xl text-primary animate-spin"></i><p class="text-primary mt-2">Uploading...</p>';
+      uploadPrompt.classList.remove('hidden');
+      imagePreview.classList.add('hidden');
+
+      try {
+        // Upload image
+        const formData = new FormData();
+        formData.append('image', file);
+
+        const response = await fetch('/api/upload-blog-image', {
+          method: 'POST',
+          body: formData
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          // Store the URL
+          featuredImageUrl = result.url;
+
+          // Show preview
+          document.getElementById('previewImg').src = result.url;
+          document.getElementById('imageName').textContent = file.name;
+
+          // Hide upload prompt, show preview
+          uploadPrompt.classList.add('hidden');
+          imagePreview.classList.remove('hidden');
+
+          // Auto-fill alt text with filename (user can edit)
+          if (!document.getElementById('featuredImageAlt').value) {
+            document.getElementById('featuredImageAlt').value = file.name.replace(/\.[^/.]+$/, "").replace(/[_-]/g, ' ');
+          }
+        } else {
+          throw new Error(result.error);
+        }
+      } catch (error) {
+        console.error('Upload error:', error);
+        alert('Failed to upload image: ' + error.message);
+
+        // Reset upload prompt on error
+        resetUploadPrompt();
+      }
+    }
+
+    // **NEW**: Reset upload prompt function
+    function resetUploadPrompt() {
+      const uploadPrompt = document.getElementById('uploadPrompt');
+      uploadPrompt.innerHTML = `
+    <i class="ri-image-line text-4xl text-gray-400 mb-2"></i>
+    <p class="text-gray-600 mb-2">Click to upload or drag and drop</p>
+    <p class="text-sm text-gray-500">PNG, JPG, WebP up to 5MB</p>
+    <input type="file" id="featuredImageInput" name="featuredImage" accept="image/*" class="hidden">
+    <button type="button" onclick="document.getElementById('featuredImageInput').click()" class="mt-3 px-4 py-2 bg-primary text-white rounded-button hover:bg-pink-600 transition-colors">
+      Choose Image
+    </button>
+  `;
+
+      // Re-attach event listener to the new input element
+      const newInput = document.getElementById('featuredImageInput');
+      if (newInput) {
+        newInput.addEventListener('change', handleImageUpload);
+      }
+    }
+
+    // Handle featured image upload
+    document.getElementById('featuredImageInput').addEventListener('change', async function(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      // Validate file type
+      if (!file.type.startsWith('image/')) {
+        alert('Please select an image file');
+        return;
+      }
+
+      // Validate file size (5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        alert('Image size must be less than 5MB');
+        return;
+      }
+
+      // Show loading state
+      const uploadPrompt = document.getElementById('uploadPrompt');
+      const imagePreview = document.getElementById('imagePreview');
+
+      uploadPrompt.innerHTML = '<i class="ri-loader-4-line text-4xl text-primary animate-spin"></i><p class="text-primary mt-2">Uploading...</p>';
+      uploadPrompt.classList.remove('hidden');
+      imagePreview.classList.add('hidden');
+
+      try {
+        // Upload image
+        const formData = new FormData();
+        formData.append('image', file);
+
+        const response = await fetch('/api/upload-blog-image', {
+          method: 'POST',
+          body: formData
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          // Store the URL
+          featuredImageUrl = result.url;
+
+          // Show preview
+          document.getElementById('previewImg').src = result.url;
+          document.getElementById('imageName').textContent = file.name;
+
+          // Hide upload prompt, show preview
+          uploadPrompt.classList.add('hidden');
+          imagePreview.classList.remove('hidden');
+
+          // Auto-fill alt text with filename (user can edit)
+          if (!document.getElementById('featuredImageAlt').value) {
+            document.getElementById('featuredImageAlt').value = file.name.replace(/\.[^/.]+$/, "").replace(/[_-]/g, ' ');
+          }
+        } else {
+          throw new Error(result.error);
+        }
+      } catch (error) {
+        console.error('Upload error:', error);
+        alert('Failed to upload image: ' + error.message);
+
+        // Reset upload prompt
+        resetUploadPrompt();
+      }
+    });
+
+    // Remove image function
+    function removeImage() {
+      featuredImageUrl = null;
+
+      const uploadPrompt = document.getElementById('uploadPrompt');
+      const imagePreview = document.getElementById('imagePreview');
+
+      // Reset file input value
+      const input = document.getElementById('featuredImageInput');
+      if (input) {
+        input.value = '';
+      }
+
+      // Clear alt text and caption
+      document.getElementById('featuredImageAlt').value = '';
+      document.getElementById('featuredImageCaption').value = '';
+
+      // Show upload prompt, hide preview
+      uploadPrompt.classList.remove('hidden');
+      imagePreview.classList.add('hidden');
+
+      // Reset upload prompt HTML
+      uploadPrompt.innerHTML = `
+    <i class="ri-image-line text-4xl text-gray-400 mb-2"></i>
+    <p class="text-gray-600 mb-2">Click to upload or drag and drop</p>
+    <p class="text-sm text-gray-500">PNG, JPG, WebP up to 5MB</p>
+    <input type="file" id="featuredImageInput" name="featuredImage" accept="image/*" class="hidden">
+    <button type="button" onclick="document.getElementById('featuredImageInput').click()" class="mt-3 px-4 py-2 bg-primary text-white rounded-button hover:bg-pink-600 transition-colors">
+      Choose Image
+    </button>
+  `;
+
+      // **FIX**: Re-attach the event handler
+      attachImageUploadHandler();
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      attachImageUploadHandler();
+    });
+
+    function attachImageUploadHandler() {
+      // Remove any existing event listener to avoid duplicates
+      const input = document.getElementById('featuredImageInput');
+      if (input) {
+        // Clone the input to remove all event listeners
+        const newInput = input.cloneNode(true);
+        input.parentNode.replaceChild(newInput, input);
+
+        // Add the event listener to the new input
+        newInput.addEventListener('change', handleImageUpload);
+      }
+    }
+
+    // Drag and drop functionality
+    const uploadArea = document.getElementById('imageUploadArea');
+
+    uploadArea.addEventListener('dragover', function(e) {
+      e.preventDefault();
+      this.classList.add('border-primary', 'bg-primary/5');
+    });
+
+    uploadArea.addEventListener('dragleave', function(e) {
+      e.preventDefault();
+      this.classList.remove('border-primary', 'bg-primary/5');
+    });
+
+    uploadArea.addEventListener('drop', function(e) {
+      e.preventDefault();
+      this.classList.remove('border-primary', 'bg-primary/5');
+
+      const files = e.dataTransfer.files;
+      if (files.length > 0) {
+        document.getElementById('featuredImageInput').files = files;
+        document.getElementById('featuredImageInput').dispatchEvent(new Event('change'));
+      }
+    });
+
+    // Helper functions for generating HTML
+    function generateButtonHtml(text, url, style) {
+      return `<div class="blog-cta-button blog-cta-${style}">
+    <a href="${url}" target="_blank" rel="noopener noreferrer">
+      ${text}
+    </a>
+  </div>`;
+    }
+
+    function generateCalloutHtml(content, type) {
+      return `<div class="blog-callout blog-callout-${type}">
+    ${content}
+  </div>`;
+    }
+
+    // Update button text based on checkbox
+    document.getElementById('isPublished').addEventListener('change', function() {
+      const updateBtnText = document.getElementById('updateBtnText');
+      updateBtnText.textContent = this.checked ? 'Update & Publish' : 'Update Blog';
+    });
+
+    // Save as draft function
+    function saveDraft() {
+      document.getElementById('isPublished').checked = false;
+      document.getElementById('updateBtnText').textContent = 'Update Blog';
+      document.getElementById('editBlogForm').dispatchEvent(new Event('submit'));
+    }
+
+    // Form submission
+    document.getElementById('editBlogForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+
+      const blogId = document.getElementById('blogId').value;
+      const formData = new FormData(this);
+      const data = Object.fromEntries(formData.entries());
+
+      // Get TinyMCE content
+      data.content = tinymce.get('content').getContent();
+
+      // Convert checkbox to boolean
+      data.isPublished = document.getElementById('isPublished').checked;
+      if (featuredImageUrl) {
+        data.featuredImageUrl = featuredImageUrl;
+        data.featuredImageAlt = document.getElementById('featuredImageAlt').value;
+        data.featuredImageCaption = document.getElementById('featuredImageCaption').value;
+      }
+
+      try {
+        const response = await fetch(`/admin/blogs/${blogId}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data)
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          alert(result.message);
+          window.location.href = '/admin/blogs';
+        } else {
+          alert('Error: ' + result.error);
+        }
+      } catch (error) {
+        console.error('Error updating blog:', error);
+        alert('Failed to update blog');
+      }
+    });
+  </script>
+</body>
+
+</html>

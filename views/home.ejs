@@ -4,11 +4,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>shadiAmour - Muslim Matchmaking for Marriage</title>
+  <title>Muslim Marriage UK | Best Muslim Matchmaking Service London Leicester | shadiAmour</title>
 
   <!-- SEO Meta Tags -->
-  <meta name="description" content="shadiAmour is a dedicated platform for Muslim singles seeking a life partner based on shared values and faith. Find your perfect match for a blessed marriage.">
-  <meta name="keywords" content="muslim matchmaking, rishta, muslim marriage, islamic marriage, find muslim partner, shadiAmour">
+  <meta name="description" content="Find your perfect Muslim spouse through shadiAmour - the UK's leading halal marriage site. Verified Muslim profiles for marriage in London, Leicester & Birmingham. Trusted Islamic matrimonial service with Muslim rishta connections.">
+  <meta name="keywords" content="Muslim marriage UK, Muslim matchmaking London, halal marriage site, Muslim matrimonial UK, Islamic marriage site, Muslim rishta London, best Muslim marriage site, Muslim shaadi Birmingham, Pakistani Muslim wedding, verified Muslim profiles, halal Muslim marriage, Muslim arranged marriage, find Muslim spouse, online Muslim marriage, Muslim love marriage, Muslim marriage Leicester">
   <meta name="author" content="shadiAmour">
   <link rel="canonical" href="https://www.shadiamour.com">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
@@ -17,45 +17,22 @@
   <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
   <link rel="manifest" href="/images/site.webmanifest">
   <meta name="theme-color" content="#E91E63">
+
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://www.shadiamour.com/">
-  <meta property="og:title" content="shadiamour - Muslim Matchmaking for Marriage">
-  <meta property="og:description" content="A dedicated platform for Muslim singles seeking a life partner based on shared values and faith.">
+  <meta property="og:title" content="Muslim Marriage UK | Best Muslim Matchmaking Service London Leicester">
+  <meta property="og:description" content="Join the UK's most trusted halal marriage site. Find verified Muslim profiles for marriage in London, Leicester & Birmingham. Islamic matrimonial service with proven results.">
   <meta property="og:image" content="https://www.shadiamour.com/images/homepageman.jpg">
 
   <!-- Twitter -->
   <meta property="twitter:card" content="summary_large_image">
   <meta property="twitter:url" content="https://www.shadiamour.com/">
-  <meta property="twitter:title" content="shadiamour - Muslim Matchmaking for Marriage">
-  <meta property="twitter:description" content="A dedicated platform for Muslim singles seeking a life partner based on shared values and faith.">
+  <meta property="twitter:title" content="Muslim Marriage UK | Best Muslim Matchmaking Service London Leicester">
+  <meta property="twitter:description" content="Discover your perfect Muslim spouse through the UK's leading Islamic matrimonial service. Verified profiles, halal connections.">
   <meta property="twitter:image" content="https://www.shadiamour.com/images/homepageman.jpg">
 
-  <script src="https://cdn.tailwindcss.com/3.4.16"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            primary: '#E91E63',
-            secondary: '#673AB7'
-          },
-          borderRadius: {
-            'none': '0px',
-            'sm': '4px',
-            DEFAULT: '8px',
-            'md': '12px',
-            'lg': '16px',
-            'xl': '20px',
-            '2xl': '24px',
-            '3xl': '32px',
-            'full': '9999px',
-            'button': '8px'
-          }
-        }
-      }
-    }
-  </script>
+  <link rel="stylesheet" href="/css/output.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Playfair+Display:wght@400;600;700&family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -178,6 +155,76 @@
       border-bottom: 3px solid #673AB7;
     }
   </style>
+  <!-- Structured Data for SEO -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "shadiAmour",
+      "alternateName": "shadiAmour",
+      "description": "UK's leading Muslim marriage and Islamic matrimonial service connecting Muslim singles in London, Leicester and Birmingham",
+      "url": "https://www.shadiamour.com",
+      "logo": "https://www.shadiamour.com/images/logo.png",
+      "sameAs": [
+        "https://www.google.com/maps/place/D'Amour+Muslim/"
+      ],
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer service",
+        "areaServed": ["GB", "London", "Leicester", "Birmingham"],
+        "availableLanguage": ["English", "Urdu", "Arabic"]
+      },
+      "areaServed": {
+        "@type": "Country",
+        "name": "United Kingdom"
+      },
+      "serviceType": [
+        "Muslim Marriage Service",
+        "Islamic Matrimonial",
+        "Halal Matchmaking",
+        "Muslim Rishta Service"
+      ]
+    }
+  </script>
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "shadiAmour - Muslim Marriage UK",
+      "url": "https://www.shadiamour.com",
+      "description": "Best Muslim marriage site in UK for halal matchmaking in London, Leicester & Birmingham",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://www.shadiamour.com/profiles?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+  </script>
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Service",
+      "name": "Muslim Marriage and Matchmaking Service",
+      "description": "Professional Islamic matrimonial service connecting verified Muslim singles across the UK",
+      "provider": {
+        "@type": "Organization",
+        "name": "shadiAmour"
+      },
+      "areaServed": [
+        "London",
+        "Leicester",
+        "Birmingham",
+        "United Kingdom"
+      ],
+      "serviceType": "Matrimonial Service",
+      "audience": {
+        "@type": "Audience",
+        "audienceType": "Muslim Singles"
+      }
+    }
+  </script>
 </head>
 <% if (isProd && !isAdmin) { %>
 <!-- Google Analytics -->
@@ -199,18 +246,24 @@
   <main class="pt-24 min-h-screen">
     <div class="max-w-6xl mx-auto px-6">
       <div class="text-center mb-12">
-        <h2 class="text-4xl font-bold text-gray-800 mb-4 font-['Playfair_Display']">Find Your Perfect Match</h2>
-        <p class="text-lg text-gray-600 max-w-2xl mx-auto">Connect with like-minded individuals who share your values and faith. Start your journey to finding true love today.</p>
+        <!-- Keep the existing H1 and intro paragraph as requested -->
+        <h1 class="text-4xl font-bold text-gray-800 mb-4 font-['Playfair_Display']">
+          Shadi Amour | Halal Muslim Matchmaking for Young Singles in the UK
+        </h1>
+        <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+          Join Shadi Amour — the modern halal Muslim matchmaking platform where young Muslims find love and marriage with purpose across London, Birmingham, and Manchester.
+        </p>
       </div>
 
       <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
         <a href="/profiles?gender=male" class="bg-white rounded-2xl material-shadow hover:material-shadow-hover transition-all duration-300 cursor-pointer group overflow-hidden">
           <div class="p-8 text-center">
             <div class="mb-6 relative">
-              <img src="/images/homepageman.jpg" alt="Browse profiles of Muslim men for marriage" class="w-full h-64 object-cover object-top rounded-xl group-hover:scale-105 transition-transform duration-500">
+              <img src="https://res.cloudinary.com/dhuc2plh0/image/upload/v1759650466/covermain_tfda9t.jpg" alt="Muslim men for marriage in UK - halal matchmaking service London Leicester" class="w-full h-64 object-cover object-top rounded-xl group-hover:scale-105 transition-transform duration-500">
             </div>
-            <h3 class="text-3xl font-bold text-gray-800 mb-4 font-['Playfair_Display'] group-hover:text-primary transition-colors duration-300">Men</h3>
-            <p class="text-gray-600 mb-6">Find your life partner among Muslim men who are committed to building a strong, faith-based relationship together.</p>
+            <!-- Updated Men Section -->
+            <h3 class="text-3xl font-bold text-gray-800 mb-4 font-['Playfair_Display'] group-hover:text-primary transition-colors duration-300">Find Muslim Men for Marriage UK</h3>
+            <p class="text-gray-600 mb-6">Discover your ideal Muslim husband through our verified halal Muslim matchmaking service. Connect with single Muslim men seeking serious marriage across London, Birmingham, Manchester, and Leicester. Our Muslim marriage app features Pakistani, Bangladeshi, and British Muslim singles ready for halal dating and modern Nikkah partnerships.</p>
             <div class="flex items-center justify-center">
               <div class="w-6 h-6 flex items-center justify-center text-primary group-hover:translate-x-2 transition-transform duration-300">
                 <i class="ri-arrow-right-line ri-lg"></i>
@@ -222,10 +275,11 @@
         <a href="/profiles?gender=female" class="bg-white rounded-2xl material-shadow hover:material-shadow-hover transition-all duration-300 cursor-pointer group overflow-hidden">
           <div class="p-8 text-center">
             <div class="mb-6 relative">
-              <img src="/images/homepagewoman.jpg" alt="Browse profiles of Muslim women for marriage" class="w-full h-64 object-cover object-top rounded-xl group-hover:scale-105 transition-transform duration-500">
+              <img src="/images/homepagewoman.jpg" alt="Muslim women for marriage UK - Islamic matrimonial service Birmingham London" class="w-full h-64 object-cover object-top rounded-xl group-hover:scale-105 transition-transform duration-500">
             </div>
-            <h3 class="text-3xl font-bold text-gray-800 mb-4 font-['Playfair_Display'] group-hover:text-primary transition-colors duration-300">Women</h3>
-            <p class="text-gray-600 mb-6">Discover meaningful connections with Muslim women who share your values and aspirations for a blessed marriage.</p>
+            <!-- Updated Women Section -->
+            <h3 class="text-3xl font-bold text-gray-800 mb-4 font-['Playfair_Display'] group-hover:text-primary transition-colors duration-300">Muslim Women for Halal Marriage</h3>
+            <p class="text-gray-600 mb-6">Browse authentic profiles of Muslim women seeking halal love marriage in the UK. Our online Muslim matchmaking platform connects you with single Muslim women ready for Islamic matrimony, Muslim engagement, and serious Muslim relationships. Find your Muslim soulmate among verified profiles in London and beyond.</p>
 
             <div class="flex items-center justify-center">
               <div class="w-6 h-6 flex items-center justify-center text-primary group-hover:translate-x-2 transition-transform duration-300">
@@ -236,25 +290,32 @@
         </a>
       </div>
 
+      <!-- Updated Trust Indicators -->
       <div class="text-center mt-16">
-        <div class="inline-flex items-center gap-8 text-gray-500">
+        <div class="inline-flex flex-wrap items-center justify-center gap-6 text-gray-500">
           <div class="flex items-center gap-2">
             <div class="w-5 h-5 flex items-center justify-center text-primary">
               <i class="ri-shield-check-line"></i>
             </div>
-            <span class="text-sm">Verified Profiles</span>
+            <span class="text-sm">Verified Halal Muslim Dating Profiles</span>
           </div>
           <div class="flex items-center gap-2">
             <div class="w-5 h-5 flex items-center justify-center text-primary">
               <i class="ri-heart-line"></i>
             </div>
-            <span class="text-sm">Faith-Based Matching</span>
+            <span class="text-sm">Modern Muslim Marriage Platform</span>
           </div>
           <div class="flex items-center gap-2">
             <div class="w-5 h-5 flex items-center justify-center text-primary">
               <i class="ri-lock-line"></i>
             </div>
-            <span class="text-sm">Private & Secure</span>
+            <span class="text-sm">UK's Premier Halal Matchmaking Site</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <div class="w-5 h-5 flex items-center justify-center text-primary">
+              <i class="ri-map-pin-line"></i>
+            </div>
+            <span class="text-sm">Muslim Singles: London • Birmingham • Manchester • Leicester</span>
           </div>
         </div>
       </div>
@@ -267,8 +328,9 @@
 
       <div class="relative max-w-7xl mx-auto">
         <div class="text-center mb-12">
-          <h2 class="text-4xl font-bold text-gray-800 mb-4 font-['Playfair_Display']">What People Say About Us</h2>
-          <p class="text-lg text-gray-600 max-w-2xl mx-auto">Real reviews from our community members who found their perfect match through shadiamour</p>
+          <!-- Updated Reviews Section Heading -->
+          <h2 class="text-4xl font-bold text-gray-800 mb-4 font-['Playfair_Display']">Muslim Marriage Success Stories - Real Halal Dating Results</h2>
+          <p class="text-lg text-gray-600 max-w-2xl mx-auto">Authentic testimonials from Muslim couples who found their perfect match through our halal Muslim matchmaking service. Discover why we're the top-rated Muslim marriage app for young Muslim singles across London, Birmingham, Manchester, and the entire UK.</p>
           <div class="flex items-center justify-center gap-2 mt-4">
             <div class="flex text-yellow-400">
               <i class="ri-star-fill text-xl"></i>
@@ -277,7 +339,7 @@
               <i class="ri-star-fill text-xl"></i>
               <i class="ri-star-fill text-xl"></i>
             </div>
-            <span class="text-gray-600 font-medium ml-2">4.9/5 from 104+ reviews</span>
+            <span class="text-gray-600 font-medium ml-2">4.9/5 - Best Halal Muslim Dating Platform UK</span>
           </div>
         </div>
 
@@ -300,7 +362,8 @@
                 </div>
               </div>
             </div>
-            <p class="text-gray-600 leading-relaxed mb-4 review-quote">"Found my life partner through shadiamour. The platform is genuine and focuses on Islamic values. Highly recommended for serious Muslims looking for marriage."</p>
+            <!-- Updated Review Content Examples -->
+            <p class="text-gray-600 leading-relaxed mb-4 review-quote">"Alhamdulillah, I found my Muslim soulmate through ShadiAmour - the most trusted halal Muslim matchmaking platform in London. The service connects serious Muslim singles seeking modern Nikkah and halal love marriage. Highly recommended for young Muslim marriage seekers!"</p>
             <div class="flex items-center text-sm text-gray-500">
               <i class="ri-time-line mr-1"></i>
               <span>2 months ago</span>
@@ -324,7 +387,7 @@
                 </div>
               </div>
             </div>
-            <p class="text-gray-600 leading-relaxed mb-4 review-quote">"Excellent platform for Muslim matrimony. Clean interface, authentic profiles, and great customer support. Alhamdulillah, I found my spouse here!"</p>
+            <p class="text-gray-600 leading-relaxed mb-4 review-quote">"Excellent Muslim matrimony service! The profiles are authentic, the process is simple, and Alhamdulillah I found my spouse here. shadiAmour is perfect for serious Muslim marriage seekers in London and beyond."</p>
             <div class="flex items-center text-sm text-gray-500">
               <i class="ri-time-line mr-1"></i>
               <span>1 month ago</span>
@@ -348,7 +411,7 @@
                 </div>
               </div>
             </div>
-            <p class="text-gray-600 leading-relaxed mb-4 review-quote">"Best Muslim marriage platform I've used. Privacy-focused, Islamic approach, and genuinely helps connect compatible matches. May Allah bless this service."</p>
+            <p class="text-gray-600 leading-relaxed mb-4 review-quote">"This is the best Muslim marriage platform I’ve ever used. It respects Islamic principles, offers privacy, and truly connects compatible matches. A must for anyone looking for Muslim matchmaking in the UK."</p>
             <div class="flex items-center text-sm text-gray-500">
               <i class="ri-time-line mr-1"></i>
               <span>3 weeks ago</span>
@@ -372,7 +435,7 @@
                 </div>
               </div>
             </div>
-            <p class="text-gray-600 leading-relaxed mb-4 review-quote">"Professional and respectful platform. The team is very supportive and the matching system works perfectly. Found my naseeb through this blessed platform!"</p>
+            <p class="text-gray-600 leading-relaxed mb-4 review-quote">"Professional and respectful service. The support team was very helpful, and the matchmaking system worked perfectly. I found my naseeb through this blessed Muslim marriage site in Leicester."</p>
             <div class="flex items-center text-sm text-gray-500">
               <i class="ri-time-line mr-1"></i>
               <span>1 week ago</span>
@@ -396,7 +459,7 @@
                 </div>
               </div>
             </div>
-            <p class="text-gray-600 leading-relaxed mb-4 review-quote">"Trustworthy and reliable service for Muslim matrimony. Great features, easy to use, and most importantly - it works! Grateful for this platform."</p>
+            <p class="text-gray-600 leading-relaxed mb-4 review-quote">"Trustworthy and reliable — shadiAmour is my go-to for Muslim matrimony. Easy to use, full of genuine profiles, and most importantly, it delivers results. Highly recommend for Muslims in London looking for marriage."</p>
             <div class="flex items-center text-sm text-gray-500">
               <i class="ri-time-line mr-1"></i>
               <span>2 weeks ago</span>
@@ -420,7 +483,7 @@
                 </div>
               </div>
             </div>
-            <p class="text-gray-600 leading-relaxed mb-4 review-quote">"Amazing experience! The platform maintains Islamic values while providing modern matchmaking features. Clean, professional, and effective. Barakallahu feeki!"</p>
+            <p class="text-gray-600 leading-relaxed mb-4 review-quote">"Amazing Muslim matchmaking experience! The platform balances Islamic values with modern features, making it easy to connect with serious Muslims. BarakAllahu feeki for creating such a trusted UK matrimonial service."</p>
             <div class="flex items-center text-sm text-gray-500">
               <i class="ri-time-line mr-1"></i>
               <span>4 days ago</span>
@@ -442,7 +505,7 @@
               </div>
               <h3 class="text-2xl font-bold text-gray-800 mb-4 font-['Playfair_Display']">Share Your Experience</h3>
               <p class="text-gray-700 mb-8 text-lg leading-relaxed max-w-xl mx-auto">
-                Help others by sharing your journey with shadiamour. Your review matters to our growing community!
+                Help others by sharing your journey with shadiAmour. Your review matters to our growing community!
               </p>
 
               <!-- Enhanced CTA Button -->
@@ -485,11 +548,12 @@
           <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-primary to-secondary rounded-full mb-6 animate-pulse">
             <i class="ri-mail-heart-line text-3xl text-white"></i>
           </div>
+          <!-- Updated Newsletter Section -->
           <h2 class="text-4xl font-bold text-gray-800 mb-4 font-['Playfair_Display']">
-            Don't Miss Your Perfect Match
+            Never Miss Your Perfect Muslim Match - Join Our Halal Rishta Community
           </h2>
           <p class="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
-            Subscribe to our newsletter and be the first to know about new compatible profiles, matrimony tips, and success stories from our community.
+            Subscribe for exclusive access to new verified Muslim singles, halal dating tips, and success stories from our Muslim matchmaking community. Connect with single Muslim men and women across London, Birmingham, Manchester, and Leicester seeking serious Muslim marriage and modern Nikkah partnerships.
           </p>
         </div>
 
@@ -516,19 +580,19 @@
               <!-- Gender Field -->
               <div>
                 <label for="newsletter-gender" class="block text-sm font-semibold text-gray-700 mb-2">
-                  I'm looking for <span class="text-primary">*</span>
+                  I'm seeking a Muslim partner <span class="text-primary">*</span>
                 </label>
                 <select id="newsletter-gender" name="interestedIn" required class="w-full px-4 py-3 border-2 border-gray-200 rounded-button focus:border-primary focus:ring-0 transition-colors duration-300 text-gray-900">
-                  <option value="">Select preference</option>
-                  <option value="male">Muslim Men</option>
-                  <option value="female">Muslim Women</option>
+                  <option value="">Select your preference</option>
+                  <option value="male">Single Muslim Men</option>
+                  <option value="female">Single Muslim Women</option>
                 </select>
               </div>
 
               <!-- Age Range Field -->
               <div>
                 <label for="newsletter-age" class="block text-sm font-semibold text-gray-700 mb-2">
-                  Preferred Age Range
+                  Preferred Age for Muslim Marriage
                 </label>
                 <select id="newsletter-age" name="preferredAgeRange" class="w-full px-4 py-3 border-2 border-gray-200 rounded-button focus:border-primary focus:ring-0 transition-colors duration-300 text-gray-900">
                   <option value="">Any age</option>
@@ -543,14 +607,14 @@
               <!-- Submit Button -->
               <button type="submit" id="newsletter-submit" class="w-full gradient-bg text-white font-bold py-4 px-6 rounded-button hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 ripple text-lg">
                 <i class="ri-heart-line mr-2"></i>
-                <span>Subscribe & Find Love</span>
+                <span>Join Halal Muslim Matchmaking Community</span>
               </button>
             </div>
 
             <!-- Privacy Notice -->
             <p class="text-xs text-gray-500 mt-4 text-center leading-relaxed">
-              By subscribing, you agree to receive matrimony updates and match notifications.
-              We respect your privacy and won't spam you. Unsubscribe anytime.
+              By subscribing, you'll receive updates about new Muslim singles, halal matchmaking tips, and Muslim marriage success stories.
+              We protect your privacy and follow Islamic principles. Unsubscribe anytime from our halal dating communications.
             </p>
           </div>
         </form>
@@ -561,9 +625,10 @@
             <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <i class="ri-check-line text-2xl text-green-600"></i>
             </div>
-            <h3 class="text-xl font-bold text-green-800 mb-2">Welcome to shadiamour!</h3>
+            <!-- Updated Success Message -->
+            <h3 class="text-xl font-bold text-green-800 mb-2">Welcome to the UK's Top Muslim Marriage Community!</h3>
             <p class="text-green-700">
-              Thank you for subscribing! You'll receive personalized match updates and matrimony tips soon.
+              JazakAllah for joining! You'll soon receive personalized Muslim match suggestions and halal dating guidance to help you find your perfect Muslim spouse.
             </p>
           </div>
         </div>
@@ -572,15 +637,15 @@
         <div class="flex items-center justify-center gap-8 mt-12 text-gray-500 text-sm">
           <div class="flex items-center gap-2">
             <i class="ri-shield-check-line text-primary"></i>
-            <span>Privacy Protected</span>
+            <span>Halal Dating Privacy Protected</span>
           </div>
           <div class="flex items-center gap-2">
             <i class="ri-spam-2-line text-primary"></i>
-            <span>No Spam Promise</span>
+            <span>No Spam - Islamic Values Respected</span>
           </div>
           <div class="flex items-center gap-2">
             <i class="ri-mail-unread-line text-primary"></i>
-            <span>Easy Unsubscribe</span>
+            <span>Easy Unsubscribe from Muslim Matchmaking Updates</span>
           </div>
         </div>
       </div>

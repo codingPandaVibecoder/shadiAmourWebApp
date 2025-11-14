@@ -16,6 +16,10 @@
         <i class="ri-user-3-line"></i>
         <span>Women</span>
       </a>
+      <a href="/blog" class="flex items-center gap-2 px-4 py-2 text-gray-700 hover:text-primary transition-all duration-300 font-medium">
+        <i class="ri-article-line"></i>
+        <span>Blog</span>
+      </a>
     </nav>
     <div class="flex items-center gap-4">
       <% if (user) { %>
@@ -29,9 +33,10 @@
 
         <!-- Notification Dropdown -->
         <div id="notificationMenu" class="absolute inset-x-2.5 sm:right-0 sm:left-auto mt-2 sm:w-80 bg-white rounded-xl material-shadow border border-gray-100 py-4 hidden z-50 max-h-96 overflow-y-auto">
-
           <div class="px-4 pb-3 border-b border-gray-100 flex items-center justify-between">
-            <h3 class="text-lg font-semibold text-gray-800 font-['Playfair_Display']">Notifications</h3>
+            <h3 class="text-lg font-semibold text-gray-800 font-['Playfair_Display']">
+              Notifications
+            </h3>
             <button id="markAllReadBtn" class="text-sm text-primary hover:text-pink-600 transition-colors hidden">
               Mark all read
             </button>
@@ -51,7 +56,9 @@
                 <i class="ri-notification-off-line text-4xl text-gray-300"></i>
               </div>
               <p class="text-gray-500 font-medium">No new notifications</p>
-              <p class="text-sm text-gray-400 mt-1">We'll notify you when something new arrives</p>
+              <p class="text-sm text-gray-400 mt-1">
+                We'll notify you when something new arrives
+              </p>
             </div>
 
             <!-- Notifications list -->
@@ -80,8 +87,12 @@
             <i class="ri-user-settings-line text-primary"></i>
             <span>My Account</span>
           </a>
+          <a style="margin-top: 5px" href="/blog" class="flex items-center gap-3 px-4 py-2 text-gray-700 hover:bg-gray-50 transition-colors duration-200">
+            <i class="ri-article-line text-primary"></i>
+            <span> Browse Blog</span>
+          </a>
           <% } %>
-          <hr class="my-2 border-gray-100">
+          <hr class="my-2 border-gray-100" />
           <a href="/logout" class="flex items-center gap-3 px-4 py-2 text-red-600 hover:bg-red-50 transition-colors duration-200">
             <i class="ri-logout-box-line"></i>
             <span>Logout</span>

@@ -4,38 +4,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Complete Your Profile - D'amour Muslim</title>
+  <title>Complete Your Profile - shadiAmour</title>
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
   <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
   <link rel="manifest" href="/images/site.webmanifest">
   <meta name="theme-color" content="#E91E63">
-  <script src="https://cdn.tailwindcss.com/3.4.16"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            primary: '#E91E63',
-            secondary: '#673AB7'
-          },
-          borderRadius: {
-            'none': '0px',
-            'sm': '4px',
-            DEFAULT: '8px',
-            'md': '12px',
-            'lg': '16px',
-            'xl': '20px',
-            '2xl': '24px',
-            '3xl': '32px',
-            'full': '9999px',
-            'button': '8px'
-          }
-        }
-      }
-    }
-  </script>
+  <link rel="stylesheet" href="/css/output.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Playfair+Display:wght@400;600;700&family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -384,32 +360,6 @@
         return formData;
       }
 
-      // Save step data via AJAX
-      // async function saveStepData(step, data) {
-      //   try {
-      //     const response = await fetch('/api/onboarding/save', {
-      //       method: 'POST',
-      //       headers: {
-      //         'Content-Type': 'application/json',
-      //       },
-      //       body: JSON.stringify({
-      //         step,
-      //         data
-      //       })
-      //     });
-
-      //     const result = await response.json();
-
-      //     if (!result.success) {
-      //       throw new Error(result.error || 'Failed to save step data');
-      //     }
-
-      //     return result;
-      //   } catch (error) {
-      //     console.error('Error saving step:', error);
-      //     throw error;
-      //   }
-      // }
 
       // Save step data via AJAX
       async function saveStepData(step, data) {

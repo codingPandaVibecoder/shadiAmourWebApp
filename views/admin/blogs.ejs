@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog Management - shadiAmour Admin</title>
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+  <link rel="manifest" href="/images/site.webmanifest">
+  <meta name="theme-color" content="#E91E63">
+  <link rel="stylesheet" href="/css/output.css">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.0.0/fonts/remixicon.css" rel="stylesheet">
+</head>
+
+<body class="bg-gray-50 font-['Roboto']">
+  <%- include('../partials/header') %>
+
+  <main class="pt-24 pb-16 min-h-screen">
+    <div class="max-w-7xl mx-auto px-6">
+
+      <!-- Page Header -->
+      <div class="flex flex-col md:flex-row md:items-center justify-between mb-8">
+        <div>
+          <h1 class="text-3xl font-bold text-gray-900 mb-2 font-['Playfair_Display']">Blog Management</h1>
+          <p class="text-gray-600">Create and manage blog posts for your website</p>
+        </div>
+        <a href="/admin/blogs/create" class="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-button hover:bg-pink-600 transition-colors">
+          <i class="ri-add-line"></i>
+          Create New Blog
+        </a>
+      </div>
+
+      <!-- Stats Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div class="bg-white rounded-xl p-6 material-shadow">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-2xl font-bold text-gray-900"><%= stats.total %></p>
+              <p class="text-sm text-gray-600 mt-1">Total Blogs</p>
+            </div>
+            <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+              <i class="ri-article-line text-xl text-blue-600"></i>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-xl p-6 material-shadow">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-2xl font-bold text-gray-900"><%= stats.published %></p>
+              <p class="text-sm text-gray-600 mt-1">Published</p>
+            </div>
+            <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+              <i class="ri-checkbox-circle-line text-xl text-green-600"></i>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-xl p-6 material-shadow">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-2xl font-bold text-gray-900"><%= stats.drafts %></p>
+              <p class="text-sm text-gray-600 mt-1">Drafts</p>
+            </div>
+            <div class="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center">
+              <i class="ri-draft-line text-xl text-yellow-600"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Filters -->
+      <div class="bg-white rounded-xl p-6 material-shadow mb-6">
+        <div class="flex flex-col md:flex-row gap-4">
+          <div class="flex-1">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Status</label>
+            <select id="statusFilter" class="w-full px-3 py-2 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary">
+              <option value="all" <%= currentFilter.status === 'all' ? 'selected' : '' %>>All Blogs</option>
+              <option value="published" <%= currentFilter.status === 'published' ? 'selected' : '' %>>Published</option>
+              <option value="draft" <%= currentFilter.status === 'draft' ? 'selected' : '' %>>Drafts</option>
+            </select>
+          </div>
+          <div class="flex-1">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Category</label>
+            <select id="categoryFilter" class="w-full px-3 py-2 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary">
+              <option value="all" <%= currentFilter.category === 'all' ? 'selected' : '' %>>All Categories</option>
+              <option value="Islamic Guidance" <%= currentFilter.category === 'Islamic Guidance' ? 'selected' : '' %>>Islamic Guidance</option>
+              <option value="Matrimony Tips" <%= currentFilter.category === 'Matrimony Tips' ? 'selected' : '' %>>Matrimony Tips</option>
+              <option value="Success Stories" <%= currentFilter.category === 'Success Stories' ? 'selected' : '' %>>Success Stories</option>
+              <option value="Relationship Advice" <%= currentFilter.category === 'Relationship Advice' ? 'selected' : '' %>>Relationship Advice</option>
+              <option value="Wedding Etiquette" <%= currentFilter.category === 'Wedding Etiquette' ? 'selected' : '' %>>Wedding Etiquette</option>
+              <option value="Halal Lifestyle" <%= currentFilter.category === 'Halal Lifestyle' ? 'selected' : '' %>>Halal Lifestyle</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Blog List -->
+      <div class="bg-white rounded-xl material-shadow overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="w-full">
+            <thead class="bg-gray-50 border-b border-gray-200">
+              <tr>
+                <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Title</th>
+                <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
+                <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Created</th>
+                <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+              </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+              <% if (blogs.length === 0) { %>
+              <tr>
+                <td colspan="5" class="px-6 py-8 text-center text-gray-500">
+                  <i class="ri-article-line text-4xl text-gray-300 mb-4"></i>
+                  <p>No blogs found</p>
+                </td>
+              </tr>
+              <% } else { %>
+              <% blogs.forEach(blog => { %>
+              <tr class="hover:bg-gray-50">
+                <td class="px-6 py-4">
+                  <div>
+                    <p class="font-medium text-gray-900"><%= blog.title %></p>
+                    <p class="text-sm text-gray-500 mt-1">/<%= blog.slug %></p>
+                    <% if (blog.excerpt) { %>
+                    <p class="text-xs text-gray-400 mt-1 line-clamp-2"><%= blog.excerpt %></p>
+                    <% } %>
+                  </div>
+                </td>
+                <td class="px-6 py-4">
+                  <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium <%= blog.isPublished ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800' %>">
+                    <i class="<%= blog.isPublished ? 'ri-checkbox-circle-line' : 'ri-draft-line' %> mr-1"></i>
+                    <%= blog.isPublished ? 'Published' : 'Draft' %>
+                  </span>
+                </td>
+                <td class="px-6 py-4 text-sm text-gray-900"><%= blog.category %></td>
+                <td class="px-6 py-4 text-sm text-gray-500">
+                  <%= new Date(blog.createdAt).toLocaleDateString('en-GB', { 
+                        year: 'numeric', 
+                        month: 'short', 
+                        day: 'numeric' 
+                      }) %>
+                </td>
+                <td class="px-6 py-4">
+                  <div class="flex items-center gap-2">
+                    <% if (blog.isPublished) { %>
+                    <a href="/blog/<%= blog.slug %>" target="_blank" class="text-gray-400 hover:text-blue-600 transition-colors" title="View Blog">
+                      <i class="ri-external-link-line text-lg"></i>
+                    </a>
+                    <% } %>
+                    <a href="/admin/blogs/<%= blog._id %>/edit" class="text-gray-400 hover:text-yellow-600 transition-colors" title="Edit">
+                      <i class="ri-edit-line text-lg"></i>
+                    </a>
+                    <button onclick="deleteBlog('<%= blog._id %>', '<%= blog.title %>')" class="text-gray-400 hover:text-red-600 transition-colors" title="Delete">
+                      <i class="ri-delete-bin-line text-lg"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              <% }) %>
+              <% } %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Delete Confirmation Modal -->
+  <div id="deleteModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
+    <div class="flex items-center justify-center min-h-screen p-4">
+      <div class="bg-white rounded-xl max-w-md w-full p-6">
+        <div class="flex items-center mb-4">
+          <i class="ri-error-warning-line text-2xl text-red-500 mr-3"></i>
+          <h3 class="text-lg font-semibold text-gray-900">Delete Blog</h3>
+        </div>
+        <p class="text-gray-600 mb-6">Are you sure you want to delete "<span id="deleteBlogTitle"></span>"? This action cannot be undone.</p>
+        <div class="flex justify-end gap-3">
+          <button onclick="closeDeleteModal()" class="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-button transition-colors">
+            Cancel
+          </button>
+          <button id="confirmDeleteBtn" class="px-4 py-2 bg-red-500 text-white rounded-button hover:bg-red-600 transition-colors">
+            Delete Blog
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Filter functionality
+    document.getElementById('statusFilter').addEventListener('change', applyFilters);
+    document.getElementById('categoryFilter').addEventListener('change', applyFilters);
+
+    function applyFilters() {
+      const status = document.getElementById('statusFilter').value;
+      const category = document.getElementById('categoryFilter').value;
+
+      const url = new URL(window.location);
+
+      if (status === 'all') {
+        url.searchParams.delete('status');
+      } else {
+        url.searchParams.set('status', status);
+      }
+
+      if (category === 'all') {
+        url.searchParams.delete('category');
+      } else {
+        url.searchParams.set('category', category);
+      }
+
+      window.location.href = url.toString();
+    }
+
+    // Delete blog functionality
+    let blogToDelete = null;
+
+    function deleteBlog(blogId, blogTitle) {
+      blogToDelete = blogId;
+      document.getElementById('deleteBlogTitle').textContent = blogTitle;
+      document.getElementById('deleteModal').classList.remove('hidden');
+    }
+
+    function closeDeleteModal() {
+      document.getElementById('deleteModal').classList.add('hidden');
+      blogToDelete = null;
+    }
+
+    document.getElementById('confirmDeleteBtn').addEventListener('click', async function() {
+      if (!blogToDelete) return;
+
+      try {
+        const response = await fetch(`/admin/blogs/${blogToDelete}`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+          window.location.reload();
+        } else {
+          alert('Failed to delete blog: ' + data.error);
+        }
+      } catch (error) {
+        console.error('Error deleting blog:', error);
+        alert('Failed to delete blog');
+      }
+
+      closeDeleteModal();
+    });
+
+    // Close modal when clicking outside
+    document.getElementById('deleteModal').addEventListener('click', function(e) {
+      if (e.target === this) {
+        closeDeleteModal();
+      }
+    });
+  </script>
+</body>
+
+</html>

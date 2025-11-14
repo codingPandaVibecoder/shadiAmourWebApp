@@ -1,0 +1,475 @@
+/* Blog-specific styling based on uk-rishta-whatsapp-group.ejs and uk-muslim-rishta-service-charges.ejs */
+
+/* Article Content Container */
+.article-content {
+  line-height: 1.7;
+  color: #4b5563;
+  font-family: 'Roboto', Arial, sans-serif;
+}
+
+/* Typography Hierarchy */
+.article-content h1 {
+  font-size: 2.25rem; /* text-4xl */
+  font-weight: 700;
+  color: #1f2937;
+  font-family: 'Playfair Display', serif;
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+.article-content h2 {
+  font-size: 1.875rem; /* text-3xl */
+  font-weight: 700;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  color: #1f2937;
+  font-family: 'Playfair Display', serif;
+}
+
+.article-content h3 {
+  font-size: 1.5rem; /* text-2xl */
+  font-weight: 600;
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+  color: #374151;
+  font-family: 'Playfair Display', serif;
+}
+
+.article-content h4 {
+  font-size: 1.25rem; /* text-xl */
+  font-weight: 600;
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+  color: #374151;
+  font-family: 'Playfair Display', serif;
+}
+
+.article-content h5 {
+  font-size: 1.125rem; /* text-lg */
+  font-weight: 600;
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+  color: #374151;
+}
+
+.article-content h6 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-top: 0.75rem;
+  margin-bottom: 0.5rem;
+  color: #374151;
+}
+
+/* Paragraphs */
+.article-content p {
+  margin-bottom: 1rem;
+  color: #4b5563;
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+/* Links */
+.article-content a {
+  color: #e91e63;
+  text-decoration: underline;
+  transition: color 0.3s ease;
+}
+
+.article-content a:hover {
+  color: #be185d;
+}
+
+/* Strong and Bold Text */
+.article-content strong,
+.article-content b {
+  font-weight: 600;
+  color: #1f2937;
+}
+
+/* Emphasis and Italic Text */
+.article-content em,
+.article-content i {
+  font-style: italic;
+}
+
+/* Lists */
+.article-content ul,
+.article-content ol {
+  margin: 1rem 0;
+  padding-left: 1.5rem;
+  color: #4b5563;
+}
+
+.article-content ul {
+  list-style-type: disc;
+}
+
+.article-content ol {
+  list-style-type: decimal;
+}
+
+.article-content li {
+  margin-bottom: 0.5rem;
+  line-height: 1.6;
+}
+
+.article-content li p {
+  margin-bottom: 0.5rem;
+}
+
+/* Nested Lists */
+.article-content ul ul,
+.article-content ol ol,
+.article-content ul ol,
+.article-content ol ul {
+  margin: 0.5rem 0;
+  padding-left: 1.25rem;
+}
+
+/* Blockquotes */
+.article-content blockquote {
+  border-left: 4px solid #e91e63;
+  padding-left: 1.5rem;
+  margin: 2rem 0;
+  font-style: italic;
+  color: #6b7280;
+  background-color: #f9fafb;
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  position: relative;
+}
+
+.article-content blockquote p {
+  color: #6b7280;
+  margin-bottom: 0;
+}
+
+/* Images */
+.article-content img {
+  max-width: 100%;
+  border-radius: 0.75rem;
+  margin: 1.5rem 0;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+/* Image Captions */
+.article-content img + p {
+  text-align: center;
+  font-size: 0.875rem;
+  color: #6b7280;
+  font-style: italic;
+  margin-top: -1rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Tables */
+.article-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+.article-content thead {
+  background-color: rgba(233, 30, 99, 0.1);
+}
+
+.article-content th {
+  padding: 0.75rem 1.5rem;
+  text-align: left;
+  font-weight: 600;
+  color: #1f2937;
+  border-bottom: 1px solid #d1d5db;
+  font-size: 0.875rem;
+}
+
+.article-content td {
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #e5e7eb;
+  color: #4b5563;
+  font-size: 0.875rem;
+}
+
+.article-content tbody tr:nth-child(even) {
+  background-color: #f9fafb;
+}
+
+.article-content tbody tr:hover {
+  background-color: #f3f4f6;
+}
+
+/* Responsive Table */
+.article-content .table-responsive {
+  overflow-x: auto;
+  margin: 1.5rem 0;
+}
+
+/* Code Elements */
+.article-content code {
+  background-color: #f3f4f6;
+  color: #e91e63;
+  padding: 0.125rem 0.25rem;
+  border-radius: 0.25rem;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  font-size: 0.875rem;
+}
+
+.article-content pre {
+  background-color: #1f2937;
+  color: #f9fafb;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  overflow-x: auto;
+  margin: 1.5rem 0;
+}
+
+.article-content pre code {
+  background-color: transparent;
+  color: inherit;
+  padding: 0;
+}
+
+/* Custom Blog Components */
+
+/* CTA Buttons */
+.blog-cta-button {
+  margin: 1.5rem 0;
+  text-align: center;
+}
+
+.blog-cta-button a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.blog-cta-primary a {
+  background-color: #e91e63;
+  color: white;
+}
+
+.blog-cta-primary a:hover {
+  background-color: #be185d;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.blog-cta-whatsapp a {
+  background-color: #22c55e;
+  color: white;
+}
+
+.blog-cta-whatsapp a:hover {
+  background-color: #16a34a;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.blog-cta-secondary a {
+  background-color: #6b7280;
+  color: white;
+}
+
+.blog-cta-secondary a:hover {
+  background-color: #4b5563;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Callout Boxes */
+.blog-callout {
+  margin: 1.5rem 0;
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  border-left: 4px solid;
+  position: relative;
+}
+
+.blog-callout-info {
+  background-color: #eff6ff;
+  border-color: #3b82f6;
+  color: #1e40af;
+}
+
+.blog-callout-success {
+  background-color: #f0fdf4;
+  border-color: #22c55e;
+  color: #166534;
+}
+
+.blog-callout-warning {
+  background-color: #fffbeb;
+  border-color: #f59e0b;
+  color: #92400e;
+}
+
+.blog-callout-primary {
+  background-color: #fdf2f8;
+  border-color: #e91e63;
+  color: #be185d;
+}
+
+/* Colored Content Boxes (from the examples) */
+.article-content .bg-green-50 {
+  background-color: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  margin: 2rem 0;
+}
+
+.article-content .bg-blue-50 {
+  background-color: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  margin: 2rem 0;
+}
+
+.article-content .bg-yellow-50 {
+  background-color: #fffbeb;
+  border: 1px solid #fed7aa;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  margin: 2rem 0;
+}
+
+.article-content .bg-red-50 {
+  background-color: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  margin: 2rem 0;
+}
+
+.article-content .bg-gray-50 {
+  background-color: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  margin: 2rem 0;
+}
+
+.article-content .bg-purple-50 {
+  background-color: #faf5ff;
+  border: 1px solid #e9d5ff;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  margin: 2rem 0;
+}
+
+.article-content .bg-pink-50 {
+  background-color: #fdf2f8;
+  border: 1px solid #f9a8d4;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  margin: 2rem 0;
+}
+
+/* Grid Layouts for Cards */
+.article-content .grid {
+  display: grid;
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+.article-content .grid-cols-1 {
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+
+.article-content .grid-cols-2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.article-content .grid-cols-3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.article-content .grid-cols-4 {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+/* Responsive Grid */
+@media (max-width: 768px) {
+  .article-content .grid-cols-2,
+  .article-content .grid-cols-3,
+  .article-content .grid-cols-4 {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .article-content .grid-cols-3,
+  .article-content .grid-cols-4 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Card Components */
+.article-content .card {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.article-content .card:hover {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transform: translateY(-1px);
+}
+
+/* Responsive Typography */
+@media (max-width: 640px) {
+  .article-content h1 {
+    font-size: 1.875rem;
+  }
+  
+  .article-content h2 {
+    font-size: 1.5rem;
+  }
+  
+  .article-content h3 {
+    font-size: 1.25rem;
+  }
+  
+  .article-content {
+    font-size: 0.875rem;
+  }
+}
+
+/* Material Design Shadows */
+.material-shadow {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.material-shadow-hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+/* Print Styles */
+@media print {
+  .article-content {
+    color: black;
+  }
+  
+  .article-content a {
+    color: black;
+    text-decoration: underline;
+  }
+  
+  .blog-cta-button,
+  .blog-callout {
+    border: 1px solid #ccc;
+    background: white !important;
+  }
+}

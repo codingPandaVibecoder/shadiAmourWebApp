@@ -141,9 +141,8 @@ Need help? Contact us at support@shadiamour.com
 
 // Send password reset email using ZeptoMail
 async function sendPasswordResetEmail(email, resetToken, username) {
-  const resetUrl = `${
-    process.env.BASE_URL || "https://shadiamour.com"
-  }/reset-password?token=${resetToken}`;
+  const resetUrl = `${process.env.BASE_URL || "https://shadiamour.com"
+    }/reset-password?token=${resetToken}`;
 
   const mailData = {
     from: {

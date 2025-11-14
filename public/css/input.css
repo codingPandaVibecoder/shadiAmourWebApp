@@ -1,0 +1,130 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Your existing custom styles */
+:where([class^="ri-"])::before {
+  content: "\f3c2";
+}
+
+.material-shadow {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.material-shadow-hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.material-shadow-elevated {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+.ripple {
+  position: relative;
+  overflow: hidden;
+}
+
+.ripple::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.ripple:active::before {
+  width: 300px;
+  height: 300px;
+}
+
+.gradient-bg {
+  background: linear-gradient(135deg, #e91e63 0%, #673ab7 100%);
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Group hover effects */
+.group:hover .w-12 {
+  transform: scale(1.1);
+  transition: transform 0.3s ease;
+}
+
+.reviews-grid {
+  animation: fadeInUp 0.8s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.review-quote::before {
+  content: '"';
+  font-size: 2rem;
+  color: #e91e63;
+  opacity: 0.3;
+  font-family: "Playfair Display", serif;
+}
+
+.reviews-section {
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  position: relative;
+}
+
+.reviews-section .group:hover {
+  transform: translateY(-8px);
+}
+
+.reviews-section .group:hover .w-12 {
+  transform: scale(1.15) rotate(5deg);
+  transition: transform 0.4s ease;
+}
+
+.reviews-section a[target="_blank"]:hover {
+  animation: pulse-glow 0.6s ease-in-out;
+}
+
+@keyframes pulse-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(59, 130, 246, 0.6);
+  }
+}
+
+.newsletter-section {
+  background: linear-gradient(135deg, #fef7ff 0%, #f3e8ff 50%, #fef7ff 100%);
+  border-top: 3px solid #e91e63;
+  border-bottom: 3px solid #673ab7;
+}

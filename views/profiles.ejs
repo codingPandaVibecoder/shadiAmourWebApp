@@ -5,21 +5,25 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <%
-    let pageTitle = "Browse Muslim Profiles for Marriage";
-    let metaDescription = "Explore profiles of single Muslims seeking a life partner. Filter by age, location, and more to find your ideal match on shadiamour.";
-    if (filters && filters.gender === 'male') {
-      pageTitle = "Muslim Men for Marriage";
-      metaDescription = "Browse profiles of single Muslim men looking for a serious relationship leading to marriage. Connect with your potential spouse today.";
-    } else if (filters && filters.gender === 'female') {
-      pageTitle = "Muslim Women for Marriage";
-      metaDescription = "Discover profiles of single Muslim women seeking a life partner for a blessed marriage. Find your compatible match on our platform.";
-    }
-  %>
-  <title><%= pageTitle %> | shadiamour</title>
+  let pageTitle = "Muslim Matrimony UK | Islamic Wedding & Nikkah Partners | Halal Marriage Site";
+  let metaDescription = "Find your perfect Muslim matrimony partner for Islamic wedding and Nikkah ceremony. Browse verified Muslim couples, Pakistani marriage profiles in London, Manchester. UK's leading halal marriage site.";
+  let keywords = "Muslim matrimony, Islamic wedding, Nikkah wedding ceremony, Pakistani marriage, Shaadi London, Nikkah London, halal marriage site UK, Pakistani couple, Muslim couple, Sunni Muslim marriage, Muslim marriage services, Islam love marriage, Muslim matrimonial, Muslim marriage Manchester, Pakistani wedding London";
+  
+  if (filters && filters.gender === 'male') {
+    pageTitle = "Muslim Men for Matrimony | Islamic Wedding Grooms | Nikkah Partners UK";
+    metaDescription = "Discover Muslim men seeking Islamic wedding and Nikkah ceremony. Browse Pakistani marriage profiles of single Muslim men in London, Manchester for halal matrimony.";
+    keywords = "Muslim men matrimony, Islamic wedding grooms, Nikkah ceremony men, Pakistani marriage men, Muslim couple men, Sunni Muslim men marriage, halal marriage men UK, Shaadi London men, Muslim matrimonial men";
+  } else if (filters && filters.gender === 'female') {
+    pageTitle = "Muslim Women for Matrimony | Islamic Wedding Brides | Nikkah Partners UK";
+    metaDescription = "Connect with Muslim women for Islamic wedding and Nikkah ceremony. Browse Pakistani marriage profiles of single Muslim women in London, Manchester for halal matrimony.";
+    keywords = "Muslim women matrimony, Islamic wedding brides, Nikkah ceremony women, Pakistani marriage women, Muslim couple women, Sunni Muslim women marriage, halal marriage women UK, Shaadi London women, Muslim matrimonial women";
+  }
+%>
+  <title><%= pageTitle %> | shadiAmour</title>
 
   <!-- SEO Meta Tags -->
   <meta name="description" content="<%= metaDescription %>">
-  <meta name="keywords" content="muslim profiles, find muslim partner, muslim singles, islamic marriage, rishta online, matrimonial site, muslim matchmaking">
+  <meta name="keywords" content="<%= keywords %>">
   <link rel="canonical" href="https://www.shadiamour.com/profiles">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
@@ -27,45 +31,22 @@
   <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
   <link rel="manifest" href="/images/site.webmanifest">
   <meta name="theme-color" content="#E91E63">
+
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://www.shadiamour.com/profiles">
-  <meta property="og:title" content="<%= pageTitle %> | shadiamour">
+  <meta property="og:title" content="<%= pageTitle %> | shadiAmour">
   <meta property="og:description" content="<%= metaDescription %>">
   <meta property="og:image" content="https://www.shadiamour.com/images/og-image-profiles.jpg">
 
   <!-- Twitter -->
   <meta property="twitter:card" content="summary_large_image">
   <meta property="twitter:url" content="https://www.shadiamour.com/profiles">
-  <meta property="twitter:title" content="<%= pageTitle %> | shadiamour">
+  <meta property="twitter:title" content="<%= pageTitle %> | shadiAmour">
   <meta property="twitter:description" content="<%= metaDescription %>">
   <meta property="twitter:image" content="https://www.shadiamour.com/images/og-image-profiles.jpg">
 
-  <script src="https://cdn.tailwindcss.com/3.4.16"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            primary: '#E91E63',
-            secondary: '#673AB7'
-          },
-          borderRadius: {
-            'none': '0px',
-            'sm': '4px',
-            DEFAULT: '8px',
-            'md': '12px',
-            'lg': '16px',
-            'xl': '20px',
-            '2xl': '24px',
-            '3xl': '32px',
-            'full': '9999px',
-            'button': '8px'
-          }
-        }
-      }
-    }
-  </script>
+  <link rel="stylesheet" href="/css/output.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Playfair+Display:wght@400;600;700&family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -143,7 +124,129 @@
     .featured-profile-card:hover {
       box-shadow: 0 8px 25px rgba(255, 215, 0, 0.2);
     }
+
+    /* Progressive image loading */
+    img {
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    img.loaded,
+    img[src*="ui-avatars"] {
+      opacity: 1;
+    }
+
+    /* Skeleton loader for images */
+    .aspect-\[4\/5\] {
+      background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+      background-size: 200% 100%;
+      animation: loading 1.5s infinite;
+    }
+
+    @keyframes loading {
+      0% {
+        background-position: 200% 0;
+      }
+
+      100% {
+        background-position: -200% 0;
+      }
+    }
+
+    .aspect-\[4\/5\]:has(img.loaded) {
+      background: none;
+      animation: none;
+    }
   </style>
+  <!-- **ENHANCED**: Structured Data for SEO -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "<%= pageTitle %>",
+      "description": "<%= metaDescription %>",
+      "url": "https://www.shadiamour.com/profiles",
+      "mainEntity": {
+        "@type": "ItemList",
+        "name": "Muslim Matrimony Profiles for Halal Marriage UK",
+        "description": "Browse verified Muslim singles for halal Muslim matchmaking, Islamic wedding, modern Nikkah ceremony, and young Muslim marriage across London, Manchester, Birmingham & Leicester",
+        "numberOfItems": "<%= totalProfiles %>",
+        "itemListElement": [{
+            "@type": "Service",
+            "name": "Halal Muslim Matchmaking UK",
+            "description": "Connect Muslim singles for halal marriage and Islamic wedding through our trusted Muslim matrimonial platform"
+          },
+          {
+            "@type": "Service",
+            "name": "Young Muslim Marriage Services",
+            "description": "Specialized Muslim dating app halal for young Muslim singles seeking modern Nikkah and Muslim relationships"
+          },
+          {
+            "@type": "Service",
+            "name": "Online Muslim Matchmaking Platform",
+            "description": "UK's leading Muslim shaadi app for single Muslim marriage, Muslim soulmate connections and halal dating"
+          }
+        ]
+      },
+      "breadcrumb": {
+        "@type": "BreadcrumbList",
+        "itemListElement": [{
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Muslim Marriage Home",
+            "item": "https://www.shadiamour.com"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Muslim Matrimony Profiles",
+            "item": "https://www.shadiamour.com/profiles"
+          }
+        ]
+      },
+      "provider": {
+        "@type": "Organization",
+        "name": "ShadiAmour",
+        "description": "UK's leading halal Muslim matchmaking platform for young Muslim marriage and Islamic wedding connections"
+      },
+      "audience": {
+        "@type": "Audience",
+        "audienceType": "Muslim Singles seeking halal marriage, Islamic wedding, and modern Nikkah ceremony"
+      }
+    }
+  </script>
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Service",
+      "name": "Muslim Matrimony & Islamic Wedding Service",
+      "description": "Professional Muslim matrimony service for Islamic wedding, Nikkah ceremony, and Pakistani marriage across the UK",
+      "provider": {
+        "@type": "Organization",
+        "name": "shadiAmour"
+      },
+      "serviceType": [
+        "Muslim Matrimony",
+        "Islamic Wedding Matching",
+        "Nikkah Ceremony Partners",
+        "Pakistani Marriage Service",
+        "Halal Marriage Site",
+        "Muslim Couple Matching"
+      ],
+      "areaServed": [
+        "London",
+        "Manchester",
+        "Birmingham",
+        "Leicester",
+        "United Kingdom"
+      ],
+      "audience": {
+        "@type": "Audience",
+        "audienceType": "Muslim Singles seeking Islamic Wedding"
+      }
+    }
+  </script>
 </head>
 <% if (isProd && !isAdmin) { %>
 <!-- Google Analytics -->
@@ -172,15 +275,63 @@
 
         <!-- Main Content -->
         <div class="flex-1">
+          <!-- Breadcrumb Navigation - ADD THIS -->
+          <nav class="flex py-3 px-2 mb-4 bg-gray-50 rounded-lg text-sm text-gray-600" aria-label="Breadcrumb">
+            <ol class="flex flex-wrap items-center">
+              <li class="flex items-center">
+                <a href="/" class="hover:text-primary transition-colors">Home</a>
+                <i class="ri-arrow-right-s-line mx-2"></i>
+              </li>
+              <li class="flex items-center">
+                <a href="/profiles" class="hover:text-primary transition-colors">Profiles</a>
+                <% if (filters && filters.gender) { %>
+                <i class="ri-arrow-right-s-line mx-2"></i>
+              </li>
+              <li class="text-primary font-medium truncate">
+                <%= filters.gender === 'male' ? 'Male' : 'Female' %> Profiles
+                <% } %>
+              </li>
+            </ol>
+          </nav>
           <!-- Page Heading -->
           <div class="mb-6 text-center md:text-left">
-            <h1 class="text-3xl md:text-4xl font-bold text-gray-800 font-['Playfair_Display']"><%= pageTitle %></h1>
+            <!-- Replace the existing pageTitle H1 with SEO-optimized version -->
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-800 font-['Playfair_Display']">
+              <% if (filters && filters.gender === 'male') { %>
+              Muslim Men for Halal Marriage UK | Find Single Muslim Grooms for Modern Nikkah
+              <% } else if (filters && filters.gender === 'female') { %>
+              Muslim Women for Islamic Wedding | Single Muslim Brides Seeking Halal Marriage UK
+              <% } else { %>
+              Muslim Matrimony UK | Halal Muslim Matchmaking for Young Singles & Islamic Wedding Partners
+              <% } %>
+            </h1>
+          </div>
+          <!-- Add this descriptive paragraph after the H1 heading -->
+          <div class="mb-8 text-center">
+            <p class="text-lg text-gray-600 max-w-4xl mx-auto leading-relaxed">
+              <% if (filters && filters.gender === 'male') { %>
+              Discover verified <strong>Muslim men for halal marriage</strong> across London, Manchester, Birmingham & Leicester.
+              Connect with <strong>single Muslim grooms</strong> seeking <strong>Islamic wedding</strong>, <strong>modern Nikkah ceremony</strong>
+              and blessed <strong>Muslim matrimony</strong> through our trusted <strong>halal Muslim matchmaking platform</strong>.
+              Find your perfect <strong>Muslim soulmate</strong> among professional <strong>young Muslim men</strong> ready for <strong>single Muslim marriage</strong>.
+              <% } else if (filters && filters.gender === 'female') { %>
+              Browse authentic profiles of <strong>Muslim women for Islamic wedding</strong> and <strong>halal Muslim marriage</strong>
+              across major UK cities. Our <strong>Muslim matrimonial platform</strong> features <strong>single Muslim brides</strong>
+              seeking <strong>modern Nikkah partnerships</strong>, <strong>Muslim shaadi</strong> and meaningful <strong>halal relationships</strong>.
+              Connect with <strong>young Muslim women</strong> ready for <strong>Muslim love</strong> and blessed matrimony.
+              <% } else { %>
+              The UK's leading <strong>Muslim matrimonial platform</strong> connecting hearts for <strong>halal Muslim marriage</strong>,
+              <strong>Islamic wedding</strong> and <strong>modern Nikkah ceremony</strong>. Discover thousands of verified
+              <strong>Muslim singles UK</strong> seeking <strong>halal matchmaking</strong>, <strong>young Muslim marriage</strong>
+              and blessed <strong>Muslim relationships</strong> across London, Manchester, Birmingham and nationwide.
+              <% } %>
+            </p>
           </div>
 
           <!-- Grid Controls -->
           <div class="flex justify-between items-center mb-8">
             <!-- Mobile Filter Button -->
-            <button id="mobileFilterBtn" class="lg:hidden px-4 py-2 border border-gray-300 rounded-button text-gray-700 hover:border-primary hover:text-primary transition-all duration-300">
+            <button id="mobileFilterBtn" class="lg:hidden px-4 py-2 bg-primary text-white rounded-button hover:bg-pink-600 hover:shadow-md transition-all duration-300">
               <i class="ri-filter-line mr-2"></i>Filters
             </button>
 
@@ -344,10 +495,13 @@
             <div class="flex items-center justify-center mb-8">
               <div class="flex items-center">
                 <i class="ri-star-fill text-2xl text-yellow-500 mr-3"></i>
-                <h2 class="text-3xl font-bold text-gray-800 font-['Playfair_Display']">Featured Profiles</h2>
+                <h2 class="text-3xl font-bold text-gray-800 font-['Playfair_Display']">Featured Muslim Matrimony Profiles</h2>
                 <i class="ri-star-fill text-2xl text-yellow-500 ml-3"></i>
               </div>
             </div>
+            <p class="text-center text-gray-600 mb-8 max-w-2xl mx-auto">
+              Discover highlighted Muslim singles ready for Islamic wedding and Nikkah ceremony. These verified profiles represent our most active members seeking Pakistani marriage and halal matrimony.
+            </p>
 
             <!-- Featured Profiles Grid -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
@@ -364,16 +518,10 @@
                 <!-- Profile Image -->
                 <div class="aspect-[4/5] overflow-hidden relative">
                   <% if (profile.profilePic && profile.profilePic.url) { %>
-                  <img src="<%= profile.profilePic.url %>" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" alt="<%= profile.username %>'s Profile">
+                  <img src="<%= profile.profilePic.url.replace('/upload/', '/upload/c_fill,w_300,h_400,q_auto,f_auto/') %>" alt="<%= profile.name || profile.username %> - Muslim matrimony profile for Islamic wedding and Nikkah ceremony" class="w-full h-full object-cover transition-transform duration-300 hover:scale-105" loading="lazy" onload="this.classList.add('loaded')" onerror="this.src='https://ui-avatars.com/api/?name=<%= encodeURIComponent(profile.name || profile.username) %>&background=<%= profile.gender === 'male' ? '0077be' : 'e91e63' %>&color=fff&size=300&format=png'">
                   <% } else { %>
                   <!-- Default avatar based on gender -->
-                  <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200 group-hover:from-gray-200 group-hover:to-gray-300 transition-all duration-300">
-                    <% if (profile.gender === 'male') { %>
-                    <img src="/images/boyavatar.png" class="w-20 h-20 rounded-full object-cover" alt="<%= profile.username %>'s Profile">
-                    <% } else { %>
-                    <img src="/images/girlavatar.png" class="w-20 h-20 rounded-full object-cover" alt="<%= profile.username %>'s Profile">
-                    <% } %>
-                  </div>
+                  <img src="https://ui-avatars.com/api/?name=<%= encodeURIComponent(profile.name || profile.username) %>&background=<%= profile.gender === 'male' ? '0077be' : 'e91e63' %>&color=fff&size=300&format=png" alt="<%= profile.name || profile.username %>" class="w-full h-full object-cover" loading="lazy">
                   <% } %>
                 </div>
 
@@ -420,13 +568,15 @@
 
           <!-- **UPDATED**: Other Profiles Section -->
           <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-8 gap-4">
-            <h2 class="text-3xl font-bold text-gray-800 font-['Playfair_Display']">
-              <% if (featuredProfiles && featuredProfiles.length > 0) { %>
-              Other Profiles
-              <% } else { %>
-              All Profiles
-              <% } %>
-            </h2>
+            <div>
+              <h2 class="text-3xl font-bold text-gray-800 font-['Playfair_Display'] mb-2">
+                <% if (featuredProfiles && featuredProfiles.length > 0) { %>
+                More Muslim Matrimony Profiles
+                <% } else { %>
+                All Muslim Matrimony Profiles
+                <% } %>
+              </h2>
+            </div>
 
             <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4">
               <!-- Sort By Dropdown -->
@@ -455,14 +605,10 @@
             <a href="/profiles/<%= profile.profileSlug || profile._id %>" class="bg-white rounded-2xl overflow-hidden material-shadow hover:material-shadow-hover transition-all duration-300 block">
               <div class="aspect-[4/5] overflow-hidden">
                 <% if (profile.profilePic && profile.profilePic.url) { %>
-                <img src="<%= profile.profilePic.url %>" class="w-full h-full object-cover" alt="<%= profile.name || profile.username %>'s Profile">
+                <img src="<%= profile.profilePic.url.replace('/upload/', '/upload/c_fill,w_300,h_400,q_auto,f_auto/') %>" alt="<%= profile.name || profile.username %> - Pakistani marriage profile for Muslim matrimony UK" class="w-full h-full object-cover transition-transform duration-300 hover:scale-105" loading="lazy" onload="this.classList.add('loaded')" onerror="this.src='https://ui-avatars.com/api/?name=<%= encodeURIComponent(profile.name || profile.username) %>&background=<%= profile.gender === 'male' ? '0077be' : 'e91e63' %>&color=fff&size=300&format=png'">
                 <% } else { %>
                 <!-- Default placeholder based on gender -->
-                <% if (profile.gender === 'male') { %>
-                <img src="/images/boyavatar.png" class="w-full h-full object-cover bg-gray-100" alt="<%= profile.username %>'s Profile">
-                <% } else { %>
-                <img src="/images/girlavatar.png" class="w-full h-full object-cover bg-gray-100" alt="<%= profile.username %>'s Profile">
-                <% } %>
+                <img src="https://ui-avatars.com/api/?name=<%= encodeURIComponent(profile.name || profile.username) %>&background=<%= profile.gender === 'male' ? '0077be' : 'e91e63' %>&color=fff&size=300&format=png" alt="<%= profile.name || profile.username %>" class="w-full h-full object-cover" loading="lazy">
                 <% } %>
               </div>
               <div class="p-4">
@@ -972,6 +1118,45 @@
           // Redirect with new parameters
           const newUrl = window.location.pathname + '?' + urlParams.toString();
           window.location.href = newUrl;
+        });
+      }
+    });
+  </script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Progressive image loading
+      const images = document.querySelectorAll('img[loading="lazy"]');
+
+      // IntersectionObserver for better lazy loading
+      if ('IntersectionObserver' in window) {
+        const imageObserver = new IntersectionObserver((entries, observer) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              const img = entry.target;
+
+              // Add loading state
+              img.addEventListener('load', function() {
+                this.classList.add('loaded');
+                // Stop animation on parent
+                const parent = this.closest('.aspect-\\[4\\/5\\]');
+                if (parent) {
+                  parent.style.animation = 'none';
+                  parent.style.background = 'none';
+                }
+              });
+
+              observer.unobserve(img);
+            }
+          });
+        });
+
+        images.forEach(img => imageObserver.observe(img));
+      } else {
+        // Fallback for browsers without IntersectionObserver
+        images.forEach(img => {
+          img.addEventListener('load', function() {
+            this.classList.add('loaded');
+          });
         });
       }
     });

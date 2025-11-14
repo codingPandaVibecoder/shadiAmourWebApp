@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title %></title>
+  <link rel="stylesheet" href="/css/blog.css">
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="<%= metaDescription %>">
+  <% if (blog.keywords && blog.keywords.length > 0) { %>
+  <meta name="keywords" content="<%= blog.keywords.join(', ') %>">
+  <% } %>
+  <link rel="canonical" href="<%= canonicalUrl %>">
+
+  <!-- Open Graph Tags -->
+  <meta property="og:title" content="<%= blog.title %>">
+  <meta property="og:description" content="<%= blog.excerpt || metaDescription %>">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="<%= canonicalUrl %>">
+  <% if (blog.featuredImage && blog.featuredImage.url) { %>
+  <meta property="og:image" content="<%= blog.featuredImage.url %>">
+  <% } %>
+
+  <!-- Twitter Card Tags -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="<%= blog.title %>">
+  <meta name="twitter:description" content="<%= blog.excerpt || metaDescription %>">
+  <% if (blog.featuredImage && blog.featuredImage.url) { %>
+  <meta name="twitter:image" content="<%= blog.featuredImage.url %>">
+  <% } %>
+
+  <!-- Favicon -->
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+  <link rel="manifest" href="/images/site.webmanifest">
+  <meta name="theme-color" content="#E91E63">
+
+  <link rel="stylesheet" href="/css/output.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Playfair+Display:wght@400;600;700&family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+    <%- JSON.stringify(structuredData) %>
+  </script>
+</head>
+
+<body class="bg-gray-50 font-['Roboto']">
+  <%- include('../partials/header') %>
+
+  <main class="pt-24 min-h-screen">
+    <div class="mx-auto px-6">
+      <!-- Breadcrumb -->
+      <!-- **UPDATED**: Responsive Breadcrumb that wraps on long titles -->
+      <nav class="flex py-3 px-4 mb-6 bg-white rounded-lg text-sm text-gray-600" aria-label="Breadcrumb">
+        <ol class="flex flex-wrap items-start w-full">
+          <li class="flex items-center shrink-0">
+            <a href="/" class="hover:text-primary transition-colors">Home</a>
+            <i class="ri-arrow-right-s-line mx-2 shrink-0"></i>
+          </li>
+          <li class="flex items-center shrink-0">
+            <a href="/blog" class="hover:text-primary transition-colors">Blog</a>
+            <i class="ri-arrow-right-s-line mx-2 shrink-0"></i>
+          </li>
+          <li class="text-primary font-medium break-words min-w-0 leading-relaxed">
+            <%= blog.title %>
+          </li>
+        </ol>
+      </nav>
+      <!-- Article Header -->
+      <article class="bg-white rounded-2xl material-shadow overflow-hidden mb-8">
+        <!-- Featured Image -->
+        <% if (blog.featuredImage && blog.featuredImage.url) { %>
+        <!-- <div class="h-65 relative overflow-hidden"> -->
+        <img src="<%= blog.featuredImage.url %>" alt="<%= blog.featuredImage.alt || blog.title %>" class="w-full h-[80px] object-cover" />
+        <!-- </div> -->
+        <% } %>
+
+        <div class="p-5">
+          <!-- Category and Date -->
+          <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
+            <span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-xs font-medium">
+              <%= blog.category %>
+            </span>
+            <div class="flex items-center gap-4">
+              <time datetime="<%= blog.publishedAt %>">
+                <%= new Date(blog.publishedAt).toLocaleDateString('en-GB', {
+                  year: 'numeric', month: 'long', day: 'numeric'
+                }) %>
+              </time>
+              <span class="flex items-center gap-1">
+                <i class="ri-time-line"></i>
+                5 min read
+              </span>
+            </div>
+          </div>
+
+          <!-- Title -->
+          <h1 class="p-4 text-3xl md:text-4xl font-bold text-gray-800 mb-4 font-['Playfair_Display']">
+            <%= blog.title %>
+          </h1>
+
+          <!-- Excerpt -->
+          <% if (blog.excerpt) { %>
+          <p class=" p-3 text-lg text-gray-600 mb-6 italic">
+            <%= blog.excerpt %>
+          </p>
+          <% } %>
+
+          <!-- Author -->
+          <div class="flex items-center gap-3 p-6 border-b border-gray-200">
+            <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
+              <i class="ri-user-line text-primary text-xl"></i>
+            </div>
+            <div>
+              <p class="font-medium text-gray-800"><%= blog.author.name || "shadiAmour Team" %></p>
+              <p class="text-sm text-gray-500">Expert Marriage Consultant</p>
+            </div>
+          </div>
+
+          <!-- Blog Content -->
+          <div class="p-8 prose prose-lg max-w-none">
+            <div class="article-content">
+              <%- blog.content %>
+            </div>
+          </div>
+
+          <!-- Tags -->
+          <% if (blog.tags && blog.tags.length > 0) { %>
+          <div class="mt-8 p-6 border-t border-gray-200">
+            <h3 class="text-sm font-medium text-gray-500 mb-3">Tags:</h3>
+            <div class="flex flex-wrap gap-2">
+              <% blog.tags.forEach(tag => { %>
+              <a href="/blog?tag=<%= tag %>" class="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm hover:bg-primary/10 hover:text-primary transition-colors">
+                #<%= tag %>
+              </a>
+              <% }) %>
+            </div>
+          </div>
+          <% } %>
+        </div>
+      </article>
+
+      <!-- Related Posts -->
+      <% if (relatedBlogs && relatedBlogs.length > 0) { %>
+      <section class="mb-8">
+        <h2 class="text-2xl font-bold text-gray-800 mb-6 font-['Playfair_Display']">Related Articles</h2>
+        <div class="grid md:grid-cols-3 gap-6">
+          <% relatedBlogs.forEach(related => { %>
+          <article class="bg-white rounded-xl material-shadow hover:material-shadow-hover transition-all duration-300 overflow-hidden group">
+            <div class="aspect-video bg-gradient-to-br from-primary/10 to-secondary/10 relative overflow-hidden">
+              <div class="absolute inset-0 flex items-center justify-center">
+                <i class="ri-article-line text-4xl text-primary/30"></i>
+              </div>
+            </div>
+            <div class="p-4">
+              <h3 class="font-semibold text-gray-800 mb-2 line-clamp-2 group-hover:text-primary transition-colors">
+                <a href="/blog/<%= related.slug %>"><%= related.title %></a>
+              </h3>
+              <p class="text-sm text-gray-600 mb-3 line-clamp-2"><%= related.excerpt %></p>
+              <time class="text-xs text-gray-500">
+                <%= new Date(related.publishedAt).toLocaleDateString('en-GB') %>
+              </time>
+            </div>
+          </article>
+          <% }) %>
+        </div>
+      </section>
+      <% } %>
+
+      <!-- Back to Blog -->
+      <div class="text-center mb-8">
+        <a href="/blog" class="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-button hover:bg-pink-600 transition-colors">
+          <i class="ri-arrow-left-line"></i>
+          Back to Blog
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <%- include('../partials/footer') %>
+
+  <style>
+    .line-clamp-2 {
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .material-shadow {
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .material-shadow-hover {
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    }
+
+    .prose {
+      line-height: 1.7;
+    }
+
+    .prose p {
+      margin-bottom: 1.5rem;
+    }
+
+    .prose h2,
+    .prose h3,
+    .prose h4 {
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    .prose ul,
+    .prose ol {
+      margin-bottom: 1.5rem;
+      padding-left: 1.5rem;
+    }
+
+    .prose blockquote {
+      border-left: 4px solid #E91E63;
+      padding-left: 1.5rem;
+      margin: 2rem 0;
+      font-style: italic;
+      color: #666;
+    }
+  </style>
+</body>
+
+</html>

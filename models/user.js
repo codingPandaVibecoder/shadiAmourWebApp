@@ -40,6 +40,14 @@ const userSchema = new mongoose.Schema({
     type: Date,
     default: null,
   },
+  passcodeUsed: {
+    type: String,
+    default: null,
+  },
+  employeeRef: {
+    type: String,
+    default: null,
+  },
   name: {
     type: String,
   },
@@ -293,7 +301,7 @@ const userSchema = new mongoose.Schema({
   },
   registrationSource: {
     type: String,
-    enum: ["register", "admin"],
+    enum: ["register", "admin", "google"],
     default: "register",
   },
   registeredAt: {
@@ -310,6 +318,29 @@ const userSchema = new mongoose.Schema({
   },
   profileFor: {
     type: String,
+  },
+  googleId: {
+    type: String,
+    sparse: true, // Allows multiple documents without this field
+  },
+  googleProfilePic: {
+    type: String,
+  },
+  randomNameForSeo: {
+    type: String,
+    default: null,
+  },
+  seoKeywords: {
+    type: [String],
+    default: [],
+  },
+  seoField1: {
+    type: String,
+    maxlength: [500, 'SEO Field 1 cannot exceed 500 characters']
+  },
+  seoField2: {
+    type: String,
+    maxlength: [500, 'SEO Field 2 cannot exceed 500 characters']
   },
 });
 module.exports = mongoose.model("User", userSchema);

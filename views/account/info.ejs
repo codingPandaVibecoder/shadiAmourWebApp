@@ -10,32 +10,8 @@
   <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
   <link rel="manifest" href="/images/site.webmanifest">
   <meta name="theme-color" content="#E91E63">
-  <title>shadiamour - Edit User</title>
-  <script src="https://cdn.tailwindcss.com/3.4.16"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            primary: '#E91E63',
-            secondary: '#673AB7'
-          },
-          borderRadius: {
-            'none': '0px',
-            'sm': '4px',
-            DEFAULT: '8px',
-            'md': '12px',
-            'lg': '16px',
-            'xl': '20px',
-            '2xl': '24px',
-            '3xl': '32px',
-            'full': '9999px',
-            'button': '8px'
-          }
-        }
-      }
-    }
-  </script>
+  <title>shadiAmour - Edit User</title>
+  <link rel="stylesheet" href="/css/output.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Playfair+Display:wght@400;600;700&family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -586,12 +562,63 @@
             <form class="space-y-6">
               <div class="grid md:grid-cols-2 gap-6">
                 <div class="space-y-2">
-                  <label for="height" class="block text-sm font-medium text-gray-700">Height (cm)</label>
+                  <label for="height" class="block text-sm font-medium text-gray-700">Height</label>
                   <div class="relative">
                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                       <i class="ri-ruler-line text-gray-400"></i>
                     </div>
-                    <input type="number" id="height" name="height" min="100" max="250" class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="Enter height in cm">
+                    <select id="height" name="height" class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 bg-white">
+                      <option value="">Select Height</option>
+                      <option value="122">4'0" - 122cm</option>
+                      <option value="124">4'1" - 124cm</option>
+                      <option value="127">4'2" - 127cm</option>
+                      <option value="130">4'3" - 130cm</option>
+                      <option value="132">4'4" - 132cm</option>
+                      <option value="135">4'5" - 135cm</option>
+                      <option value="137">4'6" - 137cm</option>
+                      <option value="140">4'7" - 140cm</option>
+                      <option value="142">4'8" - 142cm</option>
+                      <option value="145">4'9" - 145cm</option>
+                      <option value="147">4'10" - 147cm</option>
+                      <option value="150">4'11" - 150cm</option>
+                      <option value="152">5'0" - 152cm</option>
+                      <option value="155">5'1" - 155cm</option>
+                      <option value="157">5'2" - 157cm</option>
+                      <option value="160">5'3" - 160cm</option>
+                      <option value="163">5'4" - 163cm</option>
+                      <option value="165">5'5" - 165cm</option>
+                      <option value="168">5'6" - 168cm</option>
+                      <option value="170">5'7" - 170cm</option>
+                      <option value="173">5'8" - 173cm</option>
+                      <option value="175">5'9" - 175cm</option>
+                      <option value="178">5'10" - 178cm</option>
+                      <option value="180">5'11" - 180cm</option>
+                      <option value="183">6'0" - 183cm</option>
+                      <option value="185">6'1" - 185cm</option>
+                      <option value="188">6'2" - 188cm</option>
+                      <option value="191">6'3" - 191cm</option>
+                      <option value="193">6'4" - 193cm</option>
+                      <option value="196">6'5" - 196cm</option>
+                      <option value="198">6'6" - 198cm</option>
+                      <option value="201">6'7" - 201cm</option>
+                      <option value="203">6'8" - 203cm</option>
+                      <option value="206">6'9" - 206cm</option>
+                      <option value="208">6'10" - 208cm</option>
+                      <option value="211">6'11" - 211cm</option>
+                      <option value="213">7'0" - 213cm</option>
+                      <option value="216">7'1" - 216cm</option>
+                      <option value="218">7'2" - 218cm</option>
+                      <option value="221">7'3" - 221cm</option>
+                      <option value="224">7'4" - 224cm</option>
+                      <option value="226">7'5" - 226cm</option>
+                      <option value="229">7'6" - 229cm</option>
+                      <option value="231">7'7" - 231cm</option>
+                      <option value="234">7'8" - 234cm</option>
+                      <option value="236">7'9" - 236cm</option>
+                      <option value="239">7'10" - 239cm</option>
+                      <option value="241">7'11" - 241cm</option>
+                      <option value="244">8'0" - 244cm</option>
+                    </select>
                   </div>
                 </div>
                 <div class="space-y-2">
@@ -698,7 +725,7 @@
                   <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                     <i class="ri-church-line text-gray-400"></i>
                   </div>
-                  <input type="text" id="religion" name="religion" class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="Enter religion">
+                  <input type="text" id="religion" name="religion" disabled class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="Enter religion">
                 </div>
                 <div class="space-y-2">
                   <label for="caste" class="block text-sm font-medium text-gray-700">Caste</label>
@@ -1517,44 +1544,76 @@
       }
 
       // Display sent requests
+      // Find the displaySentRequests function (around line 1030) and replace it with this updated version
+
       function displaySentRequests(requests) {
         const container = document.getElementById('sentRequestsContainer');
 
+        // **NEW**: Calculate pending requests count
+        const pendingRequests = requests.filter(req => req.status === 'pending');
+        const pendingCount = pendingRequests.length;
+        const maxRequests = 3;
+
         if (requests.length === 0) {
-          container.innerHTML = '<div class="text-center py-8"><i class="ri-send-plane-line text-3xl text-gray-400 mb-4"></i><p class="text-gray-500">No requests sent yet</p></div>';
+          container.innerHTML = `
+      <div class="mb-4 flex items-center justify-between">
+        <h3 class="text-lg font-semibold text-gray-900">Your Sent Requests</h3>
+        <span class="px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
+          ${pendingCount}/${maxRequests} requests sent
+        </span>
+      </div>
+      <div class="text-center py-8">
+        <i class="ri-send-plane-line text-3xl text-gray-400 mb-4"></i>
+        <p class="text-gray-500">No requests sent yet</p>
+      </div>
+    `;
           return;
         }
 
-        const requestsHtml = requests.map(request => `
-          <div class="border border-gray-200 rounded-lg p-6 mb-4">
-            <div class="flex items-center justify-between">
-              <div class="flex items-center">
-                <div class="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center mr-4">
-                  <i class="ri-user-line text-gray-500"></i>
-                </div>
-                <div>
-                  <h4 class="font-medium text-gray-900">${request.to.username}</h4>
-                  <p class="text-sm text-gray-500">${request.to.city || ''}, ${request.to.state || ''}</p>
-                  <p class="text-xs text-gray-400">Sent: ${new Date(request.createdAt).toLocaleDateString()}</p>
-                </div>
-              </div>
-              <div class="flex items-center">
-                <span class="px-3 py-1 rounded-full text-xs font-medium ${
-                  request.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
-                  request.status === 'accepted' ? 'bg-green-100 text-green-800' :
-                  'bg-red-100 text-red-800'
-                }">${request.status}</span>
-                ${request.status === 'pending' ? `
-                  <button onclick="cancelRequest('${request._id}')" class="ml-3 px-3 py-1 bg-red-500 text-white text-xs rounded hover:bg-red-600">
-                    Cancel
-                  </button>
-                ` : ''}
-              </div>
-            </div>
-          </div>
-        `).join('');
+        // **NEW**: Create header with request limit indicator
+        const headerHtml = `
+    <div class="mb-4 flex items-center justify-between">
+      <h3 class="text-lg font-semibold text-gray-900">Your Sent Requests</h3>
+      <span class="px-3 py-1 rounded-full text-sm font-medium ${
+        pendingCount >= maxRequests ? 'bg-red-100 text-red-800' : 
+        pendingCount >= 2 ? 'bg-yellow-100 text-yellow-800' : 
+        'bg-green-100 text-green-800'
+      }">
+        ${pendingCount}/${maxRequests} requests sent
+      </span>
+    </div>
+  `;
 
-        container.innerHTML = requestsHtml;
+        const requestsHtml = requests.map(request => `
+    <div class="border border-gray-200 rounded-lg p-6 mb-4">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center">
+          <div class="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center mr-4">
+            <i class="ri-user-line text-gray-500"></i>
+          </div>
+          <div>
+            <h4 class="font-medium text-gray-900">${request.to.username}</h4>
+            <p class="text-sm text-gray-500">${request.to.city || ''}, ${request.to.state || ''}</p>
+            <p class="text-xs text-gray-400">Sent: ${new Date(request.createdAt).toLocaleDateString()}</p>
+          </div>
+        </div>
+        <div class="flex items-center">
+          <span class="px-3 py-1 rounded-full text-xs font-medium ${
+            request.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
+            request.status === 'accepted' ? 'bg-green-100 text-green-800' :
+            'bg-red-100 text-red-800'
+          }">${request.status}</span>
+          ${request.status === 'pending' ? `
+            <button onclick="cancelRequest('${request._id}')" class="ml-3 px-3 py-1 bg-red-500 text-white text-xs rounded hover:bg-red-600">
+              Cancel
+            </button>
+          ` : ''}
+        </div>
+      </div>
+    </div>
+  `).join('');
+
+        container.innerHTML = headerHtml + requestsHtml;
       }
 
       // Display received requests

@@ -10,32 +10,8 @@
   <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
   <link rel="manifest" href="/images/site.webmanifest">
   <meta name="theme-color" content="#E91E63">
-  <title>shadiamour - Edit User</title>
-  <script src="https://cdn.tailwindcss.com/3.4.16"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            primary: '#E91E63',
-            secondary: '#673AB7'
-          },
-          borderRadius: {
-            'none': '0px',
-            'sm': '4px',
-            DEFAULT: '8px',
-            'md': '12px',
-            'lg': '16px',
-            'xl': '20px',
-            '2xl': '24px',
-            '3xl': '32px',
-            'full': '9999px',
-            'button': '8px'
-          }
-        }
-      }
-    }
-  </script>
+  <title>shadiAmour - Edit User</title>
+  <link rel="stylesheet" href="/css/output.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Playfair+Display:wght@400;600;700&family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -133,7 +109,7 @@
       <div class="flex items-center">
         <h1 class="text-2xl font-bold text-primary font-['Playfair_Display']">
           <a href="/" class="hover:text-pink-600 transition-colors duration-300 cursor-pointer">
-            shadiamour
+            shadiAmour
           </a>
         </h1>
         <span class="ml-4 px-3 py-1 bg-orange-100 text-orange-600 text-sm rounded-full font-medium">
@@ -331,6 +307,17 @@
           <div class="space-y-2">
             <label for="hobbies" class="block text-sm font-medium text-gray-700">Hobbies (comma separated)</label>
             <input type="text" id="hobbies" name="hobbies" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="e.g., Reading, Swimming, Cooking">
+          </div>
+          <div class="space-y-2">
+            <label for="seoField1" class="block text-sm font-medium text-gray-700">SEO Field 1 (Admin Only)</label>
+            <input type="text" id="seoField1" name="seoField1" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="Enter SEO field 1 content" maxlength="500">
+            <p class="text-xs text-gray-500">This field is only visible to administrators and used for SEO purposes.</p>
+          </div>
+
+          <div class="space-y-2">
+            <label for="seoField2" class="block text-sm font-medium text-gray-700">SEO Field 2 (Admin Only)</label>
+            <input type="text" id="seoField2" name="seoField2" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="Enter SEO field 2 content" maxlength="500">
+            <p class="text-xs text-gray-500">This field is only visible to administrators and used for SEO purposes.</p>
           </div>
         </form>
       </div>
@@ -1125,6 +1112,8 @@
             work: userDataRaw.work || '',
             aboutMe: userDataRaw.aboutMe || '',
             hobbies: Array.isArray(userDataRaw.hobbies) ? userDataRaw.hobbies.join(', ') : '',
+            seoField1: userDataRaw.seoField1 || '',
+            seoField2: userDataRaw.seoField2 || '',
 
             // Contact & Location
             contact: userDataRaw.contact || '',

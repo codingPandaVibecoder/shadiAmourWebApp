@@ -1,106 +1,42 @@
-function calculateProfileCompletion(user) {
-  const totalFields = 64; // Total possible fields
-
-  let completedFields = 0;
-
-  // Check each field in the user object
-  Object.keys(user.toObject()).forEach((key) => {
-    const value = user[key];
-    if (
-      value !== null &&
-      value !== undefined &&
-      value !== "" &&
-      value !== "N/A"
-    ) {
-      if (Array.isArray(value) && value.length > 0) {
-        completedFields++;
-      } else if (typeof value === "object" && !Array.isArray(value)) {
-        // For nested objects like profilePic, coverPhoto
-        if (value.url || Object.keys(value).length > 0) {
-          completedFields++;
-        }
-      } else if (typeof value !== "object") {
-        completedFields++;
-      }
-    }
-  });
-
-  const percentage = Math.round((completedFields / totalFields) * 100);
-  return {
-    completed: completedFields,
-    total: totalFields,
-    percentage: percentage,
-  };
+const { muslimMaleNames, muslimFemaleNames } = require("./config/seoData");
+const Blog = require("./models/Blog");
+function getRandomSeoName(gender) {
+  if (gender === "male") {
+    const randomIndex = Math.floor(Math.random() * muslimMaleNames.length);
+    return muslimMaleNames[randomIndex];
+  } else if (gender === "female") {
+    const randomIndex = Math.floor(Math.random() * muslimFemaleNames.length);
+    return muslimFemaleNames[randomIndex];
+  }
+  return null;
 }
+// **NEW**: Image optimization helper
+function getOptimizedImageUrl(
+  originalUrl,
+  width = 300,
+  height = 400,
+  crop = "fill"
+) {
+  if (!originalUrl || !originalUrl.includes("cloudinary.com")) {
+    return originalUrl;
+  }
+
+  // Insert transformations into Cloudinary URL
+  return originalUrl.replace(
+    "/upload/",
+    `/upload/c_${crop},w_${width},h_${height},q_auto,f_auto/`
+  );
+}
+
+// Make it available globally
+global.getOptimizedImageUrl = getOptimizedImageUrl;
 const slugify = require("slugify");
-function generateProfileSlug(user) {
-  // Use name if available, otherwise username
-  const baseName = user.username;
-
-  let parts = [baseName];
-
-  // **FIXED**: Prioritize most specific to least specific location
-  let locationPart = null;
-
-  if (
-    user.birthPlace &&
-    user.birthPlace.trim() &&
-    user.birthPlace.toLowerCase() !== "n/a"
-  ) {
-    locationPart = user.birthPlace;
-  } else if (
-    user.city &&
-    user.city.trim() &&
-    user.city.toLowerCase() !== "n/a"
-  ) {
-    locationPart = user.city;
-  } else if (
-    user.country &&
-    user.country.trim() &&
-    user.country.toLowerCase() !== "n/a"
-  ) {
-    locationPart = user.country;
-  } else if (
-    user.nationality &&
-    user.nationality.trim() &&
-    user.nationality.toLowerCase() !== "n/a"
-  ) {
-    locationPart = user.nationality;
-  }
-
-  if (locationPart) {
-    parts.push(`from-${locationPart}`);
-  }
-
-  // Add age if available
-  if (user.age) {
-    parts.push(`${user.age}`);
-  }
-
-  // Join parts and slugify
-  const slug = slugify(parts.join(" "), {
-    lower: true,
-    strict: true, // Remove special characters
-    locale: "en",
-  });
-
-  return slug;
-}
-
 // **NEW**: Function to ensure unique slug
-async function generateUniqueSlug(user) {
-  let baseSlug = generateProfileSlug(user);
-  let slug = baseSlug;
-  let counter = 1;
-
-  // Check if slug already exists
-  while (await User.findOne({ profileSlug: slug, _id: { $ne: user._id } })) {
-    slug = `${baseSlug}-${counter}`;
-    counter++;
-  }
-
-  return slug;
-}
+const {
+  calculateProfileCompletion,
+  generateProfileSlug,
+  generateUniqueSlug,
+} = require("./utils/profileHelpers");
 const User = require("./models/user");
 const Newsletter = require("./models/Newsletter");
 const { countryOptions, countryPlaceholders } = require("./config/countries");
@@ -126,6 +62,7 @@ const { CloudinaryStorage } = require("multer-storage-cloudinary");
 const MongoStore = require("connect-mongo");
 const { v4: uuidv4 } = require("uuid");
 require("dotenv").config();
+const passport = require("./config/passport");
 const port = process.env.PORT;
 const compression = require("compression");
 const app = express();
@@ -194,7 +131,8 @@ app.use(
     cookie: { secure: false, httpOnly: true }, // set secure: true if using HTTPS
   })
 );
-
+app.use(passport.initialize());
+app.use(passport.session());
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
   api_key: process.env.CLOUDINARY_KEY,
@@ -203,10 +141,8 @@ cloudinary.config({
 const storage = new CloudinaryStorage({
   cloudinary,
   params: async (req, file) => {
-    // Get username from either userData or form data
     let username = req.userData?.username || req.body?.userId || "unknown";
 
-    // If userId is passed instead of username, look up the username
     if (req.body?.userId && !req.userData?.username) {
       try {
         const user = await User.findById(req.body.userId);
@@ -216,23 +152,33 @@ const storage = new CloudinaryStorage({
       }
     }
 
-    // **NEW**: Different naming based on file field name
     let suffix = "";
     if (file.fieldname === "coverPhoto") {
-      suffix = "C"; // Cover photo: M23C
+      suffix = "C";
     } else if (file.fieldname === "profilePic") {
-      suffix = "P"; // Profile picture: M23P
+      suffix = "P";
     } else {
-      suffix = "imgs1"; // Fallback for other uploads
+      suffix = "imgs1";
     }
 
     return {
       folder: "user_profiles",
-      public_id: `${username}${suffix}`, // M23C or M23P
+      public_id: `${username}${suffix}`,
       allowed_formats: ["jpg", "jpeg", "png", "webp"],
+      // **ENHANCED**: Better compression and optimization
       transformation: [
-        { quality: "auto" }, // compress smartly
-        { fetch_format: "auto" }, // store in efficient format
+        { quality: "auto:good" }, // Smart compression
+        { fetch_format: "auto" }, // Serve optimal format (WebP when supported)
+        {
+          if: "w_gt_1200",
+          width: 1200,
+          crop: "limit",
+        }, // Limit max width
+        {
+          if: "h_gt_1200",
+          height: 1200,
+          crop: "limit",
+        }, // Limit max height
       ],
     };
   },
@@ -284,7 +230,11 @@ app.get("/register", (req, res) => {
     // User is already logged in, redirect to home or dashboard
     return res.redirect("/home");
   }
-  res.render("register", { countryOptions, countryPlaceholders });
+  res.render("register", {
+    countryOptions,
+    countryPlaceholders,
+    query: req.query,
+  });
 });
 
 app.get("/onboarding", isLoggedIn, findUser, (req, res) => {
@@ -618,152 +568,105 @@ app.post("/account/update", isLoggedIn, findUser, async (req, res) => {
     res.json({ error: `Failed to update profile: ${error.message}` });
   }
 });
-
-// new register post
+// Update the existing /register POST route
 app.post("/register", async (req, res) => {
   console.log("Register request body:", req.body);
 
-  const { username, email, password, gender } = req.body;
-  console.log("Session verification status:", {
-    emailVerified: req.session.emailVerified,
-    verifiedEmail: req.session.verifiedEmail,
-    providedEmail: email?.toLowerCase(),
-    match: req.session.verifiedEmail === email?.toLowerCase(),
-  });
+  const { email, password, confirmPassword } = req.body;
 
-  if (!username || !password || !gender) {
-    console.log("required fields missing");
+  if (!password) {
     return res.render("register", {
-      error: "Username, password, and gender are required.",
+      error: "Password is required.",
+      countryOptions,
+      countryPlaceholders,
     });
   }
 
-  // **NEW**: Check if email is verified
-  // if (
-  //   !req.session.emailVerified ||
-  //   req.session.verifiedEmail !== email.toLowerCase()
-  // ) {
-  //   console.log("Email verification failed:", {
-  //     emailVerified: req.session.emailVerified,
-  //     verifiedEmail: req.session.verifiedEmail,
-  //     providedEmail: email.toLowerCase(),
-  //   });
-  //   return res.render("register", {
-  //     error: "Please verify your email before registering.",
-  //   });
-  // }
+  // Check if temp user exists from gender/username step
+  if (!req.session.tempUserId) {
+    return res.render("register", {
+      error: "Please complete the verification process first.",
+      countryOptions,
+      countryPlaceholders,
+    });
+  }
 
-  // **UPDATED**: Only check email verification if email was provided
+  // Check password confirmation
+  if (password !== confirmPassword) {
+    return res.render("register", {
+      error: "Passwords do not match.",
+      countryOptions,
+      countryPlaceholders,
+    });
+  }
+
+  // Email verification check (if email provided)
   if (email && email.trim()) {
     if (
       !req.session.emailVerified ||
       req.session.verifiedEmail !== email.toLowerCase()
     ) {
-      console.log("Email provided but not verified");
       return res.render("register", {
         error:
           "Please verify your email address or leave it empty to register without email.",
+        countryOptions,
+        countryPlaceholders,
       });
     }
   }
 
-  // Check passcode
-  // **NEW**: Check if passcode was verified in the verification step
-  if (!req.session.passcodeVerified) {
-    return res.render("register", {
-      error: "Please verify your mobile number and passcode first.",
-    });
-  }
-
-  // **NEW**: Store the verified mobile number in user data
-  const verifiedMobile = req.session.verifiedMobile;
-
   // Check password length
-  if (!password || password.length < 5) {
+  if (password.length < 5) {
     return res.render("register", {
       error: "Password must be at least 5 characters long.",
+      countryOptions,
+      countryPlaceholders,
     });
-  }
-
-  // Check if gender is valid
-  if (gender !== "male" && gender !== "female") {
-    return res.render("register", {
-      error: "Please select a valid gender.",
-    });
-  }
-
-  // Check unique username and email
-  // const existingUser = await User.findOne({
-  //   $or: [{ username }, { email: email.toLowerCase() }],
-  // });
-  // if (existingUser) {
-  //   return res.render("register", {
-  //     error: "Username or email already exists. Please try different ones.",
-  //   });
-  // }
-  // Build query for existing user check
-  let existingUserQuery = { username };
-  if (email && email.trim()) {
-    existingUserQuery = {
-      $or: [{ username }, { email: email.toLowerCase() }],
-    };
-  }
-
-  const existingUser = await User.findOne(existingUserQuery);
-  if (existingUser) {
-    const errorMsg =
-      email && email.trim()
-        ? "Username or email already exists. Please try different ones."
-        : "Username already exists. Please try a different one.";
-    return res.render("register", { error: errorMsg });
   }
 
   try {
-    console.log("Creating user...");
-    const hashedPassword = await bcrypt.hash(password, 12);
-    // const newUser = new User({
-    //   username,
-    //   email: email.toLowerCase(), // **NEW**
-    //   password: hashedPassword,
-    //   gender,
-    //   isEmailVerified: true, // **NEW**: Set as verified since they passed verification
-    //   registrationSource: "register",
-    // });
-    const userData = {
-      username,
-      password: hashedPassword,
-      gender,
-      registrationSource: "register",
-      contact: verifiedMobile,
-    };
-
-    // **OPTIONAL**: Only add email if provided
-    if (email && email.trim()) {
-      userData.email = email.toLowerCase();
-      // Only set as verified if they actually verified it
-      userData.isEmailVerified =
-        req.session.emailVerified &&
-        req.session.verifiedEmail === email.toLowerCase();
+    // Get the temporary user
+    const user = await User.findById(req.session.tempUserId);
+    if (!user) {
+      return res.render("register", {
+        error: "Session expired. Please start registration again.",
+        countryOptions,
+        countryPlaceholders,
+      });
     }
 
-    const newUser = new User(userData);
+    // Update user with final details
+    const hashedPassword = await bcrypt.hash(password, 12);
+    user.password = hashedPassword;
 
-    newUser.profileSlug = await generateUniqueSlug(newUser);
-    await newUser.save();
-    console.log("User created successfully:", newUser.username);
-    req.session.userId = newUser._id;
-    req.session.user = newUser;
-    // Clean up verification session data
+    // Add email if provided
+    if (email && email.trim()) {
+      user.email = email.toLowerCase();
+      user.isEmailVerified = true;
+    }
+
+    await user.save();
+
+    console.log("User registration completed:", user.username);
+
+    // Set up session
+    req.session.userId = user._id;
+    req.session.user = user;
+
+    // Clean up temporary session data
+    delete req.session.tempUserId;
     delete req.session.emailVerified;
     delete req.session.verifiedEmail;
-    delete req.session.passcodeVerified; // **NEW**
-    delete req.session.verifiedMobile; // **NEW**
+    delete req.session.passcodeVerified;
+    delete req.session.verifiedMobile;
 
     return res.redirect("/onboarding");
   } catch (error) {
-    console.error("Registration error:", error);
+    console.error("Registration completion error:", error);
     return res.render("register", {
       error: "Registration failed. Please try again.",
+      countryOptions,
+      countryPlaceholders,
     });
   }
 });
@@ -816,10 +719,31 @@ app.post("/api/verify-passcode", async (req, res) => {
       providedPasscode: passcode,
     });
 
-    if (passcode === expectedPasscode) {
+    let cleanPasscode = passcode;
+    let employeePrefix = null;
+
+    if (passcode.includes("-")) {
+      const parts = passcode.split("-");
+      if (parts.length === 2) {
+        employeePrefix = parts[0];
+        cleanPasscode = parts[1];
+      }
+    }
+
+    console.log("Passcode verification with employee tracking:", {
+      mobile: countryCode + cleanMobile,
+      originalPasscode: passcode,
+      employeePrefix,
+      cleanPasscode,
+      expectedPasscode,
+    });
+
+    if (cleanPasscode === expectedPasscode) {
       // Store verification in session
       req.session.passcodeVerified = true;
       req.session.verifiedMobile = countryCode + cleanMobile;
+      req.session.verifiedPasscode = passcode; // **CHANGED**: Store original passcode with employee prefix
+      req.session.employeePrefix = employeePrefix; // **NEW**: Store employee info for analytics
 
       res.json({
         success: true,
@@ -836,6 +760,81 @@ app.post("/api/verify-passcode", async (req, res) => {
     res.json({
       success: false,
       error: "Verification failed. Please try again.",
+    });
+  }
+});
+// **NEW**: Save gender and username route
+app.post("/api/savegenderandusername", async (req, res) => {
+  try {
+    const { gender, username } = req.body;
+
+    if (!gender || !username) {
+      return res.json({
+        success: false,
+        error: "Gender and username are required",
+      });
+    }
+
+    // Validate gender
+    if (gender !== "male" && gender !== "female") {
+      return res.json({
+        success: false,
+        error: "Please select a valid gender",
+      });
+    }
+
+    // Check if username already exists
+    const existingUser = await User.findOne({ username });
+    if (existingUser) {
+      return res.json({
+        success: false,
+        error: "Username already exists. Please refresh to generate a new one.",
+      });
+    }
+
+    // Check if passcode was verified
+    if (!req.session.passcodeVerified || !req.session.verifiedMobile) {
+      return res.json({
+        success: false,
+        error: "Please verify your passcode first",
+      });
+    }
+
+    // Create temporary user record with basic info
+    const hashedPassword = await bcrypt.hash(
+      "temp_" + Math.random().toString(36).substring(2, 15),
+      12
+    );
+    const randomNameForSeo = getRandomSeoName(gender);
+    const newUser = new User({
+      username,
+      gender,
+      password: hashedPassword, // Temporary password
+      contact: req.session.verifiedMobile,
+      passcodeUsed: req.session.verifiedPasscode,
+      employeeRef: req.session.employeePrefix,
+      registrationSource: "register",
+      randomNameForSeo: randomNameForSeo
+    });
+
+    // Generate profile slug
+    newUser.profileSlug = await generateUniqueSlug(newUser);
+    await newUser.save();
+
+    console.log("Gender and username saved for user:", username);
+
+    // Store user ID in session for next steps
+    req.session.tempUserId = newUser._id;
+
+    res.json({
+      success: true,
+      message: "Information saved successfully",
+    });
+  } catch (error) {
+    console.error("Save gender and username error:", error);
+    res.json({
+      success: false,
+      error: "Failed to save information. Please try again.",
     });
   }
 });
@@ -919,7 +918,57 @@ app.post("/login", async (req, res) => {
     return res.json({ error: "username or password is incorrect" });
   }
 });
+// Google OAuth routes
+app.get(
+  "/auth/google",
+  passport.authenticate("google", {
+    scope: ["profile", "email"],
+  })
+);
 
+app.get(
+  "/auth/google/callback",
+  passport.authenticate("google", {
+    failureRedirect: "/register?error=no_account",
+  }),
+  (req, res) => {
+    try {
+      // Set session data
+      req.session.userId = req.user._id;
+      req.session.user = req.user;
+
+      console.log("Google OAuth successful for user:", {
+        id: req.user._id,
+        username: req.user.username,
+        name: req.user.name,
+        gender: req.user.gender,
+        contact: req.user.contact,
+      });
+
+      // Clean up any temporary session data
+      if (req.session.verifiedMobile) {
+        console.log("Cleaned up verified mobile from session");
+        delete req.session.passcodeVerified;
+        delete req.session.verifiedMobile;
+      }
+
+      // **UPDATED**: Different redirect logic based on user profile completeness
+      // Check if user needs onboarding (new user or incomplete profile)
+      if (!req.user.age || !req.user.gender || !req.user.city || !req.user.profileFor) {
+        return res.redirect("/onboarding");
+      }
+
+      // **NEW**: For existing users with complete basic info, redirect to home
+      res.redirect("/home");
+    } catch (error) {
+      console.error("Google OAuth callback error:", error);
+      res.redirect("/login?error=oauth_error");
+    }
+  }
+);
+app.get("/auth/google/failure", (req, res) => {
+  res.redirect("/login?error=oauth_error");
+});
 // Middleware to check and create notifications after login
 app.use(async (req, res, next) => {
   // Only run for logged-in regular users (not admin)
@@ -1021,9 +1070,8 @@ app.post("/requests/:id/accept", isLoggedIn, async (req, res) => {
       userId: request.from._id,
       type: "request_accepted",
       title: "Request Accepted!",
-      message: `Congratulations! Your request was accepted by ${
-        request.to.name || request.to.username
-      }.`,
+      message: `Congratulations! Your request was accepted by ${request.to.name || request.to.username
+        }.`,
       priority: "high",
       actionUrl: `/profiles/${request.to.profileSlug || request.to._id}`,
       actionText: "View Profile",
@@ -1071,9 +1119,8 @@ app.post("/requests/:id/reject", isLoggedIn, async (req, res) => {
       userId: request.from._id,
       type: "request_rejected",
       title: "Request Declined",
-      message: `Your request was declined by ${
-        request.to.name || request.to.username
-      }.`,
+      message: `Your request was declined by ${request.to.name || request.to.username
+        }.`,
       priority: "medium",
       actionUrl: "/profiles",
       actionText: "Browse Profiles",
@@ -1141,7 +1188,7 @@ app.post("/api/requests/:requestId/cancel", isLoggedIn, async (req, res) => {
 app.get("/profiles", async (req, res) => {
   // Pagination params
   const page = parseInt(req.query.page) > 0 ? parseInt(req.query.page) : 1;
-  const limit = 10;
+  const limit = 12;
   const skip = (page - 1) * limit;
 
   // Extract filter parameters
@@ -1218,10 +1265,10 @@ app.get("/profiles", async (req, res) => {
     const profiles =
       sortBy === "random"
         ? await User.aggregate([
-            { $match: filter },
-            { $skip: skip },
-            { $sample: { size: Math.min(limit, totalProfiles - skip) } },
-          ])
+          { $match: filter },
+          { $skip: skip },
+          { $sample: { size: Math.min(limit, totalProfiles - skip) } },
+        ])
         : await User.find(filter).sort(sortOptions).skip(skip).limit(limit);
 
     const activeFilters = {
@@ -1258,10 +1305,13 @@ app.get("/profiles/:slug", async (req, res) => {
   try {
     const { slug } = req.params;
     let foundProfile;
+    let shouldRedirect = false;
 
     // Check if it's an old MongoDB ID format (for backward compatibility)
     if (mongoose.Types.ObjectId.isValid(slug) && slug.length === 24) {
+      // Find by ID
       foundProfile = await User.findById(slug);
+      shouldRedirect = true; // We found by ID, so we should redirect to slug
     } else {
       // It's a slug - find by slug field
       foundProfile = await User.findOne({ profileSlug: slug });
@@ -1269,10 +1319,17 @@ app.get("/profiles/:slug", async (req, res) => {
 
     if (!foundProfile) {
       return res.status(404).render("404", {
-        title: "Profile Not Found - shadiamour",
+        title: "Profile Not Found - shadiAmour",
         url: req.originalUrl,
       });
     }
+
+    // **NEW**: If we found the profile by ID, redirect to the slug URL
+    if (shouldRedirect && foundProfile.profileSlug) {
+      return res.redirect(301, `/profiles/${foundProfile.profileSlug}`);
+    }
+
+    // **NEW**: If profile doesn't have a slug, generate one and redirect
 
     let canAccessFullProfile = false;
     let hasalreadysentrequest = false;
@@ -1303,6 +1360,9 @@ app.get("/profiles/:slug", async (req, res) => {
         hasalreadysentrequest = true;
       }
     }
+    const { findSimilarProfiles } = require("./utils/profileHelpers");
+    const currentUserId = req.session.userId || null;
+    const similarProfiles = await findSimilarProfiles(foundProfile, 3, currentUserId);
 
     res.render("profile", {
       profile: foundProfile,
@@ -1311,6 +1371,7 @@ app.get("/profiles/:slug", async (req, res) => {
       user: req.session.user,
       isAdmin: req.session.isAdmin,
       filters: null,
+      similarProfiles
     });
   } catch (err) {
     console.error("Profile route error:", err);
@@ -1334,6 +1395,19 @@ app.post(
       const beingLikedUser = await User.findById(beinglikeduserId);
       if (!beingLikedUser) {
         return res.status(404).json({ error: "User not found" });
+      }
+
+      // **NEW**: Check if user already has 3 pending requests
+      const pendingRequestsCount = await Request.countDocuments({
+        from: likeUserId,
+        status: "pending"
+      });
+
+      if (pendingRequestsCount >= 3) {
+        return res.json({
+          error: "request_limit_reached",
+          message: "You can only send maximum 3 profile like requests. You can cancel existing sent requests to add this new request."
+        });
       }
 
       // Check if request already exists
@@ -1393,54 +1467,15 @@ app.get("/admin/addUser", requireAdminOnly, (req, res) => {
   if (!req.session.isAdmin) return res.redirect("/admin");
   res.render("admin/addUser");
 });
-// app.get("/admin/dashboard", requireAdminOrModerator, async (req, res) => {
-//   if (!req.session.isAdmin && !req.session.isModerator) {
-//     return res.redirect("/login");
-//   }
+// Replace the existing /admin/dashboard route with this updated version
 
-//   try {
-//     // Get all users with registration source
-//     const users = await User.find({}).sort({ createdAt: -1, _id: -1 });
-
-//     // Calculate basic stats
-//     const totalUsers = users.length;
-//     const byAdmin = users.filter(
-//       (user) => user.registrationSource === "admin"
-//     ).length;
-//     const bySelf = users.filter(
-//       (user) => user.registrationSource === "register"
-//     ).length;
-
-//     const stats = {
-//       totalUsers,
-//       registrationSources: {
-//         byAdmin,
-//         bySelf,
-//       },
-//     };
-
-//     res.render("admin/dashboard", { users, stats });
-//   } catch (error) {
-//     console.error("Dashboard error:", error);
-//     res.render("admin/dashboard", {
-//       users: [],
-//       stats: {
-//         totalUsers: 0,
-//         registrationSources: {
-//           byAdmin: 0,
-//           bySelf: 0,
-//         },
-//       },
-//     });
-//   }
-// });
 app.get("/admin/dashboard", requireAdminOrModerator, async (req, res) => {
   if (!req.session.isAdmin && !req.session.isModerator) {
     return res.redirect("/login");
   }
 
   try {
-    // **UPDATED**: Handle filter parameter
+    // **UPDATED**: Handle filter parameter including employee names
     const { filter } = req.query;
 
     // Build query based on filter
@@ -1451,6 +1486,10 @@ app.get("/admin/dashboard", requireAdminOrModerator, async (req, res) => {
       query.registrationSource = "register";
     } else if (filter === "featured") {
       query.isFeatured = true;
+    } else if (filter && filter.startsWith("employee-")) {
+      // **NEW**: Filter by employee/referrer name
+      const employeeName = filter.replace("employee-", "");
+      query.passcodeUsed = { $regex: new RegExp(`^${employeeName}-`, "i") };
     }
     // For 'all' or no filter, query remains empty (gets all users)
 
@@ -1463,7 +1502,41 @@ app.get("/admin/dashboard", requireAdminOrModerator, async (req, res) => {
     const bySelf = await User.countDocuments({
       registrationSource: "register",
     });
-    const featuredCount = await User.countDocuments({ isFeatured: true }); // **NEW**
+    const featuredCount = await User.countDocuments({ isFeatured: true });
+
+    // **NEW**: Extract unique employee/referrer names from passcodes
+    const allUsers = await User.find({}, { passcodeUsed: 1 }).lean();
+    const employeeNames = new Set();
+
+    allUsers.forEach(user => {
+      if (user.passcodeUsed && typeof user.passcodeUsed === 'string') {
+        const passcode = user.passcodeUsed.trim();
+        // Check if passcode contains a dash (indicating employee prefix)
+        if (passcode.includes('-')) {
+          const parts = passcode.split('-');
+          if (parts.length >= 2) {
+            const employeeName = parts[0].trim();
+            // Validate that the part after dash contains digits (valid passcode format)
+            const passcodeDigits = parts[1];
+            if (employeeName && passcodeDigits && /^\d+$/.test(passcodeDigits)) {
+              employeeNames.add(employeeName);
+            }
+          }
+        }
+      }
+    });
+
+    // Convert Set to sorted array
+    const uniqueEmployees = Array.from(employeeNames).sort();
+
+    // **NEW**: Calculate employee stats
+    const employeeStats = {};
+    for (const employeeName of uniqueEmployees) {
+      const count = await User.countDocuments({
+        passcodeUsed: { $regex: new RegExp(`^${employeeName}-`, "i") }
+      });
+      employeeStats[employeeName] = count;
+    }
 
     const stats = {
       totalUsers,
@@ -1471,13 +1544,15 @@ app.get("/admin/dashboard", requireAdminOrModerator, async (req, res) => {
         byAdmin,
         bySelf,
       },
-      featuredCount, // **NEW**
+      featuredCount,
+      employeeStats, // **NEW**: Add employee stats
     };
 
     res.render("admin/dashboard", {
       users,
       stats,
-      currentFilter: filter || "all", // **NEW**
+      currentFilter: filter || "all",
+      uniqueEmployees, // **NEW**: Pass employee names to template
     });
   } catch (error) {
     console.error("Dashboard error:", error);
@@ -1489,9 +1564,11 @@ app.get("/admin/dashboard", requireAdminOrModerator, async (req, res) => {
           byAdmin: 0,
           bySelf: 0,
         },
-        featuredCount: 0, // **NEW**
+        featuredCount: 0,
+        employeeStats: {},
       },
-      currentFilter: "all", // **NEW**
+      currentFilter: "all",
+      uniqueEmployees: [], // **NEW**
     });
   }
 });
@@ -1662,13 +1739,14 @@ app.post("/admin/user/add", requireAdminOnly, async (req, res) => {
     // Process education and children arrays
     const educationArr = Array.isArray(education) ? education : [];
     const childrenArr = Array.isArray(children) ? children : [];
-
+    const randomNameForSeo = getRandomSeoName(gender);
     // Create new user object with required fields
     const userData = {
       username,
       password: hashedPassword,
       gender,
       registrationSource: "admin",
+      randomNameForSeo: randomNameForSeo
     };
 
     // Add optional STRING fields only if they exist and are not "N/A"
@@ -1730,7 +1808,8 @@ app.post("/admin/user/add", requireAdminOnly, async (req, res) => {
     )
       userData.anySpecialInformationPeopleShouldKnow =
         anySpecialInformationPeopleShouldKnow;
-
+    if (req.body.seoField1 && req.body.seoField1 !== "N/A") userData.seoField1 = req.body.seoField1;
+    if (req.body.seoField2 && req.body.seoField2 !== "N/A") userData.seoField2 = req.body.seoField2;
     // Handle MARITAL STATUS (enum field)
     if (maritalStatus && maritalStatus !== "N/A") {
       userData.maritalStatus = maritalStatus;
@@ -1946,7 +2025,6 @@ app.get("/admin/edit-user/:id", requireAdminOnly, async (req, res) => {
 });
 
 // Update User Route
-// Replace the entire /admin/user/update route with this corrected version:
 const profileUpload = multer({ storage }).fields([
   { name: "profilePic", maxCount: 1 },
   { name: "coverPhoto", maxCount: 1 },
@@ -2612,9 +2690,8 @@ app.get("/admin/newsletter/export", requireAdminOnly, async (req, res) => {
     });
 
     // Set headers for file download
-    const filename = `newsletter_subscribers_${
-      new Date().toISOString().split("T")[0]
-    }.csv`;
+    const filename = `newsletter_subscribers_${new Date().toISOString().split("T")[0]
+      }.csv`;
     res.setHeader("Content-Type", "text/csv");
     res.setHeader("Content-Disposition", `attachment; filename="${filename}"`);
 
@@ -2725,9 +2802,8 @@ app.post(
           userId: request.from._id,
           type: "request_rejected", // Reuse rejected type or create new one
           title: "Request Deleted",
-          message: `Your request to ${
-            request.to.name || request.to.username
-          } was deleted by admin.`,
+          message: `Your request to ${request.to.name || request.to.username
+            } was deleted by admin.`,
           priority: "medium",
           actionUrl: "/profiles",
           actionText: "Browse Profiles",
@@ -2777,9 +2853,8 @@ app.post(
           userId: request.from._id,
           type: "request_revoked",
           title: "Request Access Revoked",
-          message: `Your accepted request with ${
-            request.to.name || request.to.username
-          } has been revoked by admin.`,
+          message: `Your accepted request with ${request.to.name || request.to.username
+            } has been revoked by admin.`,
           priority: "high",
           actionUrl: "/profiles",
           actionText: "Browse Profiles",
@@ -2789,9 +2864,8 @@ app.post(
           userId: request.to._id,
           type: "request_revoked",
           title: "Request Access Revoked",
-          message: `Your connection with ${
-            request.from.name || request.from.username
-          } has been revoked by admin.`,
+          message: `Your connection with ${request.from.name || request.from.username
+            } has been revoked by admin.`,
           priority: "high",
           actionUrl: "/profiles",
           actionText: "Browse Profiles",
@@ -2835,9 +2909,8 @@ app.post(
           userId: request.from._id,
           type: "request_accepted",
           title: "Request Accepted!",
-          message: `Congratulations! Your request was accepted by ${
-            request.to.name || request.to.username
-          }.`,
+          message: `Congratulations! Your request was accepted by ${request.to.name || request.to.username
+            }.`,
           priority: "high",
           actionUrl: `/profiles/${request.to.profileSlug || request.to._id}`,
           actionText: "View Profile",
@@ -2862,9 +2935,8 @@ app.post(
           userId: request.from._id,
           type: "request_rejected",
           title: "Request Declined",
-          message: `Your request was declined by ${
-            request.to.name || request.to.username
-          }.`,
+          message: `Your request was declined by ${request.to.name || request.to.username
+            }.`,
           priority: "medium",
           actionUrl: "/profiles",
           actionText: "Browse Profiles",
@@ -2931,6 +3003,338 @@ app.post(
     }
   }
 );
+// **NEW**: Blog Management Routes
+
+// Blog listing page (admin)
+app.get("/admin/blogs", requireAdminOnly, async (req, res) => {
+  if (!req.session.isAdmin) {
+    return res.redirect("/login");
+  }
+
+  try {
+    const { filter } = req.query;
+
+    // Build query based on filter
+    let query = {};
+    if (filter === "published") {
+      query.isPublished = true;
+    } else if (filter === "draft") {
+      query.isPublished = false;
+    }
+    // For 'all' or no filter, query remains empty (gets all blogs)
+
+    const blogs = await Blog.find(query).sort({ createdAt: -1 });
+
+    // Calculate stats
+    const totalBlogs = await Blog.countDocuments({});
+    const publishedBlogs = await Blog.countDocuments({ isPublished: true });
+    const draftBlogs = await Blog.countDocuments({ isPublished: false });
+
+    const stats = {
+      total: totalBlogs,
+      published: publishedBlogs,
+      drafts: draftBlogs,
+    };
+
+    res.render("admin/blogs", {
+      blogs,
+      stats,
+      currentFilter: filter || "all",
+    });
+  } catch (error) {
+    console.error("Blog listing error:", error);
+    res.render("admin/blogs", {
+      blogs: [],
+      stats: { total: 0, published: 0, drafts: 0 },
+      currentFilter: "all",
+    });
+  }
+});
+
+// Create blog page
+app.get("/admin/blogs/create", requireAdminOnly, (req, res) => {
+  if (!req.session.isAdmin) {
+    return res.redirect("/login");
+  }
+  res.render("admin/createBlog");
+});
+
+// Create blog API
+app.post("/admin/blogs", requireAdminOnly, async (req, res) => {
+  if (!req.session.isAdmin) {
+    return res.status(403).json({ success: false, error: "Forbidden" });
+  }
+
+  try {
+    const {
+      title,
+      content,
+      excerpt,
+      category,
+      tags,
+      metaTitle,
+      metaDescription,
+      keywords,
+      isPublished,
+      featuredImageUrl,
+      featuredImageAlt,
+      featuredImageCaption,
+    } = req.body;
+
+    // Validate required fields
+    if (!title || !content) {
+      return res.json({
+        success: false,
+        error: "Title and content are required",
+      });
+    }
+
+    // Process arrays from comma-separated strings
+    const tagsArray = tags
+      ? tags.split(",").map((tag) => tag.trim()).filter((tag) => tag)
+      : [];
+    const keywordsArray = keywords
+      ? keywords.split(",").map((kw) => kw.trim()).filter((kw) => kw)
+      : [];
+    const featuredImage = featuredImageUrl ? {
+      url: featuredImageUrl,
+      alt: featuredImageAlt || '',
+      caption: featuredImageCaption || ''
+    } : undefined;
+    // Create blog
+    const blog = new Blog({
+      title: title.trim(),
+      content: content.trim(),
+      excerpt: excerpt ? excerpt.trim() : "",
+      category: category || "Matrimony Tips",
+      tags: tagsArray,
+      metaTitle: metaTitle ? metaTitle.trim() : "",
+      metaDescription: metaDescription ? metaDescription.trim() : "",
+      keywords: keywordsArray,
+      isPublished: Boolean(isPublished),
+      publishedAt: Boolean(isPublished) ? new Date() : null,
+      featuredImage,
+      author: {
+        name: "shadiAmour Team",
+        profileUrl: "",
+      },
+    });
+
+    await blog.save();
+
+    console.log(`Blog created: ${blog.title} (${blog.isPublished ? 'Published' : 'Draft'})`);
+
+    res.json({
+      success: true,
+      message: `Blog ${blog.isPublished ? 'published' : 'saved as draft'} successfully`,
+      blog: blog,
+    });
+  } catch (error) {
+    console.error("Create blog error:", error);
+    res.json({
+      success: false,
+      error: `Failed to create blog: ${error.message}`,
+    });
+  }
+});
+
+// Edit blog page
+app.get("/admin/blogs/:id/edit", requireAdminOnly, async (req, res) => {
+  if (!req.session.isAdmin) {
+    return res.redirect("/login");
+  }
+
+  try {
+    const blog = await Blog.findById(req.params.id);
+    if (!blog) {
+      return res.status(404).render("404", {
+        title: "Blog Not Found",
+        url: req.originalUrl,
+      });
+    }
+
+    res.render("admin/editBlog", { blog });
+  } catch (error) {
+    console.error("Edit blog page error:", error);
+    res.redirect("/admin/blogs");
+  }
+});
+
+// Update blog API
+app.put("/admin/blogs/:id", requireAdminOnly, async (req, res) => {
+  if (!req.session.isAdmin) {
+    return res.status(403).json({ success: false, error: "Forbidden" });
+  }
+
+  try {
+    const {
+      title,
+      content,
+      excerpt,
+      category,
+      tags,
+      metaTitle,
+      metaDescription,
+      keywords,
+      isPublished,
+      featuredImageUrl,
+      featuredImageAlt,
+      featuredImageCaption,
+    } = req.body;
+
+    const blog = await Blog.findById(req.params.id);
+    if (!blog) {
+      return res.json({ success: false, error: "Blog not found" });
+    }
+
+    // Process arrays from comma-separated strings
+    const tagsArray = tags
+      ? tags.split(",").map((tag) => tag.trim()).filter((tag) => tag)
+      : [];
+    const keywordsArray = keywords
+      ? keywords.split(",").map((kw) => kw.trim()).filter((kw) => kw)
+      : [];
+    if (featuredImageUrl) {
+      blog.featuredImage = {
+        url: featuredImageUrl,
+        alt: featuredImageAlt || '',
+        caption: featuredImageCaption || ''
+      };
+    } else if (featuredImageUrl === null) {
+      // Explicitly remove featured image if set to null
+      blog.featuredImage = undefined;
+    }
+    // Update blog fields
+    blog.title = title.trim();
+    blog.content = content.trim();
+    blog.excerpt = excerpt ? excerpt.trim() : "";
+    blog.category = category || "Matrimony Tips";
+    blog.tags = tagsArray;
+    blog.metaTitle = metaTitle ? metaTitle.trim() : "";
+    blog.metaDescription = metaDescription ? metaDescription.trim() : "";
+    blog.keywords = keywordsArray;
+
+    // Handle publication status
+    const wasPublished = blog.isPublished;
+    blog.isPublished = Boolean(isPublished);
+
+    if (!wasPublished && blog.isPublished) {
+      // Publishing for first time
+      blog.publishedAt = new Date();
+    } else if (wasPublished && !blog.isPublished) {
+      // Unpublishing
+      blog.publishedAt = null;
+    }
+
+    blog.updatedAt = new Date();
+
+    await blog.save();
+
+    console.log(`Blog updated: ${blog.title} (${blog.isPublished ? 'Published' : 'Draft'})`);
+
+    res.json({
+      success: true,
+      message: `Blog ${blog.isPublished ? 'updated and published' : 'updated as draft'} successfully`,
+    });
+  } catch (error) {
+    console.error("Update blog error:", error);
+    res.json({
+      success: false,
+      error: `Failed to update blog: ${error.message}`,
+    });
+  }
+});
+
+// Delete blog API
+app.delete("/admin/blogs/:id", requireAdminOnly, async (req, res) => {
+  if (!req.session.isAdmin) {
+    return res.status(403).json({ success: false, error: "Forbidden" });
+  }
+
+  try {
+    const blog = await Blog.findById(req.params.id);
+    if (!blog) {
+      return res.json({ success: false, error: "Blog not found" });
+    }
+
+    await Blog.findByIdAndDelete(req.params.id);
+
+    console.log(`Blog deleted: ${blog.title}`);
+
+    res.json({
+      success: true,
+      message: "Blog deleted successfully",
+    });
+  } catch (error) {
+    console.error("Delete blog error:", error);
+    res.json({
+      success: false,
+      error: "Failed to delete blog",
+    });
+  }
+});
+
+// Toggle blog publication status
+app.post("/admin/blogs/:id/toggle-publish", requireAdminOnly, async (req, res) => {
+  if (!req.session.isAdmin) {
+    return res.status(403).json({ success: false, error: "Forbidden" });
+  }
+
+  try {
+    const blog = await Blog.findById(req.params.id);
+    if (!blog) {
+      return res.json({ success: false, error: "Blog not found" });
+    }
+
+    // Toggle publication status
+    blog.isPublished = !blog.isPublished;
+    blog.publishedAt = blog.isPublished ? new Date() : null;
+    blog.updatedAt = new Date();
+
+    await blog.save();
+
+    console.log(`Blog ${blog.isPublished ? 'published' : 'unpublished'}: ${blog.title}`);
+
+    res.json({
+      success: true,
+      message: `Blog ${blog.isPublished ? 'published' : 'unpublished'} successfully`,
+      isPublished: blog.isPublished,
+    });
+  } catch (error) {
+    console.error("Toggle publish error:", error);
+    res.json({
+      success: false,
+      error: "Failed to toggle publication status",
+    });
+  }
+});
+// Add this route after your existing routes (around line 4500)
+
+// **NEW**: Blog image upload route
+app.post("/api/upload-blog-image", requireAdminOnly, upload.single('image'), async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.json({ success: false, error: "No image uploaded" });
+    }
+
+    // Image is automatically uploaded to Cloudinary via multer-storage-cloudinary
+    const imageUrl = req.file.path;
+
+    console.log('Blog image uploaded:', imageUrl);
+
+    res.json({
+      success: true,
+      url: imageUrl,
+      filename: req.file.filename
+    });
+  } catch (error) {
+    console.error('Blog image upload error:', error);
+    res.json({
+      success: false,
+      error: 'Failed to upload image'
+    });
+  }
+});
 // Unsubscribe route (for email links)
 app.get("/newsletter/unsubscribe/:email", async (req, res) => {
   try {
@@ -3351,13 +3755,163 @@ app.post("/reset-password", async (req, res) => {
 });
 app.get("/terms", (req, res) => {
   res.render("terms", {
-    title: "Terms and Conditions - D'amour Muslim",
+    title: "Terms and Conditions - shadiAmour",
   });
 });
-// SEO: Generate dynamic sitemap
+app.get("/privacy", (req, res) => {
+  res.render("privacy", {
+    title: "Privacy Policy - shadiAmour",
+  });
+});
+// **UPDATED**: Dynamic blog routes
+
+// Public blog listing page
+// Replace the existing /blog route with this updated version
+
+app.get("/blog", async (req, res) => {
+  try {
+    const { category, tag } = req.query;
+
+
+    // Build query for published blogs only
+    let query = { isPublished: true };
+
+    if (category) {
+      query.category = category;
+    }
+
+    if (tag) {
+      query.tags = { $in: [tag] };
+    }
+
+    // Get database blogs
+    const databaseBlogs = await Blog.find(query)
+      .sort({ publishedAt: -1 })
+      .select('title excerpt slug category tags publishedAt author featuredImage');
+
+    // **NEW**: Filter static blogs based on query parameters
+    // **NEW**: Combine database and static blogs, then sort by publishedAt
+    const allBlogs = [...databaseBlogs];
+    const sortedBlogs = allBlogs.sort((a, b) =>
+      new Date(b.publishedAt) - new Date(a.publishedAt)
+    );
+
+    // Get all categories and tags for filters (including static blogs)
+    const allBlogsForFilters = [...databaseBlogs];
+    const categories = [...new Set(allBlogsForFilters.map(blog => blog.category))];
+    const allTags = allBlogsForFilters.reduce((tags, blog) => {
+      if (blog.tags && Array.isArray(blog.tags)) {
+        blog.tags.forEach(tag => tags.add(tag));
+      }
+      return tags;
+    }, new Set());
+
+    res.render("blog/index", {
+      title: "Blog - shadiAmour",
+      posts: sortedBlogs, // Combined and sorted blogs
+      categories,
+      tags: Array.from(allTags),
+      currentCategory: category || null,
+      currentTag: tag || null,
+      user: req.session.user || null,
+    });
+  } catch (error) {
+    console.error("Blog listing error:", error);
+    res.render("blog/index", {
+      title: "Blog - shadiAmour",
+      posts: [], // Empty posts array on error
+      categories: [],
+      tags: [],
+      currentCategory: null,
+      currentTag: null,
+      user: req.session.user || null,
+    });
+  }
+});
+
+// Public individual blog page
+
+app.get("/blog/:slug", async (req, res) => {
+  try {
+    const { slug } = req.params;
+
+    // **NEW**: Check for static blog templates first
+
+    // **EXISTING**: Check database for dynamic blogs
+    const blog = await Blog.findOne({
+      slug: slug,
+      isPublished: true
+    });
+
+    if (!blog) {
+      return res.status(404).render("404", {
+        title: "Blog Post Not Found - shadiAmour",
+        url: req.originalUrl,
+      });
+    }
+
+    // Get related blogs (same category, excluding current blog)
+    const relatedBlogs = await Blog.find({
+      isPublished: true,
+      category: blog.category,
+      _id: { $ne: blog._id }
+    })
+      .sort({ publishedAt: -1 })
+      .limit(3)
+      .select('title excerpt slug publishedAt');
+
+    // Generate structured data for SEO
+    const structuredData = {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "headline": blog.title,
+      "description": blog.excerpt || blog.metaDescription,
+      "image": blog.featuredImage?.url || "",
+      "author": {
+        "@type": "Organization",
+        "name": blog.author.name || "shadiAmour Team"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "shadiAmour",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://shadiAmour.com/images/logo.png"
+        }
+      },
+      "datePublished": blog.publishedAt?.toISOString(),
+      "dateModified": blog.updatedAt.toISOString(),
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": `https://shadiAmour.com/blog/${blog.slug}`
+      }
+    };
+
+    res.render("blog/post", {
+      title: blog.metaTitle || `${blog.title} - shadiAmour`,
+      metaDescription: blog.metaDescription || blog.excerpt,
+      canonicalUrl: blog.canonicalUrl || `https://shadiAmour.com/blog/${blog.slug}`,
+      blog,
+      relatedBlogs,
+      structuredData,
+      user: req.session.user || null,
+    });
+  } catch (error) {
+    console.error("Individual blog error:", error);
+    res.status(404).render("404", {
+      title: "Blog Post Not Found - shadiAmour",
+      url: req.originalUrl,
+    });
+  }
+});
+// Update the sitemap.xml route to include static blogs
 app.get("/sitemap.xml", async (req, res) => {
   try {
-    const users = await User.find({}).select("_id updatedAt");
+    const users = await User.find({}).select("_id updatedAt profileSlug");
+    const blogs = await Blog.find({ isPublished: true }).select("slug updatedAt publishedAt");
+
+    // **NEW**: Static blog slugs
+
 
     let sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
@@ -3375,30 +3929,36 @@ app.get("/sitemap.xml", async (req, res) => {
     <loc>https://www.shadiamour.com/profiles?gender=male</loc>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
-  </url>
+  </url>`;
+
+    // Add database blog posts
+    blogs.forEach((blog) => {
+      const lastmod = blog.updatedAt
+        ? blog.updatedAt.toISOString().split("T")[0]
+        : blog.publishedAt.toISOString().split("T")[0];
+      sitemap += `
   <url>
-    <loc>https://www.shadiamour.com/profiles?gender=female</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://www.shadiamour.com/register</loc>
+    <loc>https://www.shadiamour.com/blog/${blog.slug}</loc>
+    <lastmod>${lastmod}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>`;
+    });
 
-    // Add individual profile pages
+    // Add profile URLs (existing code continues...)
     users.forEach((user) => {
-      const lastmod = user.updatedAt
-        ? user.updatedAt.toISOString().split("T")[0]
-        : new Date().toISOString().split("T")[0];
-      sitemap += `
+      if (user.profileSlug) {
+        const lastmod = user.updatedAt
+          ? user.updatedAt.toISOString().split("T")[0]
+          : new Date().toISOString().split("T")[0];
+        sitemap += `
   <url>
     <loc>https://www.shadiamour.com/profiles/${user._id}</loc>
     <lastmod>${lastmod}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>`;
+      }
     });
 
     sitemap += `
@@ -3416,6 +3976,7 @@ app.get("/robots.txt", (req, res) => {
   const robots = `User-agent: *
 Allow: /
 Allow: /profiles
+Allow: /profile
 Allow: /profiles?gender=male
 Allow: /profiles?gender=female
 Allow: /register
@@ -3432,7 +3993,7 @@ Sitemap: https://www.shadiamour.com/sitemap.xml`;
 });
 app.use((req, res) => {
   res.status(404).render("404", {
-    title: "Page Not Found - shadiamour",
+    title: "Page Not Found - shadiAmour",
     url: req.originalUrl,
   });
 });
