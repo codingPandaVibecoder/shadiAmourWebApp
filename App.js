@@ -71,6 +71,7 @@ const {
 } = require("./middlewares/accessControl");
 const { requireSeoAdmin, requireSeoAdminApi } = require("./middlewares/seoAdminAuth");
 const GlobalSeoSettings = require("./models/GlobalSeoSettings");
+const Podcast = require("./models/Podcast");
 const http = require("http");
 const mongoose = require("mongoose");
 const express = require("express");
@@ -6416,7 +6417,98 @@ app.post("/admin/blogs/:id/toggle-publish", requireAdminOnly, async (req, res) =
     });
   }
 });
-// Add this route after your existing routes (around line 4500)
+// ============================================
+// PODCAST ROUTES (admin-only management + public page)
+// ============================================
+
+// Public: /podcasts page
+app.get("/podcasts", async (req, res) => {
+  try {
+    const perPage = 12;
+    const page = Math.max(1, parseInt(req.query.page, 10) || 1);
+    const totalCount = await Podcast.countDocuments({ isPublished: true });
+    const totalPages = Math.ceil(totalCount / perPage);
+    const podcasts = await Podcast.find({ isPublished: true })
+      .sort({ order: 1, createdAt: -1 })
+      .skip((page - 1) * perPage)
+      .limit(perPage);
+    const user = req.session.user || null;
+    const globalSeoSettings = res.locals.globalSeoSettings || null;
+    res.render("podcasts", { podcasts, currentPage: page, totalPages, user, globalSeoSettings });
+  } catch (err) {
+    console.error("Podcasts page error:", err);
+    res.status(500).send("Error loading podcasts");
+  }
+});
+
+// Admin: manage podcasts page
+app.get("/admin/podcasts", requireAdminOnly, async (req, res) => {
+  if (!req.session.isAdmin) return res.redirect("/login");
+  try {
+    const podcasts = await Podcast.find().sort({ order: 1, createdAt: -1 });
+    res.render("admin/podcasts", { podcasts, user: req.session.user });
+  } catch (err) {
+    console.error("Admin podcasts error:", err);
+    res.status(500).send("Error loading admin podcasts");
+  }
+});
+
+// Admin: add podcast
+app.post("/admin/podcasts", requireAdminOnly, async (req, res) => {
+  if (!req.session.isAdmin) return res.status(403).json({ error: "Forbidden" });
+  try {
+    const { youtubeId, title, description, isPublished } = req.body;
+    if (!youtubeId || !title) {
+      return res.status(400).json({ error: "youtubeId and title are required" });
+    }
+    // Basic sanity check on ID format
+    if (!/^[A-Za-z0-9_-]{11}$/.test(youtubeId)) {
+      return res.status(400).json({ error: "Invalid YouTube video ID format" });
+    }
+    const existing = await Podcast.findOne({ youtubeId });
+    if (existing) return res.status(409).json({ error: "This video has already been added" });
+    const podcast = await Podcast.create({
+      youtubeId,
+      title: String(title).substring(0, 200),
+      description: description ? String(description).substring(0, 500) : "",
+      isPublished: isPublished !== false && isPublished !== "false",
+      addedBy: "admin",
+    });
+    res.status(201).json({ success: true, podcast });
+  } catch (err) {
+    console.error("Add podcast error:", err);
+    res.status(500).json({ error: "Failed to add podcast" });
+  }
+});
+
+// Admin: delete podcast
+app.delete("/admin/podcasts/:id", requireAdminOnly, async (req, res) => {
+  if (!req.session.isAdmin) return res.status(403).json({ error: "Forbidden" });
+  try {
+    const podcast = await Podcast.findById(req.params.id);
+    if (!podcast) return res.status(404).json({ error: "Podcast not found" });
+    await Podcast.findByIdAndDelete(req.params.id);
+    res.json({ success: true });
+  } catch (err) {
+    console.error("Delete podcast error:", err);
+    res.status(500).json({ error: "Failed to delete podcast" });
+  }
+});
+
+// Admin: toggle publish
+app.patch("/admin/podcasts/:id/toggle", requireAdminOnly, async (req, res) => {
+  if (!req.session.isAdmin) return res.status(403).json({ error: "Forbidden" });
+  try {
+    const podcast = await Podcast.findById(req.params.id);
+    if (!podcast) return res.status(404).json({ error: "Podcast not found" });
+    podcast.isPublished = !podcast.isPublished;
+    await podcast.save();
+    res.json({ success: true, podcast });
+  } catch (err) {
+    console.error("Toggle podcast error:", err);
+    res.status(500).json({ error: "Failed to toggle podcast" });
+  }
+});
 
 // **FIX**: Blog image upload route — uses dedicated blogImageUpload to avoid user_profiles/ folder
 app.post("/api/upload-blog-image", requireAdminOnly, blogImageUpload.single('image'), async (req, res) => {
@@ -7178,6 +7270,11 @@ app.get("/sitemap.xml", async (req, res) => {
   </url>
   <url>
     <loc>https://damourmuslim.com/blog</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://damourmuslim.com/podcasts</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
