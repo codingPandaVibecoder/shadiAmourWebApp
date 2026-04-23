@@ -375,4 +375,65 @@ module.exports = {
   sendPasswordResetEmail,
   sendProfileApprovalEmail,
   sendZeptoMail,
+  sendMarriageGuide,
 };
+
+async function sendMarriageGuide(email) {
+  const pdfUrl = "https://res.cloudinary.com/dhuc2plh0/raw/upload/public/halal_marriage_guide_hg5dwe.pdf";
+  const subject = "Your Free Halal Marriage Guide — D'amour Muslim 💌";
+
+  const htmlBody = `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Your Free Halal Marriage Guide</title>
+    </head>
+    <body style="margin:0;padding:0;background:#f9fafb;font-family:'Roboto',Arial,sans-serif;">
+      <table width="100%" cellpadding="0" cellspacing="0" style="background:#f9fafb;padding:32px 16px;">
+        <tr><td align="center">
+          <table width="600" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.08);max-width:600px;">
+            <!-- Header -->
+            <tr>
+              <td style="background:linear-gradient(135deg,#E91E63 0%,#673AB7 100%);padding:36px 40px;text-align:center;">
+                <h1 style="margin:0;color:#ffffff;font-size:26px;font-weight:700;font-family:'Playfair Display',Georgia,serif;">D'amour Muslim</h1>
+                <p style="margin:8px 0 0;color:rgba(255,255,255,0.85);font-size:14px;">UK's Trusted Halal Marriage Platform</p>
+              </td>
+            </tr>
+            <!-- Body -->
+            <tr>
+              <td style="padding:40px;">
+                <h2 style="margin:0 0 16px;color:#1f2937;font-size:22px;font-family:'Playfair Display',Georgia,serif;">Your Free Halal Marriage Guide is here! 📖</h2>
+                <p style="margin:0 0 16px;color:#4b5563;font-size:15px;line-height:1.7;">Assalamu Alaikum,</p>
+                <p style="margin:0 0 16px;color:#4b5563;font-size:15px;line-height:1.7;">Thank you for downloading our <strong>Free Halal Marriage Guide (UK)</strong>. Inside, you will find practical, Islamic guidance on how to find a practising Muslim spouse the halal way — from the first steps of your search to preparing for a blessed nikah.</p>
+                <!-- Download Button -->
+                <table width="100%" cellpadding="0" cellspacing="0" style="margin:28px 0;">
+                  <tr><td align="center">
+                    <a href="${pdfUrl}" target="_blank" style="display:inline-block;background:linear-gradient(135deg,#E91E63 0%,#673AB7 100%);color:#ffffff;text-decoration:none;font-size:16px;font-weight:700;padding:14px 36px;border-radius:50px;box-shadow:0 4px 16px rgba(233,30,99,0.35);">📄 Download Your Guide</a>
+                  </td></tr>
+                </table>
+                <p style="margin:0 0 16px;color:#4b5563;font-size:14px;line-height:1.7;">If the button above doesn't work, copy and paste this link into your browser:</p>
+                <p style="margin:0 0 24px;"><a href="${pdfUrl}" style="color:#E91E63;font-size:13px;word-break:break-all;">${pdfUrl}</a></p>
+                <hr style="border:none;border-top:1px solid #f3f4f6;margin:28px 0;">
+                <p style="margin:0 0 8px;color:#6b7280;font-size:13px;line-height:1.6;">Ready to find your Muslim spouse? <a href="https://damourmuslim.com/register" style="color:#E91E63;text-decoration:none;font-weight:600;">Create your free profile</a> on D'amour Muslim and join thousands of serious Muslims looking for a halal marriage.</p>
+              </td>
+            </tr>
+            <!-- Footer -->
+            <tr>
+              <td style="background:#f9fafb;padding:24px 40px;text-align:center;border-top:1px solid #f3f4f6;">
+                <p style="margin:0 0 6px;color:#9ca3af;font-size:12px;">D'amour Muslim &bull; London, UK &bull; <a href="mailto:contact@damourmuslim.com" style="color:#9ca3af;">contact@damourmuslim.com</a></p>
+                <p style="margin:0;color:#d1d5db;font-size:11px;">You received this email because you requested our free guide at damourmuslim.com</p>
+              </td>
+            </tr>
+          </table>
+        </td></tr>
+      </table>
+    </body>
+    </html>
+  `;
+
+  const textBody = `Your Free Halal Marriage Guide — D'amour Muslim\n\nAssalamu Alaikum,\n\nThank you for requesting our Free Halal Marriage Guide (UK). Download it here:\n${pdfUrl}\n\nReady to find your Muslim spouse? Visit https://damourmuslim.com/register\n\nD'amour Muslim — London, UK`;
+
+  return sendZeptoMail(email, subject, htmlBody, textBody);
+}

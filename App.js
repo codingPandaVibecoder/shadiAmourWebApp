@@ -250,6 +250,7 @@ const {
   sendVerificationEmail,
   sendPasswordResetEmail,
   sendProfileApprovalEmail,
+  sendMarriageGuide,
 } = require("./services/emailService");
 const requireProfileComplete = require("./middlewares/requireProfileComplete");
 const requireOnboardingComplete = require("./middlewares/requireOnboardingComplete");
@@ -5486,6 +5487,38 @@ app.get("/admin/chats/:conversationId", requireAdminOrModerator, async (req, res
 // ============================================
 // END ADMIN CHATS MANAGEMENT ROUTES
 // ============================================
+
+// Guide download lead magnet
+const guideDownloadLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000,
+  max: 5,
+  message: { success: false, error: "Too many requests. Please try again later." },
+  standardHeaders: true,
+  legacyHeaders: false,
+  keyGenerator: ipKeyGenerator,
+});
+
+app.post("/api/guide/download", guideDownloadLimiter, async (req, res) => {
+  try {
+    const { email } = req.body;
+    if (!email || typeof email !== "string") {
+      return res.status(400).json({ success: false, error: "A valid email address is required." });
+    }
+    const trimmedEmail = email.trim().toLowerCase();
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(trimmedEmail)) {
+      return res.status(400).json({ success: false, error: "Please enter a valid email address." });
+    }
+    const result = await sendMarriageGuide(trimmedEmail);
+    if (!result.success) {
+      return res.status(500).json({ success: false, error: "Failed to send the guide. Please try again." });
+    }
+    return res.json({ success: true });
+  } catch (err) {
+    console.error("Guide download error:", err);
+    return res.status(500).json({ success: false, error: "Something went wrong. Please try again." });
+  }
+});
 
 app.post("/api/newsletter/subscribe", async (req, res) => {
   try {
