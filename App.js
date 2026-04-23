@@ -1557,6 +1557,469 @@ const seoPages = [
         </div>
       </div>
     `
+  },
+  {
+    path: "/muslim-marriage-uk",
+    pageTitle: "Muslim Marriage in the UK — The Definitive Guide for British Muslims | D'amour Muslim",
+    h1: "Muslim Marriage in the UK — Everything British Muslims Need to Know",
+    heroSubtitle: "The UK is home to 3.9 million Muslims — the most ethnically diverse Muslim community in Europe. D'amour Muslim is built for every one of them.",
+    metaDescription: "Muslim marriage in the UK — a complete guide for British Muslims. City-by-city coverage, what UK Muslims look for in a spouse, and how D'amour Muslim serves the British Muslim community. Free to join.",
+    keywords: "muslim marriage uk, muslim marriage in the uk, british muslim marriage, uk muslim matrimony, halal marriage uk",
+    canonicalPath: "/muslim-marriage-uk",
+    ctaHeading: "Join Thousands of UK Muslims on D'amour Muslim",
+    ctaSubtext: "Register free and find your match — wherever you are in the UK.",
+    relatedLinks: [
+      { url: "/muslim-matrimony-london", label: "Muslim Matrimony London" },
+      { url: "/muslim-matrimony-birmingham", label: "Muslim Matrimony Birmingham" },
+      { url: "/british-pakistani-marriage", label: "British Pakistani Marriage" },
+      { url: "/muslim-matchmaking", label: "Muslim Matchmaking" }
+    ],
+    pageFaqSchema: [
+      { q: "How many Muslims are there in the UK?", a: "According to the 2021 Census for England and Wales, there are approximately 3.9 million Muslims in England and Wales alone, representing around 6.5% of the population. This makes Muslims the second largest religious group in the country after Christians. The UK's Muslim community is one of the most ethnically diverse in the world, encompassing South Asian, Arab, African, Turkish, and many other communities." },
+      { q: "What are the most popular cities for Muslim marriage in the UK?", a: "The cities with the largest Muslim populations — and therefore the most active matrimonial communities — are London (over 1.1 million Muslims), Birmingham (approx. 340,000), Manchester (approx. 130,000), Bradford (approx. 130,000), Leicester (approx. 115,000), and Leeds (approx. 80,000). D'amour Muslim has dedicated pages for each of these cities to help members find local Muslim singles." },
+      { q: "Is D'amour Muslim specifically for UK Muslims or is it global?", a: "D'amour Muslim serves both UK Muslims and the global Pakistani diaspora. The platform has strong UK-based membership — particularly in London, Birmingham, Manchester, Bradford, Leicester, and Leeds — as well as members based in Pakistan and other countries. UK Muslims seeking a UK-based spouse can filter by location. Those open to overseas matches can search more broadly." },
+      { q: "What makes British Muslim marriage different from Muslim marriage in Pakistan?", a: "British Muslims navigate a unique set of pressures: balancing a British upbringing and lifestyle with Islamic values and family expectations often rooted in South Asian or other cultures. First and second generation dynamics, the question of overseas vs UK-born partners, navigating biradari expectations within a British context, and the challenges of meeting suitable Muslims in a predominantly non-Muslim social environment all shape the British Muslim marriage experience in ways that differ significantly from Pakistan or other majority-Muslim countries." },
+      { q: "Are there Muslim marriage events or services specifically for UK Muslims?", a: "Yes — D'amour Muslim is specifically designed for UK Muslims and the wider British Muslim diaspora. Beyond the platform itself, there are various Muslim marriage events, speed-networking evenings, and wali-facilitated introductions operating in major UK cities. D'amour Muslim provides the online infrastructure that complements any of these approaches — allowing serious marriage seekers to browse and connect between events, or as their primary search method." }
+    ],
+    pageFaqs: [
+      { q: "How many Muslims are there in the UK?", a: "According to the 2021 Census for England and Wales, there are approximately 3.9 million Muslims in England and Wales alone, representing around 6.5% of the population. This makes Muslims the second largest religious group in the country after Christians. The UK's Muslim community is one of the most ethnically diverse in the world, encompassing South Asian, Arab, African, Turkish, and many other communities." },
+      { q: "What are the most popular cities for Muslim marriage in the UK?", a: "The cities with the largest Muslim populations — and therefore the most active matrimonial communities — are London (over 1.1 million Muslims), Birmingham (approx. 340,000), Manchester (approx. 130,000), Bradford (approx. 130,000), Leicester (approx. 115,000), and Leeds (approx. 80,000). D'amour Muslim has dedicated pages for each of these cities to help members find local Muslim singles." },
+      { q: "Is D'amour Muslim specifically for UK Muslims or is it global?", a: "D'amour Muslim serves both UK Muslims and the global Pakistani diaspora. The platform has strong UK-based membership — particularly in London, Birmingham, Manchester, Bradford, Leicester, and Leeds — as well as members based in Pakistan and other countries. UK Muslims seeking a UK-based spouse can filter by location. Those open to overseas matches can search more broadly." },
+      { q: "What makes British Muslim marriage different from Muslim marriage in Pakistan?", a: "British Muslims navigate a unique set of pressures: balancing a British upbringing and lifestyle with Islamic values and family expectations often rooted in South Asian or other cultures. First and second generation dynamics, the question of overseas vs UK-born partners, navigating biradari expectations within a British context, and the challenges of meeting suitable Muslims in a predominantly non-Muslim social environment all shape the British Muslim marriage experience in ways that differ significantly from Pakistan or other majority-Muslim countries." },
+      { q: "Are there Muslim marriage events or services specifically for UK Muslims?", a: "Yes — D'amour Muslim is specifically designed for UK Muslims and the wider British Muslim diaspora. Beyond the platform itself, there are various Muslim marriage events, speed-networking evenings, and wali-facilitated introductions operating in major UK cities. D'amour Muslim provides the online infrastructure that complements any of these approaches — allowing serious marriage seekers to browse and connect between events, or as their primary search method." }
+    ],
+    bodyContent: `
+      <div class="prose max-w-none">
+        <p class="text-lg text-gray-700 mb-6 leading-relaxed">The United Kingdom is home to approximately 3.9 million Muslims — the most ethnically diverse Muslim community in any country in Europe. Pakistani, Bangladeshi, Arab, Somali, Turkish, West African, and dozens of other Muslim communities exist side by side across England, Scotland, Wales, and Northern Ireland, shaped equally by their Islamic faith and their British upbringing. For most of these 3.9 million Muslims, marriage is not simply a personal milestone — it is a religious obligation, a family event, and a cultural statement. And yet finding the right Muslim spouse in the UK has never been straightforward. D'amour Muslim is built to change that.</p>
+
+        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">British Muslim Identity and Marriage</h2>
+        <p class="text-gray-700 mb-4 leading-relaxed">The British Muslim experience is defined by a productive tension between two identities. On one side: a British upbringing, British education, British friendships, British professional life. On the other: Islamic values, family expectations rooted in South Asian, Arab, or African cultural traditions, and the deep conviction that marriage is a sacred covenant — not a casual experiment.</p>
+        <p class="text-gray-700 mb-6 leading-relaxed">This dual identity creates a marriage landscape that is genuinely unique. A second-generation British Pakistani woman in Birmingham may want a husband who is both practising and professionally ambitious, who understands the pressures of British Muslim life, and who can navigate both her family's cultural expectations and her own sense of British identity. A British Bangladeshi man in East London may be seeking someone who shares his deen, his values, and his comfort with a Western lifestyle — while also being acceptable to parents who have very specific ideas about background and family. D'amour Muslim is designed for the full complexity of this experience.</p>
+
+        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Muslim Marriage Across the UK — Find by City</h2>
+        <p class="text-gray-700 mb-4 leading-relaxed">D'amour Muslim has members across every major UK city. Browse by your location:</p>
+        <div class="flex flex-wrap gap-2 mb-6">
+          <a href="/muslim-matrimony-london" class="px-4 py-2 bg-primary/10 text-primary rounded-full text-sm font-medium hover:bg-primary/20 transition-colors">London</a>
+          <a href="/muslim-matrimony-birmingham" class="px-4 py-2 bg-primary/10 text-primary rounded-full text-sm font-medium hover:bg-primary/20 transition-colors">Birmingham</a>
+          <a href="/muslim-matrimony-manchester" class="px-4 py-2 bg-primary/10 text-primary rounded-full text-sm font-medium hover:bg-primary/20 transition-colors">Manchester</a>
+          <a href="/muslim-matrimony-bradford" class="px-4 py-2 bg-primary/10 text-primary rounded-full text-sm font-medium hover:bg-primary/20 transition-colors">Bradford</a>
+          <a href="/muslim-matrimony-leicester" class="px-4 py-2 bg-primary/10 text-primary rounded-full text-sm font-medium hover:bg-primary/20 transition-colors">Leicester</a>
+          <a href="/muslim-matrimony-leeds" class="px-4 py-2 bg-primary/10 text-primary rounded-full text-sm font-medium hover:bg-primary/20 transition-colors">Leeds</a>
+        </div>
+        <p class="text-gray-700 mb-6 leading-relaxed">Each city page provides locally relevant content — the size and character of the Muslim community in that city, key areas with high Muslim populations, and how D'amour Muslim serves that specific local community. Whether you are looking for a match within your own city or you are open to finding someone from anywhere in the UK, the platform's location filter makes your search precise.</p>
+
+        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">What UK Muslims Look for in a Spouse</h2>
+        <p class="text-gray-700 mb-4 leading-relaxed">Through the search preferences set by D'amour Muslim's UK membership, a clear picture emerges of what British Muslims prioritise when seeking a spouse:</p>
+        <ul class="list-none space-y-3 mb-6">
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700"><strong>Deen and religious practice:</strong> Consistently the top priority — level of Islamic practice, prayer, Quran recitation, halal lifestyle. Most UK Muslim marriage seekers want a spouse who takes their deen seriously, even if they are not at the most conservative end of the spectrum.</span></li>
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700"><strong>British upbringing and understanding:</strong> Many UK Muslims — particularly second and third generation — specifically want a spouse who understands what it means to grow up in Britain. Shared cultural reference points, an understanding of the British-Muslim experience, and comfort with British professional life matter enormously.</span></li>
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700"><strong>Education and career:</strong> A consistently important factor, especially among the British Muslim professional class. The majority of D'amour Muslim's UK members are graduates or postgraduates, and many specify education level as an important criterion.</span></li>
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700"><strong>Family background and values:</strong> The family you come from matters to most UK Muslims — not as a matter of class prejudice, but as an indication of the values, habits, and expectations that will shape a marriage. Family background, respectfulness of elders, and the stability of the family of origin are widely considered.</span></li>
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700"><strong>Cultural and linguistic compatibility:</strong> Whether within the same ethnic community or open to other Muslim ethnicities, UK Muslims typically consider cultural background — language, food, family customs, and community ties — as part of their compatibility assessment.</span></li>
+        </ul>
+
+        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">How D'amour Muslim Serves British Muslims</h2>
+        <div class="grid md:grid-cols-2 gap-4 mb-6">
+          <div class="bg-gray-50 rounded-xl p-5 border border-gray-100">
+            <h3 class="text-xl font-semibold text-gray-800 mb-3 mt-0">UK GDPR Compliant</h3>
+            <p class="text-gray-700 text-sm leading-relaxed">D'amour Muslim is fully compliant with UK GDPR data protection requirements. Your personal data is handled lawfully, stored securely, and never sold to third parties. UK users have the full suite of data rights including access, correction, and deletion.</p>
+          </div>
+          <div class="bg-gray-50 rounded-xl p-5 border border-gray-100">
+            <h3 class="text-xl font-semibold text-gray-800 mb-3 mt-0">City-Based Search</h3>
+            <p class="text-gray-700 text-sm leading-relaxed">UK Muslims can search by city — London, Birmingham, Manchester, Bradford, Leicester, Leeds, and more. Find verified Muslim singles in your city, or open the search nationally. The location filter is precise enough to be useful without being so narrow it limits your options.</p>
+          </div>
+          <div class="bg-gray-50 rounded-xl p-5 border border-gray-100">
+            <h3 class="text-xl font-semibold text-gray-800 mb-3 mt-0">Free for Every UK Muslim</h3>
+            <p class="text-gray-700 text-sm leading-relaxed">D'amour Muslim is free to join and free to use for core features. No subscription is required to browse verified profiles, send interest requests, or communicate with matches. No UK Muslim should be priced out of a serious halal marriage service.</p>
+          </div>
+          <div class="bg-gray-50 rounded-xl p-5 border border-gray-100">
+            <h3 class="text-xl font-semibold text-gray-800 mb-3 mt-0">Family-Friendly Design</h3>
+            <p class="text-gray-700 text-sm leading-relaxed">The platform is designed for families as much as individuals. Parents can manage profiles for their son or daughter. Communication only opens when both parties have expressed interest — maintaining the seriousness and propriety that UK Muslim families expect from a matrimonial service.</p>
+          </div>
+        </div>
+
+        <blockquote class="border-l-4 border-primary pl-4 italic text-gray-600 my-6">"And among His signs is that He created for you from yourselves mates that you may find tranquillity in them; and He placed between you affection and mercy. Indeed in that are signs for a people who give thought." — Quran 30:21</blockquote>
+
+        <div class="bg-primary/5 rounded-2xl p-6 border border-primary/10 mt-8">
+          <p class="text-gray-700 font-medium">Find your city: <a href="/muslim-matrimony-london" class="text-primary hover:underline">London</a> &bull; <a href="/muslim-matrimony-birmingham" class="text-primary hover:underline">Birmingham</a> &bull; <a href="/british-pakistani-marriage" class="text-primary hover:underline">British Pakistani Marriage</a> &bull; <a href="/muslim-matchmaking" class="text-primary hover:underline">Muslim Matchmaking</a></p>
+        </div>
+      </div>
+    `
+  },
+  {
+    path: "/british-pakistani-marriage",
+    pageTitle: "British Pakistani Marriage — Navigating the Search with Confidence | D'amour Muslim",
+    h1: "British Pakistani Marriage — Between Two Worlds, and Finding the Right One",
+    heroSubtitle: "British Pakistanis carry a dual identity into every life decision — including marriage. D'amour Muslim is built to serve the full complexity of that journey, without judgment.",
+    metaDescription: "British Pakistani marriage — navigating biradari expectations, UK vs Pakistan dynamics, and dual identity. D'amour Muslim serves British Pakistanis with empathy and understanding. Free to join.",
+    keywords: "british pakistani marriage, british pakistani rishta, british pakistani matrimonial, uk pakistani marriage, british pakistani marriage site",
+    canonicalPath: "/british-pakistani-marriage",
+    ctaHeading: "Find Your British Pakistani Match",
+    ctaSubtext: "Register free on D'amour Muslim — a platform that understands the British Pakistani experience.",
+    relatedLinks: [
+      { url: "/muslim-rishta", label: "Muslim Rishta" },
+      { url: "/online-rishta-pakistan", label: "Online Rishta Pakistan" },
+      { url: "/muslim-marriage-uk", label: "Muslim Marriage UK" },
+      { url: "/muslim-matchmaking", label: "Muslim Matchmaking" }
+    ],
+    pageFaqSchema: [
+      { q: "Can I find a British-born Pakistani partner specifically on D'amour Muslim?", a: "Yes. D'amour Muslim has a significant proportion of British-born Pakistani members, particularly from Birmingham, Bradford, Manchester, London, and Leeds — the cities with the largest British Pakistani communities. You can search by UK city and browse profiles, and many members specify in their bio whether they are UK-born or UK-raised. If finding a British-born partner is important to you, you can make this clear in your own profile's spouse criteria." },
+      { q: "Is D'amour Muslim suitable for Pakistani families looking for UK-based matches for their children?", a: "Yes — this is a very common use case on D'amour Muslim. Families in Pakistan can register a profile for their son or daughter, clearly indicate they are seeking a UK-based Pakistani partner, and browse profiles from British Pakistanis who are open to an overseas match. Many British Pakistani members are explicitly open to, or specifically seeking, a partner from Pakistan." },
+      { q: "How do I navigate family expectations around biradari or cultural background when using a modern matrimonial site?", a: "D'amour Muslim's profile fields include space to specify biradari background, cultural community, family values, and the level of family involvement expected in the rishta process. This means you can be transparent about your background and preferences from the outset, reducing the risk of mismatched expectations later. You can also be clear in your spouse criteria about what is a dealbreaker vs what is a preference — helping filter more effectively." },
+      { q: "Are there profiles of British Pakistanis from specific cities like Bradford, Birmingham, or Manchester?", a: "Yes. D'amour Muslim has members from all major British Pakistani population centres — Birmingham (Sparkhill, Alum Rock, Handsworth), Bradford (Manningham, Toller, Heaton), Manchester (Rusholme, Longsight, Levenshulme), London (Tower Hamlets, Newham, Waltham Forest), Leeds (Harehills, Chapeltown, Beeston), and Leicester. You can filter by city and browse profiles from each of these communities." },
+      { q: "Does D'amour Muslim support families in Pakistan looking for overseas UK-based Pakistanis?", a: "Yes. Families in Pakistan can register and create profiles for their son or daughter on D'amour Muslim, specify that they are seeking an overseas UK-based match, and browse or receive interest requests from British Pakistanis. This is one of the most common use cases on the platform — connecting Pakistan-based families with the British Pakistani diaspora is central to what D'amour Muslim does." }
+    ],
+    pageFaqs: [
+      { q: "Can I find a British-born Pakistani partner specifically on D'amour Muslim?", a: "Yes. D'amour Muslim has a significant proportion of British-born Pakistani members, particularly from Birmingham, Bradford, Manchester, London, and Leeds — the cities with the largest British Pakistani communities. You can search by UK city and browse profiles, and many members specify in their bio whether they are UK-born or UK-raised. If finding a British-born partner is important to you, you can make this clear in your own profile's spouse criteria." },
+      { q: "Is D'amour Muslim suitable for Pakistani families looking for UK-based matches for their children?", a: "Yes — this is a very common use case on D'amour Muslim. Families in Pakistan can register a profile for their son or daughter, clearly indicate they are seeking a UK-based Pakistani partner, and browse profiles from British Pakistanis who are open to an overseas match. Many British Pakistani members are explicitly open to, or specifically seeking, a partner from Pakistan." },
+      { q: "How do I navigate family expectations around biradari or cultural background when using a modern matrimonial site?", a: "D'amour Muslim's profile fields include space to specify biradari background, cultural community, family values, and the level of family involvement expected in the rishta process. This means you can be transparent about your background and preferences from the outset, reducing the risk of mismatched expectations later. You can also be clear in your spouse criteria about what is a dealbreaker vs what is a preference — helping filter more effectively." },
+      { q: "Are there profiles of British Pakistanis from specific cities like Bradford, Birmingham, or Manchester?", a: "Yes. D'amour Muslim has members from all major British Pakistani population centres — Birmingham (Sparkhill, Alum Rock, Handsworth), Bradford (Manningham, Toller, Heaton), Manchester (Rusholme, Longsight, Levenshulme), London (Tower Hamlets, Newham, Waltham Forest), Leeds (Harehills, Chapeltown, Beeston), and Leicester. You can filter by city and browse profiles from each of these communities." },
+      { q: "Does D'amour Muslim support families in Pakistan looking for overseas UK-based Pakistanis?", a: "Yes. Families in Pakistan can register and create profiles for their son or daughter on D'amour Muslim, specify that they are seeking an overseas UK-based match, and browse or receive interest requests from British Pakistanis. This is one of the most common use cases on the platform — connecting Pakistan-based families with the British Pakistani diaspora is central to what D'amour Muslim does." }
+    ],
+    bodyContent: `
+      <div class="prose max-w-none">
+        <p class="text-lg text-gray-700 mb-6 leading-relaxed">To be British and Pakistani is to live comfortably in two worlds — and yet to sometimes feel caught between them in no world more acutely than when it comes to marriage. You carry an Islamic faith you take seriously and a Pakistani cultural heritage you value. You also carry a British education, a British career, British friendships, and a British sense of who you are. When the time comes to find a spouse, the weight of all of this lands on a single search that has to satisfy your own heart, your family's expectations, and your community's standards — simultaneously. D'amour Muslim exists for exactly this moment.</p>
+
+        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">The British Pakistani Marriage Experience</h2>
+        <p class="text-gray-700 mb-4 leading-relaxed">The British Pakistani community is the UK's second largest Muslim ethnic group, with over 1.6 million people. Concentrated in Birmingham, Bradford, Manchester, London, Leeds, and Leicester, British Pakistanis have built one of the most vibrant and established Muslim communities in Europe over three generations. Marriage remains central to that community — not just as a personal event, but as a communal one. Weddings are large, family involvement is expected, and the choice of a spouse carries a weight that goes beyond the two individuals involved.</p>
+        <p class="text-gray-700 mb-6 leading-relaxed">For the second and third generation, this weight has become more complicated. The halal route — finding a spouse through family networks, mosque connections, or rishta introductions — is increasingly difficult to navigate in cities where the Muslim community is large but dispersed, where work and study schedules leave little time for the traditional rishta process, and where the pool of suitable candidates known personally to your family may be frustratingly narrow.</p>
+
+        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Navigating Family Expectations and Personal Preferences</h2>
+        <p class="text-gray-700 mb-4 leading-relaxed">British Pakistani marriage searching often involves a negotiation between two sets of legitimate concerns. Parents may have strong preferences about biradari background, regional origin (Mirpuri, Punjabi, Pathan, Urdu-speaking), or whether they prefer a UK-based or Pakistan-based spouse for their child. The individual seeking marriage may have their own equally legitimate priorities: shared values, compatible personality, similar levels of Islamic practice, and a mutual understanding of British Muslim life.</p>
+        <p class="text-gray-700 mb-6 leading-relaxed">Both sets of concerns are understandable. Biradari preferences often reflect a genuine desire for cultural compatibility and ease of family integration. Individual preferences reflect the reality that it is the couple — not the parents — who will live together. D'amour Muslim's profile system allows both dimensions to be captured and communicated transparently: users can specify their biradari, their cultural background, the level of family involvement they expect, and their personal criteria for a spouse — giving everyone enough information to assess compatibility before any introduction is made.</p>
+
+        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">UK-Born vs Pakistan-Based Partners — Finding the Right Fit</h2>
+        <p class="text-gray-700 mb-6 leading-relaxed">One of the most significant decisions a British Pakistani faces in the marriage search is whether they are open to a partner from Pakistan, or whether they specifically want someone with a British upbringing. Both are entirely valid choices with different implications. A UK-born partner brings shared cultural context — you will both understand the same pressures, the same social dynamics, the same references. A partner from Pakistan may bring stronger ties to Islamic tradition, deeper family values, and a perspective less shaped by Western culture — qualities that many British Pakistanis deeply value. D'amour Muslim has substantial membership on both sides of this equation. British Pakistanis who are open to overseas matches can connect with Pakistan-based profiles directly. Those specifically seeking UK-born or UK-raised partners can indicate this in their search preferences.</p>
+
+        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">How D'amour Muslim Helps British Pakistanis</h2>
+        <ul class="list-none space-y-3 mb-6">
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700"><strong>City-specific search:</strong> Search by Birmingham, Bradford, Manchester, London, Leeds, or any UK city — find British Pakistani singles in your own community.</span></li>
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700"><strong>Pakistan connection:</strong> Search or receive proposals from Pakistan-based families — the platform serves both the UK and Pakistan, making the overseas match search accessible and systematic.</span></li>
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700"><strong>Family-managed profiles:</strong> Parents can create and manage a profile on behalf of their son or daughter — reflecting the reality that for many British Pakistani families, this is a family process, not just an individual one.</span></li>
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700"><strong>Transparent background fields:</strong> Profiles include fields for biradari, mother tongue, cultural background, religious practice, and family values — the information Pakistani families actually use to assess compatibility.</span></li>
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700"><strong>No judgment, no gossip:</strong> Unlike traditional rishta networks, D'amour Muslim is completely private. Browsing is discreet. No aunty knows you registered. No community gossip follows you.</span></li>
+        </ul>
+
+        <blockquote class="border-l-4 border-primary pl-4 italic text-gray-600 my-6">"A woman is married for four reasons: her wealth, her family status, her beauty and her religion. Seek the one with religion, may your hands be rubbed with dust." — Prophet Muhammad ﷺ (Bukhari)</blockquote>
+
+        <p class="text-gray-700 mb-6 leading-relaxed">The British Pakistani marriage search is one of the most specific and complex in the Muslim world. D'amour Muslim is not a generic dating app repurposed for Muslims — it is a platform built to understand and serve the real dynamics of British Pakistani marriage culture, with the sensitivity and seriousness that culture deserves.</p>
+
+        <div class="bg-primary/5 rounded-2xl p-6 border border-primary/10 mt-8">
+          <p class="text-gray-700 font-medium">Also explore: <a href="/muslim-rishta" class="text-primary hover:underline">Muslim Rishta</a> &bull; <a href="/online-rishta-pakistan" class="text-primary hover:underline">Online Rishta Pakistan</a> &bull; <a href="/muslim-marriage-uk" class="text-primary hover:underline">Muslim Marriage UK</a> &bull; <a href="/muslim-matchmaking" class="text-primary hover:underline">Muslim Matchmaking</a></p>
+        </div>
+      </div>
+    `
+  },
+  {
+    path: "/muslim-singles-uk",
+    pageTitle: "Muslim Singles UK — The Halal Path Forward | D'amour Muslim",
+    h1: "Muslim Singles UK — You Are Not Stuck. The Halal Path Forward Exists.",
+    heroSubtitle: "Being a single Muslim in the UK comes with unique pressures. D'amour Muslim gives you a structured, serious, halal environment to begin your journey towards nikah — at your own pace.",
+    metaDescription: "Muslim singles UK — find verified Muslim singles serious about marriage. D'amour Muslim is free, halal, and built for UK Muslims ready to take the next step. Join free.",
+    keywords: "muslim singles uk, single muslims uk, muslim single women uk, muslim single men uk, uk muslim singles marriage",
+    canonicalPath: "/muslim-singles-uk",
+    ctaHeading: "Take the First Step Today",
+    ctaSubtext: "Join D'amour Muslim free — thousands of UK Muslim singles are already on their journey.",
+    relatedLinks: [
+      { url: "/muslim-marriage-uk", label: "Muslim Marriage UK" },
+      { url: "/find-muslim-spouse", label: "Find Muslim Spouse" },
+      { url: "/muslim-matchmaking", label: "Muslim Matchmaking" },
+      { url: "/halal-marriage", label: "Halal Marriage Platform" }
+    ],
+    pageFaqSchema: [
+      { q: "Is D'amour Muslim specifically for single Muslims looking for marriage (nikah)?", a: "Yes, completely. D'amour Muslim is a matrimonial platform — its entire purpose is to help single Muslims find a spouse for nikah. It is not a dating app, not a social network, and not a platform for casual connections. Every member registers with the intention of marriage, every profile is reviewed for authenticity, and the platform's design reflects Islamic values throughout. If you are a single Muslim serious about marriage, this is the platform built for you." },
+      { q: "Are there many Muslim singles in the UK looking for serious marriage?", a: "Yes — the UK's 3.9 million Muslims include hundreds of thousands of marriage-age singles who are actively or passively seeking a spouse. D'amour Muslim's UK membership spans all major cities — London, Birmingham, Manchester, Bradford, Leicester, Leeds, and beyond. The challenge is not a shortage of suitable people — it is finding the right structured, halal environment in which to meet them. That is exactly what D'amour Muslim provides." },
+      { q: "How do I get started as a Muslim single on D'amour Muslim?", a: "Getting started is straightforward: register free with your name and email address, verify your email, then complete your profile — including your background, religious practice, and what you are looking for in a spouse. Submit your profile for moderation review (typically completed within 24 hours). Once approved, your profile goes live and you can browse verified Muslim singles across the UK. You can send interest requests to profiles you find compatible, and communication opens when both parties have expressed interest." },
+      { q: "Is it Islamically acceptable to use an online matrimonial site as a single Muslim?", a: "Yes, the scholarly consensus is that using a purpose-built Islamic matrimonial platform is permissible. The key conditions are: that the intention is marriage (nikah), that communication remains within Islamic etiquette (no free mixing, no khalwat), and that family involvement is included in the process when appropriate. D'amour Muslim is designed to satisfy all of these conditions — messaging is gated behind mutual interest, family involvement is facilitated, and the platform enforces Islamic conduct standards throughout." },
+      { q: "What is the difference between D'amour Muslim and apps aimed at Muslim singles?", a: "D'amour Muslim is a matrimonial platform, not a Muslim singles app. The distinction matters enormously. Dating apps — including some marketed as Muslim-friendly — are designed for casual browsing, swipe-based interaction, and the full spectrum of relationship types from casual to serious. D'amour Muslim is designed exclusively for marriage. Every feature — profile review, mutual-interest-gated messaging, family profile management, Islamic conduct moderation — is built around the single goal of helping serious Muslims find a spouse for nikah." }
+    ],
+    pageFaqs: [
+      { q: "Is D'amour Muslim specifically for single Muslims looking for marriage (nikah)?", a: "Yes, completely. D'amour Muslim is a matrimonial platform — its entire purpose is to help single Muslims find a spouse for nikah. It is not a dating app, not a social network, and not a platform for casual connections. Every member registers with the intention of marriage, every profile is reviewed for authenticity, and the platform's design reflects Islamic values throughout. If you are a single Muslim serious about marriage, this is the platform built for you." },
+      { q: "Are there many Muslim singles in the UK looking for serious marriage?", a: "Yes — the UK's 3.9 million Muslims include hundreds of thousands of marriage-age singles who are actively or passively seeking a spouse. D'amour Muslim's UK membership spans all major cities — London, Birmingham, Manchester, Bradford, Leicester, Leeds, and beyond. The challenge is not a shortage of suitable people — it is finding the right structured, halal environment in which to meet them. That is exactly what D'amour Muslim provides." },
+      { q: "How do I get started as a Muslim single on D'amour Muslim?", a: "Getting started is straightforward: register free with your name and email address, verify your email, then complete your profile — including your background, religious practice, and what you are looking for in a spouse. Submit your profile for moderation review (typically completed within 24 hours). Once approved, your profile goes live and you can browse verified Muslim singles across the UK. You can send interest requests to profiles you find compatible, and communication opens when both parties have expressed interest." },
+      { q: "Is it Islamically acceptable to use an online matrimonial site as a single Muslim?", a: "Yes, the scholarly consensus is that using a purpose-built Islamic matrimonial platform is permissible. The key conditions are: that the intention is marriage (nikah), that communication remains within Islamic etiquette (no free mixing, no khalwat), and that family involvement is included in the process when appropriate. D'amour Muslim is designed to satisfy all of these conditions — messaging is gated behind mutual interest, family involvement is facilitated, and the platform enforces Islamic conduct standards throughout." },
+      { q: "What is the difference between D'amour Muslim and apps aimed at Muslim singles?", a: "D'amour Muslim is a matrimonial platform, not a Muslim singles app. The distinction matters enormously. Dating apps — including some marketed as Muslim-friendly — are designed for casual browsing, swipe-based interaction, and the full spectrum of relationship types from casual to serious. D'amour Muslim is designed exclusively for marriage. Every feature — profile review, mutual-interest-gated messaging, family profile management, Islamic conduct moderation — is built around the single goal of helping serious Muslims find a spouse for nikah." }
+    ],
+    bodyContent: `
+      <div class="prose max-w-none">
+        <p class="text-lg text-gray-700 mb-6 leading-relaxed">If you are a single Muslim in the UK, you already know the weight of it. The questions from family that start innocent and become pointed. The weddings you attend where you smile through the inevitable introductions that go nowhere. The internal conflict between wanting to find someone the halal way and not quite knowing what that looks like in a city where the Muslim community is large but scattered. The quiet loneliness of being serious about your deen, serious about marriage, and yet genuinely not knowing where to begin. D'amour Muslim was built in direct response to this experience — and you are far from alone in it.</p>
+
+        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Why Finding a Spouse as a UK Muslim Is Challenging</h2>
+        <div class="grid md:grid-cols-2 gap-4 mb-6">
+          <div class="bg-gray-50 rounded-xl p-5 border border-gray-100">
+            <h3 class="text-xl font-semibold text-gray-800 mb-3 mt-0">Limited Halal Social Circles</h3>
+            <p class="text-gray-700 text-sm leading-relaxed">University, work, and social life in the UK are predominantly mixed environments where casual relationships are the norm and halal social interaction between unmarried Muslim men and women is difficult to maintain. Most practising Muslims find their natural social environments are either exclusively same-gender (mosque, Muslim student societies) or mixed in ways that make purposeful marriage seeking awkward.</p>
+          </div>
+          <div class="bg-gray-50 rounded-xl p-5 border border-gray-100">
+            <h3 class="text-xl font-semibold text-gray-800 mb-3 mt-0">Family and Community Pressure</h3>
+            <p class="text-gray-700 text-sm leading-relaxed">The pressure to marry — from parents, aunties, community events — is real and often intensifies in your mid-to-late twenties. But pressure without a structured path forward creates anxiety, not results. Being told to marry and being given the means to do it properly are two different things.</p>
+          </div>
+          <div class="bg-gray-50 rounded-xl p-5 border border-gray-100 md:col-span-2">
+            <h3 class="text-xl font-semibold text-gray-800 mb-3 mt-0">Balancing Deen, Culture, and British Identity</h3>
+            <p class="text-gray-700 text-sm leading-relaxed">For many UK Muslim singles, the challenge is not just finding someone — it is finding someone who fits the whole picture: religiously compatible, culturally compatible, British enough to understand your life, and serious enough to be a real partner. This combination is specific and real, and it requires a matrimonial environment built for exactly this community.</p>
+          </div>
+        </div>
+
+        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">The Halal Route to Leaving Singlehood</h2>
+        <p class="text-gray-700 mb-6 leading-relaxed">Islam does not leave its adherents without guidance on this question. The Islamic approach to marriage — making the intention, seeking through legitimate means, involving family appropriately, assessing compatibility, and moving forward when a suitable match is found — is a clear and dignified path. The Prophet ﷺ encouraged facilitating marriage and removing obstacles to it. A purpose-built, moderated Islamic matrimonial platform is precisely the kind of structured, legitimate means that Islamic principles support. The halal route exists. It does not require you to compromise your values or your dignity. It requires you to take the first step.</p>
+
+        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">What D'amour Muslim Offers UK Muslim Singles</h2>
+        <ul class="list-none space-y-3 mb-6">
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700"><strong>Completely free to join and use:</strong> No subscription, no paywall, no credit system. Every serious UK Muslim single should have equal access to a trustworthy matrimonial platform regardless of financial situation.</span></li>
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700"><strong>Verified profiles only:</strong> Every profile is manually reviewed before going live. You will not waste time on fake profiles, scammers, or people who are not serious about marriage.</span></li>
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700"><strong>UK city filter:</strong> Search by London, Birmingham, Manchester, Bradford, Leicester, Leeds, or any UK city. Find Muslim singles in your community — or open the search nationally if you are flexible on location.</span></li>
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700"><strong>Halal by design:</strong> No unsolicited messages, no free mixing. Communication only opens when both parties have expressed mutual interest. The platform enforces Islamic etiquette by design — not just by requesting it.</span></li>
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700"><strong>Family-friendly:</strong> You can involve your wali or family members in your search from the beginning. The platform is built for families as much as for individuals.</span></li>
+        </ul>
+
+        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Muslim Singles UK — Where to Start</h2>
+        <div class="grid md:grid-cols-2 gap-4 mb-8">
+          <div class="bg-gray-50 rounded-xl p-5 border border-gray-100">
+            <span class="text-primary font-bold text-xl block mb-2">Step 1</span>
+            <p class="text-gray-700 text-sm leading-relaxed"><strong>Register free</strong> — create your account with your name and email. Verify your email address to activate it.</p>
+          </div>
+          <div class="bg-gray-50 rounded-xl p-5 border border-gray-100">
+            <span class="text-primary font-bold text-xl block mb-2">Step 2</span>
+            <p class="text-gray-700 text-sm leading-relaxed"><strong>Complete your profile honestly</strong> — your background, religious practice, what you are looking for. Submit for moderation review.</p>
+          </div>
+          <div class="bg-gray-50 rounded-xl p-5 border border-gray-100">
+            <span class="text-primary font-bold text-xl block mb-2">Step 3</span>
+            <p class="text-gray-700 text-sm leading-relaxed"><strong>Browse verified profiles</strong> — search by city, age, background, and religious practice. Take your time. Share profiles with family if helpful.</p>
+          </div>
+          <div class="bg-gray-50 rounded-xl p-5 border border-gray-100">
+            <span class="text-primary font-bold text-xl block mb-2">Step 4</span>
+            <p class="text-gray-700 text-sm leading-relaxed"><strong>Send interest, connect, and communicate</strong> — when both parties express interest, secure messaging opens. Begin the conversation with intention and sincerity.</p>
+          </div>
+        </div>
+
+        <blockquote class="border-l-4 border-primary pl-4 italic text-gray-600 my-6">"When a man marries, he has fulfilled half of his religion, so let him fear Allah regarding the remaining half." — Prophet Muhammad ﷺ (Al-Bayhaqi)</blockquote>
+
+        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">You Are Not Alone — Thousands of UK Muslims Are on the Same Journey</h2>
+        <p class="text-gray-700 mb-6 leading-relaxed">The experience of being a single Muslim in the UK who is serious about marriage — and unsure of the path — is one of the most common shared experiences in the British Muslim community. It is not a personal failing. It is not a sign that you are asking for too much. It is a structural challenge that affects hundreds of thousands of people across the UK, and it has a structured solution. D'amour Muslim exists because this community deserves a platform built specifically for them — not a repurposed dating app, not a generic matrimonial site, but something designed with a genuine understanding of what it means to be a practising Muslim in Britain today, trying to do this the right way.</p>
+
+        <div class="bg-primary/5 rounded-2xl p-6 border border-primary/10 mt-8">
+          <p class="text-gray-700 font-medium">Also explore: <a href="/muslim-marriage-uk" class="text-primary hover:underline">Muslim Marriage UK</a> &bull; <a href="/find-muslim-spouse" class="text-primary hover:underline">Find Muslim Spouse</a> &bull; <a href="/muslim-matchmaking" class="text-primary hover:underline">Muslim Matchmaking</a> &bull; <a href="/halal-marriage" class="text-primary hover:underline">Halal Marriage Platform</a></p>
+        </div>
+      </div>
+    `
+  },
+  {
+    path: "/muslim-second-marriage",
+    pageTitle: "Muslim Second Marriage — Valid, Honourable, and Fully Supported | D'amour Muslim",
+    h1: "Muslim Second Marriage — A New Chapter That Islam Fully Supports",
+    heroSubtitle: "Whether you are widowed, divorced, or considering a second marriage, Islam honours your journey. D'amour Muslim provides a non-judgmental space to find your next chapter.",
+    metaDescription: "Muslim second marriage — Islamic view on remarriage after widowhood or divorce, polygyny under Quran 4:3, and how D'amour Muslim supports second marriage seekers without judgment. Free to join.",
+    keywords: "muslim second marriage, muslim second wife, second marriage in islam, muslim remarriage, second nikah islam, muslim widow marriage",
+    canonicalPath: "/muslim-second-marriage",
+    ctaHeading: "Begin Your Second Chapter",
+    ctaSubtext: "Register free on D'amour Muslim — a platform with no judgment and full support for second marriage seekers.",
+    relatedLinks: [
+      { url: "/divorced-muslim-marriage", label: "Divorced Muslim Marriage" },
+      { url: "/muslim-marriage", label: "Muslim Marriage in Islam" },
+      { url: "/muslim-matchmaking", label: "Muslim Matchmaking" },
+      { url: "/halal-marriage", label: "Halal Marriage Platform" }
+    ],
+    pageFaqSchema: [
+      { q: "Is it permissible in Islam to get married for a second time?", a: "Yes, absolutely. Remarriage after the death of a spouse or after divorce is not only permitted in Islam but actively encouraged. The Prophet Muhammad ﷺ himself remarried after the death of Khadijah (ra), as did many of his companions. Islam views marriage as a sunnah — a prophetic practice to be encouraged — and there is no concept of a 'one marriage limit' in Islamic theology. Widows, widowers, and divorced Muslims are all fully encouraged to seek a new spouse." },
+      { q: "Can widows and widowers find a second spouse on D'amour Muslim?", a: "Yes. D'amour Muslim's profile system includes a marital status field where members can indicate they are widowed. Many of D'amour Muslim's members are widowed Muslims seeking a second marriage, and the platform treats this with the same seriousness and respect as any first marriage search. Widowed members should feel completely comfortable registering and searching — their situation is honoured and understood on this platform." },
+      { q: "Is polygyny (seeking a second wife) something D'amour Muslim supports?", a: "D'amour Muslim is a matrimonial platform that serves all forms of Islamic marriage that are permitted under Shariah. Polygyny — a man marrying up to four wives under the conditions set out in Quran 4:3 (which requires just treatment of all wives) — is a permitted form of marriage in Islam. A man who is already married and seeking a second wife, or a woman who is willing to become a second wife, are welcome to use D'amour Muslim's platform. The platform does not make moral judgements about permissible Islamic arrangements." },
+      { q: "Will people judge me for seeking a second marriage on the platform?", a: "D'amour Muslim is designed to be entirely free of judgment about any legitimate Islamic marriage path. The platform has no mechanism for other members to comment on, rate, or judge your marital history. Your profile details are shared only with members you mutually match with. The moderation team is trained to treat all users — first-time seekers, widowed Muslims, divorced Muslims, and those seeking a second wife — with identical respect and professionalism." },
+      { q: "Do I need to disclose my previously married status on D'amour Muslim?", a: "Yes — honesty is an Islamic obligation and a platform requirement. D'amour Muslim's profile includes a marital status field and you are required to complete it accurately. Misrepresenting your marital history is a form of deception that is both Islamically impermissible and a violation of D'amour Muslim's terms. Being transparent about being previously married, widowed, or currently married (if seeking a second wife) ensures that potential matches can make a fully informed decision — which is the only foundation for a sound Islamic marriage." }
+    ],
+    pageFaqs: [
+      { q: "Is it permissible in Islam to get married for a second time?", a: "Yes, absolutely. Remarriage after the death of a spouse or after divorce is not only permitted in Islam but actively encouraged. The Prophet Muhammad ﷺ himself remarried after the death of Khadijah (ra), as did many of his companions. Islam views marriage as a sunnah — a prophetic practice to be encouraged — and there is no concept of a 'one marriage limit' in Islamic theology. Widows, widowers, and divorced Muslims are all fully encouraged to seek a new spouse." },
+      { q: "Can widows and widowers find a second spouse on D'amour Muslim?", a: "Yes. D'amour Muslim's profile system includes a marital status field where members can indicate they are widowed. Many of D'amour Muslim's members are widowed Muslims seeking a second marriage, and the platform treats this with the same seriousness and respect as any first marriage search. Widowed members should feel completely comfortable registering and searching — their situation is honoured and understood on this platform." },
+      { q: "Is polygyny (seeking a second wife) something D'amour Muslim supports?", a: "D'amour Muslim is a matrimonial platform that serves all forms of Islamic marriage that are permitted under Shariah. Polygyny — a man marrying up to four wives under the conditions set out in Quran 4:3 (which requires just treatment of all wives) — is a permitted form of marriage in Islam. A man who is already married and seeking a second wife, or a woman who is willing to become a second wife, are welcome to use D'amour Muslim's platform. The platform does not make moral judgements about permissible Islamic arrangements." },
+      { q: "Will people judge me for seeking a second marriage on the platform?", a: "D'amour Muslim is designed to be entirely free of judgment about any legitimate Islamic marriage path. The platform has no mechanism for other members to comment on, rate, or judge your marital history. Your profile details are shared only with members you mutually match with. The moderation team is trained to treat all users — first-time seekers, widowed Muslims, divorced Muslims, and those seeking a second wife — with identical respect and professionalism." },
+      { q: "Do I need to disclose my previously married status on D'amour Muslim?", a: "Yes — honesty is an Islamic obligation and a platform requirement. D'amour Muslim's profile includes a marital status field and you are required to complete it accurately. Misrepresenting your marital history is a form of deception that is both Islamically impermissible and a violation of D'amour Muslim's terms. Being transparent about being previously married, widowed, or currently married (if seeking a second wife) ensures that potential matches can make a fully informed decision — which is the only foundation for a sound Islamic marriage." }
+    ],
+    bodyContent: `
+      <div class="prose max-w-none">
+        <p class="text-lg text-gray-700 mb-6 leading-relaxed">A second marriage in Islam is not a lesser thing. It is not a compromise, a consolation, or a second-best outcome. It is a fresh beginning — fully sanctioned by Allah, honoured by the Prophet's own example, and deeply needed by hundreds of thousands of Muslims who have lost a spouse to death or to divorce. The fear of judgment, the weight of previous experience, and the uncertainty about how to begin again are real. But the path forward is clear, and D'amour Muslim is here to walk it with you.</p>
+
+        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Islamic Perspective on Second Marriage</h2>
+        <p class="text-gray-700 mb-4 leading-relaxed">Islam's position on second marriages — whether after widowhood, divorce, or as a subsequent wife in a polygynous marriage — is unambiguous and compassionate. The Prophet Muhammad ﷺ himself lost his beloved first wife Khadijah (ra) after 25 years of marriage and subsequently remarried. Several of his closest companions were widowers or divorced men who remarried. The Islamic tradition does not stigmatise second marriages — it normalises and honours them.</p>
+        <p class="text-gray-700 mb-6 leading-relaxed">On the specific question of polygyny — a man seeking to marry a second, third, or fourth wife — the Quran addresses this directly: <em>"...then marry those that please you of women, two or three or four. But if you fear that you will not be just, then marry only one."</em> (Quran 4:3). This verse simultaneously permits polygyny and places a significant condition upon it — the obligation of just treatment. D'amour Muslim does not adjudicate the fiqh of individual situations but does provide a platform for all forms of Islamic marriage that are Shariah-compliant.</p>
+
+        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Who Seeks a Second Marriage?</h2>
+        <div class="grid md:grid-cols-2 gap-4 mb-6">
+          <div class="bg-gray-50 rounded-xl p-5 border border-gray-100">
+            <h3 class="text-xl font-semibold text-gray-800 mb-3 mt-0">Widows and Widowers</h3>
+            <p class="text-gray-700 text-sm leading-relaxed">Losing a spouse is among the most devastating experiences a person can face. After the period of mourning and recovery, many widowed Muslims — of all ages — reach a point where they wish to remarry. This desire is natural, honourable, and Islamically encouraged. The Prophet ﷺ encouraged facilitating the remarriage of widows and widowers. D'amour Muslim treats widowed members with the same respect and seriousness as any other member — there is no lesser category here.</p>
+          </div>
+          <div class="bg-gray-50 rounded-xl p-5 border border-gray-100">
+            <h3 class="text-xl font-semibold text-gray-800 mb-3 mt-0">Divorced Muslims</h3>
+            <p class="text-gray-700 text-sm leading-relaxed">Divorce is permitted in Islam precisely because marriage to the wrong person can cause harm, and Islam prioritises the wellbeing of both parties over the appearance of social conformity. A divorced Muslim who seeks to remarry is not carrying a stain — they are demonstrating exactly the kind of resilience and renewed intention that a mature, serious marriage requires. D'amour Muslim has a significant number of divorced members of all ages seeking a fresh, properly grounded marriage.</p>
+          </div>
+          <div class="bg-gray-50 rounded-xl p-5 border border-gray-100 md:col-span-2">
+            <h3 class="text-xl font-semibold text-gray-800 mb-3 mt-0">Those Considering a Second Wife (Polygyny)</h3>
+            <p class="text-gray-700 text-sm leading-relaxed">A Muslim man who is already married and wishes to marry a second wife — under the Quranic conditions of just treatment — is engaging in a Shariah-permitted arrangement. Similarly, a Muslim woman who, with full knowledge and informed consent, is willing to enter a polygynous marriage as a second wife is exercising a personal religious choice that is her right. D'amour Muslim provides a space for both parties to find each other — without judgment and with full transparency about the arrangement.</p>
+          </div>
+        </div>
+
+        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Challenges of Finding a Second Marriage</h2>
+        <ul class="list-none space-y-3 mb-6">
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700"><strong>Social stigma:</strong> Despite Islam's clear position, cultural stigma around second marriages — particularly for divorced women and for polygynous arrangements — remains real in many South Asian and Arab Muslim communities in the UK. Finding a platform that treats these situations without judgment matters enormously.</span></li>
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700"><strong>Children from a previous marriage:</strong> Many second-marriage seekers have children from a previous relationship. Finding a spouse who is willing, capable, and genuinely enthusiastic about taking on a step-parent role requires honesty and the right platform — one where this can be stated clearly upfront.</span></li>
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700"><strong>Family opposition:</strong> Parents and extended family members sometimes oppose a second marriage — particularly for women — out of protectiveness, cultural pride, or concern about social reputation. Navigating this while maintaining Islamic principles and personal dignity requires the kind of structured, private process that D'amour Muslim provides.</span></li>
+        </ul>
+
+        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">How D'amour Muslim Supports Second Marriage Seekers</h2>
+        <p class="text-gray-700 mb-4 leading-relaxed">D'amour Muslim's profile system includes a marital status field with options for single, divorced, and widowed — as well as space to indicate that you are seeking a polygynous arrangement. This transparency is by design: potential matches deserve accurate information, and providing it from the outset is both an Islamic obligation and the most practical approach to finding a genuinely compatible match.</p>
+        <p class="text-gray-700 mb-6 leading-relaxed">The platform's moderation team treats all members with equal respect regardless of their marital history or the nature of the marriage they are seeking. There are no different tiers of membership, no visible labels that mark you as "previously married", and no community rating system that allows other members to judge your history. What you share about your background, and when you share it, is within your control — after mutual interest is established and a genuine conversation has begun.</p>
+
+        <blockquote class="border-l-4 border-primary pl-4 italic text-gray-600 my-6">"Marry the one who is religious, for if you do not, there will be hardship and corruption in the land." — Prophet Muhammad ﷺ (Bukhari). This applies to every marriage — first, second, or more.</blockquote>
+
+        <div class="bg-primary/5 rounded-2xl p-6 border border-primary/10 mt-8">
+          <p class="text-gray-700 font-medium">Also explore: <a href="/divorced-muslim-marriage" class="text-primary hover:underline">Divorced Muslim Marriage</a> &bull; <a href="/muslim-marriage" class="text-primary hover:underline">Muslim Marriage in Islam</a> &bull; <a href="/muslim-matchmaking" class="text-primary hover:underline">Muslim Matchmaking</a></p>
+        </div>
+      </div>
+    `
+  },
+  {
+    path: "/divorced-muslim-marriage",
+    pageTitle: "Divorced Muslim Marriage — Moving Forward With Dignity | D'amour Muslim",
+    h1: "Divorced Muslim Marriage — Islam Provides a Path Forward, and So Do We",
+    heroSubtitle: "Divorce is not a failure in Islam — it is an acknowledgement that some marriages do not work, and a door to a better one. D'amour Muslim supports divorced Muslims with empathy, privacy, and zero judgment.",
+    metaDescription: "Divorced Muslim marriage — the Islamic view on divorce and remarriage, practical considerations before remarrying, and how D'amour Muslim supports divorced Muslims. Free to join.",
+    keywords: "divorced muslim marriage, muslim divorce remarriage, divorced muslim singles, divorced muslim uk, muslim marriage after divorce, muslim divorcee",
+    canonicalPath: "/divorced-muslim-marriage",
+    ctaHeading: "Your Second Chance Starts Here",
+    ctaSubtext: "Register free on D'amour Muslim — no judgment, no stigma, just a serious path to a better marriage.",
+    relatedLinks: [
+      { url: "/muslim-second-marriage", label: "Muslim Second Marriage" },
+      { url: "/trusted-muslim-matchmaking", label: "Trusted Muslim Matchmaking" },
+      { url: "/halal-marriage", label: "Halal Marriage Platform" },
+      { url: "/muslim-matchmaking", label: "Muslim Matchmaking" }
+    ],
+    pageFaqSchema: [
+      { q: "Is it permissible to remarry after divorce in Islam?", a: "Yes — remarriage after divorce is fully permitted and encouraged in Islam. Talaq (divorce) is a legitimate exit from a marriage that is not working, and the Islamic system explicitly provides a pathway back to marriage afterwards. The Prophet Muhammad ﷺ said: 'Of all the lawful acts the most detestable to Allah is divorce' (Abu Dawud) — meaning divorce is a last resort, but a permitted one, and remarriage is entirely honourable. Islam does not punish the divorced Muslim — it provides them a route forward." },
+      { q: "Does D'amour Muslim accept profiles from divorced Muslims?", a: "Absolutely — and without any lesser treatment. Divorced Muslims are a significant part of D'amour Muslim's membership and are treated with the same seriousness, respect, and professionalism as any other member. The profile includes a marital status field where you indicate your divorced status — this is required for transparency and honesty, which are Islamic obligations as well as platform requirements. Being divorced is not a barrier to finding a wonderful second marriage on D'amour Muslim." },
+      { q: "Do I have to disclose that I am divorced on my profile?", a: "Yes — full honesty about marital history is both an Islamic obligation and a D'amour Muslim platform requirement. A potential spouse has the right to know your marital status before deciding whether to pursue a connection. Concealing a divorce is a form of deception (ghish) that is Islamically impermissible and would be grounds for profile removal if discovered. Transparency from the outset protects both you and your potential match." },
+      { q: "Are there many divorced Muslims on D'amour Muslim looking for remarriage?", a: "Yes — divorced Muslims seeking remarriage represent a meaningful and growing segment of D'amour Muslim's membership. This reflects a broader reality: divorce rates among UK Muslims, while lower than the national average, have increased, and many divorced Muslims are actively and seriously looking for a better, more compatible marriage. You will find many genuine, sincere, and carefully considered profiles from divorced Muslims on the platform." },
+      { q: "What is iddah and how does it affect my ability to start a new marriage search?", a: "Iddah is the waiting period that a Muslim woman must observe after divorce or the death of a husband before she may remarry. For a divorced woman, iddah is typically three menstrual cycles (approximately three months). For a widow, iddah is four months and ten days. During iddah, a woman may not remarry or accept a new marriage proposal. However, there is scholarly opinion that permitting a divorced or widowed woman to register on a matrimonial platform and browse profiles during iddah — without entering into active engagement or communication — may be permissible, as a form of preparation rather than formal proposal acceptance. We recommend consulting your scholar for guidance specific to your situation." }
+    ],
+    pageFaqs: [
+      { q: "Is it permissible to remarry after divorce in Islam?", a: "Yes — remarriage after divorce is fully permitted and encouraged in Islam. Talaq (divorce) is a legitimate exit from a marriage that is not working, and the Islamic system explicitly provides a pathway back to marriage afterwards. The Prophet Muhammad ﷺ said: 'Of all the lawful acts the most detestable to Allah is divorce' (Abu Dawud) — meaning divorce is a last resort, but a permitted one, and remarriage is entirely honourable. Islam does not punish the divorced Muslim — it provides them a route forward." },
+      { q: "Does D'amour Muslim accept profiles from divorced Muslims?", a: "Absolutely — and without any lesser treatment. Divorced Muslims are a significant part of D'amour Muslim's membership and are treated with the same seriousness, respect, and professionalism as any other member. The profile includes a marital status field where you indicate your divorced status — this is required for transparency and honesty, which are Islamic obligations as well as platform requirements. Being divorced is not a barrier to finding a wonderful second marriage on D'amour Muslim." },
+      { q: "Do I have to disclose that I am divorced on my profile?", a: "Yes — full honesty about marital history is both an Islamic obligation and a D'amour Muslim platform requirement. A potential spouse has the right to know your marital status before deciding whether to pursue a connection. Concealing a divorce is a form of deception (ghish) that is Islamically impermissible and would be grounds for profile removal if discovered. Transparency from the outset protects both you and your potential match." },
+      { q: "Are there many divorced Muslims on D'amour Muslim looking for remarriage?", a: "Yes — divorced Muslims seeking remarriage represent a meaningful and growing segment of D'amour Muslim's membership. This reflects a broader reality: divorce rates among UK Muslims, while lower than the national average, have increased, and many divorced Muslims are actively and seriously looking for a better, more compatible marriage. You will find many genuine, sincere, and carefully considered profiles from divorced Muslims on the platform." },
+      { q: "What is iddah and how does it affect my ability to start a new marriage search?", a: "Iddah is the waiting period that a Muslim woman must observe after divorce or the death of a husband before she may remarry. For a divorced woman, iddah is typically three menstrual cycles (approximately three months). For a widow, iddah is four months and ten days. During iddah, a woman may not remarry or accept a new marriage proposal. However, there is scholarly opinion that permitting a divorced or widowed woman to register on a matrimonial platform and browse profiles during iddah — without entering into active engagement or communication — may be permissible, as a form of preparation rather than formal proposal acceptance. We recommend consulting your scholar for guidance specific to your situation." }
+    ],
+    bodyContent: `
+      <div class="prose max-w-none">
+        <p class="text-lg text-gray-700 mb-6 leading-relaxed">Divorce happens. In Islam, it is not a catastrophe — it is a provision. Allah, in His wisdom, created a mechanism for a marriage that is causing harm to be ended with dignity, and for both parties to move forward. The stigma that some Muslim communities attach to divorce is a cultural import, not an Islamic teaching. The Prophet Muhammad ﷺ himself was widowed and remarried. His companions divorced and remarried. Divorce is not shameful — it is an acknowledgement that you are a human being who tried, and who now deserves the chance to do better. If you are a divorced Muslim who is ready to seek a new marriage, D'amour Muslim is here for exactly that journey.</p>
+
+        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Islam's View on Divorce and Remarriage</h2>
+        <p class="text-gray-700 mb-4 leading-relaxed">The Islamic system of divorce — talaq — is a structured, graduated process designed to give both parties time to reconsider, to allow for reconciliation, and ultimately to provide a dignified exit when reconciliation is not possible. The Quran addresses divorce extensively and with compassion: <em>"And if they separate, Allah will enrich each of them from His abundance. And ever is Allah Encompassing and Wise."</em> (Quran 4:130)</p>
+        <p class="text-gray-700 mb-6 leading-relaxed">After the completion of iddah (the prescribed waiting period), a divorced Muslim woman is free to remarry. A divorced Muslim man may remarry immediately. Islam places no stigma, no waiting period beyond iddah, and no limit on remarriage — a divorced Muslim who finds the right person and marries them in the correct Islamic manner has done something honourable. The faith provides the path forward; D'amour Muslim provides the means.</p>
+
+        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">The Emotional Reality of Seeking Marriage After Divorce</h2>
+        <p class="text-gray-700 mb-6 leading-relaxed">Starting a new marriage search after divorce is emotionally different from a first marriage search in important ways. You come with experience — which is both a gift and a complication. You have a clearer sense of what you need in a partner, because you have learned, sometimes painfully, what you cannot live with. You may also carry the weight of a previous failure — even when that failure was not primarily your responsibility — and the fear of repeating it. You may be dealing with co-parenting, family opinions, financial realities, or simply the exhaustion of having already been through a difficult process. D'amour Muslim does not pretend these challenges do not exist. The platform provides a structured, private, serious environment where you can search at your own pace, with full control over your information, without community gossip or social exposure.</p>
+
+        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Practical Considerations Before Remarrying</h2>
+        <ul class="list-none space-y-3 mb-6">
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700"><strong>Iddah completion:</strong> For women, confirming that your iddah period has been fully completed before entering into any new marriage engagement is an Islamic obligation. Do not begin active communication towards a new nikah before this is complete.</span></li>
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700"><strong>Children and custody:</strong> If you have children from a previous marriage, being clear on your profile about your situation is both honest and practical. A potential spouse who is fully informed about your family situation from the outset is one who has genuinely chosen to proceed with their eyes open — which is the only solid foundation for a second marriage.</span></li>
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700"><strong>Honesty with potential spouses:</strong> Beyond the profile, active conversations with a potential match should include honest disclosure of the circumstances of your previous marriage — not in exhaustive detail, but in enough honesty that your potential spouse can assess compatibility with a clear picture. Islam places great weight on transparency in the marriage process.</span></li>
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700"><strong>Emotional readiness:</strong> The best time to begin a new marriage search is when you have genuinely processed the previous experience — not necessarily when family pressure suggests you should. Rushing into a second marriage without real emotional readiness is a path to repeating the same problems.</span></li>
+        </ul>
+
+        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">How D'amour Muslim Supports Divorced Muslims</h2>
+        <p class="text-gray-700 mb-6 leading-relaxed">D'amour Muslim's profile design reflects the reality that many users are not seeking a first marriage. The marital status field allows divorced members to represent themselves honestly. There is no visible badge or label that flags divorced members as somehow lesser — your marital history appears only in your profile details, which are shared only with members you mutually match with. The platform's privacy settings give you control over your information. The moderation team treats divorced members with complete professional equality. And D'amour Muslim's free access policy means that financial difficulty — which sometimes follows the practical reality of divorce — is never a barrier to using the platform fully.</p>
+
+        <blockquote class="border-l-4 border-primary pl-4 italic text-gray-600 my-6">"Say: O My servants who have transgressed against themselves, do not despair of the mercy of Allah. Indeed, Allah forgives all sins. Indeed, it is He who is the Forgiving, the Merciful." — Quran 39:53. Every door that closes opens a new one.</blockquote>
+
+        <div class="bg-primary/5 rounded-2xl p-6 border border-primary/10 mt-8">
+          <p class="text-gray-700 font-medium">Also explore: <a href="/muslim-second-marriage" class="text-primary hover:underline">Muslim Second Marriage</a> &bull; <a href="/trusted-muslim-matchmaking" class="text-primary hover:underline">Trusted Muslim Matchmaking</a> &bull; <a href="/halal-marriage" class="text-primary hover:underline">Halal Marriage Platform</a></p>
+        </div>
+      </div>
+    `
+  },
+  {
+    path: "/muslim-marriage-over-30",
+    pageTitle: "Muslim Marriage Over 30 — Later Is Not Too Late | D'amour Muslim",
+    h1: "Muslim Marriage Over 30 — Islam Has No Age Limit, and Neither Do We",
+    heroSubtitle: "Marrying in your 30s is more common than ever among British Muslims — and often leads to more grounded, compatible, and successful marriages. D'amour Muslim serves Muslims at every stage of life.",
+    metaDescription: "Muslim marriage over 30 — why more Muslims marry in their 30s, the advantages of later marriage, Islam's view, and how D'amour Muslim serves over-30 Muslims. Free to join.",
+    keywords: "muslim marriage over 30, muslim marriage 30s, muslim marriage older, marrying late islam, muslim marriage 35, late muslim marriage",
+    canonicalPath: "/muslim-marriage-over-30",
+    ctaHeading: "Your Perfect Match Is Still Out There",
+    ctaSubtext: "Register free on D'amour Muslim — thousands of Muslims in their 30s and 40s are already searching.",
+    relatedLinks: [
+      { url: "/muslim-singles-uk", label: "Muslim Singles UK" },
+      { url: "/muslim-matchmaking", label: "Muslim Matchmaking" },
+      { url: "/find-muslim-spouse", label: "Find Muslim Spouse" },
+      { url: "/verified-muslim-profiles", label: "Verified Muslim Profiles" }
+    ],
+    pageFaqSchema: [
+      { q: "Is there an upper age limit for using D'amour Muslim?", a: "No — D'amour Muslim has no upper age limit. The platform serves Muslim marriage seekers of all ages, from young adults to those in their 40s, 50s, and beyond. Every age group represents a legitimate and important segment of the Muslim community seeking marriage, and D'amour Muslim's profile and search system accommodates the full age range with equal respect and functionality." },
+      { q: "Are there many Muslim singles in their 30s and 40s on D'amour Muslim?", a: "Yes — Muslims in their 30s and 40s make up a significant and growing portion of D'amour Muslim's membership. This reflects broader social trends: later completion of higher education and postgraduate study, career establishment before marriage, the aftermath of delayed first marriage searches, and the presence of divorced or widowed Muslims seeking a second marriage. The over-30 Muslim marriage market is substantial, and D'amour Muslim actively serves it." },
+      { q: "Is it shameful in Islam to marry late?", a: "No — there is no Islamic basis for shame around marrying later in life. The Prophet Muhammad ﷺ married Khadijah (ra) when she was approximately 40 and he was 25. Many companions of the Prophet married at various ages throughout their lives. Islam encourages marriage and discourages remaining single without reason — but it sets no cultural deadline. The shame associated with late marriage is a cultural construct, not an Islamic teaching, and it causes real harm to Muslims who deserve encouragement rather than judgment." },
+      { q: "How do I filter profiles by age on D'amour Muslim?", a: "D'amour Muslim's search system includes age as a filter parameter. You can set a minimum and maximum age for your search to narrow results to your preferred age range. This allows over-30 members to search specifically within their own age group, or to set an age range that reflects their genuine compatibility preferences without being constrained to see only profiles far outside their target range." },
+      { q: "What are the biggest challenges of finding a Muslim spouse in your 30s?", a: "The most common challenges for over-30 Muslim marriage seekers are: a narrower pool of never-married candidates (as many are already married by their early 30s), the pressure of cultural expectations that treat late marriage as abnormal, the need for a more compatible match given clearer personal priorities developed with life experience, and — for some — managing family anxiety about the delay. D'amour Muslim addresses these challenges by providing access to a large, national pool of similarly-aged Muslim marriage seekers, including both never-married and previously-married (divorced/widowed) members." }
+    ],
+    pageFaqs: [
+      { q: "Is there an upper age limit for using D'amour Muslim?", a: "No — D'amour Muslim has no upper age limit. The platform serves Muslim marriage seekers of all ages, from young adults to those in their 40s, 50s, and beyond. Every age group represents a legitimate and important segment of the Muslim community seeking marriage, and D'amour Muslim's profile and search system accommodates the full age range with equal respect and functionality." },
+      { q: "Are there many Muslim singles in their 30s and 40s on D'amour Muslim?", a: "Yes — Muslims in their 30s and 40s make up a significant and growing portion of D'amour Muslim's membership. This reflects broader social trends: later completion of higher education and postgraduate study, career establishment before marriage, the aftermath of delayed first marriage searches, and the presence of divorced or widowed Muslims seeking a second marriage. The over-30 Muslim marriage market is substantial, and D'amour Muslim actively serves it." },
+      { q: "Is it shameful in Islam to marry late?", a: "No — there is no Islamic basis for shame around marrying later in life. The Prophet Muhammad ﷺ married Khadijah (ra) when she was approximately 40 and he was 25. Many companions of the Prophet married at various ages throughout their lives. Islam encourages marriage and discourages remaining single without reason — but it sets no cultural deadline. The shame associated with late marriage is a cultural construct, not an Islamic teaching, and it causes real harm to Muslims who deserve encouragement rather than judgment." },
+      { q: "How do I filter profiles by age on D'amour Muslim?", a: "D'amour Muslim's search system includes age as a filter parameter. You can set a minimum and maximum age for your search to narrow results to your preferred age range. This allows over-30 members to search specifically within their own age group, or to set an age range that reflects their genuine compatibility preferences without being constrained to see only profiles far outside their target range." },
+      { q: "What are the biggest challenges of finding a Muslim spouse in your 30s?", a: "The most common challenges for over-30 Muslim marriage seekers are: a narrower pool of never-married candidates (as many are already married by their early 30s), the pressure of cultural expectations that treat late marriage as abnormal, the need for a more compatible match given clearer personal priorities developed with life experience, and — for some — managing family anxiety about the delay. D'amour Muslim addresses these challenges by providing access to a large, national pool of similarly-aged Muslim marriage seekers, including both never-married and previously-married (divorced/widowed) members." }
+    ],
+    bodyContent: `
+      <div class="prose max-w-none">
+        <p class="text-lg text-gray-700 mb-6 leading-relaxed">Let us name it plainly: there is a cultural narrative in many Muslim communities that a person who has not married by their late twenties has missed the window, is somehow too difficult, or has something wrong with them. This narrative is false, harmful, and has no foundation in Islamic teaching. The Prophet Muhammad ﷺ himself married Khadijah (ra) — who was approximately 40 years old — as his first marriage, and it was by all accounts the most devoted and joyful marriage of his life. If you are a Muslim in your 30s seeking marriage, you are not late. You are right on time.</p>
+
+        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Why More Muslims Are Marrying in Their 30s</h2>
+        <p class="text-gray-700 mb-4 leading-relaxed">The age of first marriage among British Muslims has been rising steadily for decades, for reasons that are entirely understandable and largely positive:</p>
+        <ul class="list-none space-y-3 mb-6">
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700"><strong>Extended education:</strong> Undergraduate degrees, postgraduate qualifications, and professional training programmes routinely take British Muslims into their mid-to-late twenties before they feel financially and professionally settled enough to commit to marriage.</span></li>
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700"><strong>Career establishment:</strong> The expectation — both personal and familial — that a person should have a stable career foundation before marriage is widely held in British Muslim communities, particularly among professionals. Reaching that point in medicine, law, engineering, or business often takes until the early 30s.</span></li>
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700"><strong>Cost of living:</strong> The practical financial requirements of establishing a home — particularly in London, Birmingham, and other major UK cities — mean that many British Muslims are simply not in a position to marry in their early 20s even if they want to. This is a structural reality, not a personal failing.</span></li>
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700"><strong>The difficulty of meeting the right person:</strong> Many Muslims who wanted to marry earlier simply did not find the right person — not for lack of trying, but because the right match is genuinely rare and finding them takes time. This is, in many ways, a sign of healthy standards rather than a problem to be fixed.</span></li>
+        </ul>
+
+        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">The Advantages of Marrying in Your 30s</h2>
+        <div class="grid md:grid-cols-2 gap-4 mb-6">
+          <div class="bg-gray-50 rounded-xl p-5 border border-gray-100">
+            <h3 class="text-xl font-semibold text-gray-800 mb-3 mt-0">Clarity of Purpose</h3>
+            <p class="text-gray-700 text-sm leading-relaxed">By your 30s, you know yourself. You know what you need in a spouse, what you cannot compromise on, and what you can be flexible about. This clarity leads to better decisions and more honest profiles — the kind that actually lead to compatible matches, rather than the kind written by a 22-year-old who has not yet discovered what they truly need.</p>
+          </div>
+          <div class="bg-gray-50 rounded-xl p-5 border border-gray-100">
+            <h3 class="text-xl font-semibold text-gray-800 mb-3 mt-0">Emotional Maturity</h3>
+            <p class="text-gray-700 text-sm leading-relaxed">Marriage requires patience, emotional regulation, the ability to have difficult conversations, and the capacity to prioritise another person's needs alongside your own. These are skills developed by life experience — and by your 30s, most people have substantially more of them than they did at 22. Marriages entered into with greater emotional maturity have measurably better outcomes.</p>
+          </div>
+          <div class="bg-gray-50 rounded-xl p-5 border border-gray-100">
+            <h3 class="text-xl font-semibold text-gray-800 mb-3 mt-0">Financial Stability</h3>
+            <p class="text-gray-700 text-sm leading-relaxed">Many Muslims in their 30s are established in their careers, have savings, and are in a far stronger position to provide the financial foundation that marriage requires than they were ten years earlier. This reduces one of the most common practical stressors of early marriage and allows the relationship itself to be the focus.</p>
+          </div>
+          <div class="bg-gray-50 rounded-xl p-5 border border-gray-100">
+            <h3 class="text-xl font-semibold text-gray-800 mb-3 mt-0">Seriousness of Intent</h3>
+            <p class="text-gray-700 text-sm leading-relaxed">A Muslim in their 30s who is actively seeking a spouse is — almost by definition — serious. They are not registering out of curiosity or family pressure. They want to get married, they are ready, and they are engaging with the process with the full intentionality it deserves. This makes the over-30 pool on D'amour Muslim particularly high-quality.</p>
+          </div>
+        </div>
+
+        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Islam Has No Age Limit for Marriage</h2>
+        <p class="text-gray-700 mb-6 leading-relaxed">It bears repeating: there is no concept in Islamic fiqh of a person being "too old" to marry. The sunnah encourages marriage for those who are able, and it celebrates it as a mercy and a blessing at any age. The cultural anxiety around late marriage is a modern invention — a mixture of demographic concern and social pressure that has no Quranic or prophetic basis. What Islam asks is that you seek a spouse who is good for your deen, your worldly life, and your akhirah — and that this search be conducted with sincerity, propriety, and patience. The age at which you do this is between you and Allah.</p>
+
+        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">What Over-30s Look for in a Spouse</h2>
+        <p class="text-gray-700 mb-6 leading-relaxed">Muslims in their 30s typically approach the spouse search with a different lens than those in their early 20s. Compatibility — genuine, practical, day-to-day compatibility — often matters more than the surface-level attraction that drives younger searches. A shared vision of how to practise Islam in a British context, aligned financial values, compatible approaches to family and parenting, and mutual respect for each other's professional lives are frequently cited as more important than cultural background alone. D'amour Muslim's detailed profile fields — covering religious practice, lifestyle, career, family plans, and values — are designed to surface exactly this kind of compatibility information, making the over-30 search both more focused and more effective.</p>
+
+        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">How D'amour Muslim Serves Over-30 Muslims</h2>
+        <ul class="list-none space-y-3 mb-6">
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700"><strong>Age filter in search:</strong> Set your preferred age range to find profiles from your own demographic. Filter from 30 upwards, or set any range that reflects your genuine preferences.</span></li>
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700"><strong>Profiles from all life stages:</strong> D'amour Muslim includes never-married, divorced, and widowed members across all age groups — giving over-30s access to the full range of people in their demographic who are genuinely seeking marriage.</span></li>
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700"><strong>Detailed compatibility information:</strong> The profile system surfaces career, religious practice, family plans, and values — the dimensions that matter most to mature marriage seekers, not just age and photo.</span></li>
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700"><strong>Free, private, and at your pace:</strong> No subscription pressure, no countdown, no sense of urgency imposed by the platform. You search when you want, engage when you are ready, and take the time you need — which is exactly the approach that tends to produce the best outcomes.</span></li>
+        </ul>
+
+        <blockquote class="border-l-4 border-primary pl-4 italic text-gray-600 my-6">"And He found you lost and guided you." — Quran 93:7. The right time is when Allah wills it — and your task is simply to remain sincere, keep searching, and trust the process.</blockquote>
+
+        <div class="bg-primary/5 rounded-2xl p-6 border border-primary/10 mt-8">
+          <p class="text-gray-700 font-medium">Also explore: <a href="/muslim-singles-uk" class="text-primary hover:underline">Muslim Singles UK</a> &bull; <a href="/muslim-matchmaking" class="text-primary hover:underline">Muslim Matchmaking</a> &bull; <a href="/find-muslim-spouse" class="text-primary hover:underline">Find Muslim Spouse</a> &bull; <a href="/verified-muslim-profiles" class="text-primary hover:underline">Verified Muslim Profiles</a></p>
+        </div>
+      </div>
+    `
   }
 ];
 
@@ -6820,6 +7283,36 @@ app.get("/sitemap.xml", async (req, res) => {
   </url>
   <url>
     <loc>https://damourmuslim.com/rishta-karachi</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://damourmuslim.com/muslim-marriage-uk</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://damourmuslim.com/british-pakistani-marriage</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://damourmuslim.com/muslim-singles-uk</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://damourmuslim.com/muslim-second-marriage</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://damourmuslim.com/divorced-muslim-marriage</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://damourmuslim.com/muslim-marriage-over-30</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
