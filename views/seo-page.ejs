@@ -61,6 +61,9 @@
     "areaServed": ["United Kingdom", "Pakistan", "Global"]
   }
   </script>
+  <% if (typeof pageFaqSchema !== 'undefined' && pageFaqSchema && pageFaqSchema.length > 0) { %>
+  <script type="application/ld+json"><%- JSON.stringify({ "@context": "https://schema.org", "@type": "FAQPage", "mainEntity": pageFaqSchema.map(function(faq){ return { "@type": "Question", "name": faq.q, "acceptedAnswer": { "@type": "Answer", "text": faq.a } }; }) }) %></script>
+  <% } else { %>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -93,6 +96,7 @@
     ]
   }
   </script>
+  <% } %>
 </head>
 
 <% if (isProd && !isAdmin) { %>
@@ -130,6 +134,14 @@
       <div class="max-w-4xl mx-auto px-6">
         <h2 class="text-3xl font-bold text-gray-800 mb-8 font-['Playfair_Display'] text-center">Frequently Asked Questions</h2>
         <div class="space-y-4">
+          <% if (typeof pageFaqs !== 'undefined' && pageFaqs && pageFaqs.length > 0) { %>
+            <% pageFaqs.forEach(function(faq) { %>
+            <div class="bg-white rounded-2xl p-6 material-shadow">
+              <h3 class="font-bold text-gray-800 mb-2"><%= faq.q %></h3>
+              <p class="text-gray-600"><%= faq.a %></p>
+            </div>
+            <% }); %>
+          <% } else { %>
           <div class="bg-white rounded-2xl p-6 material-shadow">
             <h3 class="font-bold text-gray-800 mb-2">Is this service halal?</h3>
             <p class="text-gray-600">Yes. D'amour Muslim is a marriage-focused platform. We do not allow casual dating or socialising. All interactions are guided by the intention of Nikah.</p>
@@ -142,6 +154,7 @@
             <h3 class="font-bold text-gray-800 mb-2">Are profiles verified?</h3>
             <p class="text-gray-600">Yes. Every profile is reviewed and approved by our moderation team before becoming visible on the platform.</p>
           </div>
+          <% } %>
         </div>
       </div>
     </div>

@@ -337,64 +337,217 @@ app.get("/register", (req, res) => {
 const seoPages = [
   {
     path: "/muslim-marriage",
-    pageTitle: "Muslim Marriage Platform | Find Your Halal Life Partner",
-    h1: "Muslim Marriage – Find Your Perfect Match",
-    heroSubtitle: "Looking for a serious Muslim marriage? Our platform helps practicing Muslims find compatible partners for halal relationships leading to Nikah.",
-    metaDescription: "Looking for a serious Muslim marriage? Our platform helps practicing Muslims find compatible partners for halal relationships leading to Nikah. Free to join today.",
-    keywords: "muslim marriage, halal marriage, muslim matchmaking, muslim matrimony UK",
+    pageTitle: "Muslim Marriage in Islam – The Islamic Approach to Nikah | D'amour Muslim",
+    h1: "Muslim Marriage — The Islamic Approach to Finding a Spouse",
+    heroSubtitle: "Understand the Quranic principles, Prophetic guidance, and step-by-step Islamic process of seeking a spouse — and how D'amour Muslim supports every stage.",
+    metaDescription: "Discover the Islamic approach to Muslim marriage: Quranic foundations, Prophetic guidance on choosing a spouse, the role of the wali, and how to find a halal partner in the UK. Join free.",
+    keywords: "muslim marriage islam, islamic marriage, nikah, muslim marriage uk, halal marriage islam, islamic approach to marriage, muslim marriage guidance",
     canonicalPath: "/muslim-marriage",
-    ctaHeading: "Create Your Free Profile Today",
-    ctaSubtext: "Join thousands of Muslims who found their spouse through D'amour Muslim — the UK's trusted halal marriage platform.",
+    ctaHeading: "Begin Your Halal Marriage Journey",
+    ctaSubtext: "Join thousands of Muslims across the UK who found their spouse through D'amour Muslim — the halal-first marriage platform.",
     relatedLinks: [
-      { url: "/muslim-matrimonial", label: "Muslim Matrimonial" },
-      { url: "/halal-marriage", label: "Halal Marriage" },
-      { url: "/blog/uk-rishta-whatsapp-group", label: "UK Rishta Guides" }
+      { url: "/muslim-matrimony-london", label: "Muslim Matrimony London" },
+      { url: "/muslim-matrimony-birmingham", label: "Muslim Matrimony Birmingham" },
+      { url: "/muslim-matrimony-manchester", label: "Muslim Matrimony Manchester" },
+      { url: "/halal-marriage", label: "Halal Marriage Platform" },
+      { url: "/muslim-matchmaking", label: "Muslim Matchmaking" },
+      { url: "/blog/benefits-of-halal-matchmaking-services-uk-muslim-marriage-rishta-guide", label: "Halal Matchmaking Guide" }
+    ],
+    pageFaqSchema: [
+      { q: "What is the Islamic ruling on marriage?", a: "Marriage (Nikah) is highly recommended (mustahabb) in Islam and is described as completing half of one's deen. It is a sacred contract intended to build a family grounded in Islamic values, providing both spouses tranquillity, affection, and mercy as described in Quran 30:21." },
+      { q: "Can I use a Muslim marriage website without compromising my faith?", a: "Yes. D'amour Muslim is built exclusively for Muslims who want to find a spouse without engaging in haram interactions. There is no casual dating, no unchaperoned private messaging encouraged, and all users must register with serious marriage intention." },
+      { q: "Is wali involvement required when using D'amour Muslim?", a: "We strongly encourage wali involvement as per Islamic guidelines. The platform is designed to support and facilitate family participation throughout the process, not bypass it." },
+      { q: "How is D'amour Muslim different from mainstream dating apps?", a: "D'amour Muslim is exclusively marriage-focused. All profiles are manually verified by our moderation team. There is no 'swiping' culture. The entire platform is built around the intention of Nikah and Islamic principles." },
+      { q: "Is Muslim marriage free to join on D'amour Muslim?", a: "Yes. Creating a profile, browsing verified Muslim profiles, and sending interest is completely free. There are optional premium features available but the core service requires no payment." }
+    ],
+    pageFaqs: [
+      { q: "What is the Islamic ruling on marriage?", a: "Marriage (Nikah) is highly recommended (mustahabb) in Islam and is described as completing half of one's deen. It is a sacred contract intended to build a family grounded in Islamic values, providing both spouses tranquillity, affection, and mercy as described in Quran 30:21." },
+      { q: "Can I use a Muslim marriage website without compromising my faith?", a: "Yes. D'amour Muslim is built exclusively for Muslims who want to find a spouse without engaging in haram interactions. There is no casual dating, no unchaperoned private messaging encouraged, and all users must register with serious marriage intention." },
+      { q: "Is wali involvement required when using D'amour Muslim?", a: "We strongly encourage wali involvement as per Islamic guidelines. The platform is designed to support and facilitate family participation throughout the process, not bypass it." },
+      { q: "How is D'amour Muslim different from mainstream dating apps?", a: "D'amour Muslim is exclusively marriage-focused. All profiles are manually verified by our moderation team. There is no 'swiping' culture. The entire platform is built around the intention of Nikah and Islamic principles." },
+      { q: "Is Muslim marriage free to join on D'amour Muslim?", a: "Yes. Creating a profile, browsing verified Muslim profiles, and sending interest is completely free. There are optional premium features available but the core service requires no payment." }
     ],
     bodyContent: `
       <div class="prose max-w-none">
-        <p class="text-lg text-gray-700 mb-6 leading-relaxed">Looking for a serious Muslim marriage? Our platform helps practicing Muslims find compatible partners for halal relationships leading to Nikah. We focus on values, family involvement, and long-term commitment.</p>
-        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Why Muslim Marriage Matters</h2>
-        <p class="text-gray-700 mb-4 leading-relaxed">In Islam, marriage is half of one's deen. Finding the right partner is not just a personal decision — it is a spiritual journey. D'amour Muslim was built to support that journey in the most respectful and halal way possible.</p>
-        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Our Approach to Halal Marriage</h2>
+        <p class="text-lg text-gray-700 mb-6 leading-relaxed">In Islam, marriage (<em>Nikah</em>) is far more than a civil contract — it is half of one's deen and one of the most spiritually significant acts a Muslim can undertake. The Prophet Muhammad ﷺ said: <strong>"When a man marries, he has fulfilled half of his religion, so let him fear Allah regarding the remaining half."</strong> (Al-Bayhaqi). Understanding the Islamic framework for marriage helps Muslims approach this sacred search with clarity, patience, and genuine tawakkul in Allah.</p>
+
+        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">The Quranic Foundation of Muslim Marriage</h2>
+        <p class="text-gray-700 mb-4 leading-relaxed">Allah describes the marital relationship in the Quran with profound depth:</p>
+        <blockquote class="border-l-4 border-primary pl-6 py-3 bg-primary/5 rounded-r-xl mb-6">
+          <p class="text-gray-700 italic">"And of His signs is that He created for you from yourselves mates that you may find tranquillity in them; and He placed between you affection and mercy. Indeed in that are signs for a people who give thought." — <strong>Quran 30:21</strong></p>
+        </blockquote>
+        <p class="text-gray-700 mb-6">These three qualities — <strong>sakeenah</strong> (tranquillity), <strong>mawaddah</strong> (deep affection), and <strong>rahmah</strong> (mercy) — are the pillars upon which every Islamic marriage is built. They are not passive outcomes that arrive automatically; they are active responsibilities that both spouses cultivate every day.</p>
+
+        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">The Islamic Process of Seeking a Spouse</h2>
+        <p class="text-gray-700 mb-4">Islamic scholars outline a structured, dignified approach to the marriage search. Understanding these steps helps Muslims navigate any platform — including ours — in a way that aligns with their faith.</p>
+
+        <h3 class="text-xl font-semibold text-gray-800 mb-3 mt-6">1. Sincere Intention (Niyyah)</h3>
+        <p class="text-gray-700 mb-4">The marriage search begins and ends with intention. Approaching the process to fulfil the Sunnah, build a family upon taqwa, and please Allah sets a firm spiritual foundation. When intentions are right, the entire journey becomes an act of worship — even the difficult moments of patience and rejection.</p>
+
+        <h3 class="text-xl font-semibold text-gray-800 mb-3 mt-6">2. Seeking Divine Guidance (Istikhara)</h3>
+        <p class="text-gray-700 mb-4">Salat al-Istikhara is one of the most underutilised yet most powerful Sunnah practices in the marriage process. It is an acknowledgement that our knowledge is limited and that true guidance belongs to Allah alone. Performing istikhara before committing to or proceeding with a proposal is highly recommended by scholars across all madhabs.</p>
+
+        <h3 class="text-xl font-semibold text-gray-800 mb-3 mt-6">3. Guardian Involvement (Wali)</h3>
+        <p class="text-gray-700 mb-4">For women, the involvement of a wali (marriage guardian) is a fundamental component of the Islamic marriage process. The majority of classical and contemporary scholars emphasise the wali's role as a protector and supporter, not an obstacle. D'amour Muslim actively encourages wali involvement and supports family-managed accounts for this reason.</p>
+
+        <h3 class="text-xl font-semibold text-gray-800 mb-3 mt-6">4. Halal Meeting and Consultation</h3>
+        <p class="text-gray-700 mb-4">Islam permits prospective spouses to meet and have supervised conversations for the purpose of making an informed marriage decision. This is distinct from dating. The purpose is specific and the interaction should be respectful, modest, and purposeful. Extended private chatting without family knowledge or unchaperoned meetings are not consistent with the Islamic process.</p>
+
+        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">What to Prioritise in a Spouse — Prophetic Guidance</h2>
+        <blockquote class="border-l-4 border-primary pl-6 py-3 bg-primary/5 rounded-r-xl mb-6">
+          <p class="text-gray-700 italic">"A woman is married for four things: her wealth, her lineage, her beauty, and her religion. Choose the one with religion — may your hands be blessed." — <strong>Bukhari &amp; Muslim</strong></p>
+        </blockquote>
+        <p class="text-gray-700 mb-4">This hadith — applicable equally to both men and women — establishes a clear hierarchy of priority. While wealth, lineage, and appearance are acknowledged, <strong>deen is the decisive factor</strong>. A partner grounded in genuine faith will support you in raising righteous children, anchor the household in Islamic values, and be a companion through life's tests.</p>
         <ul class="list-none space-y-3 mb-6">
-          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700">Values and deen-focused matching</span></li>
-          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700">Family involvement encouraged</span></li>
-          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700">Long-term commitment — no casual interactions</span></li>
-          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700">Verified profiles for authentic connections</span></li>
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700"><strong>Taqwa:</strong> Does this person fear Allah in their private choices, not just in public?</span></li>
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700"><strong>Akhlaq:</strong> Are they patient, honest, humble, and responsible in their dealings?</span></li>
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700"><strong>Compatibility:</strong> Do your long-term goals, parenting values, and Islamic practice align?</span></li>
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700"><strong>Communication:</strong> Can you speak honestly and respectfully with each other, even in disagreement?</span></li>
         </ul>
+
+        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Challenges Facing UK Muslims in the Marriage Search</h2>
+        <p class="text-gray-700 mb-4 leading-relaxed">British Muslims face a specific set of challenges that previous generations — or Muslims in predominantly Muslim countries — did not encounter to the same degree:</p>
+        <ul class="list-none space-y-3 mb-6">
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">•</span><span class="text-gray-700">Smaller Muslim communities in suburban and rural areas with limited local marriage prospects</span></li>
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">•</span><span class="text-gray-700">Generational cultural tension between British-born Muslims and parents raised in Pakistan, Bangladesh, or other Muslim countries</span></li>
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">•</span><span class="text-gray-700">Social pressure to use mainstream dating apps that directly conflict with Islamic values and encourage haram interactions</span></li>
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">•</span><span class="text-gray-700">Difficulty finding religiously compatible partners within one's specific ethnic community</span></li>
+        </ul>
+        <p class="text-gray-700 mb-6">D'amour Muslim was created as a direct response to these challenges — a purpose-built, halal-first platform that British and Pakistani Muslims can trust to navigate the marriage search in a way that honours their faith.</p>
+
+        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">How D'amour Muslim Supports the Islamic Marriage Process</h2>
+        <div class="grid md:grid-cols-2 gap-4 mb-8">
+          <div class="bg-gray-50 rounded-xl p-5 border border-gray-100">
+            <h3 class="font-semibold text-gray-800 mb-2">Marriage-Only Environment</h3>
+            <p class="text-gray-600 text-sm">No casual chatting or dating culture. Every profile is registered with the explicit intention of Nikah.</p>
+          </div>
+          <div class="bg-gray-50 rounded-xl p-5 border border-gray-100">
+            <h3 class="font-semibold text-gray-800 mb-2">Wali-Friendly Design</h3>
+            <p class="text-gray-600 text-sm">Family involvement is encouraged at every stage. Parents and guardians are welcome to manage or support a profile.</p>
+          </div>
+          <div class="bg-gray-50 rounded-xl p-5 border border-gray-100">
+            <h3 class="font-semibold text-gray-800 mb-2">Verified Profiles Only</h3>
+            <p class="text-gray-600 text-sm">Every profile is reviewed by our moderation team before it goes live — eliminating fake accounts and time-wasters.</p>
+          </div>
+          <div class="bg-gray-50 rounded-xl p-5 border border-gray-100">
+            <h3 class="font-semibold text-gray-800 mb-2">UK GDPR Compliant</h3>
+            <p class="text-gray-600 text-sm">Your personal information is protected under UK data protection law. We never sell your data to third parties.</p>
+          </div>
+        </div>
+
         <div class="bg-primary/5 rounded-2xl p-6 border border-primary/10 mt-8">
-          <p class="text-gray-700 font-medium">Looking for UK matches? Visit our <a href="/muslim-marriage-uk" class="text-primary hover:underline">Muslim Marriage UK</a> page or explore our <a href="/halal-marriage" class="text-primary hover:underline">Halal Marriage Platform</a>.</p>
+          <p class="text-gray-700 font-medium">Find Muslims in your city: <a href="/muslim-matrimony-london" class="text-primary hover:underline">Muslim Matrimony London</a> &bull; <a href="/muslim-matrimony-birmingham" class="text-primary hover:underline">Birmingham</a> &bull; <a href="/muslim-matrimony-manchester" class="text-primary hover:underline">Manchester</a> &bull; <a href="/muslim-matrimony-bradford" class="text-primary hover:underline">Bradford</a> &bull; <a href="/muslim-matrimony-leicester" class="text-primary hover:underline">Leicester</a> &bull; <a href="/muslim-matrimony-leeds" class="text-primary hover:underline">Leeds</a>. Also explore our <a href="/halal-marriage" class="text-primary hover:underline">Halal Marriage Platform</a>.</p>
         </div>
       </div>
     `
   },
   {
     path: "/muslim-matrimonial",
-    pageTitle: "Trusted Muslim Matrimonial Platform | D'amour Muslim",
-    h1: "Trusted Muslim Matrimonial Platform",
-    heroSubtitle: "Find verified Muslim matrimonial profiles from the UK, Pakistan, and worldwide. Privacy, security, and serious marriage intent.",
-    metaDescription: "Find verified Muslim matrimonial profiles from the UK, Pakistan, and worldwide. Our platform ensures privacy, security, and serious marriage intent. Join free.",
-    keywords: "muslim matrimonial, muslim matrimony, islamic marriage site, muslim matrimonial UK",
+    pageTitle: "Muslim Matrimonial Platform Features – How D'amour Muslim Works | D'amour Muslim",
+    h1: "Inside the D'amour Muslim Matrimonial Platform — Features Built for Serious Muslims",
+    heroSubtitle: "Explore the verification system, privacy controls, profile builder, and communication tools that make D'amour Muslim the UK's most trusted Muslim matrimonial platform.",
+    metaDescription: "A complete guide to D'amour Muslim's matrimonial platform features: profile verification, privacy settings, smart search filters, and halal communication tools. Free to join.",
+    keywords: "muslim matrimonial platform, muslim matrimonial uk, islamic marriage platform features, halal matrimonial site, muslim matrimony uk, verified muslim matrimonial",
     canonicalPath: "/muslim-matrimonial",
-    ctaHeading: "Start Your Matrimonial Journey",
-    ctaSubtext: "Browse thousands of verified Muslim matrimonial profiles across the UK and beyond.",
+    ctaHeading: "Create Your Verified Matrimonial Profile",
+    ctaSubtext: "Join the platform built specifically for serious Muslims — free to register and browse.",
     relatedLinks: [
-      { url: "/muslim-marriage", label: "Muslim Marriage" },
+      { url: "/muslim-marriage", label: "About Muslim Marriage in Islam" },
       { url: "/verified-muslim-profiles", label: "Verified Profiles" },
-      { url: "/blog/benefits-of-halal-matchmaking-services-uk-muslim-marriage-rishta-guide", label: "Matchmaking Guide" }
+      { url: "/trusted-muslim-matchmaking", label: "Trusted Matchmaking" },
+      { url: "/find-muslim-spouse", label: "Search & Filter Guide" },
+      { url: "/blog/benefits-of-halal-matchmaking-services-uk-muslim-marriage-rishta-guide", label: "Matchmaking Benefits Guide" }
+    ],
+    pageFaqSchema: [
+      { q: "How does profile verification work on D'amour Muslim?", a: "Every profile submitted to D'amour Muslim goes through a manual review by our moderation team. We check for completeness, authenticity, and appropriate content before approving any profile to go live. This ensures every profile you see is a real person with genuine marriage intentions." },
+      { q: "Is my personal information private on D'amour Muslim?", a: "Yes. Your contact details, phone number, and precise location are never displayed publicly. You control what information is shown on your profile. D'amour Muslim is fully compliant with UK GDPR and never sells your data to third parties." },
+      { q: "Can my family manage my profile?", a: "Yes. D'amour Muslim supports and encourages family involvement. A parent or wali can register and manage a profile on behalf of their son or daughter. This is a core feature of our family-friendly matrimonial platform." },
+      { q: "What types of profiles can I search on D'amour Muslim?", a: "You can browse and filter profiles by gender, age range, city or region, country, height, and other preferences. All listed profiles have passed our manual verification process, so every result you see is an approved, genuine profile." },
+      { q: "Is there a messaging or communication feature?", a: "Yes. Once you and another member have exchanged an interest request, you can communicate through our platform's secure messaging system. All communication is designed to maintain respect and purposeful interaction aligned with Islamic norms." }
+    ],
+    pageFaqs: [
+      { q: "How does profile verification work on D'amour Muslim?", a: "Every profile submitted to D'amour Muslim goes through a manual review by our moderation team. We check for completeness, authenticity, and appropriate content before approving any profile to go live. This ensures every profile you see is a real person with genuine marriage intentions." },
+      { q: "Is my personal information private on D'amour Muslim?", a: "Yes. Your contact details, phone number, and precise location are never displayed publicly. You control what information is shown on your profile. D'amour Muslim is fully compliant with UK GDPR and never sells your data to third parties." },
+      { q: "Can my family manage my profile?", a: "Yes. D'amour Muslim supports and encourages family involvement. A parent or wali can register and manage a profile on behalf of their son or daughter. This is a core feature of our family-friendly matrimonial platform." },
+      { q: "What types of profiles can I search on D'amour Muslim?", a: "You can browse and filter profiles by gender, age range, city or region, country, height, and other preferences. All listed profiles have passed our manual verification process, so every result you see is an approved, genuine profile." },
+      { q: "Is there a messaging or communication feature?", a: "Yes. Once you and another member have exchanged an interest request, you can communicate through our platform's secure messaging system. All communication is designed to maintain respect and purposeful interaction aligned with Islamic norms." }
     ],
     bodyContent: `
       <div class="prose max-w-none">
-        <p class="text-lg text-gray-700 mb-6 leading-relaxed">Find verified Muslim matrimonial profiles from the UK, Pakistan, and worldwide. Our platform ensures privacy, security, and serious marriage intent.</p>
-        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">What Makes Our Matrimonial Platform Different</h2>
+        <p class="text-lg text-gray-700 mb-6 leading-relaxed">D'amour Muslim is not just another matrimonial directory — it is a purpose-engineered platform built around the specific needs, values, and privacy requirements of Muslims seeking marriage in the UK and beyond. This page explains exactly how the platform works, from the moment you register to the moment you find your match.</p>
+
+        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">The Profile Builder — Telling Your Story the Halal Way</h2>
+        <p class="text-gray-700 mb-4">Building a profile on D'amour Muslim is a guided, step-by-step process designed to capture the information that matters most in a marriage search:</p>
         <ul class="list-none space-y-3 mb-6">
-          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700">Profiles verified by our moderation team</span></li>
-          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700">Privacy-first design — your details are protected</span></li>
-          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700">UK-focused, with global reach to Pakistan, UAE and beyond</span></li>
-          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700">Serious marriage intent — not a dating app</span></li>
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700"><strong>Personal Background:</strong> Age, height, ethnicity, nationality, and marital history</span></li>
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700"><strong>Religious Practice:</strong> Sect, prayer habits, hijab/beard preferences, and level of Islamic observance</span></li>
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700"><strong>Education &amp; Career:</strong> Qualifications, profession, and career goals</span></li>
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700"><strong>About Me:</strong> A personal written section where you describe yourself and what you're looking for</span></li>
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700"><strong>Spouse Preferences:</strong> What you are looking for in a partner</span></li>
         </ul>
+        <p class="text-gray-700 mb-6">Profiles with more detail perform significantly better in searches — and richer profiles make it easier for potential matches to make an informed, halal decision.</p>
+
+        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">The Verification System — No Fake Profiles</h2>
+        <p class="text-gray-700 mb-4">Every single profile submitted to D'amour Muslim goes through a manual review before it becomes visible to other users. Our moderation team checks for:</p>
+        <div class="grid md:grid-cols-2 gap-4 mb-8">
+          <div class="bg-gray-50 rounded-xl p-5 border border-gray-100">
+            <h3 class="font-semibold text-gray-800 mb-2">Profile Authenticity</h3>
+            <p class="text-gray-600 text-sm">We flag inconsistencies, check for stock images, and ensure the person is who they say they are.</p>
+          </div>
+          <div class="bg-gray-50 rounded-xl p-5 border border-gray-100">
+            <h3 class="font-semibold text-gray-800 mb-2">Content Standards</h3>
+            <p class="text-gray-600 text-sm">All written content is reviewed for appropriateness. Inappropriate or misleading profiles are rejected immediately.</p>
+          </div>
+          <div class="bg-gray-50 rounded-xl p-5 border border-gray-100">
+            <h3 class="font-semibold text-gray-800 mb-2">Marriage Intention</h3>
+            <p class="text-gray-600 text-sm">Profiles that show casual or non-marriage intent are removed from the platform.</p>
+          </div>
+          <div class="bg-gray-50 rounded-xl p-5 border border-gray-100">
+            <h3 class="font-semibold text-gray-800 mb-2">Ongoing Monitoring</h3>
+            <p class="text-gray-600 text-sm">Approved profiles can be reported. Our team reviews flagged content and takes action within 24 hours.</p>
+          </div>
+        </div>
+
+        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Privacy Controls — You Decide What Is Visible</h2>
+        <p class="text-gray-700 mb-4">Privacy is a core Islamic value. On D'amour Muslim, you control your visibility:</p>
+        <ul class="list-none space-y-3 mb-6">
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700">Your contact number is <strong>never</strong> displayed on your public profile</span></li>
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700">Your precise location is not shown — only your city or region</span></li>
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700">You can choose who can see your full profile details</span></li>
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700">All data is processed under UK GDPR regulations — no selling of personal data</span></li>
+        </ul>
+
+        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Family-Managed Accounts — Wali Involvement Made Easy</h2>
+        <p class="text-gray-700 mb-4">One of D'amour Muslim's most distinctive features is support for family-managed accounts. A parent, sibling, or wali can:</p>
+        <ul class="list-none space-y-3 mb-6">
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700">Register and complete a profile on behalf of their son or daughter</span></li>
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700">Manage incoming interest requests</span></li>
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700">Communicate with other families directly through the platform</span></li>
+        </ul>
+        <p class="text-gray-700 mb-6">This makes D'amour Muslim suitable not just for individuals, but for entire families navigating the rishta process together — in full accordance with Islamic guidelines.</p>
+
+        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Communication Tools — Purposeful, Respectful Interaction</h2>
+        <p class="text-gray-700 mb-4">Unlike dating apps where anyone can message anyone at any time, D'amour Muslim uses a structured interest system:</p>
+        <div class="grid md:grid-cols-3 gap-4 mb-8">
+          <div class="bg-gray-50 rounded-xl p-4 text-center border border-gray-100">
+            <span class="text-primary font-bold text-2xl block mb-2">1</span>
+            <p class="font-semibold text-gray-800 text-sm mb-1">Send Interest</p>
+            <p class="text-gray-600 text-xs">Express your interest in a profile respectfully</p>
+          </div>
+          <div class="bg-gray-50 rounded-xl p-4 text-center border border-gray-100">
+            <span class="text-primary font-bold text-2xl block mb-2">2</span>
+            <p class="font-semibold text-gray-800 text-sm mb-1">Mutual Acceptance</p>
+            <p class="text-gray-600 text-xs">Both parties must accept before communication opens</p>
+          </div>
+          <div class="bg-gray-50 rounded-xl p-4 text-center border border-gray-100">
+            <span class="text-primary font-bold text-2xl block mb-2">3</span>
+            <p class="font-semibold text-gray-800 text-sm mb-1">Secure Messaging</p>
+            <p class="text-gray-600 text-xs">Communicate through our platform with full privacy</p>
+          </div>
+        </div>
+
         <div class="bg-primary/5 rounded-2xl p-6 border border-primary/10 mt-8">
-          <p class="text-gray-700 font-medium">Also explore: <a href="/muslim-matchmaking" class="text-primary hover:underline">Muslim Matchmaking Services</a> or <a href="/muslim-marriage-uk" class="text-primary hover:underline">Muslim Marriage UK</a>.</p>
+          <p class="text-gray-700 font-medium">Understand the Islamic basis of marriage first: <a href="/muslim-marriage" class="text-primary hover:underline">Muslim Marriage in Islam</a>. Ready to search? Learn about our <a href="/find-muslim-spouse" class="text-primary hover:underline">Search &amp; Filter System</a>. Or <a href="/verified-muslim-profiles" class="text-primary hover:underline">see how verification works</a> in detail.</p>
         </div>
       </div>
     `
@@ -534,41 +687,106 @@ const seoPages = [
   },
   {
     path: "/find-muslim-spouse",
-    pageTitle: "Find Your Muslim Spouse Online – Safe & Halal | D'amour Muslim",
-    h1: "Find Your Muslim Spouse Online – Safe & Halal",
-    heroSubtitle: "Discover compatible matches based on deen, lifestyle, and preferences. The halal way to find your life partner.",
-    metaDescription: "Find your Muslim spouse online safely and in a halal way. Compatible matches based on deen, lifestyle, and preferences. Free to join.",
-    keywords: "find muslim spouse, find muslim partner, muslim spouse online, halal spouse search",
+    pageTitle: "How to Find a Muslim Spouse Online — Search & Filter Guide | D'amour Muslim",
+    h1: "How to Find a Muslim Spouse on D'amour Muslim — A Complete Search Guide",
+    heroSubtitle: "A step-by-step guide to using D'amour Muslim's search and filter system to find your most compatible halal match — by city, age, religious values, and more.",
+    metaDescription: "Learn how to find a Muslim spouse using D'amour Muslim's smart search filters: filter by city, age, religion, education, and more. A practical guide for serious marriage seekers in the UK.",
+    keywords: "find muslim spouse, find muslim partner uk, search muslim profiles, muslim spouse search, how to find muslim spouse, halal spouse finder, muslim marriage search uk",
     canonicalPath: "/find-muslim-spouse",
-    ctaHeading: "Start Your Search",
-    ctaSubtext: "Find your Muslim spouse today — free to join.",
+    ctaHeading: "Start Searching for Your Spouse",
+    ctaSubtext: "Browse verified Muslim profiles now — filter by city, age, and religious values. Free to join.",
     relatedLinks: [
-      { url: "/muslim-marriage", label: "Muslim Marriage" },
+      { url: "/muslim-marriage", label: "About Muslim Marriage in Islam" },
+      { url: "/muslim-matrimonial", label: "Platform Features Guide" },
+      { url: "/verified-muslim-profiles", label: "Verified Profiles" },
       { url: "/muslim-matchmaking", label: "Muslim Matchmaking" },
-      { url: "/blog/how-to-find-a-muslim-spouse-in-the-uk-simple-real-guide", label: "How to Find a Muslim Spouse" }
+      { url: "/blog/how-to-find-a-muslim-spouse-in-the-uk-simple-real-guide", label: "Full Spouse Search Guide" }
+    ],
+    pageFaqSchema: [
+      { q: "What filters can I use to find a Muslim spouse on D'amour Muslim?", a: "D'amour Muslim lets you filter profiles by gender, age range, city or region, country, height, and more. You can also browse by who was most recently added or search across all approved profiles. All filter results only show verified, approved profiles." },
+      { q: "Can I search for a Muslim spouse in a specific UK city?", a: "Yes. You can filter profiles by city name — for example, searching for Muslim singles in London, Birmingham, Manchester, Bradford, Leicester, or Leeds. You can also combine city filters with other criteria like age and gender for more precise results." },
+      { q: "How do I get my profile seen by more potential matches?", a: "Complete your profile fully — including your about me section, spouse preferences, education, and career details. Profiles with photos and detailed descriptions receive significantly more views. A detailed profile also signals genuine intentions to potential matches." },
+      { q: "What should I include in my profile to attract serious marriage proposals?", a: "Be honest and specific. Include your religious values, family background, career, and what you genuinely seek in a spouse. Mention if you prefer a specific city or are open to relocating. Profiles that are authentic and specific receive higher quality interest requests." },
+      { q: "How long does it take to find a match on D'amour Muslim?", a: "The timeline varies for every person. Completing your profile fully, being responsive to interest requests, and having clear, realistic expectations all improve your chances. Many users find their match within weeks; for others it takes longer. Patience and tawakkul are part of the journey." }
+    ],
+    pageFaqs: [
+      { q: "What filters can I use to find a Muslim spouse on D'amour Muslim?", a: "D'amour Muslim lets you filter profiles by gender, age range, city or region, country, height, and more. You can also browse by who was most recently added or search across all approved profiles. All filter results only show verified, approved profiles." },
+      { q: "Can I search for a Muslim spouse in a specific UK city?", a: "Yes. You can filter profiles by city name — for example, searching for Muslim singles in London, Birmingham, Manchester, Bradford, Leicester, or Leeds. You can also combine city filters with other criteria like age and gender for more precise results." },
+      { q: "How do I get my profile seen by more potential matches?", a: "Complete your profile fully — including your about me section, spouse preferences, education, and career details. Profiles with photos and detailed descriptions receive significantly more views. A detailed profile also signals genuine intentions to potential matches." },
+      { q: "What should I include in my profile to attract serious marriage proposals?", a: "Be honest and specific. Include your religious values, family background, career, and what you genuinely seek in a spouse. Mention if you prefer a specific city or are open to relocating. Profiles that are authentic and specific receive higher quality interest requests." },
+      { q: "How long does it take to find a match on D'amour Muslim?", a: "The timeline varies for every person. Completing your profile fully, being responsive to interest requests, and having clear, realistic expectations all improve your chances. Many users find their match within weeks; for others it takes longer. Patience and tawakkul are part of the journey." }
     ],
     bodyContent: `
       <div class="prose max-w-none">
-        <p class="text-lg text-gray-700 mb-6 leading-relaxed">Searching for a life partner is a meaningful journey, and for Muslims, it must be done in a halal and respectful way. Our platform makes it easier to find a Muslim spouse who aligns with your values, goals, and lifestyle.</p>
-        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Why Finding a Spouse is Challenging Today</h2>
+        <p class="text-lg text-gray-700 mb-6 leading-relaxed">Finding a Muslim spouse online is about more than just browsing profiles — it is about using the right tools strategically so that the right people can find you, and you can find them. This guide explains exactly how to use D'amour Muslim's search and filter system to make your spouse search as effective and efficient as possible.</p>
+
+        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Step 1 — Build a Complete, Honest Profile</h2>
+        <p class="text-gray-700 mb-4">Before you start searching, you need to be searchable. Profiles with complete information receive significantly more views and interest requests than incomplete ones. Here is what to focus on:</p>
         <ul class="list-none space-y-3 mb-6">
-          <li class="flex items-start gap-3"><span class="text-primary mt-1">•</span><span class="text-gray-700">Busy lifestyles</span></li>
-          <li class="flex items-start gap-3"><span class="text-primary mt-1">•</span><span class="text-gray-700">Limited social circles</span></li>
-          <li class="flex items-start gap-3"><span class="text-primary mt-1">•</span><span class="text-gray-700">Cultural expectations</span></li>
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700"><strong>Upload a clear, recent photo.</strong> Profiles with photos receive far more views. Use a respectful, appropriate image that presents you genuinely.</span></li>
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700"><strong>Write a detailed "About Me" section.</strong> Be honest about your values, personality, and life goals. Vague profiles attract vague responses.</span></li>
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700"><strong>Specify what you are looking for.</strong> The "Spouse Preferences" section is where you define compatibility criteria — use it thoughtfully.</span></li>
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700"><strong>Include your city and background.</strong> Location is one of the most common search filters — ensure yours is accurate.</span></li>
         </ul>
-        <p class="text-gray-700 mb-6">Our platform bridges this gap.</p>
-        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Smart Matchmaking</h2>
-        <p class="text-gray-700 mb-4">We help you find matches based on:</p>
+
+        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Step 2 — Understanding the Search Filters</h2>
+        <p class="text-gray-700 mb-4">D'amour Muslim's filter system lets you narrow down thousands of verified profiles to only the most relevant matches. Here is what each filter does:</p>
         <div class="grid md:grid-cols-2 gap-4 mb-8">
-          <div class="bg-gray-50 rounded-xl p-4"><span class="text-primary font-semibold">Religious values</span><p class="text-gray-600 text-sm mt-1">Deen compatibility at the core of matching</p></div>
-          <div class="bg-gray-50 rounded-xl p-4"><span class="text-primary font-semibold">Education</span><p class="text-gray-600 text-sm mt-1">Find someone who matches your academic background</p></div>
-          <div class="bg-gray-50 rounded-xl p-4"><span class="text-primary font-semibold">Personality</span><p class="text-gray-600 text-sm mt-1">Detailed profiles to understand who someone really is</p></div>
-          <div class="bg-gray-50 rounded-xl p-4"><span class="text-primary font-semibold">Lifestyle</span><p class="text-gray-600 text-sm mt-1">City, background, and daily life preferences</p></div>
+          <div class="bg-gray-50 rounded-xl p-5 border border-gray-100">
+            <h3 class="font-semibold text-gray-800 mb-2">Gender Filter</h3>
+            <p class="text-gray-600 text-sm">Browse specifically male or female profiles. The default view shows all approved profiles; apply this filter to focus your search.</p>
+          </div>
+          <div class="bg-gray-50 rounded-xl p-5 border border-gray-100">
+            <h3 class="font-semibold text-gray-800 mb-2">Age Range</h3>
+            <p class="text-gray-600 text-sm">Set a minimum and maximum age. Be realistic — profiles that set very narrow age ranges often miss compatible matches slightly outside those bounds.</p>
+          </div>
+          <div class="bg-gray-50 rounded-xl p-5 border border-gray-100">
+            <h3 class="font-semibold text-gray-800 mb-2">City / Location</h3>
+            <p class="text-gray-600 text-sm">Filter by city name: London, Birmingham, Manchester, Bradford, Leicester, Leeds, or any other UK city. You can also search by country for overseas profiles.</p>
+          </div>
+          <div class="bg-gray-50 rounded-xl p-5 border border-gray-100">
+            <h3 class="font-semibold text-gray-800 mb-2">Height Range</h3>
+            <p class="text-gray-600 text-sm">If height compatibility matters to you, use the height filter to set your preferred range in centimetres.</p>
+          </div>
+          <div class="bg-gray-50 rounded-xl p-5 border border-gray-100">
+            <h3 class="font-semibold text-gray-800 mb-2">Nationality</h3>
+            <p class="text-gray-600 text-sm">Filter by nationality — useful if you are specifically seeking a match from a particular background or wish to cross-filter with city.</p>
+          </div>
+          <div class="bg-gray-50 rounded-xl p-5 border border-gray-100">
+            <h3 class="font-semibold text-gray-800 mb-2">Sort Order</h3>
+            <p class="text-gray-600 text-sm">Sort by "Newly Added" to see the most recently verified profiles, or browse randomly for a wider discovery experience.</p>
+          </div>
         </div>
-        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Global Reach</h2>
-        <p class="text-gray-700 mb-6">Connect with Muslims worldwide, including UK, Pakistan, and beyond. Serious matches only — we focus on meaningful connections, not casual dating.</p>
+
+        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Step 3 — Evaluating a Profile Before Sending Interest</h2>
+        <p class="text-gray-700 mb-4">Before you send an interest request, take time to read a profile carefully. Look for:</p>
+        <ul class="list-none space-y-3 mb-6">
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">•</span><span class="text-gray-700"><strong>Alignment on religious values:</strong> Do their stated Islamic practice and values align with yours?</span></li>
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">•</span><span class="text-gray-700"><strong>Realistic compatibility:</strong> Age, location, education, and lifestyle — are these genuinely compatible with what you need?</span></li>
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">•</span><span class="text-gray-700"><strong>Specificity in writing:</strong> A well-written "About Me" signals a serious, thoughtful person. Minimal or vague writing may indicate a less engaged profile.</span></li>
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">•</span><span class="text-gray-700"><strong>Spouse preferences:</strong> Do their stated preferences include or exclude you based on your genuine characteristics?</span></li>
+        </ul>
+
+        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Step 4 — Sending an Interest Request and What Happens Next</h2>
+        <p class="text-gray-700 mb-4">When you send an interest request, the other person receives a notification. If they accept, you are both connected and can begin communicating through the platform's secure messaging system. If they decline, you can continue searching — each interaction brings you closer to the right match.</p>
+
+        <blockquote class="border-l-4 border-primary pl-6 py-3 bg-primary/5 rounded-r-xl mb-6">
+          <p class="text-gray-700 italic">Remember: every rejection in the marriage search is Allah's protection and redirection. Keep your intentions pure, make dua consistently, and trust the process.</p>
+        </blockquote>
+
+        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Search by UK City — Local Match Hubs</h2>
+        <p class="text-gray-700 mb-4">If you want to find a Muslim spouse in a specific UK city, use our dedicated city matrimony pages — they show relevant profiles and community information for each location:</p>
+        <div class="flex flex-wrap gap-2 mb-6">
+          <a href="/muslim-matrimony-london" class="px-4 py-2 bg-primary/10 text-primary rounded-full text-sm font-semibold hover:bg-primary hover:text-white transition-all duration-300">London</a>
+          <a href="/muslim-matrimony-birmingham" class="px-4 py-2 bg-primary/10 text-primary rounded-full text-sm font-semibold hover:bg-primary hover:text-white transition-all duration-300">Birmingham</a>
+          <a href="/muslim-matrimony-manchester" class="px-4 py-2 bg-primary/10 text-primary rounded-full text-sm font-semibold hover:bg-primary hover:text-white transition-all duration-300">Manchester</a>
+          <a href="/muslim-matrimony-bradford" class="px-4 py-2 bg-primary/10 text-primary rounded-full text-sm font-semibold hover:bg-primary hover:text-white transition-all duration-300">Bradford</a>
+          <a href="/muslim-matrimony-leicester" class="px-4 py-2 bg-primary/10 text-primary rounded-full text-sm font-semibold hover:bg-primary hover:text-white transition-all duration-300">Leicester</a>
+          <a href="/muslim-matrimony-leeds" class="px-4 py-2 bg-primary/10 text-primary rounded-full text-sm font-semibold hover:bg-primary hover:text-white transition-all duration-300">Leeds</a>
+        </div>
+
         <div class="bg-primary/5 rounded-2xl p-6 border border-primary/10 mt-8">
-          <p class="text-gray-700 font-medium">Also see: <a href="/verified-muslim-profiles" class="text-primary hover:underline">Verified Muslim Profiles</a> and <a href="/trusted-muslim-matchmaking" class="text-primary hover:underline">Trusted Muslim Matchmaking</a>.</p>
+          <p class="text-gray-700 font-medium">New to the platform? Start with the <a href="/muslim-matrimonial" class="text-primary hover:underline">Platform Features Guide</a> to understand how everything works. Want to understand the Islamic framework first? Read our <a href="/muslim-marriage" class="text-primary hover:underline">Muslim Marriage in Islam</a> page.</p>
         </div>
       </div>
     `
@@ -846,14 +1064,8 @@ seoPages.forEach(function(page) {
   });
 });
 
-seoPages.forEach(function(page) {
-  app.get(page.path, (req, res) => {
-    res.render("seo-page", page);
-  });
-});
-
 // ============================================
-// PROGRAMMATIC CITY HUB PAGES
+// PROGRAMMATIC CITY HUB PAGES — unique content per city
 // ============================================
 const cityHubPages = [
   {
@@ -861,79 +1073,221 @@ const cityHubPages = [
     slug: "muslim-matrimony-london",
     region: "Greater London",
     nearbyAreas: "Tower Hamlets, Newham, Redbridge, Waltham Forest, Hackney, and Barking",
+    muslimPopulation: "over 1.1 million, approximately 12% of Greater London's population — the largest Muslim community in any UK city",
+    keyAreas: "Tower Hamlets (approx. 38% Muslim), Newham (33%), Redbridge (23%), Waltham Forest (22%), and Hackney (18%)",
+    communityContext: "London's Muslim community is the UK's most diverse, spanning Bangladeshi, Pakistani, Somali, Arab, Turkish, and West African communities across all 33 boroughs. From established East London families to young professionals in the City, London Muslims represent every walk of life.",
+    demographicHighlight: "According to the 2021 Census, Tower Hamlets has the highest proportion of Muslim residents of any local authority in England, at approximately 38%. The East London Mosque in Whitechapel is one of the largest mosques in Europe and a central hub for the city's Muslim community.",
+    halalHighlights: [
+      { name: "Brick Lane & Whitechapel, East London", desc: "A historic heart of Bangladeshi Muslim culture — halal restaurants, sweet shops, sari stores, and the iconic East London Mosque all within walking distance." },
+      { name: "Green Street, Upton Park (E13)", desc: "A bustling South Asian high street with halal butchers, Asian sweets, bridal wear, and gold jewellers — a popular destination for Muslim families in East London." },
+      { name: "Edgware Road, Westminster", desc: "London's 'Arab Street' — a stretch of Lebanese, Syrian, and Egyptian halal restaurants and shisha cafés. Popular among Muslim professionals and families for special occasions." },
+      { name: "Southall Broadway, West London", desc: "A predominantly South Asian area with extensive halal food options, Islamic bookshops, and a strong Pakistani and Indian Muslim community." },
+    ],
+    localFaqs: [
+      { q: "Which London boroughs have the largest Muslim populations?", a: "Tower Hamlets has the highest proportion at approximately 38% Muslim, followed by Newham (33%), Redbridge (23%), Waltham Forest (22%), and Hackney (18%). These East and North-East London boroughs have strong mosque networks, Islamic schools, and established halal business communities." },
+      { q: "How does D'amour Muslim help London Muslims find a spouse?", a: "D'amour Muslim lets you filter profiles specifically by London as a city. You can browse verified Muslim singles across all 33 London boroughs, send interest requests, and communicate through our secure platform — all without leaving a halal, marriage-focused environment." },
+      { q: "Is the service free for Muslims in London?", a: "Yes. Registering and browsing verified Muslim profiles in London is completely free. You can create your profile, view other London profiles, and send interest requests without any payment required." },
+      { q: "Are there profiles from specific London areas like Tower Hamlets or Newham?", a: "Yes. Many of our London members include their specific borough in their profile. You can also search by city (London) and then browse profile descriptions to find members from specific areas. Our search includes Muslims from all London boroughs." },
+    ]
   },
   {
     city: "Birmingham",
     slug: "muslim-matrimony-birmingham",
     region: "West Midlands",
     nearbyAreas: "Small Heath, Sparkbrook, Alum Rock, Saltley, Handsworth, and Aston",
+    muslimPopulation: "approximately 234,000, making up roughly 22% of Birmingham's population — one of the highest proportions of any major UK city",
+    keyAreas: "Small Heath, Sparkbrook, Alum Rock, Saltley, Handsworth, Aston, and Ladypool Road (the Balti Triangle)",
+    communityContext: "Birmingham has one of the UK's oldest and most established Muslim communities. The city's Pakistani, Bangladeshi, and Somali communities have been settled here since the 1960s and 1970s, creating a rich network of mosques, Islamic schools, and halal businesses that spans the entire city.",
+    demographicHighlight: "The 2021 Census showed Birmingham has a Muslim population of over 234,000 — approximately 22% of the city. Sparkbrook and Small Heath have particularly concentrated Muslim communities. Birmingham Central Mosque, founded in 1975, is one of the oldest purpose-built mosques in the UK.",
+    halalHighlights: [
+      { name: "Ladypool Road — The Balti Triangle", desc: "Birmingham's famous 'Balti Triangle' in Sparkbrook and Balsall Heath is internationally renowned for its Pakistani and Kashmiri halal restaurants. A cultural landmark for Birmingham's Muslim community." },
+      { name: "Stratford Road, Sparkhill", desc: "A vibrant South Asian corridor stretching from Hall Green to Sparkbrook, lined with halal grocers, sweet shops, Asian clothing stores, and Pakistani restaurants." },
+      { name: "Birchfield Road, Perry Barr", desc: "An established Muslim residential and commercial area in North Birmingham with mosques, halal food shops, and community centres." },
+      { name: "Birmingham Central Mosque", desc: "One of the UK's oldest purpose-built mosques, serving as a major community hub for education, events, and marriage-related services." },
+    ],
+    localFaqs: [
+      { q: "Which areas of Birmingham have the largest Muslim communities?", a: "Small Heath, Sparkbrook, Alum Rock, Saltley, and Handsworth have the highest concentrations of Muslim residents. The area around Ladypool Road (the Balti Triangle) is particularly well-known as a heart of Birmingham's Pakistani Muslim community." },
+      { q: "How do I find a Muslim marriage partner in Birmingham on D'amour Muslim?", a: "Filter profiles by 'Birmingham' in the city search on our profiles page. You will see verified Muslim singles from across the West Midlands. You can combine this with age and gender filters to narrow your results further." },
+      { q: "Does D'amour Muslim have many Muslim profiles from Birmingham?", a: "Yes. Birmingham is one of our most active cities outside London, reflecting its large and established Muslim community. You will find profiles from across the city and surrounding West Midlands areas." },
+      { q: "Can families in Birmingham use D'amour Muslim to find a rishta?", a: "Absolutely. D'amour Muslim is family-friendly and supports parents or guardians registering on behalf of their son or daughter. Many Birmingham families use our platform to find suitable marriage proposals both locally and nationally." },
+    ]
   },
   {
     city: "Manchester",
     slug: "muslim-matrimony-manchester",
     region: "Greater Manchester",
     nearbyAreas: "Rusholme, Longsight, Cheetham Hill, Oldham, Rochdale, and Bolton",
+    muslimPopulation: "approximately 80,000 within the city of Manchester, representing around 15% of the city's population. Greater Manchester as a whole has over 200,000 Muslims",
+    keyAreas: "Rusholme (the Curry Mile), Longsight, Cheetham Hill, Whalley Range, and Levenshulme",
+    communityContext: "Manchester has a vibrant and growing Muslim community that spans Pakistani, Bangladeshi, Somali, and Arab backgrounds. The city's student population — including many Muslim students at the University of Manchester and Manchester Metropolitan — adds a younger dimension to an already diverse community.",
+    demographicHighlight: "Rusholme's 'Curry Mile' on Wilmslow Road is one of the UK's most famous South Asian Muslim cultural destinations — a kilometre of Pakistani, Indian, and Middle Eastern halal restaurants, sweet shops, and businesses. Cheetham Hill has a significant Bangladeshi and East African Muslim community.",
+    halalHighlights: [
+      { name: "The Curry Mile, Rusholme", desc: "A world-famous stretch of halal restaurants on Wilmslow Road — Pakistani, Kashmiri, Indian, and Middle Eastern cuisine in one of the UK's most iconic Muslim cultural corridors." },
+      { name: "Longsight Market", desc: "A busy community market in South Manchester popular with Pakistani and Bangladeshi Muslim families — halal butchers, spice stores, and fabric shops." },
+      { name: "Cheetham Hill Road", desc: "A diverse North Manchester corridor with a strong Bangladeshi and East African Muslim community, home to numerous mosques and Islamic schools." },
+      { name: "Manchester Central Mosque", desc: "The principal mosque for Manchester's Muslim community, hosting community events, Islamic education, and serving as a focal point for Muslim families across Greater Manchester." },
+    ],
+    localFaqs: [
+      { q: "Where do most Muslims live in Manchester?", a: "The largest concentrations of Muslims in Manchester are in Rusholme, Longsight, Whalley Range, Moss Side, Levenshulme, and Cheetham Hill. Surrounding boroughs including Oldham, Rochdale, and Bolton also have very large Muslim populations within Greater Manchester." },
+      { q: "How can I find a Muslim spouse in Manchester through D'amour Muslim?", a: "Search for Manchester in the city filter on our profiles page to browse verified Muslim singles in the city. You can also filter by Greater Manchester to include profiles from Oldham, Rochdale, Bolton, and other surrounding areas." },
+      { q: "Are there Muslim profiles from Rusholme, Longsight, or Cheetham Hill on D'amour Muslim?", a: "Yes. Many of our Manchester members include their neighbourhood or area in their profile. You can search by Manchester and then read individual profiles to find members from specific parts of the city." },
+      { q: "Is D'amour Muslim popular with Muslim students in Manchester?", a: "Yes, D'amour Muslim is used by Muslims of all ages including university students who are looking for serious marriage connections. All users, regardless of age (18+), are looking for Nikah — not casual relationships." },
+    ]
   },
   {
     city: "Bradford",
     slug: "muslim-matrimony-bradford",
     region: "West Yorkshire",
     nearbyAreas: "Manningham, Keighley, Dewsbury, Batley, Halifax, and Huddersfield",
+    muslimPopulation: "approximately 153,000, representing nearly 25% of Bradford's population — the highest Muslim percentage of any major UK city",
+    keyAreas: "Manningham, Little Horton, Toller, Great Horton, and Bradford City Centre",
+    communityContext: "Bradford has the most proportionally Muslim population of any major UK city — roughly one in four residents is Muslim. The city has deep roots in Pakistani and Kashmiri migration going back to the 1950s, creating one of the UK's most culturally rooted and tightly knit Muslim communities. Bradford's Muslim community is primarily Pakistani-heritage and predominantly Mirpuri-Kashmiri, with strong family and biradari networks.",
+    demographicHighlight: "According to the 2021 Census, Bradford's Muslim population stands at approximately 24.7% — making it the UK city with the highest proportion of Muslim residents. Manningham and Little Horton have the most concentrated Muslim residential areas, with dozens of mosques and Islamic education centres.",
+    halalHighlights: [
+      { name: "Great Horton Road", desc: "The backbone of Bradford's Pakistani Muslim commercial district — halal butchers, South Asian grocery stores, shalwar kameez shops, jewellers, and wedding suppliers all concentrated in one area." },
+      { name: "Morrisons Bradford (Thornbury)", desc: "One of the UK's largest halal supermarkets serving Bradford's Muslim community, with a dedicated halal meat counter and extensive South Asian grocery range." },
+      { name: "Bradford Jamia Masjid (Westgate)", desc: "One of Bradford's largest and oldest mosques, serving as a central hub for the Pakistani Muslim community in West Yorkshire." },
+      { name: "Keighley Road Corridor, Manningham", desc: "The heart of Manningham — Bradford's oldest established Muslim neighbourhood — with mosques, Asian sweet shops, fabric stores, and a strong community feel." },
+    ],
+    localFaqs: [
+      { q: "Does Bradford have the largest Muslim community in the UK?", a: "Bradford has the highest proportion of Muslims of any major UK city — approximately 24.7% according to the 2021 Census. While London has the largest absolute number, Bradford's Muslim community forms the largest percentage share of a major city's population. The community is predominantly Pakistani and Kashmiri-heritage." },
+      { q: "How does biradari (clan) culture affect marriage searches in Bradford?", a: "In Bradford's Pakistani community, biradari (extended family/clan) networks traditionally play a large role in arranging marriages. D'amour Muslim complements these networks by expanding your search to Muslims you may not meet through family contacts alone, while still supporting family involvement throughout the process." },
+      { q: "Can I find a rishta in Bradford through D'amour Muslim?", a: "Yes. Bradford is one of our most active cities. Filter profiles by Bradford to see verified Muslim singles from across the city and wider West Yorkshire area. Many profiles include details about their background and biradari, which can be helpful for families." },
+      { q: "Does D'amour Muslim work for Muslims in nearby areas like Dewsbury, Batley, or Keighley?", a: "Yes. D'amour Muslim is used by Muslims across West Yorkshire. You can search by Bradford to find local profiles, or search more broadly by West Yorkshire. Many members from Keighley, Dewsbury, Batley, and Halifax are active on the platform." },
+    ]
   },
   {
     city: "Leicester",
     slug: "muslim-matrimony-leicester",
     region: "East Midlands",
     nearbyAreas: "Highfields, Evington, Belgrave, Spinney Hills, and Beaumont Leys",
+    muslimPopulation: "approximately 106,000, representing around 22% of Leicester's population",
+    keyAreas: "Highfields, Evington, Spinney Hills, Belgrave, and the Golden Mile (Belgrave Road)",
+    communityContext: "Leicester is one of the UK's most religiously and ethnically diverse cities — it was one of the first UK cities where no single ethnic group forms a majority. Its Muslim community is predominantly Pakistani and Bangladeshi, with a growing Somali and East African presence. Leicester's Muslims have a well-established network of mosques, Islamic schools, and halal businesses spanning the city.",
+    demographicHighlight: "The 2021 Census confirmed Leicester as one of the most diverse cities in the UK. The Highfields and Evington areas are particularly associated with Leicester's Muslim community, and Belgrave Road — known as the 'Golden Mile' — is a famous South Asian retail and cultural corridor. Leicester's Central Mosque is one of the largest in the East Midlands.",
+    halalHighlights: [
+      { name: "Belgrave Road — The Golden Mile", desc: "Leicester's famous 'Golden Mile' is a South Asian cultural corridor known for Diwali celebrations, but also home to halal restaurants, Asian sweet shops, sari stores, and jewellers used by the Muslim community year-round." },
+      { name: "Highfields / St Peter's Road", desc: "The heart of Leicester's Muslim residential community — home to mosques, halal butchers, South Asian grocery stores, and a strong Pakistani community feel." },
+      { name: "Evington Road", desc: "A vibrant Muslim community corridor in East Leicester with halal restaurants, Islamic bookshops, and mosques serving the Evington and Spinney Hills areas." },
+      { name: "Leicester Central Mosque (Conduit Street)", desc: "One of the largest mosques in the East Midlands and a central institution for Leicester's Muslim community, offering education, community events, and guidance." },
+    ],
+    localFaqs: [
+      { q: "Is Leicester a good city for Muslim marriage seekers?", a: "Yes. Leicester has a large, established, and diverse Muslim community of over 100,000 people. The city has a strong network of mosques, Islamic schools, halal businesses, and community events that make it an excellent environment for Muslims seeking to build a family." },
+      { q: "Which areas of Leicester have the most Muslims?", a: "Highfields, Evington, Spinney Hills, and Belgrave have the highest concentrations of Muslim residents. These areas are well-served by mosques, halal restaurants, and South Asian cultural amenities." },
+      { q: "How do I find a Muslim partner in Leicester on D'amour Muslim?", a: "Use the city filter on our profiles page and search for Leicester. You will see all verified Muslim profiles from the Leicester area. Combine with gender and age filters to narrow your results. Many Leicester profiles include their specific area within the city." },
+      { q: "Does D'amour Muslim have profiles from Nottingham or Derby as well?", a: "Yes. While we have a dedicated Leicester hub page, D'amour Muslim is used by Muslims across the East Midlands including Nottingham and Derby. You can search by city name to find profiles in those areas too." },
+    ]
   },
   {
     city: "Leeds",
     slug: "muslim-matrimony-leeds",
     region: "West Yorkshire",
     nearbyAreas: "Harehills, Chapeltown, Beeston, Hyde Park, and Headingley",
+    muslimPopulation: "approximately 70,000, representing around 7% of Leeds' population",
+    keyAreas: "Harehills, Chapeltown, Beeston, Hyde Park, Burley, and Armley",
+    communityContext: "Leeds has a growing and increasingly prominent Muslim community with roots in Pakistani, Bangladeshi, Somali, and Arab migration. The University of Leeds and Leeds Beckett University add a significant student Muslim population to the city, while established families in Harehills and Beeston form the community's backbone.",
+    demographicHighlight: "Harehills is Leeds' most densely Muslim neighbourhood, with a large Pakistani and Bangladeshi community. Beeston, which gained international attention in 2005, has since rebuilt and strengthened its Muslim community infrastructure significantly. Leeds' Muslim community is younger on average than many other UK cities, reflecting significant second and third-generation British Muslim growth.",
+    halalHighlights: [
+      { name: "Harehills Lane & Roundhay Road", desc: "The centre of Muslim community life in Leeds — halal butchers, Pakistani grocery stores, Bengali sweet shops, mosques, and Islamic clothing all within easy reach. A vibrant South Asian corridor." },
+      { name: "Brudenell Social Club area, Hyde Park", desc: "A diverse student area near the University of Leeds with halal takeaways and cafés popular with Muslim students from across the UK." },
+      { name: "Beeston Hill", desc: "An established Pakistani Muslim residential area in South Leeds with mosques, halal businesses, and strong community networks that have grown significantly in recent years." },
+      { name: "Makkah Masjid, Harehills", desc: "One of Leeds' largest mosques and a focal point for the Pakistani and Bangladeshi Muslim communities in East Leeds." },
+    ],
+    localFaqs: [
+      { q: "Where do Muslims in Leeds mainly live?", a: "Harehills is the most concentrated Muslim area in Leeds, followed by Beeston, Chapeltown, Hyde Park, Burley, and Armley. These inner-city areas have established mosque networks, halal food businesses, and strong Muslim community infrastructure." },
+      { q: "How can I find a Muslim marriage partner in Leeds on D'amour Muslim?", a: "Search for Leeds in the city filter on our profiles page. You will see all verified Muslim profiles from the Leeds area. You can refine results further by gender, age, and other filters. Leeds is an active city on our platform with many serious marriage-seekers." },
+      { q: "Are there profiles from other West Yorkshire cities like Dewsbury or Halifax?", a: "Yes. D'amour Muslim is used across West Yorkshire. Search by Leeds for local profiles, or search for Bradford, Dewsbury, Halifax, or Huddersfield to see profiles from those specific cities. Many West Yorkshire Muslims are open to matches from across the region." },
+      { q: "Is D'amour Muslim used by Muslim students in Leeds?", a: "Yes. Many Muslim students at the University of Leeds and Leeds Beckett University use D'amour Muslim to find serious marriage connections. All users must be 18+ and are required to register with genuine Nikah intention — no casual relationships." },
+    ]
   },
 ];
 
 cityHubPages.forEach(function(hub) {
-  const page = {
-    path: "/" + hub.slug,
-    pageTitle: `Muslim Matrimony in ${hub.city} | Find Your Spouse | D'amour Muslim`,
-    h1: `Muslim Matrimony in ${hub.city}`,
-    heroSubtitle: `Connect with verified Muslim singles in ${hub.city} and ${hub.region}. Halal matchmaking for serious marriage seekers.`,
-    metaDescription: `Find Muslim marriage partners in ${hub.city}. Browse verified profiles of Muslim singles in ${hub.nearbyAreas}. UK's trusted halal matrimony platform. Free to join.`,
-    keywords: `muslim matrimony ${hub.city.toLowerCase()}, muslim marriage ${hub.city.toLowerCase()}, rishta ${hub.city.toLowerCase()}, halal marriage ${hub.city.toLowerCase()}, muslim singles ${hub.city.toLowerCase()}, nikkah ${hub.city.toLowerCase()}, muslim matchmaking ${hub.region.toLowerCase()}`,
-    canonicalPath: "/" + hub.slug,
-    ctaHeading: `Find Your Spouse in ${hub.city}`,
-    ctaSubtext: `Join hundreds of Muslim singles in ${hub.city} already on their path to Nikah.`,
-    relatedLinks: cityHubPages
-      .filter(c => c.city !== hub.city)
-      .slice(0, 3)
-      .map(c => ({ url: "/" + c.slug, label: `Muslim Matrimony ${c.city}` }))
-      .concat([
-        { url: "/muslim-marriage", label: "Muslim Marriage" },
-        { url: "/profiles", label: "Browse All Profiles" }
-      ]),
-    bodyContent: `
-      <div class="prose max-w-none">
-        <p class="text-lg text-gray-700 mb-6 leading-relaxed">Looking for a Muslim life partner in ${hub.city}? D'amour Muslim is the UK's trusted halal matrimony platform, helping serious marriage seekers across ${hub.region} find compatible matches. Whether you live in ${hub.nearbyAreas} — our verified profiles make the search easier, safer, and more dignified.</p>
-        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Why Muslims in ${hub.city} Choose D'amour</h2>
-        <ul class="list-none space-y-3 mb-6">
-          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700">Verified profiles reviewed by our team before going live</span></li>
-          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700">Halal-focused — marriage intention only, no casual dating</span></li>
-          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700">Free to join and browse Muslim singles in ${hub.city}</span></li>
-          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700">Filter by age, profession, education, sect, and more</span></li>
-          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700">Family-friendly platform — wali involvement encouraged</span></li>
-        </ul>
-        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Muslim Marriage in ${hub.region}</h2>
-        <p class="text-gray-700 mb-4">${hub.city} has one of the UK's largest and most vibrant Muslim communities. From young professionals to families seeking a spouse for their son or daughter, D'amour Muslim serves the diverse needs of Muslims across ${hub.region}. Our platform supports profiles from areas including ${hub.nearbyAreas}.</p>
-        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">How It Works</h2>
-        <p class="text-gray-700 mb-4">Create your free profile in minutes, browse verified Muslim singles in ${hub.city}, and send interest to compatible matches. Our moderation team ensures every profile meets quality standards before it goes live. Your data is protected under UK GDPR regulations.</p>
-        <div class="bg-primary/5 rounded-2xl p-6 border border-primary/10 mt-8">
-          <p class="text-gray-700 font-medium">Also explore: ${cityHubPages.filter(c => c.city !== hub.city).slice(0, 2).map(c => `<a href="/${c.slug}" class="text-primary hover:underline">Muslim Matrimony ${c.city}</a>`).join(' and ')}.</p>
+  const halalList = hub.halalHighlights.map(h =>
+    `<li class="flex items-start gap-3 mb-4">
+      <span class="text-primary mt-1 text-lg">✓</span>
+      <span class="text-gray-700"><strong>${h.name}:</strong> ${h.desc}</span>
+    </li>`
+  ).join('');
+
+  const bodyContent = `
+    <div class="prose max-w-none">
+      <p class="text-lg text-gray-700 mb-6 leading-relaxed">Looking for a Muslim life partner in ${hub.city}? D'amour Muslim is the UK's trusted halal matrimony platform, connecting serious marriage seekers across ${hub.region}. Whether you live in ${hub.nearbyAreas} — our verified, moderated profiles make the search easier, safer, and more dignified.</p>
+
+      <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Muslim Demographics in ${hub.city}</h2>
+      <p class="text-gray-700 mb-4 leading-relaxed">${hub.city} is home to ${hub.muslimPopulation}. The Muslim community is most concentrated in ${hub.keyAreas}.</p>
+      <p class="text-gray-700 mb-6 leading-relaxed">${hub.demographicHighlight}</p>
+      <p class="text-gray-700 mb-6 leading-relaxed">${hub.communityContext}</p>
+
+      <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Why Muslims in ${hub.city} Choose D'amour Muslim</h2>
+      <ul class="list-none space-y-3 mb-6">
+        <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700">Profiles manually verified by our moderation team before going live — no fake accounts</span></li>
+        <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700">Halal-first environment — Nikah intention required, no casual dating</span></li>
+        <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700">Free to join, create a profile, and browse Muslim singles in ${hub.city}</span></li>
+        <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700">Filter by age, gender, height, nationality, and more</span></li>
+        <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700">Family-friendly — parents and walis are welcome to manage or assist with a profile</span></li>
+        <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700">UK GDPR compliant — your data is private and never sold to third parties</span></li>
+      </ul>
+
+      <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Popular Halal Venues &amp; Muslim Community Spots in ${hub.city}</h2>
+      <p class="text-gray-700 mb-4">For Muslims in ${hub.city}, these areas and venues are well-known community hubs — places where the local Muslim community gathers, eats, shops, and worships:</p>
+      <ul class="list-none mb-6">
+        ${halalList}
+      </ul>
+
+      <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">How the D'amour Muslim Search Works for ${hub.city}</h2>
+      <p class="text-gray-700 mb-4">Finding a Muslim spouse in ${hub.city} through D'amour Muslim is straightforward:</p>
+      <div class="grid md:grid-cols-3 gap-4 mb-8">
+        <div class="bg-gray-50 rounded-xl p-4 text-center border border-gray-100">
+          <span class="text-primary font-bold text-2xl block mb-2">1</span>
+          <p class="font-semibold text-gray-800 text-sm mb-1">Create a Free Profile</p>
+          <p class="text-gray-600 text-xs">Register and complete your verified profile in minutes</p>
+        </div>
+        <div class="bg-gray-50 rounded-xl p-4 text-center border border-gray-100">
+          <span class="text-primary font-bold text-2xl block mb-2">2</span>
+          <p class="font-semibold text-gray-800 text-sm mb-1">Search by ${hub.city}</p>
+          <p class="text-gray-600 text-xs">Use the city filter to find Muslims specifically in ${hub.city} and ${hub.region}</p>
+        </div>
+        <div class="bg-gray-50 rounded-xl p-4 text-center border border-gray-100">
+          <span class="text-primary font-bold text-2xl block mb-2">3</span>
+          <p class="font-semibold text-gray-800 text-sm mb-1">Connect &amp; Proceed</p>
+          <p class="text-gray-600 text-xs">Send interest, receive mutual acceptance, then communicate — the halal way</p>
         </div>
       </div>
-    `
+
+      <div class="bg-primary/5 rounded-2xl p-6 border border-primary/10 mt-8">
+        <p class="text-gray-700 font-medium">
+          Understand the Islamic approach to marriage: <a href="/muslim-marriage" class="text-primary hover:underline">Muslim Marriage in Islam</a>.
+          Learn how our platform works: <a href="/muslim-matrimonial" class="text-primary hover:underline">Platform Features Guide</a>.
+          Also explore other UK city hubs:
+          ${cityHubPages.filter(c => c.city !== hub.city).map(c => `<a href="/${c.slug}" class="text-primary hover:underline">Muslim Matrimony ${c.city}</a>`).join(' &bull; ')}.
+        </p>
+      </div>
+    </div>
+  `;
+
+  const page = {
+    path: "/" + hub.slug,
+    pageTitle: `Muslim Matrimony in ${hub.city} | Verified Muslim Singles | D'amour Muslim`,
+    h1: `Muslim Matrimony in ${hub.city} — Find Your Halal Spouse`,
+    heroSubtitle: `Connect with verified Muslim singles across ${hub.city} and ${hub.region}. Locally focused, halal-first, and free to join.`,
+    metaDescription: `Find a Muslim marriage partner in ${hub.city}. Browse verified profiles from ${hub.nearbyAreas}. Learn about the local Muslim community and start your halal marriage search. Free to join.`,
+    keywords: `muslim matrimony ${hub.city.toLowerCase()}, muslim marriage ${hub.city.toLowerCase()}, rishta ${hub.city.toLowerCase()}, halal marriage ${hub.city.toLowerCase()}, muslim singles ${hub.city.toLowerCase()}, nikah ${hub.city.toLowerCase()}, muslim matchmaking ${hub.region.toLowerCase()}, muslim community ${hub.city.toLowerCase()}`,
+    canonicalPath: "/" + hub.slug,
+    ctaHeading: `Find Your Spouse in ${hub.city} — Free to Join`,
+    ctaSubtext: `Join verified Muslim singles in ${hub.city} already on their path to Nikah. Create your profile today.`,
+    relatedLinks: [
+      { url: "/muslim-marriage", label: "About Muslim Marriage in Islam" },
+      { url: "/muslim-matrimonial", label: "How the Platform Works" },
+      { url: "/find-muslim-spouse", label: "Search & Filter Guide" },
+      ...cityHubPages.filter(c => c.city !== hub.city).map(c => ({ url: "/" + c.slug, label: `Muslim Matrimony ${c.city}` })),
+      { url: "/profiles", label: "Browse All Profiles" }
+    ],
+    pageFaqSchema: hub.localFaqs,
+    pageFaqs: hub.localFaqs,
+    bodyContent
   };
+
   app.get(page.path, (req, res) => {
     res.render("seo-page", page);
   });
