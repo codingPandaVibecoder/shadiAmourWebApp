@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verify Your Identity - D'amour Muslim</title>
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+  <link rel="manifest" href="/images/site.webmanifest">
+  <meta name="theme-color" content="#E91E63">
+  <link rel="stylesheet" href="/css/output.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Playfair+Display:wght@400;600;700&family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+
+  <style>
+    :where([class^="ri-"])::before { content: "\f3c2"; }
+
+    .material-shadow { box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    .gradient-bg { background: linear-gradient(135deg, #E91E63 0%, #673AB7 100%); }
+
+    /* ── Init overlay ── */
+    #initOverlay {
+      position: fixed; inset: 0;
+      background: rgba(255,255,255,0.95);
+      z-index: 999;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 1rem;
+    }
+    .spinner {
+      width: 3rem; height: 3rem;
+      border: 4px solid #e5e7eb;
+      border-top-color: #E91E63;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── Phase card ── */
+    .phase-card {
+      display: none;
+      animation: fadeIn 0.3s ease;
+    }
+    .phase-card.active { display: block; }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Video / canvas ── */
+    #cameraWrap {
+      position: relative;
+      width: 100%;
+      max-width: 480px;
+      margin: 0 auto;
+      border-radius: 1rem;
+      overflow: hidden;
+      background: #000;
+      aspect-ratio: 4/3;
+    }
+    #displayCanvas {
+      width: 100%; height: 100%;
+      display: block;
+      border-radius: 1rem;
+    }
+    #videoFeed, #processCanvas {
+      position: absolute;
+      top: 0; left: 0;
+      width: 1px; height: 1px;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    /* ── Status bar inside camera ── */
+    #cameraStatus {
+      position: absolute; bottom: 0.75rem; left: 0; right: 0;
+      text-align: center;
+    }
+    .status-pill {
+      display: inline-block;
+      padding: 0.3rem 0.9rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+    }
+    .status-scanning { background: rgba(0,0,0,0.55); color: #fff; }
+    .status-detected { background: rgba(34,197,94,0.85); color: #fff; }
+    .status-capturing { background: rgba(233,30,99,0.9); color: #fff; }
+
+    /* ── Countdown ring ── */
+    #countdownWrap {
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      display: none;
+    }
+    #countdownWrap svg { transform: rotate(-90deg); }
+    #countdownText {
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 2rem; font-weight: 700; color: #fff;
+    }
+
+    /* ── OCR overlay ── */
+    #ocrOverlay {
+      position: absolute; inset: 0;
+      background: rgba(0,0,0,0.7);
+      display: none;
+      align-items: center; justify-content: center;
+      flex-direction: column;
+      gap: 0.75rem;
+      color: #fff;
+      font-size: 0.9rem;
+      text-align: center;
+      padding: 1rem;
+      border-radius: 1rem;
+    }
+    #ocrOverlay.visible { display: flex; }
+
+    /* ── Liveness landmarks canvas ── */
+    #livenessCanvas {
+      width: 100%; height: 100%; display: block; border-radius: 1rem;
+    }
+
+    /* ── Step pills ── */
+    .step-pill {
+      width: 2rem; height: 2rem; border-radius: 9999px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.8rem; font-weight: 700;
+      transition: all 0.3s;
+    }
+    .step-pill.active    { background: #E91E63; color: #fff; }
+    .step-pill.completed { background: #22c55e; color: #fff; }
+    .step-pill.pending   { background: #e5e7eb; color: #6b7280; }
+
+    /* ── Liveness prompts ── */
+    .liveness-prompt {
+      font-size: 1.4rem; font-weight: 700; color: #1f2937;
+      min-height: 2.5rem; transition: all 0.3s;
+    }
+    .liveness-step {
+      display: flex; align-items: center; gap: 0.75rem;
+      padding: 0.6rem 1rem; border-radius: 0.75rem;
+      font-size: 0.9rem; font-weight: 500;
+      background: #f3f4f6; color: #6b7280;
+      transition: all 0.3s;
+    }
+    .liveness-step.active   { background: #fdf2f8; color: #E91E63; }
+    .liveness-step.done     { background: #f0fdf4; color: #16a34a; }
+
+    /* ── Preview thumbnails ── */
+    .preview-thumb {
+      width: 100%; aspect-ratio: 16/9;
+      object-fit: cover; border-radius: 0.75rem;
+      border: 2px solid #e5e7eb;
+    }
+
+    /* ── Skip link ── */
+    .skip-link {
+      font-size: 0.8rem; color: #9ca3af;
+      text-decoration: underline; cursor: pointer;
+    }
+    .skip-link:hover { color: #6b7280; }
+
+    /* ── Instruction tips ── */
+    .tip-box {
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      border-radius: 0.75rem;
+      padding: 0.75rem 1rem;
+      font-size: 0.8rem;
+      color: #92400e;
+    }
+  </style>
+</head>
+
+<body class="bg-gray-50 font-['Roboto']">
+
+  <!-- ── Initialisation overlay ───────────────────────────────── -->
+  <div id="initOverlay">
+    <div class="spinner"></div>
+    <p id="initText" class="text-gray-600 font-medium text-sm">Initialising scanner libraries…</p>
+    <p class="text-gray-400 text-xs">This may take a moment on first load</p>
+  </div>
+
+  <main class="pt-6 md:pt-16 pb-16 min-h-screen">
+    <div class="max-w-2xl mx-auto px-4 sm:px-6">
+
+      <!-- Title -->
+      <div class="text-center mb-6">
+        <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 mb-1 font-['Playfair_Display']">Identity Verification</h2>
+        <p class="text-gray-500 text-sm">Verify your identity to keep the community safe</p>
+
+        <!-- Phase pills -->
+        <div class="flex justify-center items-center gap-2 mt-4">
+          <div class="step-pill active" id="pill-1">1</div>
+          <div class="w-8 h-0.5 bg-gray-200" id="line-1"></div>
+          <div class="step-pill pending" id="pill-2">2</div>
+          <div class="w-8 h-0.5 bg-gray-200" id="line-2"></div>
+          <div class="step-pill pending" id="pill-3">3</div>
+          <div class="w-8 h-0.5 bg-gray-200" id="line-3"></div>
+          <div class="step-pill pending" id="pill-4">4</div>
+        </div>
+        <p class="text-xs text-gray-400 mt-2" id="phaseLabel">Phase 1 of 4 · ID Front</p>
+      </div>
+
+      <!-- ── Card ── -->
+      <div class="bg-white rounded-2xl p-4 sm:p-6 md:p-8 material-shadow">
+
+        <!-- ══ PHASE 1: ID Front ══════════════════════════════════ -->
+        <div id="phase-1" class="phase-card active">
+          <div class="text-center mb-4">
+            <div class="w-14 h-14 bg-pink-50 rounded-full flex items-center justify-center mx-auto mb-3">
+              <i class="ri-id-card-line text-3xl text-pink-500"></i>
+            </div>
+            <h3 class="text-xl font-semibold text-gray-800">Scan ID Card — Front</h3>
+            <p class="text-gray-500 text-sm mt-1">Hold your ID card flat inside the guide box</p>
+          </div>
+
+          <div class="tip-box mb-4">
+            <i class="ri-lightbulb-line mr-1"></i>
+            Good lighting · Keep ID steady · Make sure all text is visible
+          </div>
+
+          <div id="cameraWrap">
+            <video id="videoFeed" autoplay playsinline muted></video>
+            <canvas id="processCanvas"></canvas>
+            <canvas id="displayCanvas"></canvas>
+            <div id="cameraStatus">
+              <span class="status-pill status-scanning" id="statusPill">Scanning for ID card…</span>
+            </div>
+            <div id="countdownWrap">
+              <svg width="80" height="80" viewBox="0 0 80 80">
+                <circle cx="40" cy="40" r="34" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="6"/>
+                <circle id="countdownCircle" cx="40" cy="40" r="34" fill="none"
+                  stroke="#E91E63" stroke-width="6"
+                  stroke-dasharray="213.6" stroke-dashoffset="213.6"
+                  style="transition: stroke-dashoffset 0.1s linear;"/>
+              </svg>
+              <span id="countdownText">2</span>
+            </div>
+            <div id="ocrOverlay">
+              <div class="spinner" style="border-top-color:#E91E63; width:2rem; height:2rem;"></div>
+              <span id="ocrText">Reading card text…</span>
+            </div>
+          </div>
+
+          <p class="text-center text-xs text-gray-400 mt-3">Camera feed is processed locally — never sent until you submit</p>
+        </div>
+
+        <!-- ══ PHASE 2: ID Back ═══════════════════════════════════ -->
+        <div id="phase-2" class="phase-card">
+          <div class="text-center mb-4">
+            <div class="w-14 h-14 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-3">
+              <i class="ri-id-card-fill text-3xl text-blue-500"></i>
+            </div>
+            <h3 class="text-xl font-semibold text-gray-800">Scan ID Card — Back</h3>
+            <p class="text-gray-500 text-sm mt-1">Now flip your ID and hold the back inside the guide box</p>
+          </div>
+
+          <div class="tip-box mb-4">
+            <i class="ri-lightbulb-line mr-1"></i>
+            Keep same good lighting · Hold back side flat and steady
+          </div>
+
+          <div id="cameraWrap2" class="relative w-full max-w-[480px] mx-auto rounded-2xl overflow-hidden bg-black" style="aspect-ratio:4/3;">
+            <canvas id="displayCanvas2" class="w-full h-full block rounded-2xl"></canvas>
+            <div id="cameraStatus2" class="absolute bottom-3 left-0 right-0 text-center">
+              <span class="status-pill status-scanning" id="statusPill2">Scanning for ID card…</span>
+            </div>
+            <div id="countdownWrap2" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" style="display:none;">
+              <svg width="80" height="80" viewBox="0 0 80 80"><circle cx="40" cy="40" r="34" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="6"/><circle id="countdownCircle2" cx="40" cy="40" r="34" fill="none" stroke="#3b82f6" stroke-width="6" stroke-dasharray="213.6" stroke-dashoffset="213.6" style="transition:stroke-dashoffset 0.1s linear;"/></svg>
+              <span id="countdownText2" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-3xl font-bold text-white">2</span>
+            </div>
+            <div id="ocrOverlay2" class="absolute inset-0 bg-black/70 hidden items-center justify-center flex-col gap-3 text-white text-sm text-center p-4 rounded-2xl">
+              <div class="spinner" style="border-top-color:#3b82f6;width:2rem;height:2rem;"></div>
+              <span id="ocrText2">Reading card text…</span>
+            </div>
+          </div>
+
+          <p class="text-center text-xs text-gray-400 mt-3">Camera feed is processed locally — never sent until you submit</p>
+        </div>
+
+        <!-- ══ PHASE 3: Liveness ══════════════════════════════════ -->
+        <div id="phase-3" class="phase-card">
+          <div class="text-center mb-4">
+            <div class="w-14 h-14 bg-purple-50 rounded-full flex items-center justify-center mx-auto mb-3">
+              <i class="ri-face-recognition-line text-3xl text-purple-500"></i>
+            </div>
+            <h3 class="text-xl font-semibold text-gray-800">Liveness Check</h3>
+            <p class="text-gray-500 text-sm mt-1">Follow the on-screen prompts to prove you're a real person</p>
+          </div>
+
+          <div class="relative w-full max-w-[480px] mx-auto rounded-2xl overflow-hidden bg-black mb-4" style="aspect-ratio:4/3;">
+            <canvas id="livenessCanvas" class="w-full h-full block rounded-2xl"></canvas>
+            <div class="absolute inset-0 flex flex-col items-center justify-end pb-4 pointer-events-none">
+              <div id="livenessPrompt" class="liveness-prompt text-white drop-shadow-lg text-center px-4">Centre your face</div>
+            </div>
+            <!-- Face guide oval -->
+            <svg id="faceGuide" class="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 480 360" preserveAspectRatio="none">
+              <ellipse cx="240" cy="170" rx="100" ry="130" fill="none" stroke="rgba(233,30,99,0.7)" stroke-width="3" stroke-dasharray="8 4"/>
+            </svg>
+          </div>
+
+          <!-- Step checklist -->
+          <div class="space-y-2 mb-4">
+            <div class="liveness-step active" id="ls-straight">
+              <i class="ri-focus-3-line text-xl"></i>
+              <span>Look straight at the camera</span>
+              <i class="ri-check-line ml-auto hidden text-green-500" id="lc-straight"></i>
+            </div>
+            <div class="liveness-step" id="ls-left">
+              <i class="ri-arrow-left-line text-xl"></i>
+              <span>Slowly turn your head LEFT</span>
+              <i class="ri-check-line ml-auto hidden text-green-500" id="lc-left"></i>
+            </div>
+            <div class="liveness-step" id="ls-right">
+              <i class="ri-arrow-right-line text-xl"></i>
+              <span>Slowly turn your head RIGHT</span>
+              <i class="ri-check-line ml-auto hidden text-green-500" id="lc-right"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══ PHASE 4: Review & Submit ═══════════════════════════ -->
+        <div id="phase-4" class="phase-card">
+          <div class="text-center mb-5">
+            <div class="w-14 h-14 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-3">
+              <i class="ri-shield-check-line text-3xl text-green-500"></i>
+            </div>
+            <h3 class="text-xl font-semibold text-gray-800">Review & Submit</h3>
+            <p class="text-gray-500 text-sm mt-1">Check your captured images look clear before submitting</p>
+          </div>
+
+          <div class="grid grid-cols-3 gap-3 mb-5">
+            <div class="text-center">
+              <img id="previewFront" src="" alt="ID Front" class="preview-thumb mb-1">
+              <p class="text-xs text-gray-500 font-medium">ID Front</p>
+            </div>
+            <div class="text-center">
+              <img id="previewBack" src="" alt="ID Back" class="preview-thumb mb-1">
+              <p class="text-xs text-gray-500 font-medium">ID Back</p>
+            </div>
+            <div class="text-center">
+              <img id="previewSelfie" src="" alt="Selfie" class="preview-thumb mb-1">
+              <p class="text-xs text-gray-500 font-medium">Selfie</p>
+            </div>
+          </div>
+
+          <!-- Upload progress -->
+          <div id="uploadProgress" class="hidden mb-4">
+            <div class="bg-gray-200 rounded-full h-2">
+              <div id="uploadBar" class="bg-gradient-to-r from-pink-500 to-purple-500 h-2 rounded-full transition-all duration-300" style="width:0%"></div>
+            </div>
+            <p class="text-xs text-gray-500 text-center mt-1" id="uploadLabel">Uploading…</p>
+          </div>
+
+          <button id="submitBtn"
+            class="w-full py-3 bg-gradient-to-r from-pink-500 to-purple-500 text-white rounded-xl font-semibold text-base hover:opacity-90 transition material-shadow">
+            <i class="ri-upload-cloud-2-line mr-2"></i>Submit Verification
+          </button>
+
+          <p class="text-center text-xs text-gray-400 mt-3">
+            <i class="ri-shield-check-line text-green-500"></i>
+            Stored securely · Reviewed only by our team
+          </p>
+        </div>
+
+      </div><!-- /card -->
+
+      <!-- Skip link -->
+      <div class="text-center mt-4">
+        <a href="/account/info?from=onboarding" class="skip-link">
+          Skip for now — I'll verify later
+        </a>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ── Libraries ─────────────────────────────────────────────── -->
+  <!-- Tesseract.js — load first (smaller) -->
+  <script src="https://unpkg.com/tesseract.js@v4/dist/tesseract.min.js"></script>
+  <!-- MediaPipe Face Mesh -->
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/face_mesh.js" crossorigin="anonymous"></script>
+  <!-- OpenCV.js — largest, load last, non-blocking -->
+  <script async src="https://docs.opencv.org/4.10.0/opencv.js" onload="onOpenCvReady()"></script>
+
+  <script>
+  'use strict';
+
+  // ── Globals ────────────────────────────────────────────────────
+  let cv = null;
+  let stream = null;
+  let currentPhase = 1;
+  let idFrontBlob = null;
+  let idBackBlob  = null;
+  let selfieBlob  = null;
+
+  // Scanning state (shared for front & back)
+  let detectionTimer    = null;
+  let detectionStart    = null;
+  const HOLD_MS         = 2000; // ms of stable detection required
+  let rafId             = null;
+
+  // Liveness state
+  let livenessPhase       = 'straight'; // straight → left → right → done
+  let livenessTimer       = null;
+  let livenessStart       = null;
+  const LIVENESS_HOLD_MS  = { straight: 1500, left: 1000, right: 1000 };
+  let faceMesh            = null;
+  let livenessVideoEl     = null;
+  let livenessRafId       = null;
+
+  // ── Init overlay helpers ───────────────────────────────────────
+  const initOverlay = document.getElementById('initOverlay');
+  const initText    = document.getElementById('initText');
+
+  let opencvReady   = false;
+  let mediapipeReady = false;
+
+  function checkAllReady() {
+    if (opencvReady && mediapipeReady) {
+      hideInitOverlay();
+    }
+  }
+
+  function hideInitOverlay() {
+    initOverlay.style.opacity = '0';
+    initOverlay.style.transition = 'opacity 0.4s';
+    setTimeout(() => initOverlay.style.display = 'none', 400);
+    startCamera();
+  }
+
+  function onOpenCvReady() {
+    cv = window.cv;
+    opencvReady = true;
+    initText.textContent = 'OpenCV ready · Loading liveness engine…';
+    checkAllReady();
+  }
+
+  // ── MediaPipe init ─────────────────────────────────────────────
+  function initMediaPipe() {
+    faceMesh = new FaceMesh({
+      locateFile: (file) =>
+        `https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/${file}`,
+    });
+    faceMesh.setOptions({
+      maxNumFaces: 1,
+      refineLandmarks: true,
+      minDetectionConfidence: 0.5,
+      minTrackingConfidence: 0.5,
+    });
+    faceMesh.onResults(onFaceMeshResults);
+    faceMesh.initialize().then(() => {
+      mediapipeReady = true;
+      initText.textContent = 'Liveness engine ready · Finishing up…';
+      checkAllReady();
+    }).catch(err => {
+      console.error('MediaPipe init error', err);
+      // Allow proceeding even if MediaPipe fails — will degrade gracefully
+      mediapipeReady = true;
+      checkAllReady();
+    });
+  }
+
+  // ── Camera ────────────────────────────────────────────────────
+  async function startCamera() {
+    try {
+      stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: 'environment', width: { ideal: 1280 }, height: { ideal: 960 } },
+        audio: false,
+      });
+    } catch (e) {
+      // Fallback: try any camera
+      try {
+        stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+      } catch (e2) {
+        alert('Camera access is required for identity verification. Please allow camera access and reload.');
+        return;
+      }
+    }
+
+    const video = document.getElementById('videoFeed');
+    video.srcObject = stream;
+    video.onloadedmetadata = () => {
+      video.play();
+      startIDScanning('front');
+    };
+  }
+
+  function stopAllTracks() {
+    if (stream) stream.getTracks().forEach(t => t.stop());
+    if (rafId) cancelAnimationFrame(rafId);
+    if (livenessRafId) cancelAnimationFrame(livenessRafId);
+  }
+
+  // ── Phase navigation ───────────────────────────────────────────
+  const phaseLabels = [
+    null,
+    'Phase 1 of 4 · ID Front',
+    'Phase 2 of 4 · ID Back',
+    'Phase 3 of 4 · Liveness Check',
+    'Phase 4 of 4 · Review & Submit',
+  ];
+
+  function goToPhase(n) {
+    document.getElementById(`phase-${currentPhase}`).classList.remove('active');
+    document.getElementById(`phase-${n}`).classList.add('active');
+
+    // Pills
+    for (let i = 1; i <= 4; i++) {
+      const pill = document.getElementById(`pill-${i}`);
+      pill.classList.remove('active', 'completed', 'pending');
+      if (i < n)       { pill.classList.add('completed'); pill.innerHTML = '<i class="ri-check-line text-xs"></i>'; }
+      else if (i === n) { pill.classList.add('active'); pill.textContent = i; }
+      else              { pill.classList.add('pending'); pill.textContent = i; }
+    }
+    // Lines
+    for (let i = 1; i <= 3; i++) {
+      const line = document.getElementById(`line-${i}`);
+      line.classList.toggle('bg-pink-500', i < n);
+      line.classList.toggle('bg-gray-200', i >= n);
+    }
+
+    document.getElementById('phaseLabel').textContent = phaseLabels[n];
+    currentPhase = n;
+
+    if (n === 2) startIDScanning('back');
+    if (n === 3) startLiveness();
+    if (n === 4) showReview();
+  }
+
+  // ── ID Scanning ────────────────────────────────────────────────
+  function startIDScanning(side) {
+    const isFront     = side === 'front';
+    const videoEl     = document.getElementById('videoFeed');
+    const processC    = document.getElementById('processCanvas');
+    const displayC    = isFront ? document.getElementById('displayCanvas') : document.getElementById('displayCanvas2');
+    const statusPill  = isFront ? document.getElementById('statusPill') : document.getElementById('statusPill2');
+    const cdWrap      = isFront ? document.getElementById('countdownWrap') : document.getElementById('countdownWrap2');
+    const cdCircle    = isFront ? document.getElementById('countdownCircle') : document.getElementById('countdownCircle2');
+    const cdText      = isFront ? document.getElementById('countdownText') : document.getElementById('countdownText2');
+    const ocrOverlay  = isFront ? document.getElementById('ocrOverlay') : document.getElementById('ocrOverlay2');
+    const ocrText     = isFront ? document.getElementById('ocrText') : document.getElementById('ocrText2');
+
+    const TOTAL_CIRCUMFERENCE = 213.6;
+
+    // Wire video to canvas dimensions once loaded
+    videoEl.addEventListener('loadedmetadata', () => {
+      processC.width  = videoEl.videoWidth;
+      processC.height = videoEl.videoHeight;
+    }, { once: true });
+    if (videoEl.readyState >= 1) {
+      processC.width  = videoEl.videoWidth  || 640;
+      processC.height = videoEl.videoHeight || 480;
+    }
+
+    let stableStart = null;
+    let captured    = false;
+
+    function loop() {
+      if (captured) return;
+      rafId = requestAnimationFrame(loop);
+
+      if (videoEl.readyState < 2) return;
+      const W = videoEl.videoWidth  || 640;
+      const H = videoEl.videoHeight || 480;
+      processC.width  = W;
+      processC.height = H;
+      displayC.width  = W;
+      displayC.height = H;
+
+      const pCtx = processC.getContext('2d');
+      pCtx.drawImage(videoEl, 0, 0, W, H);
+
+      const dCtx = displayC.getContext('2d');
+      dCtx.drawImage(videoEl, 0, 0, W, H);
+
+      // Guide rectangle (golden ratio ID card)
+      const gW = W * 0.75, gH = gW / 1.586;
+      const gX = (W - gW) / 2, gY = (H - gH) / 2;
+      dCtx.strokeStyle = 'rgba(233,30,99,0.8)';
+      dCtx.lineWidth   = 3;
+      dCtx.setLineDash([12, 6]);
+      dCtx.strokeRect(gX, gY, gW, gH);
+      dCtx.setLineDash([]);
+
+      // Corner markers
+      const cLen = 24;
+      dCtx.strokeStyle = '#E91E63';
+      dCtx.lineWidth   = 4;
+      [[gX, gY], [gX+gW, gY], [gX, gY+gH], [gX+gW, gY+gH]].forEach(([cx, cy]) => {
+        dCtx.beginPath();
+        dCtx.moveTo(cx + (cx < W/2 ? 0 : -cLen), cy);
+        dCtx.lineTo(cx + (cx < W/2 ? cLen : 0), cy);
+        dCtx.stroke();
+        dCtx.beginPath();
+        dCtx.moveTo(cx, cy + (cy < H/2 ? 0 : -cLen));
+        dCtx.lineTo(cx, cy + (cy < H/2 ? cLen : 0));
+        dCtx.stroke();
+      });
+
+      // OpenCV detection
+      let detected = false;
+      let detectedRect = null;
+      try {
+        const src   = cv.imread(processC);
+        const gray  = new cv.Mat();
+        const blur  = new cv.Mat();
+        const edges = new cv.Mat();
+        cv.cvtColor(src, gray, cv.COLOR_RGBA2GRAY);
+        cv.GaussianBlur(gray, blur, new cv.Size(5, 5), 0);
+        cv.Canny(blur, edges, 75, 200);
+        const contours   = new cv.MatVector();
+        const hierarchy  = new cv.Mat();
+        cv.findContours(edges, contours, hierarchy, cv.RETR_LIST, cv.CHAIN_APPROX_SIMPLE);
+
+        for (let i = 0; i < contours.size(); i++) {
+          const contour = contours.get(i);
+          const area    = cv.contourArea(contour);
+          if (area < W * H * 0.08) { contour.delete(); continue; }
+
+          const peri   = cv.arcLength(contour, true);
+          const approx = new cv.Mat();
+          cv.approxPolyDP(contour, approx, 0.02 * peri, true);
+
+          if (approx.rows === 4) {
+            const rect  = cv.boundingRect(approx);
+            const ratio = rect.width / rect.height;
+            if (ratio >= 1.35 && ratio <= 1.80) {
+              // Check it overlaps guide box
+              const overlapX = Math.max(0, Math.min(rect.x + rect.width,  gX + gW) - Math.max(rect.x, gX));
+              const overlapY = Math.max(0, Math.min(rect.y + rect.height, gY + gH) - Math.max(rect.y, gY));
+              const overlapArea = overlapX * overlapY;
+              const rectArea    = rect.width * rect.height;
+              if (overlapArea / rectArea > 0.6) {
+                detected = true;
+                detectedRect = rect;
+                // Draw green outline
+                dCtx.strokeStyle = 'rgba(34,197,94,0.9)';
+                dCtx.lineWidth   = 3;
+                dCtx.setLineDash([]);
+                dCtx.strokeRect(rect.x, rect.y, rect.width, rect.height);
+              }
+            }
+          }
+          approx.delete();
+          contour.delete();
+        }
+        src.delete(); gray.delete(); blur.delete(); edges.delete();
+        contours.delete(); hierarchy.delete();
+      } catch (e) {
+        // OpenCV error — keep looping
+      }
+
+      if (detected) {
+        if (!stableStart) stableStart = Date.now();
+        const elapsed = Date.now() - stableStart;
+        const progress = Math.min(elapsed / HOLD_MS, 1);
+        const offset = TOTAL_CIRCUMFERENCE * (1 - progress);
+
+        statusPill.textContent = 'ID detected — hold still…';
+        statusPill.className   = 'status-pill status-detected';
+        cdWrap.style.display   = 'block';
+        cdCircle.style.strokeDashoffset = offset;
+        cdText.textContent     = Math.ceil((HOLD_MS - elapsed) / 1000);
+
+        if (elapsed >= HOLD_MS) {
+          // AUTO-CAPTURE
+          captured = true;
+          cancelAnimationFrame(rafId);
+          cdWrap.style.display = 'none';
+          statusPill.textContent = 'Captured! Checking card…';
+          statusPill.className   = 'status-pill status-capturing';
+
+          // Crop the detected area
+          const cropC  = document.createElement('canvas');
+          const cW = detectedRect ? detectedRect.width  : W;
+          const cH = detectedRect ? detectedRect.height : H;
+          const cX = detectedRect ? detectedRect.x      : 0;
+          const cY = detectedRect ? detectedRect.y      : 0;
+          cropC.width  = cW;
+          cropC.height = cH;
+          cropC.getContext('2d').drawImage(processC, cX, cY, cW, cH, 0, 0, cW, cH);
+
+          // Show OCR overlay
+          ocrOverlay.style.display = 'flex';
+          ocrOverlay.classList.add('visible');
+
+          runOCR(cropC, displayC, side, ocrOverlay, ocrText);
+        }
+      } else {
+        stableStart = null;
+        cdWrap.style.display = 'none';
+        statusPill.textContent = 'Scanning for ID card…';
+        statusPill.className   = 'status-pill status-scanning';
+      }
+    }
+
+    loop();
+  }
+
+  async function runOCR(cropCanvas, displayCanvas, side, ocrOverlay, ocrText) {
+    try {
+      ocrText.textContent = 'Reading card text…';
+      const dataUrl = cropCanvas.toDataURL('image/jpeg', 0.92);
+
+      const result = await Tesseract.recognize(dataUrl, 'eng', {
+        logger: m => { if (m.status === 'recognizing text') ocrText.textContent = `Reading… ${Math.round(m.progress * 100)}%`; }
+      });
+
+      const text = result.data.text || '';
+      const charCount = text.replace(/\s/g, '').length;
+
+      ocrOverlay.style.display  = 'none';
+      ocrOverlay.classList.remove('visible');
+
+      if (charCount >= 20) {
+        // Good — save blob and advance
+        cropCanvas.toBlob(blob => {
+          if (side === 'front') {
+            idFrontBlob = blob;
+            goToPhase(2);
+          } else {
+            idBackBlob = blob;
+            goToPhase(3);
+          }
+        }, 'image/jpeg', 0.92);
+      } else {
+        // Too few chars — show retry button
+        showScanRetry(displayCanvas, side, ocrOverlay, ocrText,
+          `We couldn't read enough text on your ${side === 'front' ? 'ID front' : 'ID back'}. Ensure all text is visible and try again.`);
+      }
+    } catch (err) {
+      console.error('OCR error', err);
+      ocrOverlay.style.display  = 'none';
+      ocrOverlay.classList.remove('visible');
+      // Fail open — still allow proceeding if OCR itself errors
+      cropCanvas.toBlob(blob => {
+        if (side === 'front') { idFrontBlob = blob; goToPhase(2); }
+        else                  { idBackBlob  = blob; goToPhase(3); }
+      }, 'image/jpeg', 0.92);
+    }
+  }
+
+  function showScanRetry(displayCanvas, side, ocrOverlay, ocrText, message) {
+    // Show a retry message overlaid on the display canvas
+    const ctx = displayCanvas.getContext('2d');
+    ctx.fillStyle = 'rgba(0,0,0,0.7)';
+    ctx.fillRect(0, 0, displayCanvas.width, displayCanvas.height);
+    ctx.fillStyle = '#fff';
+    ctx.font = 'bold 18px Roboto, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('Could not read card clearly', displayCanvas.width/2, displayCanvas.height/2 - 40);
+    ctx.font = '14px Roboto, sans-serif';
+    ctx.fillStyle = '#fca5a5';
+
+    const words = message.split(' ');
+    let line = '', lines = [];
+    for (const word of words) {
+      const test = line + word + ' ';
+      if (test.length > 42) { lines.push(line.trim()); line = word + ' '; }
+      else line = test;
+    }
+    if (line) lines.push(line.trim());
+    lines.forEach((l, i) => ctx.fillText(l, displayCanvas.width/2, displayCanvas.height/2 - 10 + i * 22));
+
+    ctx.fillStyle = '#E91E63';
+    ctx.fillRect(displayCanvas.width/2 - 60, displayCanvas.height/2 + 50, 120, 38);
+    ctx.fillStyle = '#fff';
+    ctx.font = 'bold 15px Roboto, sans-serif';
+    ctx.fillText('Try Again', displayCanvas.width/2, displayCanvas.height/2 + 74);
+
+    // Click to retry
+    displayCanvas.onclick = () => {
+      displayCanvas.onclick = null;
+      // Restart scanning loop for this side
+      if (side === 'front') startIDScanning('front');
+      else                  startIDScanning('back');
+    };
+  }
+
+  // ── Liveness ───────────────────────────────────────────────────
+  function startLiveness() {
+    livenessPhase = 'straight';
+
+    // Re-use same stream on a dedicated video element
+    livenessVideoEl = document.createElement('video');
+    livenessVideoEl.autoplay   = true;
+    livenessVideoEl.playsInline = true;
+    livenessVideoEl.muted      = true;
+    livenessVideoEl.srcObject  = stream;
+    livenessVideoEl.play().catch(() => {});
+
+    const livenessCanvas = document.getElementById('livenessCanvas');
+    document.getElementById('livenessPrompt').textContent = 'Centre your face in the oval';
+
+    // Start sending frames to MediaPipe
+    async function sendFrame() {
+      if (currentPhase !== 3) return;
+      if (livenessVideoEl.readyState >= 2) {
+        try {
+          await faceMesh.send({ image: livenessVideoEl });
+        } catch (e) {}
+      }
+      livenessRafId = requestAnimationFrame(sendFrame);
+    }
+    sendFrame();
+  }
+
+  function onFaceMeshResults(results) {
+    if (currentPhase !== 3) return;
+
+    const canvas = document.getElementById('livenessCanvas');
+    const ctx    = canvas.getContext('2d');
+    canvas.width  = livenessVideoEl.videoWidth  || 640;
+    canvas.height = livenessVideoEl.videoHeight || 480;
+    ctx.drawImage(livenessVideoEl, 0, 0, canvas.width, canvas.height);
+
+    if (!results.multiFaceLandmarks || results.multiFaceLandmarks.length === 0) {
+      document.getElementById('livenessPrompt').textContent = 'No face detected — move closer';
+      return;
+    }
+
+    const landmarks = results.multiFaceLandmarks[0];
+    const nose      = landmarks[1];   // nose tip
+    const leftCheek = landmarks[234]; // left cheek
+    const rightCheek= landmarks[454]; // right cheek
+
+    // faceRatio: 0 = fully left, 1 = fully right, 0.5 = centred
+    const faceRatio = (nose.x - leftCheek.x) / ((rightCheek.x - leftCheek.x) || 0.001);
+
+    const now = Date.now();
+
+    if (livenessPhase === 'straight') {
+      if (faceRatio >= 0.35 && faceRatio <= 0.65) {
+        if (!livenessStart) livenessStart = now;
+        if (now - livenessStart >= LIVENESS_HOLD_MS.straight) {
+          completeLivenessStep('straight');
+        }
+      } else {
+        livenessStart = null;
+      }
+      document.getElementById('livenessPrompt').textContent = 'Look straight at the camera';
+    } else if (livenessPhase === 'left') {
+      if (faceRatio > 0.68) {
+        if (!livenessStart) livenessStart = now;
+        if (now - livenessStart >= LIVENESS_HOLD_MS.left) {
+          completeLivenessStep('left');
+        }
+      } else {
+        livenessStart = null;
+      }
+      document.getElementById('livenessPrompt').textContent = 'Now turn your head LEFT';
+    } else if (livenessPhase === 'right') {
+      if (faceRatio < 0.32) {
+        if (!livenessStart) livenessStart = now;
+        if (now - livenessStart >= LIVENESS_HOLD_MS.right) {
+          completeLivenessStep('right');
+        }
+      } else {
+        livenessStart = null;
+      }
+      document.getElementById('livenessPrompt').textContent = 'Now turn your head RIGHT';
+    }
+  }
+
+  function completeLivenessStep(step) {
+    livenessStart = null;
+
+    const stepEl  = document.getElementById(`ls-${step}`);
+    const checkEl = document.getElementById(`lc-${step}`);
+    stepEl.classList.remove('active');
+    stepEl.classList.add('done');
+    checkEl.classList.remove('hidden');
+
+    const sequence = ['straight', 'left', 'right'];
+    const nextIdx  = sequence.indexOf(step) + 1;
+
+    if (nextIdx < sequence.length) {
+      livenessPhase = sequence[nextIdx];
+      const nextEl  = document.getElementById(`ls-${livenessPhase}`);
+      nextEl.classList.add('active');
+    } else {
+      // All done — capture selfie
+      livenessPhase = 'done';
+      cancelAnimationFrame(livenessRafId);
+      document.getElementById('livenessPrompt').textContent = '✓ Liveness verified!';
+      captureSelfie();
+    }
+  }
+
+  function captureSelfie() {
+    const canvas = document.getElementById('livenessCanvas');
+    canvas.toBlob(blob => {
+      selfieBlob = blob;
+      goToPhase(4);
+    }, 'image/jpeg', 0.92);
+  }
+
+  // ── Review & Submit ───────────────────────────────────────────
+  function showReview() {
+    if (idFrontBlob) document.getElementById('previewFront').src  = URL.createObjectURL(idFrontBlob);
+    if (idBackBlob)  document.getElementById('previewBack').src   = URL.createObjectURL(idBackBlob);
+    if (selfieBlob)  document.getElementById('previewSelfie').src = URL.createObjectURL(selfieBlob);
+  }
+
+  document.getElementById('submitBtn').addEventListener('click', async () => {
+    const btn = document.getElementById('submitBtn');
+    if (!idFrontBlob || !idBackBlob || !selfieBlob) {
+      alert('Missing captured images. Please go back and complete all steps.');
+      return;
+    }
+
+    btn.disabled = true;
+    btn.innerHTML = '<i class="ri-loader-4-line animate-spin mr-2"></i>Uploading…';
+
+    const progressWrap = document.getElementById('uploadProgress');
+    const progressBar  = document.getElementById('uploadBar');
+    const progressLabel= document.getElementById('uploadLabel');
+    progressWrap.classList.remove('hidden');
+
+    const fd = new FormData();
+    fd.append('livenessPassed', 'true');
+    fd.append('idFront',  idFrontBlob,  'id_front.jpg');
+    fd.append('idBack',   idBackBlob,   'id_back.jpg');
+    fd.append('selfie',   selfieBlob,   'selfie.jpg');
+
+    try {
+      // Simulate progress (XHR upload progress)
+      const xhr = new XMLHttpRequest();
+      xhr.open('POST', '/api/verify-faceAndId');
+
+      xhr.upload.onprogress = (e) => {
+        if (e.lengthComputable) {
+          const pct = Math.round((e.loaded / e.total) * 90);
+          progressBar.style.width  = pct + '%';
+          progressLabel.textContent = `Uploading… ${pct}%`;
+        }
+      };
+
+      xhr.onload = () => {
+        progressBar.style.width   = '100%';
+        progressLabel.textContent = 'Upload complete!';
+        try {
+          const result = JSON.parse(xhr.responseText);
+          if (result.success) {
+            stopAllTracks();
+            window.location.href = result.redirectUrl || '/account/info?from=onboarding';
+          } else {
+            btn.disabled  = false;
+            btn.innerHTML = '<i class="ri-upload-cloud-2-line mr-2"></i>Submit Verification';
+            progressWrap.classList.add('hidden');
+            alert(result.error || 'Upload failed. Please try again.');
+          }
+        } catch (e) {
+          btn.disabled  = false;
+          btn.innerHTML = '<i class="ri-upload-cloud-2-line mr-2"></i>Submit Verification';
+          progressWrap.classList.add('hidden');
+          alert('Unexpected server response. Please try again.');
+        }
+      };
+
+      xhr.onerror = () => {
+        btn.disabled  = false;
+        btn.innerHTML = '<i class="ri-upload-cloud-2-line mr-2"></i>Submit Verification';
+        progressWrap.classList.add('hidden');
+        alert('Network error. Please check your connection and try again.');
+      };
+
+      xhr.send(fd);
+    } catch (err) {
+      btn.disabled  = false;
+      btn.innerHTML = '<i class="ri-upload-cloud-2-line mr-2"></i>Submit Verification';
+      progressWrap.classList.add('hidden');
+      alert('Failed to submit. Please try again.');
+    }
+  });
+
+  // ── Bootstrap ─────────────────────────────────────────────────
+  // Start MediaPipe init immediately (doesn't need camera)
+  window.addEventListener('load', () => {
+    initText.textContent = 'Loading liveness engine…';
+    initMediaPipe();
+  });
+
+  // Stop camera on page leave
+  window.addEventListener('beforeunload', stopAllTracks);
+  </script>
+</body>
+</html>

@@ -413,6 +413,27 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: null,
   },
+  // Identity verification (KYC)
+  idVerified: {
+    type: Boolean,
+    default: false,
+  },
+  faceVerified: {
+    type: Boolean,
+    default: false,
+  },
+  idFrontUrl: {
+    type: String,
+    default: '',
+  },
+  idBackUrl: {
+    type: String,
+    default: '',
+  },
+  selfieUrl: {
+    type: String,
+    default: '',
+  },
   // Account deactivation system
   isDeactivated: {
     type: Boolean,

@@ -245,6 +245,27 @@ const blogImageStorage = new CloudinaryStorage({
 });
 const blogImageUpload = multer({ storage: blogImageStorage });
 
+// KYC verification image storage
+const kycStorage = new CloudinaryStorage({
+  cloudinary,
+  params: async (req, file) => {
+    const username = req.userData?.username || req.session?.userId || 'unknown';
+    const fieldMap = { idFront: 'idfront', idBack: 'idback', selfie: 'selfie' };
+    const suffix = fieldMap[file.fieldname] || file.fieldname;
+    return {
+      folder: 'kyc_verifications',
+      public_id: `${username}_${suffix}`,
+      allowed_formats: ['jpg', 'jpeg', 'png', 'webp'],
+      transformation: [
+        { quality: 'auto:good' },
+        { fetch_format: 'auto' },
+        { if: 'w_gt_2000', width: 2000, crop: 'limit' },
+      ],
+    };
+  },
+});
+const kycUpload = multer({ storage: kycStorage });
+
 const {
   generateVerificationCode,
   sendVerificationEmail,
@@ -2653,7 +2674,7 @@ app.post("/api/onboarding/complete", isLoggedIn, findUser, async (req, res) => {
     // No server-side phone validation - handled on client side
     res.json({
       success: true,
-      redirectUrl: `/account/info?from=onboarding`,
+      redirectUrl: `/verify-identity`,
     });
   } catch (error) {
     console.error("Complete onboarding error:", error);
@@ -2663,6 +2684,143 @@ app.post("/api/onboarding/complete", isLoggedIn, findUser, async (req, res) => {
     });
   }
 });
+
+// ── KYC / Identity Verification ─────────────────────────────────────────────
+
+// Step 1: Show KYC page (redirected here from onboarding completion)
+app.get("/verify-identity", isLoggedIn, findUser, (req, res) => {
+  res.render("verify-identity", { user: req.userData });
+});
+
+// Step 2: Receive images + liveness result, save to Cloudinary via KYC storage
+app.post(
+  "/api/verify-faceAndId",
+  isLoggedIn,
+  findUser,
+  kycUpload.fields([
+    { name: "idFront", maxCount: 1 },
+    { name: "idBack", maxCount: 1 },
+    { name: "selfie", maxCount: 1 },
+  ]),
+  async (req, res) => {
+    try {
+      const user = req.userData;
+
+      // Validate liveness flag
+      if (req.body.livenessPassed !== "true") {
+        return res.status(400).json({ success: false, error: "Liveness check was not completed." });
+      }
+
+      // Validate all three images were uploaded
+      if (
+        !req.files ||
+        !req.files.idFront ||
+        !req.files.idBack ||
+        !req.files.selfie
+      ) {
+        return res.status(400).json({ success: false, error: "All three images (ID front, ID back, selfie) are required." });
+      }
+
+      user.idFrontUrl = req.files.idFront[0].path;
+      user.idBackUrl  = req.files.idBack[0].path;
+      user.selfieUrl  = req.files.selfie[0].path;
+      user.idVerified   = true;
+      user.faceVerified = true;
+
+      await user.save();
+
+      return res.json({
+        success: true,
+        redirectUrl: "/account/info?from=onboarding",
+      });
+    } catch (error) {
+      console.error("KYC verification error:", error);
+      return res.status(500).json({ success: false, error: "Failed to save verification. Please try again." });
+    }
+  }
+);
+
+// ── Admin: KYC verification review ──────────────────────────────────────────
+
+app.get("/admin/verifications", requireAdminOrModerator, async (req, res) => {
+  try {
+    const PAGE_SIZE = 20;
+    const { filter = "all", page = 1 } = req.query;
+    const currentPage = parseInt(page, 10) || 1;
+
+    let query = {};
+    if (filter === "both")        query = { idVerified: true, faceVerified: true };
+    else if (filter === "id")     query = { idVerified: true, faceVerified: false };
+    else if (filter === "face")   query = { faceVerified: true, idVerified: false };
+    else if (filter === "unverified") query = { idVerified: false, faceVerified: false };
+    else if (filter === "submitted") query = { $or: [{ idFrontUrl: { $ne: '' } }, { selfieUrl: { $ne: '' } }] };
+
+    const totalCount = await User.countDocuments(query);
+    const users = await User.find(query)
+      .select("username name profilePic idVerified faceVerified idFrontUrl idBackUrl selfieUrl createdAt approvalStatus")
+      .sort({ createdAt: -1 })
+      .skip((currentPage - 1) * PAGE_SIZE)
+      .limit(PAGE_SIZE)
+      .lean();
+
+    // Stats
+    const totalSubmitted = await User.countDocuments({ $or: [{ idFrontUrl: { $ne: '' } }, { selfieUrl: { $ne: '' } }] });
+    const bothVerified   = await User.countDocuments({ idVerified: true, faceVerified: true });
+    const idOnly         = await User.countDocuments({ idVerified: true, faceVerified: false });
+    const faceOnly       = await User.countDocuments({ idVerified: false, faceVerified: true });
+    const unverified     = await User.countDocuments({ idVerified: false, faceVerified: false });
+
+    res.render("admin/verifications", {
+      users,
+      stats: { totalSubmitted, bothVerified, idOnly, faceOnly, unverified },
+      currentFilter: filter,
+      totalCount,
+      currentPage,
+      totalPages: Math.ceil(totalCount / PAGE_SIZE),
+      isAdmin: req.session.isAdmin || false,
+    });
+  } catch (error) {
+    console.error("Admin verifications error:", error);
+    res.render("admin/verifications", {
+      users: [],
+      stats: { totalSubmitted: 0, bothVerified: 0, idOnly: 0, faceOnly: 0, unverified: 0 },
+      currentFilter: "all",
+      totalCount: 0,
+      currentPage: 1,
+      totalPages: 1,
+      isAdmin: req.session.isAdmin || false,
+    });
+  }
+});
+
+app.post("/api/admin/user/:id/update-verification", requireAdminOrModerator, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { field, value } = req.body;
+
+    // Whitelist — only allow toggling these two fields
+    const allowedFields = ["idVerified", "faceVerified"];
+    if (!allowedFields.includes(field)) {
+      return res.status(400).json({ success: false, error: "Invalid field." });
+    }
+
+    const boolValue = value === "true" || value === true;
+
+    const user = await User.findById(id);
+    if (!user) return res.status(404).json({ success: false, error: "User not found." });
+
+    user[field] = boolValue;
+    await user.save();
+
+    return res.json({ success: true, message: `${field} updated to ${boolValue}.` });
+  } catch (error) {
+    console.error("Update verification error:", error);
+    return res.status(500).json({ success: false, error: "Failed to update verification status." });
+  }
+});
+
+// ── End KYC ─────────────────────────────────────────────────────────────────
+
 app.get("/api/profile-completion", isLoggedIn, findUser, async (req, res) => {
   try {
     const user = req.userData;
@@ -4846,10 +5004,10 @@ app.post("/admin/user/add", requireAdminOnly, async (req, res) => {
     // Create and save user
     const user = new User(userData);
     user.profileSlug = await generateUniqueSlug(user);
-    console.log("Generated slug:", user.profileSlug);
+    // console.log("Generated slug:", user.profileSlug);
     await user.save();
 
-    console.log("User created successfully:", user.username); // Debug log
+    // console.log("User created successfully:", user.username); // Debug log
     res.json({ success: true, message: "User created successfully" });
   } catch (err) {
     console.error("Add user error:", err);
@@ -4927,7 +5085,7 @@ app.post("/admin/user/update", profileUpload, async (req, res) => {
       const { userId: id, ...data } = req.body;
       userId = id;
       updateData = data;
-      console.log("JSON request - userId:", userId);
+      // console.log("JSON request - userId:", userId);
     }
 
     if (!userId) {
@@ -4966,7 +5124,7 @@ app.post("/admin/user/update", profileUpload, async (req, res) => {
 
     // **NEW**: Handle file uploads first
     if (req.files) {
-      console.log("Files received:", Object.keys(req.files));
+      // console.log("Files received:", Object.keys(req.files));
 
       // Handle profile picture
       if (req.files.profilePic && req.files.profilePic[0]) {
@@ -4975,7 +5133,7 @@ app.post("/admin/user/update", profileUpload, async (req, res) => {
           url: profilePicFile.path,
           filename: profilePicFile.filename,
         };
-        console.log("Profile picture uploaded:", user.profilePic);
+        // console.log("Profile picture uploaded:", user.profilePic);
       }
 
       // Handle cover photo
@@ -4985,7 +5143,7 @@ app.post("/admin/user/update", profileUpload, async (req, res) => {
           url: coverPhotoFile.path,
           filename: coverPhotoFile.filename,
         };
-        console.log("Cover photo uploaded:", user.coverPhoto);
+        // console.log("Cover photo uploaded:", user.coverPhoto);
       }
     }
 
@@ -5162,11 +5320,11 @@ app.post("/admin/user/update", profileUpload, async (req, res) => {
       const previousSlug = user.profileSlug;
       user.profileSlug = await generateUniqueSlug(user);
       addProfileSlugHistory(user, previousSlug, user.profileSlug);
-      console.log("Admin updated profile slug:", user.profileSlug);
+      // console.log("Admin updated profile slug:", user.profileSlug);
     }
     await user.save();
 
-    console.log(`User ${user.username} updated successfully by admin`);
+    // console.log(`User ${user.username} updated successfully by admin`);
     res.json({ success: true, message: "User updated successfully" });
   } catch (error) {
     console.error("Admin update user error:", error);

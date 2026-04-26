@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ID/Face Verifications - D'amour Muslim Admin</title>
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+  <link rel="manifest" href="/images/site.webmanifest">
+  <meta name="theme-color" content="#E91E63">
+  <link rel="stylesheet" href="/css/output.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Playfair+Display:wght@400;600;700&family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+
+  <style>
+    .material-shadow          { box-shadow: 0 2px 8px rgba(0,0,0,0.10); }
+    .material-shadow-elevated { box-shadow: 0 4px 20px rgba(0,0,0,0.15); }
+
+    /* Lightbox */
+    #lightbox {
+      display: none;
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.85);
+      z-index: 9999;
+      align-items: center; justify-content: center;
+    }
+    #lightbox.open { display: flex; }
+    #lightboxImg {
+      max-width: 90vw; max-height: 90vh;
+      border-radius: 1rem;
+      object-fit: contain;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.5);
+    }
+    #lightboxClose {
+      position: absolute; top: 1.25rem; right: 1.5rem;
+      color: #fff; font-size: 2rem; cursor: pointer;
+      background: rgba(0,0,0,0.4); border-radius: 50%;
+      width: 2.5rem; height: 2.5rem;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    .img-thumb {
+      width: 100%; aspect-ratio: 16/9;
+      object-fit: cover;
+      border-radius: 0.5rem;
+      border: 1px solid #e5e7eb;
+      cursor: pointer;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .img-thumb:hover {
+      transform: scale(1.03);
+      border-color: #E91E63;
+    }
+    .img-placeholder {
+      width: 100%; aspect-ratio: 16/9;
+      border-radius: 0.5rem;
+      border: 1px dashed #d1d5db;
+      display: flex; align-items: center; justify-content: center;
+      background: #f9fafb;
+      color: #9ca3af; font-size: 0.7rem; text-align: center;
+    }
+
+    /* Stat cards */
+    .stat-card {
+      background: #fff;
+      border-radius: 1rem;
+      padding: 1.25rem 1.5rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+
+    /* User row */
+    .user-row {
+      background: #fff;
+      border-radius: 1rem;
+      padding: 1.25rem;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+      transition: box-shadow 0.2s;
+    }
+    .user-row:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.12); }
+
+    .badge-verified   { background: #d1fae5; color: #065f46; }
+    .badge-unverified { background: #fee2e2; color: #991b1b; }
+
+    /* Status select */
+    .status-select {
+      padding: 0.35rem 0.7rem;
+      border-radius: 0.5rem;
+      border: 1px solid #d1d5db;
+      font-size: 0.8rem;
+      background: #fff;
+      cursor: pointer;
+      transition: border-color 0.2s;
+    }
+    .status-select:focus { outline: none; border-color: #E91E63; }
+    .status-select.verified   { border-color: #22c55e; background: #f0fdf4; color: #15803d; }
+    .status-select.unverified { border-color: #ef4444; background: #fef2f2; color: #b91c1c; }
+
+    /* Pagination */
+    .page-btn {
+      padding: 0.4rem 0.9rem;
+      border: 1px solid #e5e7eb;
+      border-radius: 0.5rem;
+      font-size: 0.85rem;
+      background: #fff;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .page-btn:hover:not(:disabled) { background: #fdf2f8; border-color: #E91E63; color: #E91E63; }
+    .page-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+    .page-btn.active { background: #E91E63; color: #fff; border-color: #E91E63; }
+  </style>
+</head>
+
+<body class="bg-gray-50 font-['Roboto']">
+
+  <!-- ── Header ───────────────────────────────────────────────── -->
+  <header class="fixed top-0 left-0 right-0 bg-white material-shadow z-50">
+    <div class="flex items-center justify-between px-6 h-16">
+      <div class="flex items-center gap-3">
+        <h1 class="text-2xl font-bold text-pink-600 font-['Playfair_Display']">
+          <a href="/admin/dashboard" class="hover:text-pink-700 transition-colors">D'amour Muslim</a>
+        </h1>
+        <span class="px-3 py-1 bg-purple-100 text-purple-700 text-sm rounded-full font-medium">
+          ID/Face Verifications
+        </span>
+      </div>
+      <div class="flex items-center gap-4">
+        <a href="/admin/dashboard" class="px-4 py-2 text-gray-600 hover:text-pink-600 transition-colors text-sm">
+          <i class="ri-arrow-left-line mr-1"></i>Back to Dashboard
+        </a>
+        <button id="logoutBtn" class="px-5 py-2 border-2 border-red-500 text-red-500 hover:bg-red-500 hover:text-white transition-all rounded-lg text-sm font-medium">
+          <i class="ri-logout-box-line mr-1"></i>Logout
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="pt-24 pb-16 min-h-screen">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6">
+
+      <!-- ── Page intro + filter ─────────────────────────────── -->
+      <div class="bg-white rounded-2xl p-6 material-shadow mb-6">
+        <div class="flex flex-col lg:flex-row gap-4 items-start lg:items-center justify-between">
+          <div>
+            <h2 class="text-2xl font-bold text-gray-900 mb-1">ID &amp; Face Verifications</h2>
+            <p class="text-gray-500 text-sm">Review submitted documents and toggle verification status</p>
+          </div>
+          <div class="flex items-center gap-3">
+            <select id="filterSelect" onchange="applyFilter(this.value)"
+              class="px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500 bg-white text-sm text-gray-800">
+              <option value="all"        <%- currentFilter==='all'         ? 'selected' : '' %>>All Users</option>
+              <option value="submitted"  <%- currentFilter==='submitted'   ? 'selected' : '' %>>Submitted</option>
+              <option value="both"       <%- currentFilter==='both'        ? 'selected' : '' %>>Both Verified</option>
+              <option value="id"         <%- currentFilter==='id'          ? 'selected' : '' %>>ID Only</option>
+              <option value="face"       <%- currentFilter==='face'        ? 'selected' : '' %>>Face Only</option>
+              <option value="unverified" <%- currentFilter==='unverified'  ? 'selected' : '' %>>Unverified</option>
+            </select>
+            <span class="text-sm text-gray-500"><%= totalCount %> record<%= totalCount !== 1 ? 's' : '' %></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Stats ───────────────────────────────────────────── -->
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 mb-6">
+        <div class="stat-card">
+          <div class="flex items-center gap-2 mb-1">
+            <i class="ri-file-upload-line text-blue-500 text-lg"></i>
+            <span class="text-xs text-gray-500 font-medium">Submitted</span>
+          </div>
+          <p class="text-2xl font-bold text-gray-900"><%= stats.totalSubmitted %></p>
+        </div>
+        <div class="stat-card">
+          <div class="flex items-center gap-2 mb-1">
+            <i class="ri-shield-check-fill text-green-500 text-lg"></i>
+            <span class="text-xs text-gray-500 font-medium">Both Verified</span>
+          </div>
+          <p class="text-2xl font-bold text-gray-900"><%= stats.bothVerified %></p>
+        </div>
+        <div class="stat-card">
+          <div class="flex items-center gap-2 mb-1">
+            <i class="ri-id-card-line text-purple-500 text-lg"></i>
+            <span class="text-xs text-gray-500 font-medium">ID Only</span>
+          </div>
+          <p class="text-2xl font-bold text-gray-900"><%= stats.idOnly %></p>
+        </div>
+        <div class="stat-card">
+          <div class="flex items-center gap-2 mb-1">
+            <i class="ri-face-recognition-line text-pink-500 text-lg"></i>
+            <span class="text-xs text-gray-500 font-medium">Face Only</span>
+          </div>
+          <p class="text-2xl font-bold text-gray-900"><%= stats.faceOnly %></p>
+        </div>
+        <div class="stat-card">
+          <div class="flex items-center gap-2 mb-1">
+            <i class="ri-shield-cross-line text-red-400 text-lg"></i>
+            <span class="text-xs text-gray-500 font-medium">Unverified</span>
+          </div>
+          <p class="text-2xl font-bold text-gray-900"><%= stats.unverified %></p>
+        </div>
+      </div>
+
+      <!-- ── User rows ───────────────────────────────────────── -->
+      <% if (users.length === 0) { %>
+        <div class="bg-white rounded-2xl p-12 material-shadow text-center">
+          <i class="ri-shield-check-line text-5xl text-gray-300 mb-3 block"></i>
+          <p class="text-gray-500 font-medium">No records found for this filter.</p>
+        </div>
+      <% } else { %>
+        <div class="space-y-4">
+          <% users.forEach(user => { %>
+          <div class="user-row" id="row-<%= user._id %>">
+            <div class="flex flex-col lg:flex-row gap-4">
+
+              <!-- ── User info ── -->
+              <div class="flex items-start gap-3 lg:w-64 flex-shrink-0">
+                <% if (user.profilePic && user.profilePic.url) { %>
+                  <img src="<%= user.profilePic.url %>" alt="<%= user.username %>"
+                    class="w-12 h-12 rounded-full object-cover border-2 border-gray-100">
+                <% } else { %>
+                  <div class="w-12 h-12 rounded-full bg-pink-100 flex items-center justify-center flex-shrink-0">
+                    <i class="ri-user-line text-pink-400 text-xl"></i>
+                  </div>
+                <% } %>
+                <div class="min-w-0">
+                  <p class="font-semibold text-gray-900 text-sm truncate"><%= user.name || 'No name' %></p>
+                  <p class="text-xs text-gray-400">@<%= user.username %></p>
+                  <p class="text-xs text-gray-400 mt-0.5">
+                    <% if (user.approvalStatus === 'approved') { %>
+                      <span class="text-green-600 font-medium">✓ Approved</span>
+                    <% } else if (user.approvalStatus === 'pending') { %>
+                      <span class="text-yellow-600 font-medium">⏳ Pending</span>
+                    <% } else { %>
+                      <span class="text-red-500 font-medium">✗ Rejected</span>
+                    <% } %>
+                  </p>
+                </div>
+              </div>
+
+              <!-- ── Images ── -->
+              <div class="flex-1 grid grid-cols-3 gap-2">
+                <div>
+                  <p class="text-xs text-gray-400 mb-1 font-medium">ID Front</p>
+                  <% if (user.idFrontUrl) { %>
+                    <img src="<%= user.idFrontUrl %>" alt="ID Front" class="img-thumb"
+                      onclick="openLightbox('<%= user.idFrontUrl %>')">
+                  <% } else { %>
+                    <div class="img-placeholder"><span>Not<br>submitted</span></div>
+                  <% } %>
+                </div>
+                <div>
+                  <p class="text-xs text-gray-400 mb-1 font-medium">ID Back</p>
+                  <% if (user.idBackUrl) { %>
+                    <img src="<%= user.idBackUrl %>" alt="ID Back" class="img-thumb"
+                      onclick="openLightbox('<%= user.idBackUrl %>')">
+                  <% } else { %>
+                    <div class="img-placeholder"><span>Not<br>submitted</span></div>
+                  <% } %>
+                </div>
+                <div>
+                  <p class="text-xs text-gray-400 mb-1 font-medium">Selfie</p>
+                  <% if (user.selfieUrl) { %>
+                    <img src="<%= user.selfieUrl %>" alt="Selfie" class="img-thumb"
+                      onclick="openLightbox('<%= user.selfieUrl %>')">
+                  <% } else { %>
+                    <div class="img-placeholder"><span>Not<br>submitted</span></div>
+                  <% } %>
+                </div>
+              </div>
+
+              <!-- ── Controls ── -->
+              <div class="flex flex-row lg:flex-col gap-3 lg:w-44 flex-shrink-0 justify-end">
+                <!-- ID Verified -->
+                <div class="flex flex-col gap-1">
+                  <label class="text-xs text-gray-500 font-medium flex items-center gap-1">
+                    <i class="ri-id-card-line text-purple-500"></i> ID Verified
+                  </label>
+                  <select
+                    class="status-select <%= user.idVerified ? 'verified' : 'unverified' %>"
+                    data-user-id="<%= user._id %>"
+                    data-field="idVerified"
+                    onchange="updateVerification(this)">
+                    <option value="true"  <%- user.idVerified ? 'selected' : '' %>>✓ Verified</option>
+                    <option value="false" <%- !user.idVerified ? 'selected' : '' %>>✗ Not Verified</option>
+                  </select>
+                </div>
+                <!-- Face Verified -->
+                <div class="flex flex-col gap-1">
+                  <label class="text-xs text-gray-500 font-medium flex items-center gap-1">
+                    <i class="ri-face-recognition-line text-pink-500"></i> Face Verified
+                  </label>
+                  <select
+                    class="status-select <%= user.faceVerified ? 'verified' : 'unverified' %>"
+                    data-user-id="<%= user._id %>"
+                    data-field="faceVerified"
+                    onchange="updateVerification(this)">
+                    <option value="true"  <%- user.faceVerified ? 'selected' : '' %>>✓ Verified</option>
+                    <option value="false" <%- !user.faceVerified ? 'selected' : '' %>>✗ Not Verified</option>
+                  </select>
+                </div>
+                <!-- Registered date -->
+                <p class="text-xs text-gray-400 mt-1 hidden lg:block">
+                  Joined <%= user.createdAt ? new Date(user.createdAt).toLocaleDateString('en-GB') : 'N/A' %>
+                </p>
+              </div>
+
+            </div>
+          </div>
+          <% }) %>
+        </div>
+
+        <!-- ── Pagination ── -->
+        <% if (totalPages > 1) { %>
+        <div class="flex items-center justify-center gap-2 mt-8">
+          <button class="page-btn" onclick="goToPage(<%= currentPage - 1 %>)" <%- currentPage <= 1 ? 'disabled' : '' %>>
+            <i class="ri-arrow-left-s-line"></i> Prev
+          </button>
+          <% for (let p = 1; p <= totalPages; p++) { %>
+            <button class="page-btn <%- p === currentPage ? 'active' : '' %>" onclick="goToPage(<%= p %>)">
+              <%= p %>
+            </button>
+          <% } %>
+          <button class="page-btn" onclick="goToPage(<%= currentPage + 1 %>)" <%- currentPage >= totalPages ? 'disabled' : '' %>>
+            Next <i class="ri-arrow-right-s-line"></i>
+          </button>
+        </div>
+        <% } %>
+      <% } %>
+
+    </div>
+  </main>
+
+  <!-- ── Lightbox ─────────────────────────────────────────────── -->
+  <div id="lightbox" onclick="closeLightbox()">
+    <span id="lightboxClose" onclick="closeLightbox()">
+      <i class="ri-close-line"></i>
+    </span>
+    <img id="lightboxImg" src="" alt="Full size image" onclick="event.stopPropagation()">
+  </div>
+
+  <!-- ── Toast ─────────────────────────────────────────────────── -->
+  <div id="toast"
+    class="fixed bottom-6 right-6 z-50 px-5 py-3 rounded-xl text-white text-sm font-medium shadow-lg transition-all duration-300 opacity-0 pointer-events-none"
+    style="transform: translateY(1rem);">
+  </div>
+
+  <script>
+    // ── Filter ─────────────────────────────────────────────────
+    function applyFilter(value) {
+      const url = new URL(window.location.href);
+      url.searchParams.set('filter', value);
+      url.searchParams.delete('page');
+      window.location.href = url.toString();
+    }
+
+    // ── Pagination ─────────────────────────────────────────────
+    function goToPage(p) {
+      const url = new URL(window.location.href);
+      url.searchParams.set('page', p);
+      window.location.href = url.toString();
+    }
+
+    // ── Lightbox ───────────────────────────────────────────────
+    function openLightbox(src) {
+      document.getElementById('lightboxImg').src = src;
+      document.getElementById('lightbox').classList.add('open');
+    }
+    function closeLightbox() {
+      document.getElementById('lightbox').classList.remove('open');
+      document.getElementById('lightboxImg').src = '';
+    }
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+
+    // ── Toast ──────────────────────────────────────────────────
+    function showToast(message, success = true) {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.style.background = success ? '#16a34a' : '#dc2626';
+      toast.style.opacity    = '1';
+      toast.style.transform  = 'translateY(0)';
+      setTimeout(() => {
+        toast.style.opacity   = '0';
+        toast.style.transform = 'translateY(1rem)';
+      }, 3000);
+    }
+
+    // ── Update verification status ─────────────────────────────
+    async function updateVerification(selectEl) {
+      const userId = selectEl.dataset.userId;
+      const field  = selectEl.dataset.field;
+      const value  = selectEl.value;
+
+      selectEl.disabled = true;
+
+      try {
+        const res  = await fetch(`/api/admin/user/${userId}/update-verification`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ field, value }),
+          credentials: 'same-origin',
+        });
+        const data = await res.json();
+
+        if (data.success) {
+          // Update visual state
+          selectEl.classList.toggle('verified',   value === 'true');
+          selectEl.classList.toggle('unverified',  value === 'false');
+          showToast(`${field === 'idVerified' ? 'ID' : 'Face'} verification set to ${value === 'true' ? 'Verified' : 'Not Verified'}`, true);
+        } else {
+          showToast(data.error || 'Failed to update.', false);
+          // Revert
+          selectEl.value = value === 'true' ? 'false' : 'true';
+        }
+      } catch (err) {
+        showToast('Network error. Please try again.', false);
+        selectEl.value = value === 'true' ? 'false' : 'true';
+      } finally {
+        selectEl.disabled = false;
+      }
+    }
+
+    // ── Logout ─────────────────────────────────────────────────
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      if (confirm('Are you sure you want to logout?')) {
+        window.location.href = '/logout';
+      }
+    });
+  </script>
+</body>
+</html>
