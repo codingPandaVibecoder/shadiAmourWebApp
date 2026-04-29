@@ -59,10 +59,10 @@
       border-radius: 1rem;
       overflow: hidden;
       background: #000;
-      aspect-ratio: 4/3;
+      /* aspect-ratio is set dynamically to match the actual camera feed */
     }
     #displayCanvas {
-      width: 100%; height: 100%;
+      width: 100%; height: auto;
       display: block;
       border-radius: 1rem;
     }
@@ -122,7 +122,7 @@
 
     /* ── Liveness landmarks canvas ── */
     #livenessCanvas {
-      width: 100%; height: 100%; display: block; border-radius: 1rem;
+      width: 100%; height: auto; display: block; border-radius: 1rem;
     }
 
     /* ── Step pills ── */
@@ -266,8 +266,8 @@
             Keep same good lighting · Hold back side flat and steady
           </div>
 
-          <div id="cameraWrap2" class="relative w-full max-w-[480px] mx-auto rounded-2xl overflow-hidden bg-black" style="aspect-ratio:4/3;">
-            <canvas id="displayCanvas2" class="w-full h-full block rounded-2xl"></canvas>
+          <div id="cameraWrap2" class="relative w-full max-w-[480px] mx-auto rounded-2xl overflow-hidden bg-black">
+            <canvas id="displayCanvas2" class="w-full block rounded-2xl" style="height:auto;"></canvas>
             <div id="cameraStatus2" class="absolute bottom-3 left-0 right-0 text-center">
               <span class="status-pill status-scanning" id="statusPill2">Scanning for ID card…</span>
             </div>
@@ -294,8 +294,8 @@
             <p class="text-gray-500 text-sm mt-1">Follow the on-screen prompts to prove you're a real person</p>
           </div>
 
-          <div class="relative w-full max-w-[480px] mx-auto rounded-2xl overflow-hidden bg-black mb-4" style="aspect-ratio:4/3;">
-            <canvas id="livenessCanvas" class="w-full h-full block rounded-2xl"></canvas>
+          <div class="relative w-full max-w-[480px] mx-auto rounded-2xl overflow-hidden bg-black mb-4">
+            <canvas id="livenessCanvas" class="w-full block rounded-2xl" style="height:auto;"></canvas>
             <div class="absolute inset-0 flex flex-col items-center justify-end pb-4 pointer-events-none">
               <div id="livenessPrompt" class="liveness-prompt text-white drop-shadow-lg text-center px-4">Centre your face</div>
             </div>
@@ -469,26 +469,45 @@
   }
 
   // ── Camera ────────────────────────────────────────────────────
-  async function startCamera() {
+  // Opens a camera stream with the specified facing mode.
+  // Stops any existing stream first so we can switch between back and front.
+  async function switchCamera(facingMode) {
+    if (stream) {
+      stream.getTracks().forEach(t => t.stop());
+      stream = null;
+    }
     try {
       stream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: 'environment', width: { ideal: 1280 }, height: { ideal: 960 } },
+        video: { facingMode, width: { ideal: 1280 }, height: { ideal: 960 } },
         audio: false,
       });
     } catch (e) {
-      // Fallback: try any camera
+      // Fallback: accept whatever camera the browser offers
       try {
         stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
       } catch (e2) {
         alert('Camera access is required for identity verification. Please allow camera access and reload.');
-        return;
+        return null;
       }
     }
+    return stream;
+  }
+
+  async function startCamera() {
+    const s = await switchCamera('environment'); // back camera for ID scanning
+    if (!s) return;
 
     const video = document.getElementById('videoFeed');
     video.srcObject = stream;
     video.onloadedmetadata = () => {
       video.play();
+      // Seed canvas dimensions so the container has the correct height immediately
+      const W = video.videoWidth  || 640;
+      const H = video.videoHeight || 480;
+      const dc = document.getElementById('displayCanvas');
+      const pc = document.getElementById('processCanvas');
+      dc.width = W; dc.height = H;
+      pc.width = W; pc.height = H;
       startIDScanning('front');
     };
   }
@@ -550,15 +569,12 @@
 
     const TOTAL_CIRCUMFERENCE = 213.6;
 
-    // Wire video to canvas dimensions once loaded
-    videoEl.addEventListener('loadedmetadata', () => {
-      processC.width  = videoEl.videoWidth;
-      processC.height = videoEl.videoHeight;
-    }, { once: true });
-    if (videoEl.readyState >= 1) {
-      processC.width  = videoEl.videoWidth  || 640;
-      processC.height = videoEl.videoHeight || 480;
-    }
+    // Pre-seed canvas dimensions from current video so the container has height
+    // before the first animation frame fires (avoids 0-height flash).
+    const seedW = videoEl.videoWidth  || 640;
+    const seedH = videoEl.videoHeight || 480;
+    processC.width  = seedW; processC.height = seedH;
+    displayC.width  = seedW; displayC.height = seedH;
 
     let stableStart = null;
     let captured    = false;
@@ -785,19 +801,29 @@
     };
   }
 
-  // ── Liveness ───────────────────────────────────────────────────
-  function startLiveness() {
+  // ── Liveness ──────────────────────────────────────────────
+  async function startLiveness() {
     livenessPhase = 'straight';
 
-    // Re-use same stream on a dedicated video element
-    livenessVideoEl = document.createElement('video');
-    livenessVideoEl.autoplay   = true;
-    livenessVideoEl.playsInline = true;
-    livenessVideoEl.muted      = true;
-    livenessVideoEl.srcObject  = stream;
-    livenessVideoEl.play().catch(() => {});
+    // Switch to FRONT camera for selfie / face liveness
+    const s = await switchCamera('user');
+    if (!s) return;
 
-    const livenessCanvas = document.getElementById('livenessCanvas');
+    livenessVideoEl = document.createElement('video');
+    livenessVideoEl.autoplay    = true;
+    livenessVideoEl.playsInline = true;
+    livenessVideoEl.muted       = true;
+    livenessVideoEl.srcObject   = stream;  // stream is now the front camera
+    await livenessVideoEl.play().catch(() => {});
+
+    // Seed liveness canvas dimensions so the container gets height immediately
+    await new Promise(resolve => {
+      if (livenessVideoEl.readyState >= 1) { resolve(); return; }
+      livenessVideoEl.addEventListener('loadedmetadata', resolve, { once: true });
+    });
+    const lc = document.getElementById('livenessCanvas');
+    lc.width  = livenessVideoEl.videoWidth  || 640;
+    lc.height = livenessVideoEl.videoHeight || 480;
     document.getElementById('livenessPrompt').textContent = 'Centre your face in the oval';
 
     // Start sending frames to MediaPipe
@@ -818,9 +844,13 @@
 
     const canvas = document.getElementById('livenessCanvas');
     const ctx    = canvas.getContext('2d');
-    canvas.width  = livenessVideoEl.videoWidth  || 640;
-    canvas.height = livenessVideoEl.videoHeight || 480;
-    ctx.drawImage(livenessVideoEl, 0, 0, canvas.width, canvas.height);
+    const vW = livenessVideoEl.videoWidth  || 640;
+    const vH = livenessVideoEl.videoHeight || 480;
+    if (canvas.width !== vW || canvas.height !== vH) {
+      canvas.width  = vW;
+      canvas.height = vH;
+    }
+    ctx.drawImage(livenessVideoEl, 0, 0, vW, vH);
 
     if (!results.multiFaceLandmarks || results.multiFaceLandmarks.length === 0) {
       document.getElementById('livenessPrompt').textContent = 'No face detected — move closer';
