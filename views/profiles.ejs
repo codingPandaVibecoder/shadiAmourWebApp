@@ -364,7 +364,7 @@ html {
                 <i class="ri-lightbulb-line text-amber-500 mr-1"></i>
                 <strong>Tip:</strong> Complete as many fields as possible to increase your chances of approval!
               </p>
-              <a href="/account/info" class="inline-flex items-center gap-2 text-primary hover:text-pink-600 font-medium text-sm transition-colors">
+              <a href="/account/info" data-track="true" data-event-name="complete_profile_from_profiles" data-category="engagement" data-label="Complete Your Profile" class="inline-flex items-center gap-2 text-primary hover:text-pink-600 font-medium text-sm transition-colors">
                 <i class="ri-edit-line"></i>
                 Complete Your Profile
               </a>
@@ -408,7 +408,7 @@ html {
           <!-- Grid Controls -->
           <div class="flex justify-between items-center mb-8">
             <!-- Mobile Filter Button -->
-            <button id="mobileFilterBtn" class="lg:hidden px-4 py-2 bg-primary text-white rounded-button hover:bg-pink-600 hover:shadow-md transition-all duration-300">
+            <button id="mobileFilterBtn" data-track="true" data-event-name="mobile_filter_open" data-category="engagement" data-label="Open Filters" class="lg:hidden px-4 py-2 bg-primary text-white rounded-button hover:bg-pink-600 hover:shadow-md transition-all duration-300">
               <i class="ri-filter-line mr-2"></i>Filters
             </button>
 
@@ -624,7 +624,7 @@ html {
                   </div>
 
                   <!-- View Profile Button -->
-                  <a href="/profiles/<%= profile.profileSlug || profile._id %>" class="w-full bg-gradient-to-r from-primary to-secondary text-white py-2 px-4 rounded-button hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300 text-center inline-block font-medium">
+                  <a href="/profiles/<%= profile.profileSlug || profile._id %>" data-track="true" data-event-name="featured_profile_click" data-category="engagement" data-label="<%= profile.username %>" class="w-full bg-gradient-to-r from-primary to-secondary text-white py-2 px-4 rounded-button hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300 text-center inline-block font-medium">
                     <i class="ri-eye-line mr-2"></i>
                     View Profile
                   </a>
@@ -671,7 +671,7 @@ html {
           <div id="profileGrid" class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
             <!-- Show user's own profile card if not approved -->
             <% if (currentUserProfile && !currentUserProfile.isApproved) { %>
-            <a href="/profiles/<%= currentUserProfile.profileSlug || currentUserProfile._id %>" class="bg-white rounded-2xl overflow-hidden material-shadow hover:material-shadow-hover transition-all duration-300 block relative border-2 border-amber-300">
+            <a href="/profiles/<%= currentUserProfile.profileSlug || currentUserProfile._id %>" data-track="true" data-event-name="own_profile_view" data-category="engagement" data-label="Your Pending Profile" class="bg-white rounded-2xl overflow-hidden material-shadow hover:material-shadow-hover transition-all duration-300 block relative border-2 border-amber-300">
               <div class="absolute top-2 left-2 z-10 bg-amber-500 text-white px-2 py-1 rounded-full text-xs font-medium flex items-center gap-1">
                 <i class="ri-eye-off-line"></i>
                 Your Profile (Pending)
@@ -713,7 +713,7 @@ html {
             
             <% if (profiles && profiles.length > 0) { %>
             <% profiles.forEach(profile => { %>
-            <a href="/profiles/<%= profile.profileSlug || profile._id %>" class="bg-white rounded-2xl overflow-hidden material-shadow hover:material-shadow-hover transition-all duration-300 block">
+            <a href="/profiles/<%= profile.profileSlug || profile._id %>" data-track="true" data-event-name="profile_card_click" data-category="engagement" data-label="<%= profile.username %>" class="bg-white rounded-2xl overflow-hidden material-shadow hover:material-shadow-hover transition-all duration-300 block">
               <div class="aspect-[4/5] overflow-hidden">
                 <!-- Default placeholder based on gender -->
                 <img src="https://ui-avatars.com/api/?name=<%= encodeURIComponent(profile.name || profile.username) %>&background=<%= profile.gender === 'male' ? '0077be' : 'e91e63' %>&color=fff&size=300&format=png" alt="<%= profile.name || profile.username %><%= profile.age ? ', ' + profile.age + ' year old' : '' %><%= profile.work ? ' ' + profile.work : '' %> - Muslim marriage profile<%= profile.city ? ' in ' + profile.city : '' %>" class="w-full h-full object-cover" loading="lazy" width="300" height="300">
@@ -776,7 +776,7 @@ html {
           <% if (profiles && profiles.length > 0 && totalPages > 1) { %>
           <div class="flex justify-center items-center gap-2 sm:gap-4 mt-12 overflow-x-auto pb-2">
             <% if (page > 1) { %>
-            <a href="/profiles?page=<%= page - 1 %><% if (filters) { %><% Object.keys(filters).forEach(key => { if (filters[key]) { %>&<%= key %>=<%= encodeURIComponent(filters[key]) %><% } }) %><% } %><% if (sortBy && sortBy !== 'newly-created') { %>&sortBy=<%= sortBy %><% } %>" class="flex items-center gap-1 sm:gap-2 px-2 sm:px-4 py-2 border border-gray-300 rounded-button text-gray-600 hover:border-primary hover:text-primary transition-all duration-300 whitespace-nowrap flex-shrink-0">
+            <a href="/profiles?page=<%= page - 1 %><% if (filters) { %><% Object.keys(filters).forEach(key => { if (filters[key]) { %>&<%= key %>=<%= encodeURIComponent(filters[key]) %><% } }) %><% } %><% if (sortBy && sortBy !== 'newly-created') { %>&sortBy=<%= sortBy %><% } %>" data-track="true" data-event-name="pagination_prev" data-category="engagement" data-label="Previous Page" class="flex items-center gap-1 sm:gap-2 px-2 sm:px-4 py-2 border border-gray-300 rounded-button text-gray-600 hover:border-primary hover:text-primary transition-all duration-300 whitespace-nowrap flex-shrink-0">
               <i class="ri-arrow-left-line"></i>
               <span class="sm:hidden">Prev</span>
             </a>
@@ -789,7 +789,7 @@ html {
                 <%= i %>
               </span>
               <% } else { %>
-              <a href="/profiles?page=<%= i %><% if (filters) { %><% Object.keys(filters).forEach(key => { if (filters[key]) { %>&<%= key %>=<%= encodeURIComponent(filters[key]) %><% } }) %><% } %><% if (sortBy && sortBy !== 'newly-created') { %>&sortBy=<%= sortBy %><% } %>" class="w-10 h-10 flex items-center justify-center border border-gray-300 rounded-button text-gray-600 hover:border-primary hover:text-primary transition-all duration-300">
+              <a href="/profiles?page=<%= i %><% if (filters) { %><% Object.keys(filters).forEach(key => { if (filters[key]) { %>&<%= key %>=<%= encodeURIComponent(filters[key]) %><% } }) %><% } %><% if (sortBy && sortBy !== 'newly-created') { %>&sortBy=<%= sortBy %><% } %>" data-track="true" data-event-name="pagination_page" data-category="engagement" data-label="Page <%= i %>" class="w-10 h-10 flex items-center justify-center border border-gray-300 rounded-button text-gray-600 hover:border-primary hover:text-primary transition-all duration-300">
                 <%= i %>
               </a>
               <% } %>
@@ -797,7 +797,7 @@ html {
             </div>
 
             <% if (page < totalPages) { %>
-            <a href="/profiles?page=<%= page + 1 %><% if (filters) { %><% Object.keys(filters).forEach(key => { if (filters[key]) { %>&<%= key %>=<%= encodeURIComponent(filters[key]) %><% } }) %><% } %><% if (sortBy && sortBy !== 'newly-created') { %>&sortBy=<%= sortBy %><% } %>" class="flex items-center gap-1 sm:gap-2 px-2 sm:px-4 py-2 border border-gray-300 rounded-button text-gray-600 hover:border-primary hover:text-primary transition-all duration-300 whitespace-nowrap flex-shrink-0">
+            <a href="/profiles?page=<%= page + 1 %><% if (filters) { %><% Object.keys(filters).forEach(key => { if (filters[key]) { %>&<%= key %>=<%= encodeURIComponent(filters[key]) %><% } }) %><% } %><% if (sortBy && sortBy !== 'newly-created') { %>&sortBy=<%= sortBy %><% } %>" data-track="true" data-event-name="pagination_next" data-category="engagement" data-label="Next Page" class="flex items-center gap-1 sm:gap-2 px-2 sm:px-4 py-2 border border-gray-300 rounded-button text-gray-600 hover:border-primary hover:text-primary transition-all duration-300 whitespace-nowrap flex-shrink-0">
               <span class="hidden sm:inline">Next</span>
               <span class="sm:hidden">Next</span>
               <i class="ri-arrow-right-line"></i>

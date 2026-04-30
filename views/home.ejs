@@ -381,7 +381,7 @@
       </div>
 
       <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-        <a href="/profiles?gender=male" class="bg-white rounded-2xl material-shadow hover:material-shadow-hover transition-all duration-300 cursor-pointer group overflow-hidden">
+        <a href="/profiles?gender=male" data-track="true" data-event-name="browse_men_click" data-category="engagement" data-label="Browse Muslim Men" class="bg-white rounded-2xl material-shadow hover:material-shadow-hover transition-all duration-300 cursor-pointer group overflow-hidden">
           <div class="p-8 text-center">
             <div class="mb-6 relative">
               <img src="https://res.cloudinary.com/dhuc2plh0/image/upload/c_fill,w_700,h_450,q_auto,f_auto/v1759650466/covermain_tfda9t.jpg" srcset="https://res.cloudinary.com/dhuc2plh0/image/upload/c_fill,w_400,h_260,q_auto,f_auto/v1759650466/covermain_tfda9t.jpg 400w, https://res.cloudinary.com/dhuc2plh0/image/upload/c_fill,w_700,h_450,q_auto,f_auto/v1759650466/covermain_tfda9t.jpg 700w" sizes="(max-width: 768px) 100vw, 50vw" alt="Muslim men for marriage in UK - halal matchmaking service London Leicester" class="w-full h-64 object-cover object-top rounded-xl group-hover:scale-105 transition-transform duration-500" width="700" height="450" fetchpriority="high">
@@ -396,7 +396,7 @@
           </div>
         </a>
 
-        <a href="/profiles?gender=female" class="bg-white rounded-2xl material-shadow hover:material-shadow-hover transition-all duration-300 cursor-pointer group overflow-hidden">
+        <a href="/profiles?gender=female" data-track="true" data-event-name="browse_women_click" data-category="engagement" data-label="Browse Muslim Women" class="bg-white rounded-2xl material-shadow hover:material-shadow-hover transition-all duration-300 cursor-pointer group overflow-hidden">
           <div class="p-8 text-center">
             <div class="mb-6 relative">
               <picture>
@@ -521,10 +521,10 @@
 
         <!-- CTAs -->
         <div class="flex flex-wrap items-center justify-center gap-4 mt-12">
-          <a href="/register" class="gradient-bg text-white font-bold py-4 px-8 rounded-button hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 ripple text-lg">
+          <a href="/register" data-track="true" data-event-name="cta_register_click" data-category="cta" data-label="Create Your Free Profile" class="gradient-bg text-white font-bold py-4 px-8 rounded-button hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 ripple text-lg">
             <i class="ri-user-add-line mr-2"></i>Create Your Free Profile
           </a>
-          <a href="/profiles" class="bg-white text-primary font-bold py-4 px-8 rounded-button border-2 border-primary hover:bg-primary hover:text-white transition-all duration-300 text-lg">
+          <a href="/profiles" data-track="true" data-event-name="cta_browse_profiles" data-category="cta" data-label="Browse Profiles" class="bg-white text-primary font-bold py-4 px-8 rounded-button border-2 border-primary hover:bg-primary hover:text-white transition-all duration-300 text-lg">
             <i class="ri-search-line mr-2"></i>Browse Profiles
           </a>
         </div>
@@ -543,7 +543,7 @@
 
         <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
           <% staffAddedProfiles.slice(0, 4).forEach(function(profile) { %>
-            <a href="/profiles/<%= profile.profileSlug || profile._id %>" class="bg-white rounded-2xl overflow-hidden material-shadow hover:material-shadow-hover transition-all duration-300 block group">
+            <a href="/profiles/<%= profile.profileSlug || profile._id %>" data-track="true" data-event-name="staff_profile_card_click" data-category="engagement" data-label="<%= profile.name || profile.username %>" class="bg-white rounded-2xl overflow-hidden material-shadow hover:material-shadow-hover transition-all duration-300 block group">
               <div class="aspect-[4/5] relative overflow-hidden bg-gray-100">
                 <% if (profile.profilePic && profile.profilePic.url) { %>
                   <img src="<%= profile.profilePic.url.replace('/upload/', '/upload/c_fill,w_300,h_400,q_auto,f_auto/') %>" srcset="<%= profile.profilePic.url.replace('/upload/', '/upload/c_fill,w_200,h_267,q_auto,f_auto/') %> 200w, <%= profile.profilePic.url.replace('/upload/', '/upload/c_fill,w_300,h_400,q_auto,f_auto/') %> 300w, <%= profile.profilePic.url.replace('/upload/', '/upload/c_fill,w_400,h_533,q_auto,f_auto/') %> 400w" sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 300px" alt="<%= profile.name || profile.username %><%= profile.age ? ', ' + profile.age + ' year old' : '' %><%= profile.work ? ' ' + profile.work : '' %> - Muslim marriage profile<%= profile.city ? ' in ' + profile.city : '' %>" class="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500" loading="lazy" width="300" height="400">
@@ -568,7 +568,7 @@
         </div>
 
         <div class="text-center mt-10">
-          <a href="/profiles/addedBy/staff" class="inline-flex items-center gap-2 gradient-bg text-white font-semibold py-3 px-8 rounded-button hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-300">
+          <a href="/profiles/addedBy/staff" data-track="true" data-event-name="staff_profiles_view_more" data-category="engagement" data-label="View More Staff-Added Profiles" class="inline-flex items-center gap-2 gradient-bg text-white font-semibold py-3 px-8 rounded-button hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-300">
             View More Staff-Added Profiles <i class="ri-arrow-right-line"></i>
           </a>
         </div>
