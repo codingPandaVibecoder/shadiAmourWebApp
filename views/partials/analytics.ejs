@@ -1,0 +1,66 @@
+<% if (isProd && !isAdmin) { %>
+<!-- Google Analytics 4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=<%= GA_ID %>"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() { dataLayer.push(arguments); }
+  gtag('js', new Date());
+  gtag('config', '<%= GA_ID %>');
+</script>
+
+<!-- GA4: Attribute-driven Click Tracking
+     Usage: add data-track="true" to any element, then:
+       data-event-name="button_click"   (default: "click")
+       data-category="navigation"       (default: "general")
+       data-label="View Profile"        (default: element text)
+-->
+<script>
+(function () {
+  document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('click', function (e) {
+      var el = e.target.closest('[data-track="true"]');
+      if (!el || typeof gtag !== 'function') return;
+      gtag('event', el.dataset.eventName || 'click', {
+        event_category : el.dataset.category || 'general',
+        event_label    : el.dataset.label || el.innerText.trim().substring(0, 100),
+        page_path      : window.location.pathname
+      });
+    }, true);
+  });
+}());
+</script>
+
+<!-- GA4: Scroll Depth Tracking (25 / 50 / 75 / 90 %) -->
+<script>
+(function () {
+  var MILESTONES        = [25, 50, 75, 90];
+  var MIN_SCROLLABLE_PX = 600; /* skip short / non-scrollable pages */
+  var fired             = {};
+
+  function getScrollPct() {
+    var el  = document.documentElement;
+    var max = el.scrollHeight - el.clientHeight;
+    return max > 0 ? Math.floor((el.scrollTop / max) * 100) : 0;
+  }
+
+  function onScroll() {
+    var max = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    if (max < MIN_SCROLLABLE_PX || typeof gtag !== 'function') return;
+    var p = getScrollPct();
+    MILESTONES.forEach(function (m) {
+      if (!fired[m] && p >= m) {
+        fired[m] = true;
+        gtag('event', 'scroll_depth', {
+          event_category : 'engagement',
+          event_label    : m + '%',
+          value          : m,
+          page_path      : window.location.pathname
+        });
+      }
+    });
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+}());
+</script>
+<% } %>
