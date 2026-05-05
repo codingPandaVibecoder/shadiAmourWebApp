@@ -100,17 +100,10 @@
   }
 }
   </style>
+  <%- include('partials/clarity') %>
+  <script src="https://t.contentsquare.net/uxa/6967e74bbf6a1.js"></script>
+  <%- include('partials/analytics') %>
 </head>
-<% if (typeof isProd !== 'undefined' && isProd && !isAdmin) { %>
-<!-- Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=<%= GA_ID %>"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag() { dataLayer.push(arguments); }
-  gtag('js', new Date());
-  gtag('config', '<%= GA_ID %>');
-</script>
-<% } %>
 
 <body class="bg-gray-50 font-['Roboto']">
   <header class="fixed top-0 left-0 right-0 bg-white material-shadow z-50">
@@ -216,13 +209,13 @@
                 <div class="bg-blue-50 border border-blue-200 rounded-xl p-4 mb-6">
                   <p class="text-gray-700 text-sm">
                     Creating a profile for yourself? Visit 
-                    <a href="https://www.shadiamour.com/register" target="_blank" rel="noopener noreferrer" class="text-primary font-semibold hover:underline">
+                    <a href="https://www.shadiamour.com/register" target="_blank" rel="noopener noreferrer" data-track="true" data-event-name="external_shadiamour_click" data-category="navigation" data-label="ShaadiAmour.com" class="text-primary font-semibold hover:underline">
                       ShaadiAmour.com
                     </a>
                   </p>
                 </div>
 
-                <button type="button" id="continueAsParent" class="w-full py-3 px-6 bg-primary text-white font-semibold rounded-xl hover:bg-pink-600 transition-all duration-300 ripple material-shadow">
+                <button type="button" id="continueAsParent" data-track="true" data-event-name="register_continue_parent" data-category="conversion" data-label="Register as Parent" class="w-full py-3 px-6 bg-primary text-white font-semibold rounded-xl hover:bg-pink-600 transition-all duration-300 ripple material-shadow">
                   <span class="flex items-center justify-center gap-2">
                     <span>Register</span>
                     <i class="ri-arrow-right-line"></i>
@@ -250,7 +243,7 @@
                 <% } %>
 
                 <!-- Google Sign Up -->
-                <a href="/auth/google" class="w-full inline-flex items-center justify-center gap-3 px-6 py-3 border-2 border-gray-300 bg-white text-gray-700 hover:bg-gray-50 hover:border-gray-400 transition-all duration-300 rounded-xl text-base font-medium mb-4">
+                <a href="/auth/google" data-track="true" data-event-name="register_google" data-category="auth" data-label="Continue with Google" class="w-full inline-flex items-center justify-center gap-3 px-6 py-3 border-2 border-gray-300 bg-white text-gray-700 hover:bg-gray-50 hover:border-gray-400 transition-all duration-300 rounded-xl text-base font-medium mb-4">
                   <svg class="w-5 h-5" viewBox="0 0 24 24">
                     <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
                     <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
@@ -281,7 +274,7 @@
                   <!-- Email Verification Section -->
                   <div id="emailVerificationSection" class="hidden space-y-3">
                     <div class="flex gap-2">
-                      <button type="button" id="sendCodeBtn" class="flex-1 py-2.5 px-4 bg-secondary text-white font-medium rounded-xl hover:bg-purple-700 transition-all duration-300 text-sm">
+                      <button type="button" id="sendCodeBtn" data-track="true" data-event-name="send_verification_code" data-category="conversion" data-label="Send Verification Code" class="flex-1 py-2.5 px-4 bg-secondary text-white font-medium rounded-xl hover:bg-purple-700 transition-all duration-300 text-sm">
                         <i class="ri-mail-send-line mr-1"></i>
                         Send Verification Code
                       </button>
@@ -296,7 +289,7 @@
                           </div>
                           <input type="text" id="verificationCode" name="verificationCode" maxlength="6" class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white text-center tracking-widest font-mono" placeholder="Enter 4-digit code">
                         </div>
-                        <button type="button" id="verifyCodeBtn" class="px-4 py-2.5 bg-green-500 text-white font-medium rounded-xl hover:bg-green-600 transition-all duration-300 text-sm">
+                        <button type="button" id="verifyCodeBtn" data-track="true" data-event-name="verify_email_code" data-category="conversion" data-label="Verify Email" class="px-4 py-2.5 bg-green-500 text-white font-medium rounded-xl hover:bg-green-600 transition-all duration-300 text-sm">
                           Verify
                         </button>
                       </div>
@@ -340,7 +333,7 @@
                     <p id="passwordError" class="hidden text-sm text-red-600 mt-1"></p>
                   </div>
 
-                  <button type="submit" id="submitBtn" disabled class="w-full py-3 px-6 bg-gray-400 text-white font-semibold rounded-xl cursor-not-allowed transition-all duration-300 ripple material-shadow">
+                  <button type="submit" id="submitBtn" disabled data-track="true" data-event-name="register_submit" data-category="conversion" data-label="Create Account" class="w-full py-3 px-6 bg-gray-400 text-white font-semibold rounded-xl cursor-not-allowed transition-all duration-300 ripple material-shadow">
                     Create Account
                   </button>
                   <p id="submitHelp" class="text-xs text-gray-500 text-center">Please verify your email first to create an account</p>
@@ -348,7 +341,7 @@
 
                 <div class="text-center text-sm mt-6">
                   <span class="text-gray-600">Already have an account?</span>
-                  <a href="/login" class="font-medium text-primary hover:text-pink-600 transition-colors duration-300 ml-1">Login here</a>
+                  <a href="/login" data-track="true" data-event-name="login_from_register" data-category="navigation" data-label="Login from Register" class="font-medium text-primary hover:text-pink-600 transition-colors duration-300 ml-1">Login here</a>
                 </div>
               </div>
             </div>

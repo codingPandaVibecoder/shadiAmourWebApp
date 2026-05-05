@@ -8,11 +8,11 @@
       </h1>
     </div>
     <nav class="hidden md:flex items-center gap-8">
-      <a href="/profiles?gender=male" class="flex items-center gap-2 px-4 py-2 text-gray-700 hover:text-primary transition-all duration-300 font-medium">
+      <a href="/profiles?gender=male" data-track="true" data-event-name="nav_browse_men" data-category="navigation" data-label="Nav Browse Men" class="flex items-center gap-2 px-4 py-2 text-gray-700 hover:text-primary transition-all duration-300 font-medium">
         <i class="ri-user-line"></i>
         <span>Men</span>
       </a>
-      <a href="/profiles?gender=female" class="flex items-center gap-2 px-4 py-2 text-gray-700 hover:text-primary transition-all duration-300 font-medium">
+      <a href="/profiles?gender=female" data-track="true" data-event-name="nav_browse_women" data-category="navigation" data-label="Nav Browse Women" class="flex items-center gap-2 px-4 py-2 text-gray-700 hover:text-primary transition-all duration-300 font-medium">
         <i class="ri-user-3-line"></i>
         <span>Women</span>
       </a>
@@ -110,10 +110,10 @@
       </div>
       <% } else { %>
       <!-- Not logged in - show login/signup buttons -->
-      <a href="/login" class="px-6 py-2 border-2 border-primary text-primary hover:bg-primary hover:text-white transition-all duration-300 !rounded-button whitespace-nowrap ripple">
+      <a href="/login" data-track="true" data-event-name="nav_login_click" data-category="navigation" data-label="Nav Login" class="px-6 py-2 border-2 border-primary text-primary hover:bg-primary hover:text-white transition-all duration-300 !rounded-button whitespace-nowrap ripple">
         Login
       </a>
-      <a href="/register" class="px-6 py-2 bg-primary text-white hover:bg-pink-600 transition-all duration-300 !rounded-button whitespace-nowrap ripple material-shadow">
+      <a href="/register" data-track="true" data-event-name="nav_signup_click" data-category="navigation" data-label="Nav Sign Up" class="px-6 py-2 bg-primary text-white hover:bg-pink-600 transition-all duration-300 !rounded-button whitespace-nowrap ripple material-shadow">
         Sign Up
       </a>
       <% } %>

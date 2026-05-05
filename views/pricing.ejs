@@ -118,6 +118,9 @@
       background: linear-gradient(135deg, #fef3c7 0%, #fde68a 50%, #fef3c7 100%);
     }
   </style>
+  <%- include('partials/clarity') %>
+  <script src="https://t.contentsquare.net/uxa/6967e74bbf6a1.js"></script>
+  <%- include('partials/analytics') %>
 </head>
 
 <body class="bg-gray-50 font-['Roboto']">
@@ -182,7 +185,7 @@
           </div>
           
           <div class="mt-6">
-            <a href="/register" class="block w-full text-center py-3 px-4 bg-gray-100 text-gray-700 rounded-full font-medium hover:bg-gray-200 transition-colors">
+            <a href="/register" data-track="true" data-event-name="pricing_plan_click" data-category="conversion" data-label="Standard Plan Free" class="block w-full text-center py-3 px-4 bg-gray-100 text-gray-700 rounded-full font-medium hover:bg-gray-200 transition-colors">
               Get Started Free
             </a>
           </div>
@@ -218,7 +221,7 @@
           </div>
           
           <div class="mt-6">
-            <a href="/register" class="block w-full text-center py-3 px-4 bg-[#4a7c59] text-white rounded-full font-medium hover:bg-[#3d6649] transition-colors">
+            <a href="/register" data-track="true" data-event-name="pricing_plan_click" data-category="conversion" data-label="Premium Plan £50" class="block w-full text-center py-3 px-4 bg-[#4a7c59] text-white rounded-full font-medium hover:bg-[#3d6649] transition-colors">
               Choose Premium
             </a>
           </div>
@@ -259,7 +262,7 @@
           </div>
           
           <div class="mt-6">
-            <a href="/register" class="block w-full text-center py-3 px-4 bg-[#d4a373] text-white rounded-full font-medium hover:bg-[#c49363] transition-colors">
+            <a href="/register" data-track="true" data-event-name="pricing_plan_click" data-category="conversion" data-label="Premium Plus Plan £100" class="block w-full text-center py-3 px-4 bg-[#d4a373] text-white rounded-full font-medium hover:bg-[#c49363] transition-colors">
               Choose Premium Plus
             </a>
           </div>
@@ -295,7 +298,7 @@
           </div>
           
           <div class="mt-6">
-            <a href="/register" class="block w-full text-center py-3 px-4 bg-[#8b7355] text-white rounded-full font-medium hover:bg-[#7a6549] transition-colors">
+            <a href="/register" data-track="true" data-event-name="pricing_plan_click" data-category="conversion" data-label="Executive Plan £150" class="block w-full text-center py-3 px-4 bg-[#8b7355] text-white rounded-full font-medium hover:bg-[#7a6549] transition-colors">
               Choose Executive
             </a>
           </div>
@@ -502,11 +505,11 @@
           Join thousands of Muslim families who have trusted D'amour Muslim for their marriage journey.
         </p>
         <div class="flex flex-wrap justify-center gap-4">
-          <a href="/register" class="inline-flex items-center px-8 py-3 bg-white text-[#4a7c59] rounded-full font-semibold hover:bg-gray-100 transition-colors">
+          <a href="/register" data-track="true" data-event-name="pricing_cta_register" data-category="conversion" data-label="Create Free Account from Pricing" class="inline-flex items-center px-8 py-3 bg-white text-[#4a7c59] rounded-full font-semibold hover:bg-gray-100 transition-colors">
             <i class="ri-user-add-line mr-2"></i>
             Create Free Account
           </a>
-          <a href="mailto:contact@damourmuslim.com" class="inline-flex items-center px-8 py-3 bg-transparent border-2 border-white text-white rounded-full font-semibold hover:bg-white/10 transition-colors">
+          <a href="mailto:contact@damourmuslim.com" data-track="true" data-event-name="pricing_contact_us" data-category="conversion" data-label="Contact Us from Pricing" class="inline-flex items-center px-8 py-3 bg-transparent border-2 border-white text-white rounded-full font-semibold hover:bg-white/10 transition-colors">
             <i class="ri-mail-line mr-2"></i>
             Contact Us
           </a>

@@ -292,21 +292,10 @@
   }
 }
   </style>
+  <%- include('partials/clarity') %>
+  <script src="https://t.contentsquare.net/uxa/6967e74bbf6a1.js"></script>
+  <%- include('partials/analytics') %>
 </head>
-<% if (isProd && !isAdmin) { %>
-<!-- Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=<%= GA_ID %>"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-
-  function gtag() {
-    dataLayer.push(arguments);
-  }
-  gtag('js', new Date());
-  gtag('config', '<%= GA_ID %>');
-</script>
-<% } %>
-
 
 <body class="bg-gray-50 font-['Roboto']">
   <!-- Header remains the same -->
@@ -365,7 +354,7 @@
                       <i class="ri-lightbulb-line text-amber-500 mr-1"></i>
                       <strong>Increase your approval chances:</strong> Fill in as many fields as possible in your profile to help our team verify your information.
                     </p>
-                    <a href="/account/info" class="inline-flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-pink-600 font-medium text-sm transition-colors">
+                    <a href="/account/info" data-track="true" data-event-name="complete_profile_from_profile" data-category="engagement" data-label="Complete Your Profile" class="inline-flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-pink-600 font-medium text-sm transition-colors">
                       <i class="ri-edit-line"></i>
                       Complete Your Profile
                     </a>
@@ -439,21 +428,21 @@
                   <div class="flex items-center justify-center gap-3">
                     <% if (user && user._id && user._id.toString()===profile._id.toString()) { %>
                     <!-- Edit Profile Button (only for own profile) -->
-                    <a href="/account" class="inline-flex items-center gap-2 px-4 py-2 bg-primary hover:bg-pink-600 text-white rounded-lg transition-all duration-300 shadow-md">
+                    <a href="/account" data-track="true" data-event-name="edit_profile_click" data-category="engagement" data-label="Edit Profile" class="inline-flex items-center gap-2 px-4 py-2 bg-primary hover:bg-pink-600 text-white rounded-lg transition-all duration-300 shadow-md">
                       <i class="ri-edit-line"></i>
                       <span>Edit Profile</span>
                     </a>
                     <% } %>
 
                     <!-- Share Profile Button -->
-                    <button id="shareProfileBtn" class="inline-flex items-center gap-2 px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg transition-all duration-300 shadow-md">
+                    <button id="shareProfileBtn" data-track="true" data-event-name="share_profile_click" data-category="engagement" data-label="Share Profile" class="inline-flex items-center gap-2 px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg transition-all duration-300 shadow-md">
                       <i id="shareIcon" class="ri-share-line"></i>
                       <span id="shareText">Share Profile</span>
                     </button>
 
                     <% /* Chat button – only show between different users with accepted connection */ %>
                     <% if (user && user._id && user._id.toString() !== profile._id.toString() && connectionStatus === 'connected') { %>
-                    <button id="startChatBtn" onclick="startChat('<%= profile._id %>')" class="inline-flex items-center gap-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-all duration-300 shadow-md">
+                    <button id="startChatBtn" onclick="startChat('<%= profile._id %>')" data-track="true" data-event-name="start_chat_click" data-category="conversion" data-label="Start Chat" class="inline-flex items-center gap-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-all duration-300 shadow-md">
                       <i class="ri-chat-3-line"></i>
                       <span>Chat</span>
                     </button>
@@ -478,6 +467,7 @@
       </div>
       <button 
         onclick="confirmRevokeAccess('<%= outgoingRequest._id %>', '<%= profile.username %>')"
+        data-track="true" data-event-name="revoke_access_click" data-category="engagement" data-label="Revoke Access"
         class="inline-flex items-center gap-2 px-4 py-2 bg-white border border-red-200 text-red-600 hover:bg-red-50 hover:border-red-300 transition-all duration-300 rounded-lg text-sm font-medium whitespace-nowrap"
       >
         <i class="ri-link-unlink"></i>
@@ -503,6 +493,7 @@
       <div class="flex items-center gap-2 w-full sm:w-auto">
         <button 
           onclick="confirmRespondToRequest('<%= incomingRequest._id %>', 'accept', '<%= profile.username %>')"
+          data-track="true" data-event-name="accept_request_click" data-category="conversion" data-label="Accept Connection"
           class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-4 py-2 bg-green-500 hover:bg-green-600 text-white transition-all duration-300 rounded-lg text-sm font-medium"
         >
           <i class="ri-check-line"></i>
@@ -510,6 +501,7 @@
         </button>
         <button 
           onclick="confirmRespondToRequest('<%= incomingRequest._id %>', 'reject', '<%= profile.username %>')"
+          data-track="true" data-event-name="decline_request_click" data-category="conversion" data-label="Decline Connection"
           class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-4 py-2 bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400 transition-all duration-300 rounded-lg text-sm font-medium"
         >
           <i class="ri-close-line"></i>
@@ -1520,7 +1512,7 @@
                         </p>
                         <% } else { %>
                         <!-- User is approved - show normal request button -->
-                        <button id="requestAccessBtn" data-profile-id="<%= profile._id %>" class="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white hover:bg-pink-600 transition-all duration-300 !rounded-button whitespace-nowrap ripple material-shadow">
+                        <button id="requestAccessBtn" data-profile-id="<%= profile._id %>" data-track="true" data-event-name="send_connection_request" data-category="conversion" data-label="Request Profile Sharing" class="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white hover:bg-pink-600 transition-all duration-300 !rounded-button whitespace-nowrap ripple material-shadow">
                           <i class="ri-profile-line"></i>
                           <span>Request Profile Sharing</span>
                         </button>
