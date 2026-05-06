@@ -173,6 +173,11 @@
                       <p class="text-xs text-gray-500">
                         <%= request.from?.city ? request.from.city + ', ' : '' %><%= request.from?.country || 'Location N/A' %>
                       </p>
+                      <% if (request.from?.contact) { %>
+                      <p class="text-xs text-blue-600 font-medium mt-0.5">
+                        <i class="ri-phone-line mr-1"></i><%= request.from.contact %>
+                      </p>
+                      <% } %>
                     </div>
                   </div>
 
@@ -198,6 +203,11 @@
                       <p class="text-xs text-gray-500">
                         <%= request.to?.city ? request.to.city + ', ' : '' %><%= request.to?.country || 'Location N/A' %>
                       </p>
+                      <% if (request.to?.contact) { %>
+                      <p class="text-xs text-blue-600 font-medium mt-0.5">
+                        <i class="ri-phone-line mr-1"></i><%= request.to.contact %>
+                      </p>
+                      <% } %>
                     </div>
                   </div>
                 </div>

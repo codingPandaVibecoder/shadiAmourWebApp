@@ -143,6 +143,25 @@
   <main class="pt-24 pb-16 min-h-screen">
     <div class="max-w-7xl mx-auto px-4 sm:px-6">
 
+      <!-- ── KYC Feature Toggle ─────────────────────────────── -->
+      <div class="bg-white rounded-2xl p-5 material-shadow mb-5 flex items-center justify-between gap-4">
+        <div>
+          <h3 class="text-sm font-semibold text-gray-800">ID / Face Verification Feature</h3>
+          <p class="text-xs text-gray-500 mt-0.5">When <span class="font-medium text-green-600">ON</span>, new users are redirected to the verification flow after onboarding. When <span class="font-medium text-red-500">OFF</span>, users skip verification and land on their account page directly.</p>
+        </div>
+        <div class="flex items-center gap-3 shrink-0">
+          <span id="kycToggleLabel" class="text-sm font-semibold <%= kycVerificationEnabled ? 'text-green-600' : 'text-red-500' %>">
+            <%= kycVerificationEnabled ? 'ON' : 'OFF' %>
+          </span>
+          <button id="kycToggleBtn" role="switch" aria-checked="<%= kycVerificationEnabled %>"
+            class="relative inline-flex h-7 w-13 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2 <%= kycVerificationEnabled ? 'bg-green-500' : 'bg-gray-300' %>"
+            style="width:3.25rem;"
+            data-enabled="<%= kycVerificationEnabled %>">
+            <span class="inline-block h-5 w-5 transform rounded-full bg-white shadow transition-transform <%= kycVerificationEnabled ? 'translate-x-7' : 'translate-x-1' %>"></span>
+          </button>
+        </div>
+      </div>
+
       <!-- ── Page intro + filter ─────────────────────────────── -->
       <div class="bg-white rounded-2xl p-6 material-shadow mb-6">
         <div class="flex flex-col lg:flex-row gap-4 items-start lg:items-center justify-between">
@@ -421,6 +440,46 @@
       } finally {
         selectEl.disabled = false;
       }
+    }
+
+    // ── KYC Feature Toggle ──────────────────────────────────────
+    const kycToggleBtn   = document.getElementById('kycToggleBtn');
+    const kycToggleLabel = document.getElementById('kycToggleLabel');
+    if (kycToggleBtn) {
+      kycToggleBtn.addEventListener('click', async () => {
+        const currentlyEnabled = kycToggleBtn.dataset.enabled === 'true';
+        const newValue = !currentlyEnabled;
+
+        kycToggleBtn.disabled = true;
+        try {
+          const res = await fetch('/api/admin/settings/toggle-kyc-verification', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ enabled: newValue }),
+          });
+          const data = await res.json();
+          if (data.success) {
+            kycToggleBtn.dataset.enabled = String(newValue);
+            kycToggleBtn.setAttribute('aria-checked', String(newValue));
+            // Update colour + knob
+            kycToggleBtn.classList.toggle('bg-green-500', newValue);
+            kycToggleBtn.classList.toggle('bg-gray-300', !newValue);
+            const knob = kycToggleBtn.querySelector('span');
+            knob.classList.toggle('translate-x-7', newValue);
+            knob.classList.toggle('translate-x-1', !newValue);
+            // Update label
+            kycToggleLabel.textContent = newValue ? 'ON' : 'OFF';
+            kycToggleLabel.classList.toggle('text-green-600', newValue);
+            kycToggleLabel.classList.toggle('text-red-500', !newValue);
+          } else {
+            alert('Failed to update setting: ' + (data.error || 'Unknown error'));
+          }
+        } catch (e) {
+          alert('Network error. Please try again.');
+        } finally {
+          kycToggleBtn.disabled = false;
+        }
+      });
     }
 
     // ── Logout ─────────────────────────────────────────────────

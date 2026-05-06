@@ -116,6 +116,12 @@ const globalSeoSettingsSchema = new mongoose.Schema({
     maxlength: 160,
   },
   
+  // Feature Flags
+  kycVerificationEnabled: {
+    type: Boolean,
+    default: true,
+  },
+
   // Audit Trail
   updatedAt: {
     type: Date,

@@ -59,7 +59,6 @@
       border-radius: 1rem;
       overflow: hidden;
       background: #000;
-      /* aspect-ratio is set dynamically to match the actual camera feed */
     }
     #displayCanvas {
       width: 100%; height: auto;
@@ -87,8 +86,8 @@
       font-weight: 600;
       letter-spacing: 0.03em;
     }
-    .status-scanning { background: rgba(0,0,0,0.55); color: #fff; }
-    .status-detected { background: rgba(34,197,94,0.85); color: #fff; }
+    .status-scanning  { background: rgba(0,0,0,0.55); color: #fff; }
+    .status-detected  { background: rgba(34,197,94,0.85); color: #fff; }
     .status-capturing { background: rgba(233,30,99,0.9); color: #fff; }
 
     /* ── Countdown ring ── */
@@ -120,10 +119,54 @@
     }
     #ocrOverlay.visible { display: flex; }
 
-    /* ── Liveness landmarks canvas ── */
+    /* ── Phase transition overlay ── */
+    #transitionOverlay {
+      position: fixed; inset: 0;
+      background: rgba(255,255,255,0.97);
+      z-index: 500;
+      display: none;
+      flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 1rem;
+      text-align: center;
+      padding: 2rem;
+      animation: fadeIn 0.3s ease;
+    }
+    #transitionOverlay.visible { display: flex; }
+    .transition-icon {
+      width: 5rem; height: 5rem;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2.5rem;
+      animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    @keyframes popIn {
+      from { transform: scale(0.5); opacity: 0; }
+      to   { transform: scale(1); opacity: 1; }
+    }
+    .transition-continue-btn {
+      margin-top: 0.5rem;
+      padding: 0.85rem 2.5rem;
+      background: linear-gradient(135deg, #E91E63, #673AB7);
+      color: #fff;
+      border: none;
+      border-radius: 999px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(233,30,99,0.35);
+      transition: opacity 0.2s;
+    }
+    .transition-continue-btn:hover { opacity: 0.9; }
+
+    /* ── Liveness canvas ── */
     #livenessCanvas {
       width: 100%; height: auto; display: block; border-radius: 1rem;
+      transform: scaleX(-1);
     }
+
+    /* ── WIDER face guide oval ── */
+    /* Handled in the SVG viewBox attributes directly */
 
     /* ── Step pills ── */
     .step-pill {
@@ -136,11 +179,27 @@
     .step-pill.completed { background: #22c55e; color: #fff; }
     .step-pill.pending   { background: #e5e7eb; color: #6b7280; }
 
-    /* ── Liveness prompts ── */
-    .liveness-prompt {
-      font-size: 1.4rem; font-weight: 700; color: #1f2937;
-      min-height: 2.5rem; transition: all 0.3s;
+    /* ── Liveness prompt (big, above camera) ── */
+    #livenessPromptBig {
+      text-align: center;
+      margin-bottom: 0.75rem;
+      padding: 0.6rem 1rem;
+      border-radius: 0.75rem;
+      background: #fdf2f8;
+      border: 2px solid #f9a8d4;
     }
+    #livenessPromptBigText {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #be185d;
+    }
+    #livenessPromptBigSub {
+      font-size: 0.78rem;
+      color: #9d174d;
+      margin-top: 0.1rem;
+    }
+
+    /* ── Liveness steps ── */
     .liveness-step {
       display: flex; align-items: center; gap: 0.75rem;
       padding: 0.6rem 1rem; border-radius: 0.75rem;
@@ -148,8 +207,16 @@
       background: #f3f4f6; color: #6b7280;
       transition: all 0.3s;
     }
-    .liveness-step.active   { background: #fdf2f8; color: #E91E63; }
-    .liveness-step.done     { background: #f0fdf4; color: #16a34a; }
+    .liveness-step.active {
+      background: #fdf2f8; color: #E91E63;
+      border: 1.5px solid #f9a8d4;
+      animation: pulseStep 1.8s ease-in-out infinite;
+    }
+    .liveness-step.done  { background: #f0fdf4; color: #16a34a; }
+    @keyframes pulseStep {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(233,30,99,0.15); }
+      50%       { box-shadow: 0 0 0 6px rgba(233,30,99,0.0); }
+    }
 
     /* ── Preview thumbnails ── */
     .preview-thumb {
@@ -174,16 +241,40 @@
       font-size: 0.8rem;
       color: #92400e;
     }
+
+    /* ── Liveness progress bar ── */
+    #livenessProgressWrap {
+      height: 4px;
+      background: #e5e7eb;
+      border-radius: 9999px;
+      margin-bottom: 0.75rem;
+      overflow: hidden;
+    }
+    #livenessProgressBar {
+      height: 100%;
+      background: linear-gradient(90deg, #E91E63, #673AB7);
+      border-radius: 9999px;
+      width: 0%;
+      transition: width 0.1s linear;
+    }
   </style>
 </head>
 
 <body class="bg-gray-50 font-['Roboto']">
 
-  <!-- ── Initialisation overlay ───────────────────────────────── -->
+  <!-- ── Initialisation overlay ── -->
   <div id="initOverlay">
     <div class="spinner"></div>
     <p id="initText" class="text-gray-600 font-medium text-sm">Initialising scanner libraries…</p>
     <p class="text-gray-400 text-xs">This may take a moment on first load</p>
+  </div>
+
+  <!-- ── Phase transition overlay (shown between phases) ── -->
+  <div id="transitionOverlay">
+    <div id="transitionIcon" class="transition-icon bg-green-50">✅</div>
+    <h3 id="transitionTitle" class="text-xl font-bold text-gray-800"></h3>
+    <p id="transitionBody" class="text-gray-500 text-sm max-w-xs"></p>
+    <button id="transitionBtn" class="transition-continue-btn">Continue →</button>
   </div>
 
   <main class="pt-6 md:pt-16 pb-16 min-h-screen">
@@ -207,10 +298,10 @@
         <p class="text-xs text-gray-400 mt-2" id="phaseLabel">Phase 1 of 4 · ID Front</p>
       </div>
 
-      <!-- ── Card ── -->
+      <!-- Card -->
       <div class="bg-white rounded-2xl p-4 sm:p-6 md:p-8 material-shadow">
 
-        <!-- ══ PHASE 1: ID Front ══════════════════════════════════ -->
+        <!-- ══ PHASE 1: ID Front ══ -->
         <div id="phase-1" class="phase-card active">
           <div class="text-center mb-4">
             <div class="w-14 h-14 bg-pink-50 rounded-full flex items-center justify-center mx-auto mb-3">
@@ -251,7 +342,7 @@
           <p class="text-center text-xs text-gray-400 mt-3">Camera feed is processed locally — never sent until you submit</p>
         </div>
 
-        <!-- ══ PHASE 2: ID Back ═══════════════════════════════════ -->
+        <!-- ══ PHASE 2: ID Back ══ -->
         <div id="phase-2" class="phase-card">
           <div class="text-center mb-4">
             <div class="w-14 h-14 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-3">
@@ -272,7 +363,13 @@
               <span class="status-pill status-scanning" id="statusPill2">Scanning for ID card…</span>
             </div>
             <div id="countdownWrap2" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" style="display:none;">
-              <svg width="80" height="80" viewBox="0 0 80 80"><circle cx="40" cy="40" r="34" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="6"/><circle id="countdownCircle2" cx="40" cy="40" r="34" fill="none" stroke="#3b82f6" stroke-width="6" stroke-dasharray="213.6" stroke-dashoffset="213.6" style="transition:stroke-dashoffset 0.1s linear;"/></svg>
+              <svg width="80" height="80" viewBox="0 0 80 80">
+                <circle cx="40" cy="40" r="34" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="6"/>
+                <circle id="countdownCircle2" cx="40" cy="40" r="34" fill="none"
+                  stroke="#3b82f6" stroke-width="6"
+                  stroke-dasharray="213.6" stroke-dashoffset="213.6"
+                  style="transition:stroke-dashoffset 0.1s linear;"/>
+              </svg>
               <span id="countdownText2" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-3xl font-bold text-white">2</span>
             </div>
             <div id="ocrOverlay2" class="absolute inset-0 bg-black/70 hidden items-center justify-center flex-col gap-3 text-white text-sm text-center p-4 rounded-2xl">
@@ -284,48 +381,71 @@
           <p class="text-center text-xs text-gray-400 mt-3">Camera feed is processed locally — never sent until you submit</p>
         </div>
 
-        <!-- ══ PHASE 3: Liveness ══════════════════════════════════ -->
+        <!-- ══ PHASE 3: Liveness ══ -->
         <div id="phase-3" class="phase-card">
           <div class="text-center mb-4">
             <div class="w-14 h-14 bg-purple-50 rounded-full flex items-center justify-center mx-auto mb-3">
               <i class="ri-face-recognition-line text-3xl text-purple-500"></i>
             </div>
             <h3 class="text-xl font-semibold text-gray-800">Liveness Check</h3>
-            <p class="text-gray-500 text-sm mt-1">Follow the on-screen prompts to prove you're a real person</p>
+            <p class="text-gray-500 text-sm mt-1">Follow the on-screen prompts carefully</p>
+          </div>
+
+          <!-- FIX 2: Big, visible instruction banner ABOVE the camera -->
+          <div id="livenessPromptBig" class="mb-3">
+            <div id="livenessPromptBigText">Centre your face in the oval</div>
+            <div id="livenessPromptBigSub">Hold still until each step turns green ✓</div>
+          </div>
+
+          <!-- Progress bar for current step -->
+          <div id="livenessProgressWrap">
+            <div id="livenessProgressBar"></div>
           </div>
 
           <div class="relative w-full max-w-[480px] mx-auto rounded-2xl overflow-hidden bg-black mb-4">
             <canvas id="livenessCanvas" class="w-full block rounded-2xl" style="height:auto;"></canvas>
-            <div class="absolute inset-0 flex flex-col items-center justify-end pb-4 pointer-events-none">
-              <div id="livenessPrompt" class="liveness-prompt text-white drop-shadow-lg text-center px-4">Centre your face</div>
-            </div>
-            <!-- Face guide oval -->
-            <svg id="faceGuide" class="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 480 360" preserveAspectRatio="none">
-              <ellipse cx="240" cy="170" rx="100" ry="130" fill="none" stroke="rgba(233,30,99,0.7)" stroke-width="3" stroke-dasharray="8 4"/>
+            <!-- FIX 1: Wider face guide oval — rx increased from 100→135, ry from 130→155 -->
+            <svg id="faceGuide" class="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 480 360" preserveAspectRatio="xMidYMid meet">
+              <ellipse cx="240" cy="175" rx="135" ry="155" fill="none" stroke="rgba(233,30,99,0.75)" stroke-width="3" stroke-dasharray="8 4"/>
+            </svg>
+            <!-- Subtle inner glow on the oval -->
+            <svg class="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 480 360" preserveAspectRatio="xMidYMid meet">
+              <ellipse cx="240" cy="175" rx="135" ry="155" fill="rgba(233,30,99,0.04)" stroke="none"/>
             </svg>
           </div>
 
-          <!-- Step checklist -->
+          <!-- FIX 2: Step checklist — clearly labelled with instructions -->
           <div class="space-y-2 mb-4">
             <div class="liveness-step active" id="ls-straight">
               <i class="ri-focus-3-line text-xl"></i>
-              <span>Look straight at the camera</span>
-              <i class="ri-check-line ml-auto hidden text-green-500" id="lc-straight"></i>
+              <div>
+                <div class="font-semibold">Step 1 — Look straight</div>
+                <div class="text-xs opacity-70">Face the camera directly, eyes forward</div>
+              </div>
+              <i class="ri-check-line ml-auto text-green-500 text-lg hidden" id="lc-straight"></i>
             </div>
             <div class="liveness-step" id="ls-left">
               <i class="ri-arrow-left-line text-xl"></i>
-              <span>Slowly turn your head LEFT</span>
-              <i class="ri-check-line ml-auto hidden text-green-500" id="lc-left"></i>
+              <div>
+                <div class="font-semibold">Step 2 — Turn head LEFT</div>
+                <div class="text-xs opacity-70">Slowly rotate your head to the left</div>
+              </div>
+              <i class="ri-check-line ml-auto text-green-500 text-lg hidden" id="lc-left"></i>
             </div>
             <div class="liveness-step" id="ls-right">
               <i class="ri-arrow-right-line text-xl"></i>
-              <span>Slowly turn your head RIGHT</span>
-              <i class="ri-check-line ml-auto hidden text-green-500" id="lc-right"></i>
+              <div>
+                <div class="font-semibold">Step 3 — Turn head RIGHT</div>
+                <div class="text-xs opacity-70">Slowly rotate your head to the right</div>
+              </div>
+              <i class="ri-check-line ml-auto text-green-500 text-lg hidden" id="lc-right"></i>
             </div>
           </div>
+
+          <p class="text-center text-xs text-gray-400">Camera feed is processed locally — never sent until you submit</p>
         </div>
 
-        <!-- ══ PHASE 4: Review & Submit ═══════════════════════════ -->
+        <!-- ══ PHASE 4: Review & Submit ══ -->
         <div id="phase-4" class="phase-card">
           <div class="text-center mb-5">
             <div class="w-14 h-14 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-3">
@@ -373,64 +493,51 @@
 
       <!-- Skip link -->
       <div class="text-center mt-4">
-        <a href="/account/info?from=onboarding" class="skip-link">
-          Skip for now — I'll verify later
-        </a>
+        <!-- <a href="/account/info?from=onboarding" class="skip-link">Skip for now — I'll verify later</a> -->
       </div>
 
     </div>
   </main>
 
-  <!-- ── Libraries ─────────────────────────────────────────────── -->
-  <!-- Tesseract.js — load first (smaller) -->
+  <!-- Libraries -->
   <script src="https://unpkg.com/tesseract.js@v4/dist/tesseract.min.js"></script>
-  <!-- MediaPipe Face Mesh -->
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/face_mesh.js" crossorigin="anonymous"></script>
-  <!-- OpenCV.js — largest, load last, non-blocking -->
   <script async src="https://docs.opencv.org/4.10.0/opencv.js" onload="onOpenCvReady()"></script>
 
   <script>
   'use strict';
 
-  // ── Globals ────────────────────────────────────────────────────
+  // ── Globals ──
   let cv = null;
   let stream = null;
   let currentPhase = 1;
   let idFrontBlob = null;
   let idBackBlob  = null;
   let selfieBlob  = null;
-
-  // Scanning state (shared for front & back)
-  let detectionTimer    = null;
-  let detectionStart    = null;
-  const HOLD_MS         = 2000; // ms of stable detection required
-  let rafId             = null;
+  let rafId = null;
 
   // Liveness state
-  let livenessPhase       = 'straight'; // straight → left → right → done
-  let livenessTimer       = null;
-  let livenessStart       = null;
-  const LIVENESS_HOLD_MS  = { straight: 1500, left: 1000, right: 1000 };
-  let faceMesh            = null;
-  let livenessVideoEl     = null;
-  let livenessRafId       = null;
+  let livenessPhase      = 'straight';
+  let livenessStart      = null;
+  const LIVENESS_HOLD_MS = { straight: 1500, left: 1000, right: 1000 };
+  let faceMesh           = null;
+  let livenessVideoEl    = null;
+  let livenessRafId      = null;
+  let livenessActive     = false;
 
-  // ── Init overlay helpers ───────────────────────────────────────
+  // ── Init overlay ──
   const initOverlay = document.getElementById('initOverlay');
   const initText    = document.getElementById('initText');
-
-  let opencvReady   = false;
+  let opencvReady    = false;
   let mediapipeReady = false;
 
   function checkAllReady() {
-    if (opencvReady && mediapipeReady) {
-      hideInitOverlay();
-    }
+    if (opencvReady && mediapipeReady) hideInitOverlay();
   }
 
   function hideInitOverlay() {
-    initOverlay.style.opacity = '0';
+    initOverlay.style.opacity    = '0';
     initOverlay.style.transition = 'opacity 0.4s';
     setTimeout(() => initOverlay.style.display = 'none', 400);
     startCamera();
@@ -443,71 +550,46 @@
     checkAllReady();
   }
 
-  // ── MediaPipe init ─────────────────────────────────────────────
+  // ── MediaPipe ──
   function initMediaPipe() {
     faceMesh = new FaceMesh({
-      locateFile: (file) =>
-        `https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/${file}`,
+      locateFile: f => `https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/${f}`,
     });
     faceMesh.setOptions({
-      maxNumFaces: 1,
-      refineLandmarks: true,
-      minDetectionConfidence: 0.5,
-      minTrackingConfidence: 0.5,
+      maxNumFaces: 1, refineLandmarks: true,
+      minDetectionConfidence: 0.5, minTrackingConfidence: 0.5,
     });
     faceMesh.onResults(onFaceMeshResults);
-    faceMesh.initialize().then(() => {
-      mediapipeReady = true;
-      initText.textContent = 'Liveness engine ready · Finishing up…';
-      checkAllReady();
-    }).catch(err => {
-      console.error('MediaPipe init error', err);
-      // Allow proceeding even if MediaPipe fails — will degrade gracefully
-      mediapipeReady = true;
-      checkAllReady();
-    });
+    faceMesh.initialize()
+      .then(() => { mediapipeReady = true; initText.textContent = 'Liveness engine ready…'; checkAllReady(); })
+      .catch(() => { mediapipeReady = true; checkAllReady(); });
   }
 
-  // ── Camera ────────────────────────────────────────────────────
-  // Opens a camera stream with the specified facing mode.
-  // Stops any existing stream first so we can switch between back and front.
+  // ── Camera ──
   async function switchCamera(facingMode) {
-    if (stream) {
-      stream.getTracks().forEach(t => t.stop());
-      stream = null;
-    }
+    if (stream) { stream.getTracks().forEach(t => t.stop()); stream = null; }
     try {
       stream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode, width: { ideal: 1280 }, height: { ideal: 960 } },
-        audio: false,
+        video: { facingMode, width: { ideal: 1280 }, height: { ideal: 960 } }, audio: false,
       });
-    } catch (e) {
-      // Fallback: accept whatever camera the browser offers
-      try {
-        stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
-      } catch (e2) {
-        alert('Camera access is required for identity verification. Please allow camera access and reload.');
-        return null;
-      }
+    } catch {
+      try { stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false }); }
+      catch { alert('Camera access is required. Please allow camera access and reload.'); return null; }
     }
     return stream;
   }
 
   async function startCamera() {
-    const s = await switchCamera('environment'); // back camera for ID scanning
+    const s = await switchCamera('environment');
     if (!s) return;
-
     const video = document.getElementById('videoFeed');
     video.srcObject = stream;
     video.onloadedmetadata = () => {
       video.play();
-      // Seed canvas dimensions so the container has the correct height immediately
-      const W = video.videoWidth  || 640;
-      const H = video.videoHeight || 480;
+      const W = video.videoWidth || 640, H = video.videoHeight || 480;
       const dc = document.getElementById('displayCanvas');
       const pc = document.getElementById('processCanvas');
-      dc.width = W; dc.height = H;
-      pc.width = W; pc.height = H;
+      dc.width = W; dc.height = H; pc.width = W; pc.height = H;
       startIDScanning('front');
     };
   }
@@ -518,9 +600,8 @@
     if (livenessRafId) cancelAnimationFrame(livenessRafId);
   }
 
-  // ── Phase navigation ───────────────────────────────────────────
-  const phaseLabels = [
-    null,
+  // ── Phase navigation ──
+  const phaseLabels = [null,
     'Phase 1 of 4 · ID Front',
     'Phase 2 of 4 · ID Back',
     'Phase 3 of 4 · Liveness Check',
@@ -530,47 +611,75 @@
   function goToPhase(n) {
     document.getElementById(`phase-${currentPhase}`).classList.remove('active');
     document.getElementById(`phase-${n}`).classList.add('active');
-
-    // Pills
     for (let i = 1; i <= 4; i++) {
       const pill = document.getElementById(`pill-${i}`);
-      pill.classList.remove('active', 'completed', 'pending');
+      pill.classList.remove('active','completed','pending');
       if (i < n)       { pill.classList.add('completed'); pill.innerHTML = '<i class="ri-check-line text-xs"></i>'; }
-      else if (i === n) { pill.classList.add('active'); pill.textContent = i; }
-      else              { pill.classList.add('pending'); pill.textContent = i; }
+      else if (i === n){ pill.classList.add('active'); pill.textContent = i; }
+      else             { pill.classList.add('pending');  pill.textContent = i; }
     }
-    // Lines
     for (let i = 1; i <= 3; i++) {
       const line = document.getElementById(`line-${i}`);
       line.classList.toggle('bg-pink-500', i < n);
       line.classList.toggle('bg-gray-200', i >= n);
     }
-
     document.getElementById('phaseLabel').textContent = phaseLabels[n];
     currentPhase = n;
-
     if (n === 2) startIDScanning('back');
     if (n === 3) startLiveness();
     if (n === 4) showReview();
   }
 
-  // ── ID Scanning ────────────────────────────────────────────────
+  // ── FIX 3: Phase transition modal ──
+  // Shows a success screen between phases so the user has time to prepare
+  // and the scanning loop for the NEXT phase doesn't fire on stale frames.
+  function showPhaseTransition({ icon, iconBg, title, body, btnLabel, onContinue }) {
+    // Cancel any active scan loop immediately
+    if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
+
+    const overlay = document.getElementById('transitionOverlay');
+    document.getElementById('transitionIcon').textContent  = icon;
+    document.getElementById('transitionIcon').className    = `transition-icon ${iconBg}`;
+    document.getElementById('transitionTitle').textContent = title;
+    document.getElementById('transitionBody').textContent  = body;
+    const btn = document.getElementById('transitionBtn');
+    btn.textContent = btnLabel;
+    overlay.classList.add('visible');
+
+    // One-time click handler
+    const handler = () => {
+      btn.removeEventListener('click', handler);
+      overlay.classList.remove('visible');
+      onContinue();
+    };
+    btn.addEventListener('click', handler);
+  }
+
+  // ── ID Scanning ──
+  // FIX 3: After capture, show the transition modal. The next phase's scan
+  // only starts after the user taps "Continue", giving them time to flip the
+  // card. rafId is cancelled inside showPhaseTransition so no stale frames
+  // can trigger a second capture before the modal is dismissed.
   function startIDScanning(side) {
-    const isFront     = side === 'front';
-    const videoEl     = document.getElementById('videoFeed');
-    const processC    = document.getElementById('processCanvas');
-    const displayC    = isFront ? document.getElementById('displayCanvas') : document.getElementById('displayCanvas2');
-    const statusPill  = isFront ? document.getElementById('statusPill') : document.getElementById('statusPill2');
-    const cdWrap      = isFront ? document.getElementById('countdownWrap') : document.getElementById('countdownWrap2');
-    const cdCircle    = isFront ? document.getElementById('countdownCircle') : document.getElementById('countdownCircle2');
-    const cdText      = isFront ? document.getElementById('countdownText') : document.getElementById('countdownText2');
-    const ocrOverlay  = isFront ? document.getElementById('ocrOverlay') : document.getElementById('ocrOverlay2');
-    const ocrText     = isFront ? document.getElementById('ocrText') : document.getElementById('ocrText2');
+    const isFront    = side === 'front';
+    const videoEl    = document.getElementById('videoFeed');
+    const processC   = document.getElementById('processCanvas');
+    const displayC   = isFront ? document.getElementById('displayCanvas') : document.getElementById('displayCanvas2');
+    const statusPill = isFront ? document.getElementById('statusPill') : document.getElementById('statusPill2');
+    const cdWrap     = isFront ? document.getElementById('countdownWrap') : document.getElementById('countdownWrap2');
+    const cdCircle   = isFront ? document.getElementById('countdownCircle') : document.getElementById('countdownCircle2');
+    const cdText     = isFront ? document.getElementById('countdownText') : document.getElementById('countdownText2');
+    const ocrOvEl    = isFront ? document.getElementById('ocrOverlay') : document.getElementById('ocrOverlay2');
+    const ocrTxtEl   = isFront ? document.getElementById('ocrText') : document.getElementById('ocrText2');
+    const HOLD_MS    = 2000;
+    const CIRCUMF    = 213.6;
+    const GRACE_MS = 600;   // how long a detection gap is tolerated before timer resets
+let lastDetectedTime = null;  // tracks when we last saw the card
 
-    const TOTAL_CIRCUMFERENCE = 213.6;
+    // Make sure the video is attached and playing
+    if (!videoEl.srcObject && stream) { videoEl.srcObject = stream; videoEl.play().catch(() => {}); }
 
-    // Pre-seed canvas dimensions from current video so the container has height
-    // before the first animation frame fires (avoids 0-height flash).
+    // Ensure canvas is seeded with valid dimensions
     const seedW = videoEl.videoWidth  || 640;
     const seedH = videoEl.videoHeight || 480;
     processC.width  = seedW; processC.height = seedH;
@@ -579,25 +688,28 @@
     let stableStart = null;
     let captured    = false;
 
+    // FIX 3: Give the camera a short warm-up (500 ms) before detection starts
+    // so stale frozen frames from the previous phase don't immediately trigger.
+    let warmupDone = false;
+    setTimeout(() => { warmupDone = true; }, 500);
+
     function loop() {
       if (captured) return;
       rafId = requestAnimationFrame(loop);
-
+      if (!warmupDone) return;            // ← skip detection during warm-up
       if (videoEl.readyState < 2) return;
+
       const W = videoEl.videoWidth  || 640;
       const H = videoEl.videoHeight || 480;
-      processC.width  = W;
-      processC.height = H;
-      displayC.width  = W;
-      displayC.height = H;
+      processC.width  = W; processC.height = H;
+      displayC.width  = W; displayC.height = H;
 
       const pCtx = processC.getContext('2d');
       pCtx.drawImage(videoEl, 0, 0, W, H);
-
       const dCtx = displayC.getContext('2d');
       dCtx.drawImage(videoEl, 0, 0, W, H);
 
-      // Guide rectangle (golden ratio ID card)
+      // Guide rectangle
       const gW = W * 0.75, gH = gW / 1.586;
       const gX = (W - gW) / 2, gY = (H - gH) / 2;
       dCtx.strokeStyle = 'rgba(233,30,99,0.8)';
@@ -610,7 +722,7 @@
       const cLen = 24;
       dCtx.strokeStyle = '#E91E63';
       dCtx.lineWidth   = 4;
-      [[gX, gY], [gX+gW, gY], [gX, gY+gH], [gX+gW, gY+gH]].forEach(([cx, cy]) => {
+      [[gX, gY],[gX+gW, gY],[gX, gY+gH],[gX+gW, gY+gH]].forEach(([cx, cy]) => {
         dCtx.beginPath();
         dCtx.moveTo(cx + (cx < W/2 ? 0 : -cLen), cy);
         dCtx.lineTo(cx + (cx < W/2 ? cLen : 0), cy);
@@ -622,42 +734,31 @@
       });
 
       // OpenCV detection
-      let detected = false;
-      let detectedRect = null;
+      let detected = false, detectedRect = null;
       try {
         const src   = cv.imread(processC);
-        const gray  = new cv.Mat();
-        const blur  = new cv.Mat();
-        const edges = new cv.Mat();
+        const gray  = new cv.Mat(), blur = new cv.Mat(), edges = new cv.Mat();
         cv.cvtColor(src, gray, cv.COLOR_RGBA2GRAY);
-        cv.GaussianBlur(gray, blur, new cv.Size(5, 5), 0);
+        cv.GaussianBlur(gray, blur, new cv.Size(5,5), 0);
         cv.Canny(blur, edges, 75, 200);
-        const contours   = new cv.MatVector();
-        const hierarchy  = new cv.Mat();
+        const contours = new cv.MatVector(), hierarchy = new cv.Mat();
         cv.findContours(edges, contours, hierarchy, cv.RETR_LIST, cv.CHAIN_APPROX_SIMPLE);
 
         for (let i = 0; i < contours.size(); i++) {
           const contour = contours.get(i);
           const area    = cv.contourArea(contour);
           if (area < W * H * 0.08) { contour.delete(); continue; }
-
           const peri   = cv.arcLength(contour, true);
           const approx = new cv.Mat();
           cv.approxPolyDP(contour, approx, 0.02 * peri, true);
-
           if (approx.rows === 4) {
             const rect  = cv.boundingRect(approx);
             const ratio = rect.width / rect.height;
             if (ratio >= 1.35 && ratio <= 1.80) {
-              // Check it overlaps guide box
-              const overlapX = Math.max(0, Math.min(rect.x + rect.width,  gX + gW) - Math.max(rect.x, gX));
-              const overlapY = Math.max(0, Math.min(rect.y + rect.height, gY + gH) - Math.max(rect.y, gY));
-              const overlapArea = overlapX * overlapY;
-              const rectArea    = rect.width * rect.height;
-              if (overlapArea / rectArea > 0.6) {
-                detected = true;
-                detectedRect = rect;
-                // Draw green outline
+              const ox = Math.max(0, Math.min(rect.x+rect.width,  gX+gW) - Math.max(rect.x, gX));
+              const oy = Math.max(0, Math.min(rect.y+rect.height, gY+gH) - Math.max(rect.y, gY));
+              if ((ox*oy) / (rect.width*rect.height) > 0.6) {
+                detected = true; detectedRect = rect;
                 dCtx.strokeStyle = 'rgba(34,197,94,0.9)';
                 dCtx.lineWidth   = 3;
                 dCtx.setLineDash([]);
@@ -665,107 +766,125 @@
               }
             }
           }
-          approx.delete();
-          contour.delete();
+          approx.delete(); contour.delete();
         }
-        src.delete(); gray.delete(); blur.delete(); edges.delete();
-        contours.delete(); hierarchy.delete();
-      } catch (e) {
-        // OpenCV error — keep looping
-      }
+        src.delete(); gray.delete(); blur.delete(); edges.delete(); contours.delete(); hierarchy.delete();
+      } catch {}
 
       if (detected) {
         if (!stableStart) stableStart = Date.now();
-        const elapsed = Date.now() - stableStart;
+        const elapsed  = Date.now() - stableStart;
         const progress = Math.min(elapsed / HOLD_MS, 1);
-        const offset = TOTAL_CIRCUMFERENCE * (1 - progress);
-
         statusPill.textContent = 'ID detected — hold still…';
         statusPill.className   = 'status-pill status-detected';
         cdWrap.style.display   = 'block';
-        cdCircle.style.strokeDashoffset = offset;
+        cdCircle.style.strokeDashoffset = CIRCUMF * (1 - progress);
         cdText.textContent     = Math.ceil((HOLD_MS - elapsed) / 1000);
 
         if (elapsed >= HOLD_MS) {
-          // AUTO-CAPTURE
           captured = true;
-          cancelAnimationFrame(rafId);
-          cdWrap.style.display = 'none';
+          cancelAnimationFrame(rafId); rafId = null;
+          cdWrap.style.display   = 'none';
           statusPill.textContent = 'Captured! Checking card…';
           statusPill.className   = 'status-pill status-capturing';
 
-          // Crop the detected area
-          const cropC  = document.createElement('canvas');
+          // Crop detected area
+          const cropC = document.createElement('canvas');
           const cW = detectedRect ? detectedRect.width  : W;
           const cH = detectedRect ? detectedRect.height : H;
           const cX = detectedRect ? detectedRect.x      : 0;
           const cY = detectedRect ? detectedRect.y      : 0;
-          cropC.width  = cW;
-          cropC.height = cH;
+          cropC.width = cW; cropC.height = cH;
           cropC.getContext('2d').drawImage(processC, cX, cY, cW, cH, 0, 0, cW, cH);
 
-          // Show OCR overlay
-          ocrOverlay.style.display = 'flex';
-          ocrOverlay.classList.add('visible');
-
-          runOCR(cropC, displayC, side, ocrOverlay, ocrText);
+          ocrOvEl.style.display = 'flex'; ocrOvEl.classList.add('visible');
+          runOCR(cropC, displayC, side, ocrOvEl, ocrTxtEl);
         }
       } else {
-        stableStart = null;
-        cdWrap.style.display = 'none';
-        statusPill.textContent = 'Scanning for ID card…';
-        statusPill.className   = 'status-pill status-scanning';
+        // stableStart = null;
+        // cdWrap.style.display   = 'none';
+        // statusPill.textContent = 'Scanning for ID card…';
+        // statusPill.className   = 'status-pill status-scanning';
+        const timeSinceLast = lastDetectedTime ? Date.now() - lastDetectedTime : Infinity;
+        if (timeSinceLast > GRACE_MS) {
+          // Detection has been gone long enough — genuinely lost the card
+          stableStart = null;
+          cdWrap.style.display   = 'none';
+          statusPill.textContent = 'Scanning for ID card…';
+          statusPill.className   = 'status-pill status-scanning';
+        }
       }
     }
 
     loop();
   }
 
-  async function runOCR(cropCanvas, displayCanvas, side, ocrOverlay, ocrText) {
+  async function runOCR(cropCanvas, displayCanvas, side, ocrOverlayEl, ocrTextEl) {
     try {
-      ocrText.textContent = 'Reading card text…';
+      ocrTextEl.textContent = 'Reading card text…';
       const dataUrl = cropCanvas.toDataURL('image/jpeg', 0.92);
-
-      const result = await Tesseract.recognize(dataUrl, 'eng', {
-        logger: m => { if (m.status === 'recognizing text') ocrText.textContent = `Reading… ${Math.round(m.progress * 100)}%`; }
+      const result  = await Tesseract.recognize(dataUrl, 'eng', {
+        logger: m => { if (m.status === 'recognizing text') ocrTextEl.textContent = `Reading… ${Math.round(m.progress*100)}%`; }
       });
-
-      const text = result.data.text || '';
-      const charCount = text.replace(/\s/g, '').length;
-
-      ocrOverlay.style.display  = 'none';
-      ocrOverlay.classList.remove('visible');
+      const charCount = (result.data.text || '').replace(/\s/g,'').length;
+      ocrOverlayEl.style.display = 'none'; ocrOverlayEl.classList.remove('visible');
 
       if (charCount >= 20) {
-        // Good — save blob and advance
         cropCanvas.toBlob(blob => {
           if (side === 'front') {
             idFrontBlob = blob;
-            goToPhase(2);
+            // FIX 3: Show transition modal before advancing to Phase 2
+            showPhaseTransition({
+              icon: '🪪', iconBg: 'bg-blue-50',
+              title: 'ID Front captured!',
+              body:  'Great job. Now flip your ID card over so the BACK is facing the camera, then tap Continue.',
+              btnLabel: 'Continue — scan ID back →',
+              onContinue: () => goToPhase(2),
+            });
           } else {
             idBackBlob = blob;
-            goToPhase(3);
+            // FIX 3: Show transition modal before advancing to Phase 3
+            showPhaseTransition({
+              icon: '✅', iconBg: 'bg-green-50',
+              title: 'ID Back captured!',
+              body:  'Both sides of your ID are scanned. Next we\'ll do a quick liveness check — please switch to your front camera when ready.',
+              btnLabel: 'Continue — liveness check →',
+              onContinue: () => goToPhase(3),
+            });
           }
         }, 'image/jpeg', 0.92);
       } else {
-        // Too few chars — show retry button
-        showScanRetry(displayCanvas, side, ocrOverlay, ocrText,
-          `We couldn't read enough text on your ${side === 'front' ? 'ID front' : 'ID back'}. Ensure all text is visible and try again.`);
+        showScanRetry(displayCanvas, side, ocrOverlayEl, ocrTextEl,
+          `Couldn't read enough text on your ${side === 'front' ? 'ID front' : 'ID back'}. Make sure all text is visible and try again.`);
       }
     } catch (err) {
       console.error('OCR error', err);
-      ocrOverlay.style.display  = 'none';
-      ocrOverlay.classList.remove('visible');
-      // Fail open — still allow proceeding if OCR itself errors
+      ocrOverlayEl.style.display = 'none'; ocrOverlayEl.classList.remove('visible');
       cropCanvas.toBlob(blob => {
-        if (side === 'front') { idFrontBlob = blob; goToPhase(2); }
-        else                  { idBackBlob  = blob; goToPhase(3); }
+        if (side === 'front') {
+          idFrontBlob = blob;
+          showPhaseTransition({
+            icon: '🪪', iconBg: 'bg-blue-50',
+            title: 'ID Front captured!',
+            body:  'Now flip your ID card over so the BACK is facing the camera, then tap Continue.',
+            btnLabel: 'Continue — scan ID back →',
+            onContinue: () => goToPhase(2),
+          });
+        } else {
+          idBackBlob = blob;
+          showPhaseTransition({
+            icon: '✅', iconBg: 'bg-green-50',
+            title: 'ID Back captured!',
+            body:  'Both sides scanned! Next up: a quick liveness check.',
+            btnLabel: 'Continue — liveness check →',
+            onContinue: () => goToPhase(3),
+          });
+        }
       }, 'image/jpeg', 0.92);
     }
   }
 
-  function showScanRetry(displayCanvas, side, ocrOverlay, ocrText, message) {
-    // Show a retry message overlaid on the display canvas
+  function showScanRetry(displayCanvas, side, ocrOverlayEl, ocrTextEl, message) {
     const ctx = displayCanvas.getContext('2d');
     ctx.fillStyle = 'rgba(0,0,0,0.7)';
     ctx.fillRect(0, 0, displayCanvas.width, displayCanvas.height);
@@ -773,167 +892,206 @@
     ctx.font = 'bold 18px Roboto, sans-serif';
     ctx.textAlign = 'center';
     ctx.fillText('Could not read card clearly', displayCanvas.width/2, displayCanvas.height/2 - 40);
-    ctx.font = '14px Roboto, sans-serif';
-    ctx.fillStyle = '#fca5a5';
-
+    ctx.font = '14px Roboto, sans-serif'; ctx.fillStyle = '#fca5a5';
     const words = message.split(' ');
     let line = '', lines = [];
     for (const word of words) {
       const test = line + word + ' ';
-      if (test.length > 42) { lines.push(line.trim()); line = word + ' '; }
-      else line = test;
+      if (test.length > 42) { lines.push(line.trim()); line = word + ' '; } else line = test;
     }
     if (line) lines.push(line.trim());
-    lines.forEach((l, i) => ctx.fillText(l, displayCanvas.width/2, displayCanvas.height/2 - 10 + i * 22));
-
+    lines.forEach((l, i) => ctx.fillText(l, displayCanvas.width/2, displayCanvas.height/2 - 10 + i*22));
     ctx.fillStyle = '#E91E63';
     ctx.fillRect(displayCanvas.width/2 - 60, displayCanvas.height/2 + 50, 120, 38);
-    ctx.fillStyle = '#fff';
-    ctx.font = 'bold 15px Roboto, sans-serif';
+    ctx.fillStyle = '#fff'; ctx.font = 'bold 15px Roboto, sans-serif';
     ctx.fillText('Try Again', displayCanvas.width/2, displayCanvas.height/2 + 74);
-
-    // Click to retry
     displayCanvas.onclick = () => {
       displayCanvas.onclick = null;
-      // Restart scanning loop for this side
       if (side === 'front') startIDScanning('front');
       else                  startIDScanning('back');
     };
   }
 
-  // ── Liveness ──────────────────────────────────────────────
+  // ── Liveness ──
   async function startLiveness() {
-    livenessPhase = 'straight';
+    livenessPhase  = 'straight';
+    livenessStart  = null;
+    livenessActive = true;
 
-    // Switch to FRONT camera for selfie / face liveness
+    // Reset step UI
+    ['straight','left','right'].forEach(s => {
+      const el = document.getElementById(`ls-${s}`);
+      el.classList.remove('active','done');
+      el.classList.add('active' === s ? 'active' : 'pending');
+      document.getElementById(`lc-${s}`).classList.add('hidden');
+    });
+    // Re-set step 1 active only
+    document.getElementById('ls-straight').classList.remove('pending');
+    document.getElementById('ls-straight').classList.add('active');
+    document.getElementById('ls-left').classList.add('pending');
+    document.getElementById('ls-right').classList.add('pending');
+
+    updateLivenessPrompt('Look straight at the camera', 'Hold still for a moment');
+    document.getElementById('livenessProgressBar').style.width = '0%';
+
     const s = await switchCamera('user');
     if (!s) return;
 
-    livenessVideoEl = document.createElement('video');
+    livenessVideoEl             = document.createElement('video');
     livenessVideoEl.autoplay    = true;
     livenessVideoEl.playsInline = true;
     livenessVideoEl.muted       = true;
-    livenessVideoEl.srcObject   = stream;  // stream is now the front camera
+    livenessVideoEl.srcObject   = stream;
     await livenessVideoEl.play().catch(() => {});
 
-    // Seed liveness canvas dimensions so the container gets height immediately
     await new Promise(resolve => {
       if (livenessVideoEl.readyState >= 1) { resolve(); return; }
       livenessVideoEl.addEventListener('loadedmetadata', resolve, { once: true });
     });
+
     const lc = document.getElementById('livenessCanvas');
     lc.width  = livenessVideoEl.videoWidth  || 640;
     lc.height = livenessVideoEl.videoHeight || 480;
-    document.getElementById('livenessPrompt').textContent = 'Centre your face in the oval';
 
-    // Start sending frames to MediaPipe
     async function sendFrame() {
-      if (currentPhase !== 3) return;
+      if (!livenessActive || currentPhase !== 3) return;
       if (livenessVideoEl.readyState >= 2) {
-        try {
-          await faceMesh.send({ image: livenessVideoEl });
-        } catch (e) {}
+        try { await faceMesh.send({ image: livenessVideoEl }); } catch {}
       }
       livenessRafId = requestAnimationFrame(sendFrame);
     }
     sendFrame();
   }
 
+  function updateLivenessPrompt(main, sub) {
+    document.getElementById('livenessPromptBigText').textContent = main;
+    document.getElementById('livenessPromptBigSub').textContent  = sub || '';
+  }
+
   function onFaceMeshResults(results) {
-    if (currentPhase !== 3) return;
+    if (currentPhase !== 3 || !livenessActive) return;
 
     const canvas = document.getElementById('livenessCanvas');
     const ctx    = canvas.getContext('2d');
     const vW = livenessVideoEl.videoWidth  || 640;
     const vH = livenessVideoEl.videoHeight || 480;
-    if (canvas.width !== vW || canvas.height !== vH) {
-      canvas.width  = vW;
-      canvas.height = vH;
-    }
+    if (canvas.width !== vW || canvas.height !== vH) { canvas.width = vW; canvas.height = vH; }
     ctx.drawImage(livenessVideoEl, 0, 0, vW, vH);
 
     if (!results.multiFaceLandmarks || results.multiFaceLandmarks.length === 0) {
-      document.getElementById('livenessPrompt').textContent = 'No face detected — move closer';
+      updateLivenessPrompt('No face detected', 'Move closer to the camera');
       return;
     }
 
-    const landmarks = results.multiFaceLandmarks[0];
-    const nose      = landmarks[1];   // nose tip
-    const leftCheek = landmarks[234]; // left cheek
-    const rightCheek= landmarks[454]; // right cheek
+    const landmarks  = results.multiFaceLandmarks[0];
+    const nose       = landmarks[1];
+    const leftCheek  = landmarks[234];
+    const rightCheek = landmarks[454];
+    const faceRatio  = (nose.x - leftCheek.x) / ((rightCheek.x - leftCheek.x) || 0.001);
+    const now        = Date.now();
 
-    // faceRatio: 0 = fully left, 1 = fully right, 0.5 = centred
-    const faceRatio = (nose.x - leftCheek.x) / ((rightCheek.x - leftCheek.x) || 0.001);
-
-    const now = Date.now();
+    const stepHold = LIVENESS_HOLD_MS[livenessPhase] || 1000;
+    const bar      = document.getElementById('livenessProgressBar');
 
     if (livenessPhase === 'straight') {
-      if (faceRatio >= 0.35 && faceRatio <= 0.65) {
+      const ok = faceRatio >= 0.35 && faceRatio <= 0.65;
+      updateLivenessPrompt('Step 1 — Look straight at the camera', ok ? 'Hold still…' : 'Centre your face in the oval');
+      if (ok) {
         if (!livenessStart) livenessStart = now;
-        if (now - livenessStart >= LIVENESS_HOLD_MS.straight) {
-          completeLivenessStep('straight');
-        }
+        bar.style.width = Math.min((now - livenessStart) / stepHold * 100, 100) + '%';
+        if (now - livenessStart >= stepHold) completeLivenessStep('straight');
       } else {
-        livenessStart = null;
+        livenessStart = null; bar.style.width = '0%';
       }
-      document.getElementById('livenessPrompt').textContent = 'Look straight at the camera';
+
     } else if (livenessPhase === 'left') {
-      if (faceRatio > 0.68) {
+      // faceRatio > 0.68 means user has turned nose toward their left (mirrored)
+      const ok = faceRatio > 0.68;
+      updateLivenessPrompt('Step 2 — Slowly turn head LEFT ←', ok ? 'Hold it there…' : 'Keep turning left until the step turns green');
+      if (ok) {
         if (!livenessStart) livenessStart = now;
-        if (now - livenessStart >= LIVENESS_HOLD_MS.left) {
-          completeLivenessStep('left');
-        }
+        bar.style.width = Math.min((now - livenessStart) / stepHold * 100, 100) + '%';
+        if (now - livenessStart >= stepHold) completeLivenessStep('left');
       } else {
-        livenessStart = null;
+        livenessStart = null; bar.style.width = '0%';
       }
-      document.getElementById('livenessPrompt').textContent = 'Now turn your head LEFT';
+
     } else if (livenessPhase === 'right') {
-      if (faceRatio < 0.32) {
+      // faceRatio < 0.32 means user has turned nose toward their right (mirrored)
+      // const ok = faceRatio < 0.32;
+      // updateLivenessPrompt('Step 3 — Slowly turn head RIGHT →', ok ? 'Hold it there…' : 'Keep turning right until the step turns green');
+      // if (ok) {
+      //   if (!livenessStart) livenessStart = now;
+      //   bar.style.width = Math.min((now - livenessStart) / stepHold * 100, 100) + '%';
+      //   if (now - livenessStart >= stepHold) completeLivenessStep('right');
+      // } else {
+      //   livenessStart = null; bar.style.width = '0%';
+      // }
+      const ok = faceRatio < 0.32;
+      updateLivenessPrompt('Step 3 — Slowly turn head RIGHT →', ok ? 'Hold it there…' : 'Keep turning right until the step turns green');
+      if (ok) {
         if (!livenessStart) livenessStart = now;
-        if (now - livenessStart >= LIVENESS_HOLD_MS.right) {
-          completeLivenessStep('right');
+        bar.style.width = Math.min((now - livenessStart) / stepHold * 100, 100) + '%';
+        if (now - livenessStart >= stepHold) completeLivenessStep('right');
+      } else {
+        livenessStart = null; bar.style.width = '0%';
+      }
+
+    } else if (livenessPhase === 'center') {
+      // Final step: user must face forward again before selfie is taken
+      const ok = faceRatio >= 0.35 && faceRatio <= 0.65;
+      updateLivenessPrompt('Almost done! Face the camera directly', ok ? 'Hold still — taking selfie…' : 'Look straight ahead to take your selfie');
+      if (ok) {
+        if (!livenessStart) livenessStart = now;
+        bar.style.width = Math.min((now - livenessStart) / 1000 * 100, 100) + '%';
+        if (now - livenessStart >= 1000) {
+          livenessPhase  = 'done';
+          livenessActive = false;
+          cancelAnimationFrame(livenessRafId);
+          updateLivenessPrompt('✓ Liveness verified!', 'Capturing your selfie…');
+          document.getElementById('livenessProgressBar').style.width = '100%';
+          setTimeout(captureSelfie, 600);
         }
       } else {
-        livenessStart = null;
+        livenessStart = null; bar.style.width = '0%';
       }
-      document.getElementById('livenessPrompt').textContent = 'Now turn your head RIGHT';
     }
   }
 
   function completeLivenessStep(step) {
     livenessStart = null;
+    document.getElementById(`ls-${step}`).classList.remove('active'); 
+    document.getElementById(`ls-${step}`).classList.add('done');
+    document.getElementById(`lc-${step}`).classList.remove('hidden');
+    document.getElementById('livenessProgressBar').style.width = '0%';
 
-    const stepEl  = document.getElementById(`ls-${step}`);
-    const checkEl = document.getElementById(`lc-${step}`);
-    stepEl.classList.remove('active');
-    stepEl.classList.add('done');
-    checkEl.classList.remove('hidden');
+    const seq    = ['straight','left','right'];
+    const nextIdx = seq.indexOf(step) + 1;
 
-    const sequence = ['straight', 'left', 'right'];
-    const nextIdx  = sequence.indexOf(step) + 1;
-
-    if (nextIdx < sequence.length) {
-      livenessPhase = sequence[nextIdx];
+    if (nextIdx < seq.length) {
+      livenessPhase = seq[nextIdx];
       const nextEl  = document.getElementById(`ls-${livenessPhase}`);
+      nextEl.classList.remove('pending');
       nextEl.classList.add('active');
     } else {
-      // All done — capture selfie
-      livenessPhase = 'done';
-      cancelAnimationFrame(livenessRafId);
-      document.getElementById('livenessPrompt').textContent = '✓ Liveness verified!';
-      captureSelfie();
+      // livenessPhase  = 'done';
+      // livenessActive = false;
+      // cancelAnimationFrame(livenessRafId);
+      // updateLivenessPrompt('✓ Liveness verified!', 'Capturing your selfie…');
+      // document.getElementById('livenessProgressBar').style.width = '100%';
+      // setTimeout(captureSelfie, 600);
+       livenessPhase = 'center';
+      updateLivenessPrompt('Almost done! Face the camera directly →', 'Look straight ahead to take your selfie');
+      document.getElementById('livenessProgressBar').style.width = '0%';
     }
   }
 
   function captureSelfie() {
     const canvas = document.getElementById('livenessCanvas');
-    canvas.toBlob(blob => {
-      selfieBlob = blob;
-      goToPhase(4);
-    }, 'image/jpeg', 0.92);
+    canvas.toBlob(blob => { selfieBlob = blob; goToPhase(4); }, 'image/jpeg', 0.92);
   }
 
-  // ── Review & Submit ───────────────────────────────────────────
+  // ── Review & Submit ──
   function showReview() {
     if (idFrontBlob) document.getElementById('previewFront').src  = URL.createObjectURL(idFrontBlob);
     if (idBackBlob)  document.getElementById('previewBack').src   = URL.createObjectURL(idBackBlob);
@@ -946,80 +1104,51 @@
       alert('Missing captured images. Please go back and complete all steps.');
       return;
     }
-
     btn.disabled = true;
     btn.innerHTML = '<i class="ri-loader-4-line animate-spin mr-2"></i>Uploading…';
 
-    const progressWrap = document.getElementById('uploadProgress');
-    const progressBar  = document.getElementById('uploadBar');
-    const progressLabel= document.getElementById('uploadLabel');
+    const progressWrap  = document.getElementById('uploadProgress');
+    const progressBar   = document.getElementById('uploadBar');
+    const progressLabel = document.getElementById('uploadLabel');
     progressWrap.classList.remove('hidden');
 
     const fd = new FormData();
     fd.append('livenessPassed', 'true');
-    fd.append('idFront',  idFrontBlob,  'id_front.jpg');
-    fd.append('idBack',   idBackBlob,   'id_back.jpg');
-    fd.append('selfie',   selfieBlob,   'selfie.jpg');
+    fd.append('idFront', idFrontBlob,  'id_front.jpg');
+    fd.append('idBack',  idBackBlob,   'id_back.jpg');
+    fd.append('selfie',  selfieBlob,   'selfie.jpg');
 
     try {
-      // Simulate progress (XHR upload progress)
       const xhr = new XMLHttpRequest();
       xhr.open('POST', '/api/verify-faceAndId');
-
-      xhr.upload.onprogress = (e) => {
+      xhr.upload.onprogress = e => {
         if (e.lengthComputable) {
-          const pct = Math.round((e.loaded / e.total) * 90);
-          progressBar.style.width  = pct + '%';
+          const pct = Math.round((e.loaded/e.total)*90);
+          progressBar.style.width = pct + '%';
           progressLabel.textContent = `Uploading… ${pct}%`;
         }
       };
-
       xhr.onload = () => {
-        progressBar.style.width   = '100%';
-        progressLabel.textContent = 'Upload complete!';
+        progressBar.style.width = '100%'; progressLabel.textContent = 'Upload complete!';
         try {
           const result = JSON.parse(xhr.responseText);
-          if (result.success) {
-            stopAllTracks();
-            window.location.href = result.redirectUrl || '/account/info?from=onboarding';
-          } else {
-            btn.disabled  = false;
-            btn.innerHTML = '<i class="ri-upload-cloud-2-line mr-2"></i>Submit Verification';
-            progressWrap.classList.add('hidden');
-            alert(result.error || 'Upload failed. Please try again.');
-          }
-        } catch (e) {
-          btn.disabled  = false;
-          btn.innerHTML = '<i class="ri-upload-cloud-2-line mr-2"></i>Submit Verification';
-          progressWrap.classList.add('hidden');
-          alert('Unexpected server response. Please try again.');
-        }
+          if (result.success) { stopAllTracks(); window.location.href = result.redirectUrl || '/account/info?from=onboarding'; }
+          else { resetSubmitBtn(btn, progressWrap); alert(result.error || 'Upload failed. Please try again.'); }
+        } catch { resetSubmitBtn(btn, progressWrap); alert('Unexpected server response. Please try again.'); }
       };
-
-      xhr.onerror = () => {
-        btn.disabled  = false;
-        btn.innerHTML = '<i class="ri-upload-cloud-2-line mr-2"></i>Submit Verification';
-        progressWrap.classList.add('hidden');
-        alert('Network error. Please check your connection and try again.');
-      };
-
+      xhr.onerror = () => { resetSubmitBtn(btn, progressWrap); alert('Network error. Please check your connection and try again.'); };
       xhr.send(fd);
-    } catch (err) {
-      btn.disabled  = false;
-      btn.innerHTML = '<i class="ri-upload-cloud-2-line mr-2"></i>Submit Verification';
-      progressWrap.classList.add('hidden');
-      alert('Failed to submit. Please try again.');
-    }
+    } catch { resetSubmitBtn(btn, progressWrap); alert('Failed to submit. Please try again.'); }
   });
 
-  // ── Bootstrap ─────────────────────────────────────────────────
-  // Start MediaPipe init immediately (doesn't need camera)
-  window.addEventListener('load', () => {
-    initText.textContent = 'Loading liveness engine…';
-    initMediaPipe();
-  });
+  function resetSubmitBtn(btn, progressWrap) {
+    btn.disabled  = false;
+    btn.innerHTML = '<i class="ri-upload-cloud-2-line mr-2"></i>Submit Verification';
+    progressWrap.classList.add('hidden');
+  }
 
-  // Stop camera on page leave
+  // ── Bootstrap ──
+  window.addEventListener('load', () => { initText.textContent = 'Loading liveness engine…'; initMediaPipe(); });
   window.addEventListener('beforeunload', stopAllTracks);
   </script>
 </body>

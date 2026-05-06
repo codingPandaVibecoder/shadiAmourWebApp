@@ -2671,10 +2671,14 @@ app.post("/api/onboarding/complete", isLoggedIn, findUser, async (req, res) => {
       await user.save();
     }
 
+    // Check if KYC verification feature is enabled
+    const siteSettings = await GlobalSeoSettings.getSettings();
+    const kycEnabled = siteSettings.kycVerificationEnabled !== false; // default true
+
     // No server-side phone validation - handled on client side
     res.json({
       success: true,
-      redirectUrl: `/verify-identity`,
+      redirectUrl: kycEnabled ? `/verify-identity` : `/account/info?from=onboarding`,
     });
   } catch (error) {
     console.error("Complete onboarding error:", error);
@@ -2742,6 +2746,21 @@ app.post(
 
 // ── Admin: KYC verification review ──────────────────────────────────────────
 
+// Toggle KYC verification feature on/off
+app.post("/api/admin/settings/toggle-kyc-verification", requireAdminOrModerator, async (req, res) => {
+  try {
+    const { enabled } = req.body;
+    const boolValue = enabled === true || enabled === "true";
+    const settings = await GlobalSeoSettings.getSettings();
+    settings.kycVerificationEnabled = boolValue;
+    await settings.save();
+    return res.json({ success: true, kycVerificationEnabled: boolValue });
+  } catch (error) {
+    console.error("Toggle KYC error:", error);
+    return res.status(500).json({ success: false, error: "Failed to update setting." });
+  }
+});
+
 app.get("/admin/verifications", requireAdminOrModerator, async (req, res) => {
   try {
     const PAGE_SIZE = 20;
@@ -2770,6 +2789,8 @@ app.get("/admin/verifications", requireAdminOrModerator, async (req, res) => {
     const faceOnly       = await User.countDocuments({ idVerified: false, faceVerified: true });
     const unverified     = await User.countDocuments({ idVerified: false, faceVerified: false });
 
+    const siteSettings = await GlobalSeoSettings.getSettings();
+
     res.render("admin/verifications", {
       users,
       stats: { totalSubmitted, bothVerified, idOnly, faceOnly, unverified },
@@ -2778,6 +2799,7 @@ app.get("/admin/verifications", requireAdminOrModerator, async (req, res) => {
       currentPage,
       totalPages: Math.ceil(totalCount / PAGE_SIZE),
       isAdmin: req.session.isAdmin || false,
+      kycVerificationEnabled: siteSettings.kycVerificationEnabled !== false,
     });
   } catch (error) {
     console.error("Admin verifications error:", error);
@@ -2789,6 +2811,7 @@ app.get("/admin/verifications", requireAdminOrModerator, async (req, res) => {
       currentPage: 1,
       totalPages: 1,
       isAdmin: req.session.isAdmin || false,
+      kycVerificationEnabled: true,
     });
   }
 });
@@ -5503,11 +5526,11 @@ app.get("/admin/requests", requireAdminOrModerator, async (req, res) => {
     const requests = await Request.find(filter)
       .populate(
         "from",
-        "username name gender age city country createdAt profileSlug"
+        "username name gender age city country createdAt profileSlug contact"
       )
       .populate(
         "to",
-        "username name gender age city country createdAt profileSlug"
+        "username name gender age city country createdAt profileSlug contact"
       )
       .sort({ createdAt: -1 });
 
