@@ -72,6 +72,8 @@ const {
 const { requireSeoAdmin, requireSeoAdminApi } = require("./middlewares/seoAdminAuth");
 const GlobalSeoSettings = require("./models/GlobalSeoSettings");
 const Podcast = require("./models/Podcast");
+const AdMedia = require("./models/AdMedia");
+const TeamMember = require("./models/TeamMember");
 const http = require("http");
 const mongoose = require("mongoose");
 const express = require("express");
@@ -265,6 +267,45 @@ const kycStorage = new CloudinaryStorage({
   },
 });
 const kycUpload = multer({ storage: kycStorage });
+
+// Cloudinary storage for ad media (images + videos)
+const adMediaStorage = new CloudinaryStorage({
+  cloudinary,
+  params: async (req, file) => {
+    const uniqueId = `ad_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
+    const isVideo = file.mimetype.startsWith("video/");
+    return {
+      folder: "ad_media",
+      public_id: uniqueId,
+      resource_type: "auto",
+      allowed_formats: isVideo ? ["mp4", "mov", "webm", "avi"] : ["jpg", "jpeg", "png", "webp"],
+      ...(isVideo ? {} : { transformation: [{ quality: "auto:good" }, { fetch_format: "auto" }] }),
+    };
+  },
+});
+const adMediaUpload = multer({
+  storage: adMediaStorage,
+  limits: { fileSize: 100 * 1024 * 1024 }, // 100 MB for videos
+});
+
+// Cloudinary storage for team member photos
+const teamPhotoStorage = new CloudinaryStorage({
+  cloudinary,
+  params: async (req, file) => {
+    const uniqueId = `team_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
+    return {
+      folder: "team_photos",
+      public_id: uniqueId,
+      allowed_formats: ["jpg", "jpeg", "png", "webp"],
+      transformation: [
+        { quality: "auto:good" },
+        { fetch_format: "auto" },
+        { width: 400, height: 400, crop: "fill", gravity: "face" },
+      ],
+    };
+  },
+});
+const teamPhotoUpload = multer({ storage: teamPhotoStorage });
 
 const {
   generateVerificationCode,
@@ -6724,6 +6765,166 @@ app.patch("/admin/podcasts/:id/toggle", requireAdminOnly, async (req, res) => {
   }
 });
 
+// ============================================
+// ADMIN: AD MEDIA ROUTES
+// ============================================
+app.get("/admin/ads", requireAdminOnly, async (req, res) => {
+  try {
+    const ads = await AdMedia.find().sort({ order: 1, createdAt: -1 });
+    res.render("admin/ads", { ads, user: req.session.user });
+  } catch (err) {
+    console.error("Admin ads error:", err);
+    res.status(500).send("Error loading ads");
+  }
+});
+
+app.post("/admin/ads", requireAdminOnly, adMediaUpload.single("media"), async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ success: false, error: "No file uploaded" });
+    }
+    const isVideo = req.file.mimetype.startsWith("video/");
+    const ad = new AdMedia({
+      url: req.file.path,
+      publicId: req.file.filename,
+      mediaType: isVideo ? "video" : "image",
+      caption: (req.body.caption || "").trim().slice(0, 200),
+      order: parseInt(req.body.order) || 0,
+      isPublished: req.body.isPublished !== "false",
+      addedBy: req.session.user?.username || "admin",
+    });
+    await ad.save();
+    res.json({ success: true, ad });
+  } catch (err) {
+    console.error("Upload ad media error:", err);
+    res.status(500).json({ success: false, error: "Failed to upload media" });
+  }
+});
+
+app.delete("/admin/ads/:id", requireAdminOnly, async (req, res) => {
+  try {
+    const ad = await AdMedia.findById(req.params.id);
+    if (!ad) return res.status(404).json({ error: "Ad not found" });
+    // Delete from Cloudinary
+    try {
+      await cloudinary.uploader.destroy(ad.publicId, { resource_type: ad.mediaType === "video" ? "video" : "image" });
+    } catch (cdnErr) {
+      console.error("Cloudinary delete error:", cdnErr);
+    }
+    await AdMedia.findByIdAndDelete(req.params.id);
+    res.json({ success: true });
+  } catch (err) {
+    console.error("Delete ad error:", err);
+    res.status(500).json({ error: "Failed to delete ad" });
+  }
+});
+
+app.patch("/admin/ads/:id/toggle", requireAdminOnly, async (req, res) => {
+  try {
+    const ad = await AdMedia.findById(req.params.id);
+    if (!ad) return res.status(404).json({ error: "Ad not found" });
+    ad.isPublished = !ad.isPublished;
+    await ad.save();
+    res.json({ success: true, ad });
+  } catch (err) {
+    console.error("Toggle ad error:", err);
+    res.status(500).json({ error: "Failed to toggle ad" });
+  }
+});
+
+// ============================================
+// ADMIN: TEAM MEMBER ROUTES
+// ============================================
+app.get("/admin/team", requireAdminOnly, async (req, res) => {
+  try {
+    const members = await TeamMember.find().sort({ order: 1, createdAt: -1 });
+    res.render("admin/team", { members, user: req.session.user });
+  } catch (err) {
+    console.error("Admin team error:", err);
+    res.status(500).send("Error loading team");
+  }
+});
+
+app.post("/admin/team", requireAdminOnly, teamPhotoUpload.single("photo"), async (req, res) => {
+  try {
+    const { name, designation, bio, order } = req.body;
+    if (!name || !designation) {
+      return res.status(400).json({ success: false, error: "Name and designation are required" });
+    }
+    const member = new TeamMember({
+      name: name.trim(),
+      designation: designation.trim(),
+      bio: (bio || "").trim().slice(0, 500),
+      order: parseInt(order) || 0,
+      photo: req.file ? { url: req.file.path, publicId: req.file.filename } : {},
+      addedBy: req.session.user?.username || "admin",
+    });
+    await member.save();
+    res.json({ success: true, member });
+  } catch (err) {
+    console.error("Add team member error:", err);
+    res.status(500).json({ success: false, error: "Failed to add team member" });
+  }
+});
+
+app.delete("/admin/team/:id", requireAdminOnly, async (req, res) => {
+  try {
+    const member = await TeamMember.findById(req.params.id);
+    if (!member) return res.status(404).json({ error: "Team member not found" });
+    if (member.photo?.publicId) {
+      try {
+        await cloudinary.uploader.destroy(member.photo.publicId);
+      } catch (cdnErr) {
+        console.error("Cloudinary delete error:", cdnErr);
+      }
+    }
+    await TeamMember.findByIdAndDelete(req.params.id);
+    res.json({ success: true });
+  } catch (err) {
+    console.error("Delete team member error:", err);
+    res.status(500).json({ error: "Failed to delete team member" });
+  }
+});
+
+app.patch("/admin/team/:id/toggle", requireAdminOnly, async (req, res) => {
+  try {
+    const member = await TeamMember.findById(req.params.id);
+    if (!member) return res.status(404).json({ error: "Team member not found" });
+    member.isPublished = !member.isPublished;
+    await member.save();
+    res.json({ success: true, member });
+  } catch (err) {
+    console.error("Toggle team member error:", err);
+    res.status(500).json({ error: "Failed to toggle team member" });
+  }
+});
+
+// ============================================
+// PUBLIC: /our-ads PAGE
+// ============================================
+app.get("/our-ads", async (req, res) => {
+  try {
+    const ads = await AdMedia.find({ isPublished: true }).sort({ order: 1, createdAt: -1 });
+    res.render("our-ads", { user: req.session.user || null, ads });
+  } catch (err) {
+    console.error("Our Ads page error:", err);
+    res.status(500).send("Error loading page");
+  }
+});
+
+// ============================================
+// PUBLIC: /our-team PAGE
+// ============================================
+app.get("/our-team", async (req, res) => {
+  try {
+    const members = await TeamMember.find({ isPublished: true }).sort({ order: 1, createdAt: -1 });
+    res.render("our-team", { user: req.session.user || null, members });
+  } catch (err) {
+    console.error("Our Team page error:", err);
+    res.status(500).send("Error loading page");
+  }
+});
+
 // **FIX**: Blog image upload route — uses dedicated blogImageUpload to avoid user_profiles/ folder
 app.post("/api/upload-blog-image", requireAdminOnly, blogImageUpload.single('image'), async (req, res) => {
   try {
@@ -7496,6 +7697,16 @@ app.get("/sitemap.xml", async (req, res) => {
     <loc>https://damourmuslim.com/pricing</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://damourmuslim.com/our-team</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://damourmuslim.com/our-ads</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
   </url>
   <url>
     <loc>https://damourmuslim.com/company-details</loc>
