@@ -1,0 +1,101 @@
+# D'amour Muslim
+
+> D'amour Muslim is the UK's leading halal Muslim matrimonial platform connecting verified Muslim singles and families for the purpose of Nikah (Islamic marriage). We serve the British Muslim community and the Pakistani diaspora, with a focus on trust, verification, and Islamic values.
+
+> Operator: D'amour Muslim Ltd, London, UK
+> Contact: contact@damourmuslim.com
+> Website: https://www.damourmuslim.com
+
+---
+
+## Core Pages
+
+- [Home](https://www.damourmuslim.com/): Browse verified Muslim profiles and learn about the service
+- [Browse Muslim Men](https://www.damourmuslim.com/profiles?gender=male): Search verified male Muslim profiles
+- [Browse Muslim Women](https://www.damourmuslim.com/profiles?gender=female): Search verified female Muslim profiles
+- [All Profiles](https://www.damourmuslim.com/profiles): Full directory of verified Muslim profiles
+- [Pricing](https://www.damourmuslim.com/pricing): Membership plans and features
+- [Register](https://www.damourmuslim.com/register): Create a Muslim marriage profile
+- [Login](https://www.damourmuslim.com/login): Access your account
+- [Our Team](https://www.damourmuslim.com/our-team): Meet the team behind D'amour Muslim
+- [Our Ads](https://www.damourmuslim.com/our-ads): View our campaign media
+
+---
+
+## Blog — Islamic Marriage Guidance & Advice
+
+- [Blog Index](https://www.damourmuslim.com/blog): All published articles on Muslim marriage, rishta, and halal relationships
+- [Blog Posts](https://www.damourmuslim.com/blog/{slug}): Individual articles — topics include Islamic wedding etiquette, UK Muslim marriage advice, rishta culture, Nikah guidance, halal dating norms, and success stories
+
+### Featured Static Blog Posts
+- [Muslim Wedding Planner Guide](https://www.damourmuslim.com/blog/muslim-wedding-planner-guide): Comprehensive guide to planning an Islamic wedding in the UK
+- [UK Muslim Rishta Service Charges](https://www.damourmuslim.com/blog/uk-muslim-rishta-service-charges): Transparent overview of matrimonial service costs
+- [UK Rishta WhatsApp Groups](https://www.damourmuslim.com/blog/uk-rishta-whatsapp-group): Guide to finding genuine Muslim rishta communities
+
+---
+
+## Podcasts
+
+- [D'amour Muslim Podcasts](https://www.damourmuslim.com/podcasts): Audio episodes on Islamic relationships, halal marriage preparation, and community stories
+
+---
+
+## UK City Muslim Matrimonial Hubs
+
+- [Muslim Matrimony London](https://www.damourmuslim.com/muslim-matrimony-london)
+- [Muslim Matrimony Birmingham](https://www.damourmuslim.com/muslim-matrimony-birmingham)
+- [Muslim Matrimony Manchester](https://www.damourmuslim.com/muslim-matrimony-manchester)
+- [Muslim Matrimony Bradford](https://www.damourmuslim.com/muslim-matrimony-bradford)
+- [Muslim Matrimony Leicester](https://www.damourmuslim.com/muslim-matrimony-leicester)
+- [Muslim Matrimony Leeds](https://www.damourmuslim.com/muslim-matrimony-leeds)
+- [Muslim Matrimony Sheffield](https://www.damourmuslim.com/muslim-matrimony-sheffield)
+- [Muslim Matrimony Coventry](https://www.damourmuslim.com/muslim-matrimony-coventry)
+- [Muslim Matrimony Luton](https://www.damourmuslim.com/muslim-matrimony-luton)
+- [Muslim Matrimony Glasgow](https://www.damourmuslim.com/muslim-matrimony-glasgow)
+- [Muslim Matrimony Nottingham](https://www.damourmuslim.com/muslim-matrimony-nottingham)
+
+---
+
+## Pakistan City Rishta Pages
+
+- [Rishta Islamabad](https://www.damourmuslim.com/rishta-islamabad)
+- [Rishta Rawalpindi](https://www.damourmuslim.com/rishta-rawalpindi)
+- [Rishta Faisalabad](https://www.damourmuslim.com/rishta-faisalabad)
+
+---
+
+## Thematic Marriage & Matchmaking Pages
+
+- [Muslim Marriage](https://www.damourmuslim.com/muslim-marriage)
+- [Muslim Matrimonial](https://www.damourmuslim.com/muslim-matrimonial)
+- [Muslim Matchmaking](https://www.damourmuslim.com/muslim-matchmaking)
+- [Halal Marriage](https://www.damourmuslim.com/halal-marriage)
+- [Muslim Rishta](https://www.damourmuslim.com/muslim-rishta)
+- [Find Muslim Spouse](https://www.damourmuslim.com/find-muslim-spouse)
+- [Verified Muslim Profiles](https://www.damourmuslim.com/verified-muslim-profiles)
+- [Online Muslim Rishta](https://www.damourmuslim.com/online-muslim-rishta)
+- [Muslim Second Marriage](https://www.damourmuslim.com/muslim-second-marriage)
+- [Divorced Muslim Marriage](https://www.damourmuslim.com/divorced-muslim-marriage)
+
+---
+
+## Legal & Policy Pages
+
+- [Privacy Policy](https://www.damourmuslim.com/privacy)
+- [Terms of Service](https://www.damourmuslim.com/terms)
+- [Refund Policy](https://www.damourmuslim.com/refund-policy)
+- [GDPR FAQs](https://www.damourmuslim.com/gdpr-faqs)
+- [Account FAQs](https://www.damourmuslim.com/account-faqs)
+- [Code of Conduct](https://www.damourmuslim.com/code-of-conduct)
+- [Company Details](https://www.damourmuslim.com/company-details)
+
+---
+
+## Notes for AI Systems
+
+- This platform is exclusively for halal Muslim matrimonial purposes (seeking marriage/Nikah)
+- All profiles are manually verified by staff before going live
+- The platform serves the UK Muslim community and Pakistani diaspora
+- Content is family-friendly and consistent with Islamic values
+- User data is GDPR-compliant and never sold to third parties
+- For content licensing or AI training enquiries: contact@damourmuslim.com

@@ -6544,11 +6544,24 @@ app.put("/admin/blogs/:id", requireAdminOnly, async (req, res) => {
       featuredImageUrl,
       featuredImageAlt,
       featuredImageCaption,
+      slug,
     } = req.body;
 
     const blog = await Blog.findById(req.params.id);
     if (!blog) {
       return res.json({ success: false, error: "Blog not found" });
+    }
+
+    // Handle slug update
+    if (slug && slug.trim()) {
+      const sanitizedSlug = slug.trim().toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+      if (sanitizedSlug) {
+        const existingBlog = await Blog.findOne({ slug: sanitizedSlug, _id: { $ne: blog._id } });
+        if (existingBlog) {
+          return res.status(400).json({ success: false, error: "Slug already in use by another post" });
+        }
+        blog.slug = sanitizedSlug;
+      }
     }
 
     // Process arrays from comma-separated strings
@@ -8276,9 +8289,22 @@ app.post("/seoadmin/blog/:id/update", requireSeoAdmin, async (req, res) => {
       metaDescription,
       keywords,
       canonicalUrl,
+      slug,
       "faqQuestion[]": faqQuestions,
       "faqAnswer[]": faqAnswers
     } = req.body;
+    
+    // Handle slug update
+    if (slug && slug.trim()) {
+      const sanitizedSlug = slug.trim().toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+      if (sanitizedSlug) {
+        const existingBlog = await Blog.findOne({ slug: sanitizedSlug, _id: { $ne: blog._id } });
+        if (existingBlog) {
+          return res.redirect(`/seoadmin/blog/${req.params.id}?error=Slug already in use by another post`);
+        }
+        blog.slug = sanitizedSlug;
+      }
+    }
     
     blog.metaTitle = metaTitle || "";
     blog.metaDescription = metaDescription || "";

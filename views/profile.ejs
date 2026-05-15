@@ -417,13 +417,6 @@
                   </h1>
                 </div>
                 <!-- Add this right after the name and verification section -->
-                <!-- <div class="text-center mb-6">
-                  <button id="shareProfileBtn" class="inline-flex items-center gap-2 px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg transition-all duration-300 shadow-md">
-                    <i id="shareIcon" class="ri-share-line"></i>
-                    <span id="shareText">Share Profile</span>
-                  </button>
-                </div> -->
-                <!-- Add this right after the name and verification section -->
                 <div class="text-center mb-6">
                   <div class="flex items-center justify-center gap-3">
                     <% if (user && user._id && user._id.toString()===profile._id.toString()) { %>
@@ -2341,9 +2334,9 @@
     <div style="background: ${backgroundGradient}; border-radius: 14px; padding: 12px; margin-bottom: 6px; box-shadow: 0 4px 12px rgba(233,30,99,0.12); display: flex; align-items: center; justify-content: space-between;">
       <!-- Left Side - Profile Info -->
       <div style="flex: 1; text-align: left;">
-        <h1 style="margin: 0 0 6px 0; font-size: 1.4rem; font-weight: 800; color: #1a1a1a; letter-spacing: 0.01em;">
+        <div style="margin: 0 0 6px 0; font-size: 1.4rem; font-weight: 800; color: #1a1a1a; letter-spacing: 0.01em;">
           ${profileData.username} • ${profileData.age ? profileData.age + " years" : ""} • ${profileData.gender ? profileData.gender.charAt(0).toUpperCase() + profileData.gender.slice(1) : ""}
-        </h1>
+        </div>
         <p style="margin: 0; font-size: 1rem; font-weight: 700; color: #E91E63;">
           📞 7454516156
         </p>
