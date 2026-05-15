@@ -1,8 +1,12 @@
 <header class="fixed top-0 left-0 right-0 bg-white material-shadow z-50">
-  <div class="flex items-center justify-between px-6 h-16">
-    <div class="flex items-center">
+  <div class="flex items-center justify-between px-2 h-16 lg:px-6">
+    <div class="flex items-center gap-3">
+      <!-- Mobile hamburger -->
+      <button id="openMobileNav" class="p-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors" aria-label="Open menu">
+        <i class="ri-menu-line text-xl"></i>
+      </button>
       <a href="/" class="hover:opacity-80 transition-opacity duration-300 cursor-pointer flex items-center">
-        <img src="/images/websitelogo.svg" alt="D'amour Muslim" class="h-9 w-auto" width="200" height="36">
+        <img src="/images/websitelogo.svg" onload="this.style.opacity='1'" alt="D'amour Muslim" class="h-10 md:h-9 w-auto" width="200" height="36">
       </a>
     </div>
     <nav class="hidden md:flex items-center gap-8">
@@ -21,6 +25,10 @@
       <a href="/podcasts" class="flex items-center gap-2 px-4 py-2 text-gray-700 hover:text-primary transition-all duration-300 font-medium">
         <i class="ri-mic-line"></i>
         <span>Podcasts</span>
+      </a>
+      <a href="/islamic-faqs" class="flex items-center gap-2 px-4 py-2 text-gray-700 hover:text-primary transition-all duration-300 font-medium">
+        <i class="ri-question-answer-line"></i>
+        <span>Islamic FAQs</span>
       </a>
     </nav>
     <div class="flex items-center gap-4">
@@ -74,7 +82,7 @@
       <div class="relative">
         <button id="accountDropdown" class="flex items-center gap-2 px-4 py-2 text-gray-700 hover:text-primary transition-all duration-300">
           <i class="ri-user-line"></i>
-          <span>Account</span>
+          <span class="hidden sm:inline">Account</span>
           <i class="ri-arrow-down-s-line"></i>
         </button>
         <div id="dropdownMenu" class="absolute right-0 mt-2 w-48 bg-white rounded-xl material-shadow border border-gray-100 py-2 hidden">
@@ -108,10 +116,30 @@
       </div>
       <% } else { %>
       <!-- Not logged in - show login/signup buttons -->
-      <a href="/login" data-track="true" data-event-name="nav_login_click" data-category="navigation" data-label="Nav Login" class="px-6 py-2 border-2 border-primary text-primary hover:bg-primary hover:text-white transition-all duration-300 !rounded-button whitespace-nowrap ripple">
+      <!-- Account dropdown for mobile -->
+      <div class="relative">
+        <button id="accountDropdown" class="flex items-center gap-2 px-4 py-2 text-gray-700 hover:text-primary transition-all duration-300">
+          <i class="ri-user-line"></i>
+          <span>Account</span>
+          <i class="ri-arrow-down-s-line"></i>
+        </button>
+        <div id="dropdownMenu" class="absolute right-0 mt-2 w-48 bg-white rounded-xl material-shadow border border-gray-100 py-2 hidden">
+          <a href="/login" class="flex items-center gap-3 px-4 py-2 text-gray-700 hover:bg-gray-50 transition-colors duration-200">
+            <i class="ri-login-box-line text-primary"></i>
+            <span>Login</span>
+          </a>
+          <a href="/register" class="flex items-center gap-3 px-4 py-2 text-gray-700 hover:bg-gray-50 transition-colors duration-200">
+            <i class="ri-user-add-line text-primary"></i>
+            <span>Sign Up</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Login/Signup buttons for desktop -->
+      <a href="/login" data-track="true" data-event-name="nav_login_click" data-category="navigation" data-label="Nav Login" class="hidden md:inline-block px-6 py-2 border-2 border-primary text-primary hover:bg-primary hover:text-white transition-all duration-300 !rounded-button whitespace-nowrap ripple">
         Login
       </a>
-      <a href="/register" data-track="true" data-event-name="nav_signup_click" data-category="navigation" data-label="Nav Sign Up" class="px-6 py-2 bg-primary text-white hover:bg-pink-600 transition-all duration-300 !rounded-button whitespace-nowrap ripple material-shadow">
+      <a href="/register" data-track="true" data-event-name="nav_signup_click" data-category="navigation" data-label="Nav Sign Up" class="hidden md:inline-block px-6 py-2 bg-primary text-white hover:bg-pink-600 transition-all duration-300 !rounded-button whitespace-nowrap ripple material-shadow">
         Sign Up
       </a>
       <% } %>
@@ -119,8 +147,93 @@
   </div>
 </header>
 
+<!-- Mobile Navigation Overlay -->
+<div id="mobileNavOverlay" style="z-index: 9998;" class="fixed inset-0 bg-black bg-opacity-50 z-[9998] opacity-0 pointer-events-none transition-opacity duration-300"></div>
+
+<!-- Mobile Navigation Drawer -->
+<aside id="mobileNavPanel" style="z-index: 9999;" class="fixed top-0 left-0 h-full w-72 bg-white z-[9999] shadow-2xl flex flex-col transform -translate-x-full transition-transform duration-300 overflow-y-auto" aria-label="Mobile navigation">
+  <!-- Drawer Header -->
+  <div class="flex items-center justify-between px-5 py-4 border-b border-gray-100">
+    <a href="/" class="flex items-center hover:opacity-80 transition-opacity" onclick="closeMobileNav()">
+      <img src="/images/websitelogo.svg" alt="D'amour Muslim" class="h-8 w-auto" width="160" height="32">
+    </a>
+    <button id="closeMobileNav" class="p-2 text-gray-500 hover:bg-gray-100 rounded-lg transition-colors" aria-label="Close menu">
+      <i class="ri-close-line text-xl"></i>
+    </button>
+  </div>
+
+  <!-- Nav Links -->
+  <nav class="flex-1 px-4 py-5 space-y-1">
+    <a href="/profiles?gender=male" class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-pink-50 hover:text-primary rounded-xl transition-colors font-medium" onclick="closeMobileNav()">
+      <i class="ri-user-line text-lg"></i>
+      <span>Browse Men</span>
+    </a>
+    <a href="/profiles?gender=female" class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-pink-50 hover:text-primary rounded-xl transition-colors font-medium" onclick="closeMobileNav()">
+      <i class="ri-user-3-line text-lg"></i>
+      <span>Browse Women</span>
+    </a>
+    <a href="/blog" class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-pink-50 hover:text-primary rounded-xl transition-colors font-medium" onclick="closeMobileNav()">
+      <i class="ri-article-line text-lg"></i>
+      <span>Blog</span>
+    </a>
+    <a href="/podcasts" class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-pink-50 hover:text-primary rounded-xl transition-colors font-medium" onclick="closeMobileNav()">
+      <i class="ri-mic-line text-lg"></i>
+      <span>Podcasts</span>
+    </a>
+    <a href="/islamic-faqs" class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-pink-50 hover:text-primary rounded-xl transition-colors font-medium" onclick="closeMobileNav()">
+      <i class="ri-question-answer-line text-lg"></i>
+      <span>Islamic FAQs</span>
+    </a>
+  </nav>
+
+  <!-- Auth Section -->
+  <div class="px-4 py-5 border-t border-gray-100 space-y-3">
+    <% if (user) { %>
+    <a href="/account" class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-xl transition-colors" onclick="closeMobileNav()">
+      <i class="ri-user-settings-line text-lg text-primary"></i>
+      <span class="font-medium">My Account</span>
+    </a>
+    <a href="/chats" class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-xl transition-colors" onclick="closeMobileNav()">
+      <i class="ri-chat-3-line text-lg text-primary"></i>
+      <span class="font-medium">Chats</span>
+    </a>
+    <a href="/logout" class="flex items-center gap-3 px-4 py-3 text-red-600 hover:bg-red-50 rounded-xl transition-colors">
+      <i class="ri-logout-box-line text-lg"></i>
+      <span class="font-medium">Logout</span>
+    </a>
+    <% } else { %>
+    <a href="/login" class="block w-full text-center px-6 py-3 border-2 border-primary text-primary hover:bg-primary hover:text-white transition-all rounded-button font-medium" onclick="closeMobileNav()">
+      Login
+    </a>
+    <a href="/register" class="block w-full text-center px-6 py-3 bg-primary text-white hover:bg-pink-600 transition-all rounded-button font-medium material-shadow" onclick="closeMobileNav()">
+      Sign Up Free
+    </a>
+    <% } %>
+  </div>
+</aside>
+
 <!-- Header dropdown JavaScript -->
 <script>
+  // ── Mobile Navigation ────────────────────────────────────────────────────
+  function openMobileNav() {
+    document.getElementById('mobileNavPanel').style.transform = 'translateX(0)';
+    document.getElementById('mobileNavOverlay').style.opacity = '1';
+    document.getElementById('mobileNavOverlay').style.pointerEvents = 'auto';
+    document.body.style.overflow = 'hidden';
+  }
+  function closeMobileNav() {
+    document.getElementById('mobileNavPanel').style.transform = 'translateX(-100%)';
+    document.getElementById('mobileNavOverlay').style.opacity = '0';
+    document.getElementById('mobileNavOverlay').style.pointerEvents = 'none';
+    document.body.style.overflow = '';
+  }
+  const openBtn = document.getElementById('openMobileNav');
+  const closeBtn = document.getElementById('closeMobileNav');
+  const overlay = document.getElementById('mobileNavOverlay');
+  if (openBtn) openBtn.addEventListener('click', openMobileNav);
+  if (closeBtn) closeBtn.addEventListener('click', closeMobileNav);
+  if (overlay) overlay.addEventListener('click', closeMobileNav);
+
   document.addEventListener('DOMContentLoaded', function() {
     const dropdownButton = document.getElementById('accountDropdown');
     const dropdownMenu = document.getElementById('dropdownMenu');

@@ -1,6 +1,7 @@
 require("dotenv").config(); // MUST be first!
 const { muslimMaleNames, muslimFemaleNames } = require("./config/seoData");
 const Blog = require("./models/Blog");
+const IslamicFAQ = require("./models/IslamicFAQ");
 function getRandomSeoName(gender) {
   if (gender === "male") {
     const randomIndex = Math.floor(Math.random() * muslimMaleNames.length);
@@ -246,6 +247,24 @@ const blogImageStorage = new CloudinaryStorage({
   },
 });
 const blogImageUpload = multer({ storage: blogImageStorage });
+
+const faqImageStorage = new CloudinaryStorage({
+  cloudinary,
+  params: async (req, file) => {
+    const uniqueId = `faq_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
+    return {
+      folder: "faq_images",
+      public_id: uniqueId,
+      allowed_formats: ["jpg", "jpeg", "png", "webp"],
+      transformation: [
+        { quality: "auto:good" },
+        { fetch_format: "auto" },
+        { if: "w_gt_1200", width: 1200, crop: "limit" },
+      ],
+    };
+  },
+});
+const faqImageUpload = multer({ storage: faqImageStorage });
 
 // KYC verification image storage
 const kycStorage = new CloudinaryStorage({
@@ -6685,6 +6704,264 @@ app.post("/admin/blogs/:id/toggle-publish", requireAdminOnly, async (req, res) =
     });
   }
 });
+// ============================================
+// ISLAMIC FAQ ROUTES (public + admin CRUD)
+// ============================================
+
+// Public: /islamic-faqs listing page
+app.get("/islamic-faqs", async (req, res) => {
+  try {
+    const { category } = req.query;
+    let query = { isPublished: true };
+    if (category && category !== "all") query.category = category;
+
+    const faqs = await IslamicFAQ.find(query)
+      .sort({ publishedAt: -1, createdAt: -1 })
+      .select("question slug category featuredImage excerpt publishedAt scholar");
+
+    const allPublished = await IslamicFAQ.find({ isPublished: true }).select("category");
+    const categories = [...new Set(allPublished.map((f) => f.category))];
+
+    res.render("islamic-faqs/index", {
+      faqs,
+      categories,
+      currentCategory: category || null,
+      user: req.session.user || null,
+    });
+  } catch (error) {
+    console.error("Islamic FAQs listing error:", error);
+    res.render("islamic-faqs/index", {
+      faqs: [],
+      categories: [],
+      currentCategory: null,
+      user: req.session.user || null,
+    });
+  }
+});
+
+// Public: /islamic-faqs/:slug detail page
+app.get("/islamic-faqs/:slug", async (req, res) => {
+  try {
+    const faq = await IslamicFAQ.findOne({ slug: req.params.slug, isPublished: true });
+    if (!faq) {
+      return res.status(404).render("404", {
+        title: "Question Not Found",
+        url: req.originalUrl,
+        user: req.session.user || null,
+      });
+    }
+
+    const related = await IslamicFAQ.find({
+      isPublished: true,
+      category: faq.category,
+      _id: { $ne: faq._id },
+    })
+      .limit(3)
+      .sort({ publishedAt: -1 })
+      .select("question slug category featuredImage excerpt");
+
+    res.render("islamic-faqs/detail", {
+      faq,
+      related,
+      user: req.session.user || null,
+    });
+  } catch (error) {
+    console.error("Islamic FAQ detail error:", error);
+    res.status(500).render("404", {
+      title: "Error",
+      url: req.originalUrl,
+      user: req.session.user || null,
+    });
+  }
+});
+
+// Admin: list FAQs
+app.get("/admin/faqs", requireAdminOnly, async (req, res) => {
+  if (!req.session.isAdmin) return res.redirect("/login");
+  try {
+    const { status, category } = req.query;
+    let query = {};
+    if (status === "published") query.isPublished = true;
+    else if (status === "draft") query.isPublished = false;
+    if (category && category !== "all") query.category = category;
+
+    const faqs = await IslamicFAQ.find(query).sort({ createdAt: -1 });
+    const total = await IslamicFAQ.countDocuments({});
+    const published = await IslamicFAQ.countDocuments({ isPublished: true });
+    const drafts = await IslamicFAQ.countDocuments({ isPublished: false });
+
+    res.render("admin/faqs", {
+      faqs,
+      stats: { total, published, drafts },
+      currentFilter: { status: status || "all", category: category || "all" },
+    });
+  } catch (error) {
+    console.error("FAQ admin listing error:", error);
+    res.render("admin/faqs", {
+      faqs: [],
+      stats: { total: 0, published: 0, drafts: 0 },
+      currentFilter: { status: "all", category: "all" },
+    });
+  }
+});
+
+// Admin: create FAQ form
+app.get("/admin/faqs/create", requireAdminOnly, (req, res) => {
+  if (!req.session.isAdmin) return res.redirect("/login");
+  res.render("admin/createFaq");
+});
+
+// Admin: create FAQ API
+app.post("/admin/faqs", requireAdminOnly, async (req, res) => {
+  if (!req.session.isAdmin) return res.status(403).json({ success: false, error: "Forbidden" });
+  try {
+    const {
+      question, answer, excerpt, category, scholar,
+      metaTitle, metaDescription, keywords, isPublished,
+      featuredImageUrl, featuredImageAlt, featuredImageCaption,
+    } = req.body;
+
+    if (!question || !answer) {
+      return res.json({ success: false, error: "Question and answer are required" });
+    }
+
+    const keywordsArray = keywords
+      ? keywords.split(",").map((k) => k.trim()).filter((k) => k)
+      : [];
+    const featuredImage = featuredImageUrl
+      ? { url: featuredImageUrl, alt: featuredImageAlt || "", caption: featuredImageCaption || "" }
+      : undefined;
+
+    const faq = new IslamicFAQ({
+      question: question.trim(),
+      answer: answer.trim(),
+      excerpt: excerpt ? excerpt.trim() : "",
+      category: category || "Spouse Search",
+      scholar: scholar ? scholar.trim() : "",
+      metaTitle: metaTitle ? metaTitle.trim() : "",
+      metaDescription: metaDescription ? metaDescription.trim() : "",
+      keywords: keywordsArray,
+      isPublished: Boolean(isPublished),
+      publishedAt: Boolean(isPublished) ? new Date() : null,
+      featuredImage,
+    });
+
+    await faq.save();
+    res.json({
+      success: true,
+      message: `FAQ ${faq.isPublished ? "published" : "saved as draft"} successfully`,
+      faq,
+    });
+  } catch (error) {
+    console.error("Create FAQ error:", error);
+    res.json({ success: false, error: `Failed to create FAQ: ${error.message}` });
+  }
+});
+
+// Admin: edit FAQ form
+app.get("/admin/faqs/:id/edit", requireAdminOnly, async (req, res) => {
+  if (!req.session.isAdmin) return res.redirect("/login");
+  try {
+    const faq = await IslamicFAQ.findById(req.params.id);
+    if (!faq) {
+      return res.status(404).render("404", {
+        title: "FAQ Not Found",
+        url: req.originalUrl,
+        user: req.session.user || null,
+      });
+    }
+    res.render("admin/editFaq", { faq });
+  } catch (error) {
+    console.error("Edit FAQ page error:", error);
+    res.redirect("/admin/faqs");
+  }
+});
+
+// Admin: update FAQ API
+app.put("/admin/faqs/:id", requireAdminOnly, async (req, res) => {
+  if (!req.session.isAdmin) return res.status(403).json({ success: false, error: "Forbidden" });
+  try {
+    const {
+      question, answer, excerpt, category, scholar,
+      metaTitle, metaDescription, keywords, isPublished,
+      featuredImageUrl, featuredImageAlt, featuredImageCaption, slug,
+    } = req.body;
+
+    const faq = await IslamicFAQ.findById(req.params.id);
+    if (!faq) return res.json({ success: false, error: "FAQ not found" });
+
+    if (slug && slug.trim()) {
+      const sanitizedSlug = slug.trim().toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+      if (sanitizedSlug) {
+        const existing = await IslamicFAQ.findOne({ slug: sanitizedSlug, _id: { $ne: faq._id } });
+        if (existing) return res.status(400).json({ success: false, error: "Slug already in use" });
+        faq.slug = sanitizedSlug;
+      }
+    }
+
+    const keywordsArray = keywords
+      ? keywords.split(",").map((k) => k.trim()).filter((k) => k)
+      : [];
+
+    if (featuredImageUrl) {
+      faq.featuredImage = {
+        url: featuredImageUrl,
+        alt: featuredImageAlt || "",
+        caption: featuredImageCaption || "",
+      };
+    }
+
+    faq.question = question.trim();
+    faq.answer = answer.trim();
+    faq.excerpt = excerpt ? excerpt.trim() : "";
+    faq.category = category || "Spouse Search";
+    faq.scholar = scholar ? scholar.trim() : "";
+    faq.metaTitle = metaTitle ? metaTitle.trim() : "";
+    faq.metaDescription = metaDescription ? metaDescription.trim() : "";
+    faq.keywords = keywordsArray;
+
+    const wasPublished = faq.isPublished;
+    faq.isPublished = Boolean(isPublished);
+    if (!wasPublished && faq.isPublished) faq.publishedAt = new Date();
+    else if (wasPublished && !faq.isPublished) faq.publishedAt = null;
+
+    await faq.save();
+    res.json({
+      success: true,
+      message: `FAQ ${faq.isPublished ? "updated and published" : "updated as draft"} successfully`,
+    });
+  } catch (error) {
+    console.error("Update FAQ error:", error);
+    res.json({ success: false, error: `Failed to update FAQ: ${error.message}` });
+  }
+});
+
+// Admin: delete FAQ API
+app.delete("/admin/faqs/:id", requireAdminOnly, async (req, res) => {
+  if (!req.session.isAdmin) return res.status(403).json({ success: false, error: "Forbidden" });
+  try {
+    const faq = await IslamicFAQ.findById(req.params.id);
+    if (!faq) return res.json({ success: false, error: "FAQ not found" });
+    await IslamicFAQ.findByIdAndDelete(req.params.id);
+    res.json({ success: true, message: "FAQ deleted successfully" });
+  } catch (error) {
+    console.error("Delete FAQ error:", error);
+    res.json({ success: false, error: "Failed to delete FAQ" });
+  }
+});
+
+// FAQ image upload
+app.post("/api/upload-faq-image", requireAdminOnly, faqImageUpload.single("image"), async (req, res) => {
+  try {
+    if (!req.file) return res.json({ success: false, error: "No image uploaded" });
+    res.json({ success: true, url: req.file.path, filename: req.file.filename });
+  } catch (error) {
+    console.error("FAQ image upload error:", error);
+    res.json({ success: false, error: "Failed to upload image" });
+  }
+});
+
 // ============================================
 // PODCAST ROUTES (admin-only management + public page)
 // ============================================

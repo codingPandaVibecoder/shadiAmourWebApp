@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Islamic FAQ - D'amour Muslim Admin</title>
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+  <link rel="manifest" href="/images/site.webmanifest">
+  <meta name="theme-color" content="#E91E63">
+  <link rel="stylesheet" href="/css/output.css">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.0.0/fonts/remixicon.css" rel="stylesheet">
+  <script src="https://cdn.tiny.cloud/1/lscgwn0wthuhw98tjk7iyzy5kfh3tcektjf6x3qeeg26pkxd/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+</head>
+
+<body class="bg-gray-50 font-['Roboto']">
+  <%- include('../partials/header') %>
+
+  <main class="pt-24 pb-16 min-h-screen">
+    <div class="max-w-4xl mx-auto px-6">
+
+      <!-- Page Header -->
+      <div class="flex items-center justify-between mb-8">
+        <div>
+          <h1 class="text-3xl font-bold text-gray-900 mb-2 font-['Playfair_Display']">Add New Islamic FAQ</h1>
+          <p class="text-gray-600">Create a new question and answer entry</p>
+        </div>
+        <a href="/admin/faqs" class="inline-flex items-center gap-2 px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors">
+          <i class="ri-arrow-left-line"></i>
+          Back to FAQs
+        </a>
+      </div>
+
+      <form id="createFaqForm" class="space-y-6">
+
+        <!-- Basic Information -->
+        <div class="bg-white rounded-xl p-6 material-shadow">
+          <h2 class="text-xl font-semibold text-gray-900 mb-4 font-['Playfair_Display']">Basic Information</h2>
+
+          <div class="space-y-5">
+            <!-- Question -->
+            <div>
+              <label for="question" class="block text-sm font-medium text-gray-700 mb-2">Question *</label>
+              <textarea id="question" name="question" required maxlength="200" rows="2"
+                class="w-full px-3 py-2 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary"
+                placeholder="e.g. Is it permissible to use a marriage app?"></textarea>
+              <p class="text-xs text-gray-500 mt-1">Maximum 200 characters</p>
+            </div>
+
+            <!-- Category & Scholar row -->
+            <div class="grid md:grid-cols-2 gap-5">
+              <div>
+                <label for="category" class="block text-sm font-medium text-gray-700 mb-2">Category *</label>
+                <select id="category" name="category" required
+                  class="w-full px-3 py-2 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary">
+                  <option value="">Select a category</option>
+                  <option value="Destiny">Destiny</option>
+                  <option value="Birth">Birth</option>
+                  <option value="Divorce">Divorce</option>
+                  <option value="Engagement">Engagement</option>
+                  <option value="Family">Family</option>
+                  <option value="Getting Married">Getting Married</option>
+                  <option value="Intimacy">Intimacy</option>
+                  <option value="Prayer & Purification">Prayer & Purification</option>
+                  <option value="Rights & Responsibilities">Rights & Responsibilities</option>
+                  <option value="Spouse Search">Spouse Search</option>
+                </select>
+              </div>
+              <div>
+                <label for="scholar" class="block text-sm font-medium text-gray-700 mb-2">Scholar / Source <span class="text-gray-400 font-normal">(optional)</span></label>
+                <input type="text" id="scholar" name="scholar"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary"
+                  placeholder="e.g. Sheikh Ibn Uthaymeen">
+              </div>
+            </div>
+
+            <!-- Excerpt -->
+            <div>
+              <label for="excerpt" class="block text-sm font-medium text-gray-700 mb-2">Excerpt <span class="text-gray-400 font-normal">(optional)</span></label>
+              <textarea id="excerpt" name="excerpt" rows="2" maxlength="300"
+                class="w-full px-3 py-2 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary"
+                placeholder="Brief summary of the answer. Used for previews and SEO."></textarea>
+              <p class="text-xs text-gray-500 mt-1">Maximum 300 characters</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Featured Image -->
+        <div class="bg-white rounded-xl p-6 material-shadow">
+          <h2 class="text-xl font-semibold text-gray-900 mb-4 font-['Playfair_Display']">Featured Image</h2>
+
+          <div class="space-y-4">
+            <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-primary transition-colors" id="imageUploadArea">
+              <div id="uploadPrompt">
+                <i class="ri-image-line text-4xl text-gray-400 mb-2 block"></i>
+                <p class="text-gray-600 mb-2">Click to upload or drag and drop</p>
+                <p class="text-sm text-gray-500">PNG, JPG, WebP up to 5MB</p>
+                <input type="file" id="featuredImageInput" accept="image/*" class="hidden">
+                <button type="button" onclick="document.getElementById('featuredImageInput').click()"
+                  class="mt-3 px-4 py-2 bg-primary text-white rounded-button hover:bg-pink-600 transition-colors">
+                  Choose Image
+                </button>
+              </div>
+              <div id="imagePreview" class="hidden">
+                <img id="previewImg" src="" alt="Preview" class="max-w-full h-48 object-cover rounded-lg mx-auto mb-3">
+                <p id="imageName" class="text-sm text-gray-600 mb-2"></p>
+                <button type="button" onclick="removeImage()"
+                  class="px-3 py-1 text-red-600 hover:text-red-800 transition-colors">
+                  <i class="ri-delete-bin-line"></i> Remove
+                </button>
+              </div>
+            </div>
+            <div>
+              <label for="featuredImageAlt" class="block text-sm font-medium text-gray-700 mb-2">Alt Text</label>
+              <input type="text" id="featuredImageAlt" maxlength="100"
+                class="w-full px-3 py-2 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary"
+                placeholder="Describe the image">
+            </div>
+            <div>
+              <label for="featuredImageCaption" class="block text-sm font-medium text-gray-700 mb-2">Caption <span class="text-gray-400 font-normal">(optional)</span></label>
+              <input type="text" id="featuredImageCaption"
+                class="w-full px-3 py-2 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary"
+                placeholder="Image credit or caption">
+            </div>
+          </div>
+        </div>
+
+        <!-- Answer -->
+        <div class="bg-white rounded-xl p-6 material-shadow">
+          <h2 class="text-xl font-semibold text-gray-900 mb-4 font-['Playfair_Display']">Answer *</h2>
+          <textarea id="answer" name="answer" rows="20"></textarea>
+        </div>
+
+        <!-- SEO Settings -->
+        <div class="bg-white rounded-xl p-6 material-shadow">
+          <h2 class="text-xl font-semibold text-gray-900 mb-4 font-['Playfair_Display']">SEO Settings</h2>
+
+          <div class="space-y-4">
+            <div>
+              <label for="metaTitle" class="block text-sm font-medium text-gray-700 mb-2">Meta Title</label>
+              <input type="text" id="metaTitle" name="metaTitle" maxlength="60"
+                class="w-full px-3 py-2 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary"
+                placeholder="SEO title (leave blank to use question)">
+              <p class="text-xs text-gray-500 mt-1">Maximum 60 characters</p>
+            </div>
+            <div>
+              <label for="metaDescription" class="block text-sm font-medium text-gray-700 mb-2">Meta Description</label>
+              <textarea id="metaDescription" name="metaDescription" rows="2" maxlength="160"
+                class="w-full px-3 py-2 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary"
+                placeholder="Meta description for search engines (leave blank to use excerpt)"></textarea>
+              <p class="text-xs text-gray-500 mt-1">Maximum 160 characters</p>
+            </div>
+            <div>
+              <label for="keywords" class="block text-sm font-medium text-gray-700 mb-2">SEO Keywords</label>
+              <input type="text" id="keywords" name="keywords"
+                class="w-full px-3 py-2 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary"
+                placeholder="islamic marriage, nikah, halal">
+              <p class="text-xs text-gray-500 mt-1">Separate with commas</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Publish Settings -->
+        <div class="bg-white rounded-xl p-6 material-shadow">
+          <div class="flex items-center justify-between">
+            <div>
+              <h3 class="text-lg font-medium text-gray-900">Publish Question</h3>
+              <p class="text-sm text-gray-600">Make this Q&amp;A visible to the public</p>
+            </div>
+            <label class="relative inline-flex items-center cursor-pointer">
+              <input type="checkbox" id="isPublished" name="isPublished" class="sr-only peer">
+              <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary/25 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+            </label>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex flex-col sm:flex-row gap-3 justify-end">
+          <button type="button" onclick="saveDraft()" class="px-6 py-3 border border-gray-300 text-gray-700 rounded-button hover:bg-gray-50 transition-colors">
+            <i class="ri-save-line mr-2"></i>Save as Draft
+          </button>
+          <button type="submit" class="px-6 py-3 bg-primary text-white rounded-button hover:bg-pink-600 transition-colors">
+            <i class="ri-send-plane-line mr-2"></i>
+            <span id="publishBtnText">Publish Question</span>
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </main>
+
+  <script>
+    // ── TinyMCE ──────────────────────────────────────────────────────────────
+    tinymce.init({
+      selector: '#answer',
+      height: 550,
+      menubar: 'edit view insert format tools table help',
+      plugins: ['advlist','autolink','lists','link','image','charmap','preview',
+                'anchor','searchreplace','visualblocks','code','fullscreen',
+                'insertdatetime','media','table','help','wordcount'],
+      toolbar: 'undo redo | blocks | bold italic underline | alignleft aligncenter alignright | bullist numlist outdent indent | link image | removeformat | code preview',
+      content_style: 'body { font-family: Roboto, Arial, sans-serif; font-size:16px; line-height:1.7; color:#374151; max-width:800px; margin:20px auto; padding:20px; }',
+      block_formats: 'Paragraph=p;Heading 2=h2;Heading 3=h3;Blockquote=blockquote',
+      images_upload_handler: (blobInfo) => new Promise((resolve, reject) => {
+        const fd = new FormData();
+        fd.append('image', blobInfo.blob(), blobInfo.filename());
+        fetch('/api/upload-faq-image', { method: 'POST', body: fd })
+          .then(r => r.json())
+          .then(result => { result && result.url ? resolve(result.url) : reject('Upload failed'); })
+          .catch(() => reject('Upload failed'));
+      }),
+      setup: editor => editor.on('change', () => editor.save())
+    });
+
+    // ── Featured Image Upload ────────────────────────────────────────────────
+    let featuredImageUrl = null;
+
+    document.getElementById('featuredImageInput').addEventListener('change', async function (e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      if (!file.type.startsWith('image/')) { alert('Please select an image file'); return; }
+      if (file.size > 5 * 1024 * 1024) { alert('Image must be under 5MB'); return; }
+
+      const uploadPrompt = document.getElementById('uploadPrompt');
+      uploadPrompt.innerHTML = '<i class="ri-loader-4-line text-4xl text-primary" style="animation:spin 1s linear infinite;display:block;"></i><p class="text-primary mt-2">Uploading…</p>';
+
+      try {
+        const fd = new FormData();
+        fd.append('image', file);
+        const res = await fetch('/api/upload-faq-image', { method: 'POST', body: fd });
+        const result = await res.json();
+        if (!result.success) throw new Error(result.error);
+
+        featuredImageUrl = result.url;
+        document.getElementById('previewImg').src = result.url;
+        document.getElementById('imageName').textContent = file.name;
+        uploadPrompt.classList.add('hidden');
+        document.getElementById('imagePreview').classList.remove('hidden');
+        if (!document.getElementById('featuredImageAlt').value) {
+          document.getElementById('featuredImageAlt').value = file.name.replace(/\.[^/.]+$/, '').replace(/[_-]/g, ' ');
+        }
+      } catch (err) {
+        alert('Upload failed: ' + (err.message || err));
+        resetUploadPrompt();
+      }
+    });
+
+    function removeImage() {
+      featuredImageUrl = null;
+      document.getElementById('imagePreview').classList.add('hidden');
+      document.getElementById('featuredImageAlt').value = '';
+      document.getElementById('featuredImageCaption').value = '';
+      resetUploadPrompt();
+    }
+
+    function resetUploadPrompt() {
+      const prompt = document.getElementById('uploadPrompt');
+      prompt.classList.remove('hidden');
+      prompt.innerHTML = `
+        <i class="ri-image-line text-4xl text-gray-400 mb-2 block"></i>
+        <p class="text-gray-600 mb-2">Click to upload or drag and drop</p>
+        <p class="text-sm text-gray-500">PNG, JPG, WebP up to 5MB</p>
+        <input type="file" id="featuredImageInput" accept="image/*" class="hidden">
+        <button type="button" onclick="document.getElementById('featuredImageInput').click()"
+          class="mt-3 px-4 py-2 bg-primary text-white rounded-button hover:bg-pink-600 transition-colors">
+          Choose Image
+        </button>`;
+      document.getElementById('featuredImageInput').addEventListener('change', arguments.callee.caller);
+    }
+
+    // Drag & drop
+    const uploadArea = document.getElementById('imageUploadArea');
+    uploadArea.addEventListener('dragover', e => { e.preventDefault(); uploadArea.classList.add('border-primary','bg-pink-50'); });
+    uploadArea.addEventListener('dragleave', () => uploadArea.classList.remove('border-primary','bg-pink-50'));
+    uploadArea.addEventListener('drop', e => {
+      e.preventDefault();
+      uploadArea.classList.remove('border-primary','bg-pink-50');
+      const file = e.dataTransfer.files[0];
+      if (file) {
+        const dt = new DataTransfer();
+        dt.items.add(file);
+        document.getElementById('featuredImageInput').files = dt.files;
+        document.getElementById('featuredImageInput').dispatchEvent(new Event('change'));
+      }
+    });
+
+    // ── Publish toggle ───────────────────────────────────────────────────────
+    document.getElementById('isPublished').addEventListener('change', function () {
+      document.getElementById('publishBtnText').textContent = this.checked ? 'Publish Question' : 'Save Question';
+    });
+
+    function saveDraft() {
+      document.getElementById('isPublished').checked = false;
+      document.getElementById('publishBtnText').textContent = 'Save Question';
+      document.getElementById('createFaqForm').dispatchEvent(new Event('submit'));
+    }
+
+    // ── Form Submit ──────────────────────────────────────────────────────────
+    document.getElementById('createFaqForm').addEventListener('submit', async function (e) {
+      e.preventDefault();
+
+      const answer = tinymce.get('answer').getContent();
+      if (!answer.trim()) { alert('Please provide an answer.'); return; }
+
+      const data = {
+        question: document.getElementById('question').value.trim(),
+        category: document.getElementById('category').value,
+        scholar: document.getElementById('scholar').value.trim(),
+        excerpt: document.getElementById('excerpt').value.trim(),
+        answer,
+        metaTitle: document.getElementById('metaTitle').value.trim(),
+        metaDescription: document.getElementById('metaDescription').value.trim(),
+        keywords: document.getElementById('keywords').value.trim(),
+        isPublished: document.getElementById('isPublished').checked
+      };
+
+      if (featuredImageUrl) {
+        data.featuredImageUrl = featuredImageUrl;
+        data.featuredImageAlt = document.getElementById('featuredImageAlt').value.trim();
+        data.featuredImageCaption = document.getElementById('featuredImageCaption').value.trim();
+      }
+
+      try {
+        const res = await fetch('/admin/faqs', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+        const result = await res.json();
+        if (result.success) {
+          alert(result.message || 'FAQ saved successfully');
+          window.location.href = '/admin/faqs';
+        } else {
+          alert('Error: ' + result.error);
+        }
+      } catch (err) {
+        alert('Failed to save FAQ');
+      }
+    });
+  </script>
+
+  <style>
+    .material-shadow { box-shadow: 0 2px 8px rgba(0,0,0,.1); }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+</body>
+
+</html>
