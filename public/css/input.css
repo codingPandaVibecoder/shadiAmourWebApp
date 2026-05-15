@@ -128,3 +128,69 @@
   border-top: 3px solid #e91e63;
   border-bottom: 3px solid #673ab7;
 }
+
+/* Self-hosted fonts */
+/* pacifico-regular - latin */
+@font-face {
+  font-display: swap;
+  font-family: 'Pacifico';
+  font-style: normal;
+  font-weight: 400;
+  src: url('/fonts/pacifico-v23-latin-regular.woff2') format('woff2');
+}
+/* playfair-display-regular - latin */
+@font-face {
+  font-display: swap;
+  font-family: 'Playfair Display';
+  font-style: normal;
+  font-weight: 400;
+  src: url('/fonts/playfair-display-v40-latin/playfair-display-v40-latin-regular.woff2') format('woff2');
+}
+/* playfair-display-600 - latin */
+@font-face {
+  font-display: swap;
+  font-family: 'Playfair Display';
+  font-style: normal;
+  font-weight: 600;
+  src: url('/fonts/playfair-display-v40-latin/playfair-display-v40-latin-600.woff2') format('woff2');
+}
+/* playfair-display-700 - latin */
+@font-face {
+  font-display: swap;
+  font-family: 'Playfair Display';
+  font-style: normal;
+  font-weight: 700;
+  src: url('/fonts/playfair-display-v40-latin/playfair-display-v40-latin-700.woff2') format('woff2');
+}
+/* roboto-300 - latin */
+@font-face {
+  font-display: swap;
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 300;
+  src: url('/fonts/roboto-v51-latin/roboto-v51-latin-300.woff2') format('woff2');
+}
+/* roboto-regular - latin */
+@font-face {
+  font-display: swap;
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  src: url('/fonts/roboto-v51-latin/roboto-v51-latin-regular.woff2') format('woff2');
+}
+/* roboto-500 - latin */
+@font-face {
+  font-display: swap;
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 500;
+  src: url('/fonts/roboto-v51-latin/roboto-v51-latin-500.woff2') format('woff2');
+}
+/* roboto-700 - latin */
+@font-face {
+  font-display: swap;
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 700;
+  src: url('/fonts/roboto-v51-latin/roboto-v51-latin-700.woff2') format('woff2');
+}
