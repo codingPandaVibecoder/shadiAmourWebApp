@@ -7055,6 +7055,25 @@ app.patch("/admin/podcasts/:id/toggle", requireAdminOnly, async (req, res) => {
   }
 });
 
+// Admin: edit podcast
+app.patch("/admin/podcasts/:id", requireAdminOnly, async (req, res) => {
+  if (!req.session.isAdmin) return res.status(403).json({ error: "Forbidden" });
+  try {
+    const podcast = await Podcast.findById(req.params.id);
+    if (!podcast) return res.status(404).json({ error: "Podcast not found" });
+    const { title, description, order, isPublished } = req.body;
+    if (title !== undefined) podcast.title = String(title).substring(0, 200);
+    if (description !== undefined) podcast.description = String(description).substring(0, 500);
+    if (order !== undefined) podcast.order = parseInt(order, 10) || 0;
+    if (isPublished !== undefined) podcast.isPublished = isPublished === true || isPublished === "true";
+    await podcast.save();
+    res.json({ success: true, podcast });
+  } catch (err) {
+    console.error("Edit podcast error:", err);
+    res.status(500).json({ error: "Failed to update podcast" });
+  }
+});
+
 // ============================================
 // ADMIN: AD MEDIA ROUTES
 // ============================================
@@ -8247,6 +8266,59 @@ app.get("/sitemap.xml", async (req, res) => {
     res.status(500).send("Error generating sitemap");
   }
 });
+
+// SEO: Video Sitemap — /video-sitemap.xml
+app.get("/video-sitemap.xml", async (req, res) => {
+  try {
+    const podcasts = await Podcast.find({ isPublished: true }).sort({ order: 1, createdAt: -1 });
+
+    const escXml = (str) =>
+      String(str || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&apos;");
+
+    let xml = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset
+  xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+`;
+
+    for (const p of podcasts) {
+      const uploadDate = p.createdAt
+        ? new Date(p.createdAt).toISOString().split("T")[0]
+        : new Date().toISOString().split("T")[0];
+      const description = escXml(
+        p.description || "Watch this episode of the D\u2019amour Muslim podcast on Islamic marriage and matchmaking."
+      );
+
+      xml += `  <url>
+    <loc>https://damourmuslim.com/podcasts</loc>
+    <video:video>
+      <video:thumbnail_loc>https://img.youtube.com/vi/${escXml(p.youtubeId)}/maxresdefault.jpg</video:thumbnail_loc>
+      <video:title>${escXml(p.title)}</video:title>
+      <video:description>${description}</video:description>
+      <video:player_loc>https://www.youtube.com/embed/${escXml(p.youtubeId)}</video:player_loc>
+      <video:content_loc>https://www.youtube.com/watch?v=${escXml(p.youtubeId)}</video:content_loc>
+      <video:publication_date>${uploadDate}</video:publication_date>
+      <video:family_friendly>yes</video:family_friendly>
+    </video:video>
+  </url>
+`;
+    }
+
+    xml += `</urlset>`;
+
+    res.set("Content-Type", "application/xml");
+    res.send(xml);
+  } catch (err) {
+    console.error("Video sitemap error:", err);
+    res.status(500).send("Error generating video sitemap");
+  }
+});
+
 // SEO: Robots.txt
 app.get("/robots.txt", (req, res) => {
   const robots = `User-agent: *
@@ -8270,7 +8342,8 @@ Disallow: /logout
 Disallow: /chats/
 Disallow: /chat/
 
-Sitemap: https://damourmuslim.com/sitemap.xml`;
+Sitemap: https://damourmuslim.com/sitemap.xml
+Sitemap: https://damourmuslim.com/video-sitemap.xml`;
 
   res.set("Content-Type", "text/plain");
   res.send(robots);

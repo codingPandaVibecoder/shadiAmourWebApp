@@ -208,11 +208,25 @@
         "position": <%= i + 1 %>,
         "item": {
           "@type": "VideoObject",
-          "name": "<%= p.title.replace(/"/g, '&quot;') %>",
-          "description": "<%= (p.description || '').replace(/"/g, '&quot;') %>",
-          "thumbnailUrl": "https://img.youtube.com/vi/<%= p.youtubeId %>/maxresdefault.jpg",
+          "name": "<%- p.title.replace(/"/g, '&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;') %>",
+          "description": "<%- (p.description || 'Watch this episode of the D\u2019amour Muslim podcast on Islamic marriage and matchmaking.').replace(/"/g, '&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;') %>",
+          "thumbnailUrl": [
+            "https://img.youtube.com/vi/<%= p.youtubeId %>/maxresdefault.jpg",
+            "https://img.youtube.com/vi/<%= p.youtubeId %>/hqdefault.jpg"
+          ],
+          "uploadDate": "<%= p.createdAt ? new Date(p.createdAt).toISOString() : new Date().toISOString() %>",
           "embedUrl": "https://www.youtube.com/embed/<%= p.youtubeId %>",
-          "url": "https://www.youtube.com/watch?v=<%= p.youtubeId %>"
+          "url": "https://www.youtube.com/watch?v=<%= p.youtubeId %>",
+          "contentUrl": "https://www.youtube.com/watch?v=<%= p.youtubeId %>",
+          "publisher": {
+            "@type": "Organization",
+            "name": "D'amour Muslim",
+            "url": "https://damourmuslim.com",
+            "logo": {
+              "@type": "ImageObject",
+              "url": "https://damourmuslim.com/images/android-chrome-192x192.png"
+            }
+          }
         }
       }<% if (i < podcasts.length - 1) { %>,<% } %>
       <% }); %>

@@ -236,6 +236,17 @@
                     <i class="ri-<%= podcast.isPublished ? 'eye-off' : 'eye' %>-line"></i>
                   </button>
                   <button
+                    class="edit-podcast-btn text-xs px-2 py-1 rounded border border-gray-200 text-blue-400 hover:border-blue-400 hover:bg-blue-50 transition-colors"
+                    data-id="<%= podcast._id %>"
+                    data-title="<%= podcast.title.replace(/"/g, '&quot;') %>"
+                    data-description="<%= (podcast.description || '').replace(/"/g, '&quot;') %>"
+                    data-order="<%= podcast.order %>"
+                    data-published="<%= podcast.isPublished %>"
+                    title="Edit"
+                  >
+                    <i class="ri-edit-line"></i>
+                  </button>
+                  <button
                     class="delete-podcast-btn text-xs px-2 py-1 rounded border border-gray-200 text-red-400 hover:border-red-400 hover:bg-red-50 transition-colors"
                     data-id="<%= podcast._id %>"
                     title="Delete"
@@ -256,6 +267,51 @@
 
   <!-- Toast notification -->
   <div id="toast"></div>
+
+  <!-- ======== EDIT MODAL ======== -->
+  <div id="edit-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4">
+    <div class="bg-white rounded-2xl shadow-xl w-full max-w-lg p-6 relative">
+      <h3 class="text-lg font-semibold text-gray-800 mb-5 font-['Playfair_Display']">Edit Episode</h3>
+      <form id="edit-podcast-form" class="space-y-4" autocomplete="off">
+        <input type="hidden" id="edit-podcast-id" />
+
+        <div>
+          <label for="edit-title" class="block text-sm font-medium text-gray-700 mb-1">Episode Title <span class="text-red-500">*</span></label>
+          <input type="text" id="edit-title" maxlength="200" required
+            class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-400 focus:border-pink-400 outline-none" />
+        </div>
+
+        <div>
+          <label for="edit-desc" class="block text-sm font-medium text-gray-700 mb-1">Short Description <span class="text-gray-400 font-normal">(optional)</span></label>
+          <textarea id="edit-desc" rows="3" maxlength="500"
+            class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-400 focus:border-pink-400 outline-none resize-none"></textarea>
+        </div>
+
+        <div>
+          <label for="edit-order" class="block text-sm font-medium text-gray-700 mb-1">Display Order</label>
+          <input type="number" id="edit-order" min="0"
+            class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-400 focus:border-pink-400 outline-none" />
+          <p class="text-xs text-gray-400 mt-1">Lower numbers appear first. Default is 0.</p>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <input type="checkbox" id="edit-published" class="w-4 h-4 accent-pink-500 cursor-pointer">
+          <label for="edit-published" class="text-sm text-gray-700 cursor-pointer">Published (visible on /podcasts)</label>
+        </div>
+
+        <div class="flex items-center justify-end gap-3 pt-2">
+          <button type="button" id="edit-cancel-btn"
+            class="px-4 py-2 text-sm text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
+            Cancel
+          </button>
+          <button type="submit" id="edit-save-btn"
+            class="px-5 py-2 text-sm bg-primary text-white font-medium rounded-lg hover:bg-pink-600 transition-colors disabled:opacity-50">
+            <span id="edit-save-text">Save Changes</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
 
   <script>
     (function () {
@@ -405,6 +461,7 @@
           + '<div class="flex-shrink-0 flex items-center gap-3">'
           + '<span class="text-xs px-2 py-0.5 rounded-full font-medium ' + (p.isPublished ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500') + '">' + (p.isPublished ? 'Published' : 'Draft') + '</span>'
           + '<button class="toggle-publish-btn text-xs px-2 py-1 rounded border border-gray-200 text-gray-500 hover:border-pink-300 hover:text-pink-500 transition-colors" data-id="' + p._id + '" data-published="' + p.isPublished + '" title="' + (p.isPublished ? 'Unpublish' : 'Publish') + '"><i class="ri-' + (p.isPublished ? 'eye-off' : 'eye') + '-line"></i></button>'
+          + '<button class="edit-podcast-btn text-xs px-2 py-1 rounded border border-gray-200 text-blue-400 hover:border-blue-400 hover:bg-blue-50 transition-colors" data-id="' + p._id + '" data-title="' + escHtml(p.title) + '" data-description="' + escHtml(p.description || '') + '" data-order="' + (p.order || 0) + '" data-published="' + p.isPublished + '" title="Edit"><i class="ri-edit-line"></i></button>'
           + '<button class="delete-podcast-btn text-xs px-2 py-1 rounded border border-gray-200 text-red-400 hover:border-red-400 hover:bg-red-50 transition-colors" data-id="' + p._id + '" title="Delete"><i class="ri-delete-bin-line"></i></button>'
           + '</div>';
       }
@@ -413,7 +470,7 @@
         return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
       }
 
-      // ---- Delete & Toggle handlers ----
+      // Attach handlers (including edit) to newly-added rows
       function attachRowHandlers(container) {
         container.querySelectorAll('.delete-podcast-btn').forEach(function (btn) {
           btn.addEventListener('click', handleDelete);
@@ -421,7 +478,121 @@
         container.querySelectorAll('.toggle-publish-btn').forEach(function (btn) {
           btn.addEventListener('click', handleToggle);
         });
+        container.querySelectorAll('.edit-podcast-btn').forEach(function (btn) {
+          btn.addEventListener('click', handleEditOpen);
+        });
       }
+
+      // ---- Edit Modal ----
+      const editModal = document.getElementById('edit-modal');
+      const editForm = document.getElementById('edit-podcast-form');
+      const editIdField = document.getElementById('edit-podcast-id');
+      const editTitleField = document.getElementById('edit-title');
+      const editDescField = document.getElementById('edit-desc');
+      const editOrderField = document.getElementById('edit-order');
+      const editPublishedField = document.getElementById('edit-published');
+      const editSaveBtn = document.getElementById('edit-save-btn');
+      const editSaveText = document.getElementById('edit-save-text');
+      const editCancelBtn = document.getElementById('edit-cancel-btn');
+
+      function handleEditOpen() {
+        editIdField.value = this.getAttribute('data-id');
+        editTitleField.value = this.getAttribute('data-title');
+        editDescField.value = this.getAttribute('data-description');
+        editOrderField.value = this.getAttribute('data-order') || 0;
+        editPublishedField.checked = this.getAttribute('data-published') === 'true';
+        editModal.classList.remove('hidden');
+        editTitleField.focus();
+      }
+
+      function closeEditModal() {
+        editModal.classList.add('hidden');
+        editForm.reset();
+      }
+
+      editCancelBtn.addEventListener('click', closeEditModal);
+
+      editModal.addEventListener('click', function (e) {
+        if (e.target === editModal) closeEditModal();
+      });
+
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && !editModal.classList.contains('hidden')) closeEditModal();
+      });
+
+      editForm.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const id = editIdField.value;
+        const title = editTitleField.value.trim();
+        if (!title) { showToast('Title is required.', 'error'); return; }
+
+        editSaveBtn.disabled = true;
+        editSaveText.textContent = 'Saving…';
+
+        try {
+          const res = await fetch('/admin/podcasts/' + id, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              title: title,
+              description: editDescField.value.trim(),
+              order: parseInt(editOrderField.value, 10) || 0,
+              isPublished: editPublishedField.checked,
+            }),
+          });
+          const data = await res.json();
+          if (!res.ok) { showToast(data.error || 'Save failed.', 'error'); return; }
+
+          // Update row in the list
+          const row = document.querySelector('[data-id="' + id + '"]');
+          if (row) {
+            const titleEl = row.querySelector('.text-sm.font-medium');
+            if (titleEl) titleEl.textContent = data.podcast.title;
+
+            const descEl = row.querySelector('.text-xs.text-gray-500');
+            if (data.podcast.description) {
+              if (descEl) {
+                descEl.textContent = data.podcast.description;
+              } else {
+                const infoDiv = row.querySelector('.flex-1');
+                if (infoDiv) {
+                  const p = document.createElement('p');
+                  p.className = 'text-xs text-gray-500 mt-1 line-clamp-1';
+                  p.textContent = data.podcast.description;
+                  infoDiv.appendChild(p);
+                }
+              }
+            } else if (descEl) {
+              descEl.remove();
+            }
+
+            // Update edit button data attrs
+            const editBtn = row.querySelector('.edit-podcast-btn');
+            if (editBtn) {
+              editBtn.setAttribute('data-title', escHtml(data.podcast.title));
+              editBtn.setAttribute('data-description', escHtml(data.podcast.description || ''));
+              editBtn.setAttribute('data-order', data.podcast.order || 0);
+              editBtn.setAttribute('data-published', data.podcast.isPublished);
+            }
+
+            // Update badge
+            const badge = row.querySelector('.rounded-full.font-medium');
+            if (badge) {
+              badge.textContent = data.podcast.isPublished ? 'Published' : 'Draft';
+              badge.className = 'text-xs px-2 py-0.5 rounded-full font-medium ' + (data.podcast.isPublished ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500');
+            }
+          }
+
+          showToast('Episode updated.', 'success');
+          closeEditModal();
+        } catch (err) {
+          showToast('Network error — please try again.', 'error');
+        } finally {
+          editSaveBtn.disabled = false;
+          editSaveText.textContent = 'Save Changes';
+        }
+      });
+
 
       // Attach to server-rendered rows
       document.querySelectorAll('.delete-podcast-btn').forEach(function (btn) {
@@ -429,6 +600,9 @@
       });
       document.querySelectorAll('.toggle-publish-btn').forEach(function (btn) {
         btn.addEventListener('click', handleToggle);
+      });
+      document.querySelectorAll('.edit-podcast-btn').forEach(function (btn) {
+        btn.addEventListener('click', handleEditOpen);
       });
 
       async function handleDelete() {
