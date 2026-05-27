@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+  <link rel="manifest" href="/images/site.webmanifest">
+  <meta name="theme-color" content="#E91E63">
+  <title>Chat Details - Admin Dashboard</title>
+  <link rel="stylesheet" href="/css/output.css">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+  <style>
+    :where([class^="ri-"])::before { content: "\f3c2"; }
+    .material-shadow { box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+
+    .msg-bubble {
+      max-width: 75%;
+      word-wrap: break-word;
+    }
+    .msg-user1 {
+      background: linear-gradient(135deg, #E91E63 0%, #d81557 100%);
+      color: white;
+      border-radius: 18px 18px 4px 18px;
+    }
+    .msg-user2 {
+      background: #f3f4f6;
+      color: #1f2937;
+      border-radius: 18px 18px 18px 4px;
+    }
+  </style>
+</head>
+
+<body class="bg-gray-50 font-['Roboto']">
+  <!-- Header -->
+  <header class="bg-white border-b border-gray-200 sticky top-0 z-50">
+    <div class="max-w-4xl mx-auto px-4 py-3">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-4">
+          <a href="/admin/chats" class="text-gray-500 hover:text-primary transition-colors">
+            <i class="ri-arrow-left-line text-xl"></i>
+          </a>
+          <div>
+            <h1 class="text-lg font-bold text-gray-900 font-['Playfair_Display']">Chat Details</h1>
+            <p class="text-sm text-gray-500"><%= messages.length %> messages in this conversation</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="py-6 min-h-screen">
+    <div class="max-w-4xl mx-auto px-4">
+      <!-- Participants Info -->
+      <div class="bg-white rounded-xl material-shadow p-4 mb-6">
+        <h2 class="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-4">Participants</h2>
+        <div class="flex items-center justify-between">
+          <% conversation.participants.forEach(function(p, index) { %>
+            <div class="flex items-center gap-3 <%= index === 0 ? '' : 'flex-row-reverse' %>">
+              <div class="w-12 h-12 rounded-full overflow-hidden border-2 border-gray-200">
+                <% if (p.profilePic && p.profilePic.url) { %>
+                  <img src="<%= p.profilePic.url %>" class="w-full h-full object-cover" alt="<%= p.username %>">
+                <% } else { %>
+                  <div class="w-full h-full flex items-center justify-center <%= p.gender === 'female' ? 'bg-pink-100 text-pink-500' : 'bg-blue-100 text-blue-500' %>">
+                    <i class="ri-user-3-line text-xl"></i>
+                  </div>
+                <% } %>
+              </div>
+              <div class="<%= index === 0 ? '' : 'text-right' %>">
+                <a href="/admin/user/<%= p._id %>" class="font-semibold text-gray-900 hover:text-primary transition-colors">
+                  <%= p.username %>
+                </a>
+                <p class="text-sm text-gray-500">
+                  <% if (p.city || p.country) { %>
+                    <%= p.city %><% if (p.city && p.country) { %>, <% } %><%= p.country %>
+                  <% } else { %>
+                    No location
+                  <% } %>
+                </p>
+              </div>
+            </div>
+            <% if (index === 0) { %>
+              <div class="flex items-center gap-2 text-gray-400">
+                <i class="ri-arrow-left-right-line text-2xl"></i>
+              </div>
+            <% } %>
+          <% }); %>
+        </div>
+      </div>
+
+      <!-- Messages -->
+      <div class="bg-white rounded-xl material-shadow overflow-hidden">
+        <div class="bg-gray-50 px-4 py-3 border-b border-gray-100">
+          <h2 class="text-sm font-semibold text-gray-700">
+            <i class="ri-message-2-line mr-2 text-primary"></i>
+            Conversation History
+          </h2>
+        </div>
+        
+        <% if (messages && messages.length > 0) { %>
+          <div class="p-4 space-y-4 max-h-[600px] overflow-y-auto">
+            <% 
+              let lastDate = '';
+              const user1Id = conversation.participants[0] ? conversation.participants[0]._id.toString() : '';
+            %>
+            <% messages.forEach(function(msg) { %>
+              <% 
+                const msgDate = new Date(msg.createdAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+                const isUser1 = (msg.senderId._id || msg.senderId).toString() === user1Id;
+                const senderName = msg.senderId.username || 'Unknown';
+              %>
+              
+              <% if (msgDate !== lastDate) { %>
+                <div class="flex justify-center my-4">
+                  <span class="bg-gray-200 text-gray-500 text-xs px-3 py-1 rounded-full"><%= msgDate %></span>
+                </div>
+                <% lastDate = msgDate; %>
+              <% } %>
+              
+              <div class="flex <%= isUser1 ? 'justify-start' : 'justify-end' %>">
+                <div class="msg-bubble px-4 py-2 <%= isUser1 ? 'msg-user1' : 'msg-user2' %>">
+                  <div class="flex items-center gap-2 mb-1">
+                    <span class="text-xs font-semibold <%= isUser1 ? 'text-white/80' : 'text-gray-600' %>">
+                      <%= senderName %>
+                    </span>
+                  </div>
+                  <p class="text-sm whitespace-pre-wrap"><%= msg.text %></p>
+                  <div class="flex items-center justify-end gap-1 mt-1">
+                    <span class="text-[10px] <%= isUser1 ? 'text-white/60' : 'text-gray-400' %>">
+                      <%= new Date(msg.createdAt).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }) %>
+                    </span>
+                    <% if (msg.status === 'read') { %>
+                      <i class="ri-check-double-line text-xs <%= isUser1 ? 'text-blue-300' : 'text-blue-500' %>"></i>
+                    <% } else if (msg.status === 'delivered') { %>
+                      <i class="ri-check-double-line text-xs <%= isUser1 ? 'text-white/60' : 'text-gray-400' %>"></i>
+                    <% } else { %>
+                      <i class="ri-check-line text-xs <%= isUser1 ? 'text-white/60' : 'text-gray-400' %>"></i>
+                    <% } %>
+                  </div>
+                </div>
+              </div>
+            <% }); %>
+          </div>
+        <% } else { %>
+          <div class="py-16 text-center">
+            <div class="mb-4">
+              <i class="ri-chat-off-line text-6xl text-gray-200"></i>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-700 mb-2">No messages</h3>
+            <p class="text-gray-500">This conversation has no messages yet.</p>
+          </div>
+        <% } %>
+      </div>
+
+      <!-- Conversation Meta -->
+      <div class="bg-white rounded-xl material-shadow p-4 mt-6">
+        <h2 class="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">Conversation Info</h2>
+        <div class="grid grid-cols-2 gap-4 text-sm">
+          <div>
+            <p class="text-gray-500">Started</p>
+            <p class="font-medium text-gray-900">
+              <%= conversation.createdAt ? new Date(conversation.createdAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }) : 'Unknown' %>
+            </p>
+          </div>
+          <div>
+            <p class="text-gray-500">Last Activity</p>
+            <p class="font-medium text-gray-900">
+              <%= conversation.lastMessageAt ? new Date(conversation.lastMessageAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : 'No activity' %>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</body>
+
+</html>

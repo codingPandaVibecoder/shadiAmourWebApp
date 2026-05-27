@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Our Ads & Media — D'amour Muslim</title>
+
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="Browse D'amour Muslim's official advertisements and media content. See our latest images and video campaigns celebrating halal Muslim marriage and matchmaking in the UK." />
+  <meta name="keywords" content="damour muslim ads, muslim marriage ads, halal matrimony media, muslim matchmaking advertisements, damour muslim campaign" />
+  <link rel="canonical" href="https://damourmuslim.com/our-ads" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Our Ads & Media — D'amour Muslim" />
+  <meta property="og:description" content="Browse our latest advertisement images and video campaigns." />
+  <meta property="og:url" content="https://damourmuslim.com/our-ads" />
+  <meta property="og:type" content="website" />
+
+  <!-- Favicon -->
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+  <link rel="manifest" href="/images/site.webmanifest">
+  <meta name="theme-color" content="#E91E63">
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="/css/output.css" />
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css" />
+
+  <style>
+    .gradient-bg { background: linear-gradient(135deg, #E91E63 0%, #673AB7 100%); }
+    .material-shadow { box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    .material-shadow-hover { box-shadow: 0 4px 16px rgba(0,0,0,0.15); }
+    .ad-card { transition: transform 0.25s ease, box-shadow 0.25s ease; }
+    .ad-card:hover { transform: translateY(-4px); box-shadow: 0 8px 28px rgba(0,0,0,0.15); }
+    /* Lightbox */
+    #lightbox { backdrop-filter: blur(6px); }
+    #lightbox video, #lightbox img { max-height: 85vh; max-width: 90vw; border-radius: 12px; }
+    .hero-wave svg { display: block; }
+  </style>
+</head>
+
+<body class="bg-gray-50 font-['Roboto']">
+  <%- include('./partials/header') %>
+
+  <!-- Hero Banner -->
+  <section class="gradient-bg text-white pt-28 pb-16 relative overflow-hidden mt-6">
+    <div class="max-w-4xl mx-auto px-6 text-center relative z-10">
+      <div class="inline-flex items-center gap-2 bg-white bg-opacity-20 rounded-full px-4 py-2 text-sm font-medium mb-6">
+        <i class="ri-image-line"></i>
+        <span>Official Media Gallery</span>
+      </div>
+      <h1 class="text-4xl md:text-5xl font-bold mb-4 font-['Playfair_Display'] leading-tight">
+        Our Ads &amp; Media
+      </h1>
+      <p class="text-lg md:text-xl text-pink-100 mb-6 max-w-2xl mx-auto leading-relaxed">
+        A curated gallery of D'amour Muslim's official advertisements and campaign media — showcasing our mission to make halal Muslim marriage accessible across the UK and beyond.
+      </p>
+      <a href="/register" class="inline-flex items-center gap-2 bg-white text-primary font-semibold px-6 py-3 rounded-full hover:bg-pink-50 transition-all duration-300 material-shadow">
+        <i class="ri-user-add-line"></i>
+        Join Free Today
+      </a>
+    </div>
+  </section>
+
+  <main class="py-14 min-h-screen">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6">
+
+      <!-- Intro Text (SEO content) -->
+      <div class="bg-white rounded-2xl material-shadow p-8 mb-10">
+        <h2 class="text-2xl font-bold text-gray-900 mb-4 font-['Playfair_Display']">About Our Campaigns</h2>
+        <div class="grid md:grid-cols-2 gap-8">
+          <div>
+            <p class="text-gray-700 leading-relaxed mb-4">
+              At D'amour Muslim, every campaign we run is rooted in one purpose: helping Muslim men and women across the UK find their spouse through a halal, family-friendly, and fully verified platform. Our advertisements reflect the values we stand for — modesty, sincerity, and Islamic etiquette — without compromise.
+            </p>
+            <p class="text-gray-700 leading-relaxed">
+              From our social media reels to our print campaigns, every piece of media you see here represents our ongoing commitment to making the rishta and Muslim matchmaking process dignified, accessible, and trustworthy for the British Muslim community.
+            </p>
+          </div>
+          <div>
+            <p class="text-gray-700 leading-relaxed mb-4">
+              Our campaigns span multiple channels — Instagram, Facebook, TikTok, YouTube, and community events across London, Birmingham, Manchester, Bradford, and Leicester. Whether you discovered D'amour Muslim through a reel, a flyer, or word of mouth, this gallery brings together the best of what we have created.
+            </p>
+            <div class="flex flex-wrap gap-3 mt-4">
+              <span class="px-3 py-1.5 bg-pink-50 text-primary text-sm rounded-full font-medium border border-pink-100">Halal Marriage</span>
+              <span class="px-3 py-1.5 bg-purple-50 text-purple-700 text-sm rounded-full font-medium border border-purple-100">UK Muslim Community</span>
+              <span class="px-3 py-1.5 bg-green-50 text-green-700 text-sm rounded-full font-medium border border-green-100">Verified Profiles</span>
+              <span class="px-3 py-1.5 bg-blue-50 text-blue-700 text-sm rounded-full font-medium border border-blue-100">Family Friendly</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+  
+
+      <% if (ads && ads.length > 0) { %>
+      <!-- Filter Tabs -->
+      <div class="flex items-center gap-3 mb-8 flex-wrap">
+        <button class="filter-btn active px-5 py-2 rounded-full text-sm font-medium bg-primary text-white transition-all duration-200" data-type="all">All</button>
+        <% if (ads.some(a => a.mediaType === 'image')) { %>
+        <button class="filter-btn px-5 py-2 rounded-full text-sm font-medium bg-white text-gray-700 border border-gray-200 hover:border-primary hover:text-primary transition-all duration-200" data-type="image">
+          <i class="ri-image-line mr-1"></i>Images
+        </button>
+        <% } %>
+        <% if (ads.some(a => a.mediaType === 'video')) { %>
+        <button class="filter-btn px-5 py-2 rounded-full text-sm font-medium bg-white text-gray-700 border border-gray-200 hover:border-primary hover:text-primary transition-all duration-200" data-type="video">
+          <i class="ri-video-line mr-1"></i>Videos
+        </button>
+        <% } %>
+      </div>
+
+
+<!-- Media Grid -->
+<div id="mediaGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6">
+  <% ads.forEach(ad => { %>
+
+  <div
+    class="ad-card bg-white rounded-2xl overflow-hidden material-shadow cursor-pointer"
+    data-type="<%= ad.mediaType %>"
+  >
+
+    <% if (ad.mediaType === 'image') { %>
+
+    <!-- IMAGE CARD -->
+    <div
+      class="relative overflow-hidden aspect-[4/3] bg-gray-100"
+      onclick="openLightbox('<%= ad.url %>', 'image', '<%= (ad.caption || '').replace(/'/g, '\\\'') %>')"
+    >
+      <img
+        src="<%= ad.url %>"
+        alt="<%= ad.caption || 'D\'amour Muslim advertisement' %>"
+        class="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+        loading="lazy"
+      />
+
+      <!-- Hover Overlay -->
+      <div class="absolute inset-0 bg-black bg-opacity-0 hover:bg-opacity-20 transition-all duration-300 flex items-center justify-center">
+        <div class="w-12 h-12 bg-white bg-opacity-0 hover:bg-opacity-90 rounded-full flex items-center justify-center transition-all duration-300">
+          <i class="ri-zoom-in-line text-xl text-gray-800 opacity-0 hover:opacity-100 transition-opacity duration-300"></i>
+        </div>
+      </div>
+
+      <!-- Image Badge -->
+      <span class="absolute top-3 left-3 px-2 py-1 bg-black/60 text-white text-xs rounded-full font-medium backdrop-blur-sm">
+        <i class="ri-image-line mr-1"></i>Image
+      </span>
+    </div>
+
+    <% } else { %>
+
+    <!-- VIDEO CARD -->
+    <div
+      class="relative bg-gray-900 cursor-pointer aspect-[4/3] overflow-hidden"
+      onclick="openLightbox('<%= ad.url %>', 'video', '<%= (ad.caption || '').replace(/'/g, '\\\'') %>')"
+    >
+
+      <!-- <video
+        class="w-full h-full object-cover opacity-75"
+        muted
+        preload="metadata"
+        playsinline
+      >
+        <source src="<%= ad.url %>" type="video/mp4">
+      </video> -->
+      <video
+  class="w-full h-full object-cover opacity-90"
+  muted
+  preload="metadata"
+  playsinline
+  autoplay
+  loop
+>
+  <source src="<%= ad.url %>" type="video/mp4">
+</video>
+
+      <!-- Play Button -->
+      <div class="absolute inset-0 flex items-center justify-center">
+        <div class="w-16 h-16 bg-white/90 rounded-full flex items-center justify-center material-shadow hover:scale-110 transition-transform duration-200">
+          <i class="ri-play-fill text-2xl text-primary ml-1"></i>
+        </div>
+      </div>
+
+      <!-- Video Badge -->
+      <span class="absolute top-3 left-3 px-2 py-1 bg-primary text-white text-xs rounded-full font-medium">
+        <i class="ri-video-line mr-1"></i>Video
+      </span>
+
+      <!-- Dark Overlay -->
+      <div class="absolute inset-0 bg-black/10 hover:bg-black/20 transition-all duration-300"></div>
+    </div>
+
+    <% } %>
+
+    <!-- Caption -->
+    <% if (ad.caption) { %>
+    <div class="px-4 py-4">
+      <p class="text-sm text-gray-600 leading-relaxed">
+        <%= ad.caption %>
+      </p>
+    </div>
+    <% } %>
+
+  </div>
+
+  <% }) %>
+</div>
+
+      <% } else { %>
+      <!-- Empty State -->
+      <div class="bg-white rounded-2xl material-shadow p-16 text-center">
+        <i class="ri-image-line text-6xl text-gray-200 mb-4 block"></i>
+        <h3 class="text-xl font-semibold text-gray-700 mb-2">No Media Yet</h3>
+        <p class="text-gray-500">Our media gallery is being updated. Check back soon!</p>
+      </div>
+      <% } %>
+
+      <!-- Lightbox -->
+      <div id="lightbox" class="fixed inset-0 bg-black bg-opacity-80 z-[200] hidden items-center justify-center p-4" onclick="closeLightbox()">
+        <div class="relative max-w-5xl w-full flex flex-col items-center" onclick="event.stopPropagation()">
+          <button onclick="closeLightbox()" class="absolute -top-12 right-0 text-white text-4xl hover:text-pink-300 transition-colors z-10">&times;</button>
+          <div id="lightboxContent" class="w-full flex justify-center"></div>
+          <p id="lightboxCaption" class="mt-4 text-white text-center text-sm opacity-80 max-w-xl hidden"></p>
+        </div>
+      </div>
+
+   
+
+    </div>
+  </main>
+
+  <%- include('./partials/footer') %>
+  <%- include('./partials/analytics') %>
+
+  <script>
+    // Lightbox
+    function openLightbox(url, type, caption) {
+      const lb = document.getElementById('lightbox');
+      const content = document.getElementById('lightboxContent');
+      const cap = document.getElementById('lightboxCaption');
+      if (type === 'image') {
+        content.innerHTML = '<img src="' + url + '" alt="D\'amour Muslim ad" class="rounded-xl max-h-[85vh] max-w-[90vw] object-contain" />';
+      } else {
+        content.innerHTML = '<video controls autoplay class="rounded-xl max-h-[85vh] max-w-[90vw]"><source src="' + url + '" type="video/mp4"></video>';
+      }
+      if (caption) {
+        cap.textContent = caption;
+        cap.classList.remove('hidden');
+      } else {
+        cap.classList.add('hidden');
+      }
+      lb.classList.remove('hidden');
+      lb.classList.add('flex');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox() {
+      const lb = document.getElementById('lightbox');
+      const content = document.getElementById('lightboxContent');
+      lb.classList.add('hidden');
+      lb.classList.remove('flex');
+      content.innerHTML = '';
+      document.body.style.overflow = '';
+    }
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') closeLightbox();
+    });
+
+    // Filter tabs
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const type = this.getAttribute('data-type');
+        document.querySelectorAll('.filter-btn').forEach(b => {
+          b.classList.remove('active', 'bg-primary', 'text-white');
+          b.classList.add('bg-white', 'text-gray-700', 'border', 'border-gray-200');
+        });
+        this.classList.add('active', 'bg-primary', 'text-white');
+        this.classList.remove('bg-white', 'text-gray-700', 'border', 'border-gray-200');
+        document.querySelectorAll('.ad-card').forEach(card => {
+          if (type === 'all' || card.getAttribute('data-type') === type) {
+            card.style.display = '';
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>

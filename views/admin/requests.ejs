@@ -12,9 +12,6 @@
   <link rel="manifest" href="/images/site.webmanifest">
   <meta name="theme-color" content="#E91E63">
   <link rel="stylesheet" href="/css/output.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Playfair+Display:wght@400;600;700&family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
   <style>
     .material-shadow {
@@ -173,6 +170,11 @@
                       <p class="text-xs text-gray-500">
                         <%= request.from?.city ? request.from.city + ', ' : '' %><%= request.from?.country || 'Location N/A' %>
                       </p>
+                      <% if (request.from?.contact) { %>
+                      <p class="text-xs text-blue-600 font-medium mt-0.5">
+                        <i class="ri-phone-line mr-1"></i><%= request.from.contact %>
+                      </p>
+                      <% } %>
                     </div>
                   </div>
 
@@ -198,6 +200,11 @@
                       <p class="text-xs text-gray-500">
                         <%= request.to?.city ? request.to.city + ', ' : '' %><%= request.to?.country || 'Location N/A' %>
                       </p>
+                      <% if (request.to?.contact) { %>
+                      <p class="text-xs text-blue-600 font-medium mt-0.5">
+                        <i class="ri-phone-line mr-1"></i><%= request.to.contact %>
+                      </p>
+                      <% } %>
                     </div>
                   </div>
                 </div>

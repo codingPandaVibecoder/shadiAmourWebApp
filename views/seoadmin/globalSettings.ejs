@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Global SEO Settings | D'amour Muslim</title>
+  <link rel="stylesheet" href="/css/output.css">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+  <style>
+    .gradient-bg { background: linear-gradient(135deg, #E91E63 0%, #673AB7 100%); }
+  </style>
+  <%- include('../partials/analytics') %>
+</head>
+<body class="bg-gray-50 min-h-screen font-['Roboto']">
+  <%- include('partials/header', { currentPage: 'global' }) %>
+  
+  <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- Page Header -->
+    <div class="mb-6">
+      <h1 class="text-2xl font-bold text-gray-900 font-['Playfair_Display']">Global SEO Settings</h1>
+      <p class="text-gray-600 mt-1">Site-wide SEO configuration and defaults</p>
+    </div>
+    
+    <!-- Messages -->
+    <% if (typeof success !== 'undefined' && success) { %>
+    <div class="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg mb-6 flex items-center gap-2">
+      <i class="ri-check-circle-line"></i>
+      <span><%= success %></span>
+    </div>
+    <% } %>
+    <% if (typeof error !== 'undefined' && error) { %>
+    <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-6 flex items-center gap-2">
+      <i class="ri-error-warning-line"></i>
+      <span><%= error %></span>
+    </div>
+    <% } %>
+    
+    <form action="/seoadmin/global-settings/update" method="POST" class="space-y-6">
+      <!-- Site Identity -->
+      <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+        <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
+          <h2 class="text-lg font-semibold text-gray-900 flex items-center gap-2">
+            <i class="ri-building-line text-pink-500"></i>
+            Site Identity
+          </h2>
+        </div>
+        <div class="p-6 space-y-5">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Site Name</label>
+              <input 
+                type="text" 
+                name="siteName" 
+                value="<%= settings.siteName || '' %>"
+                class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500"
+                placeholder="D'amour Muslim"
+              >
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Meta Title Suffix</label>
+              <input 
+                type="text" 
+                name="defaultMetaTitleSuffix" 
+                value="<%= settings.defaultMetaTitleSuffix || '' %>"
+                class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500"
+                placeholder="| D'amour Muslim"
+              >
+            </div>
+          </div>
+          
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Default Meta Description</label>
+            <textarea 
+              name="defaultMetaDescription" 
+              rows="2"
+              class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500 resize-none"
+              placeholder="Default description for pages without custom meta"
+            ><%= settings.defaultMetaDescription || '' %></textarea>
+          </div>
+          
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Default OG Image URL</label>
+            <input 
+              type="url" 
+              name="defaultOgImage" 
+              value="<%= settings.defaultOgImage || '' %>"
+              class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500"
+              placeholder="https://damourmuslim.com/images/og-default.jpg"
+            >
+          </div>
+          
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Global Keywords</label>
+            <input 
+              type="text" 
+              name="globalKeywords" 
+              value="<%= settings.globalKeywords ? settings.globalKeywords.join(', ') : '' %>"
+              class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500"
+              placeholder="Comma-separated keywords"
+            >
+            <p class="text-xs text-gray-500 mt-1">Site-wide keywords (comma-separated)</p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Social Media -->
+      <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+        <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
+          <h2 class="text-lg font-semibold text-gray-900 flex items-center gap-2">
+            <i class="ri-share-line text-pink-500"></i>
+            Social Media
+          </h2>
+        </div>
+        <div class="p-6 grid grid-cols-1 md:grid-cols-3 gap-5">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Twitter Handle</label>
+            <input 
+              type="text" 
+              name="twitterHandle" 
+              value="<%= settings.twitterHandle || '' %>"
+              class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500"
+              placeholder="@damourmuslim"
+            >
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Facebook Page URL</label>
+            <input 
+              type="url" 
+              name="facebookPageUrl" 
+              value="<%= settings.facebookPageUrl || '' %>"
+              class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500"
+              placeholder="https://facebook.com/..."
+            >
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Instagram Handle</label>
+            <input 
+              type="text" 
+              name="instagramHandle" 
+              value="<%= settings.instagramHandle || '' %>"
+              class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500"
+              placeholder="@damourmuslim"
+            >
+          </div>
+        </div>
+      </div>
+      
+      <!-- Verification & Analytics -->
+      <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+        <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
+          <h2 class="text-lg font-semibold text-gray-900 flex items-center gap-2">
+            <i class="ri-bar-chart-line text-pink-500"></i>
+            Verification & Analytics
+          </h2>
+        </div>
+        <div class="p-6 space-y-5">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Google Analytics ID</label>
+              <input 
+                type="text" 
+                name="googleAnalyticsId" 
+                value="<%= settings.googleAnalyticsId || '' %>"
+                class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500"
+                placeholder="G-XXXXXXXXXX"
+              >
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Google Search Console Verification</label>
+              <input 
+                type="text" 
+                name="googleSearchConsoleVerification" 
+                value="<%= settings.googleSearchConsoleVerification || '' %>"
+                class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500"
+                placeholder="Verification code"
+              >
+            </div>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Bing Verification</label>
+            <input 
+              type="text" 
+              name="bingVerification" 
+              value="<%= settings.bingVerification || '' %>"
+              class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500"
+              placeholder="Bing verification code"
+            >
+          </div>
+        </div>
+      </div>
+      
+      <!-- Page-Specific SEO -->
+      <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+        <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
+          <h2 class="text-lg font-semibold text-gray-900 flex items-center gap-2">
+            <i class="ri-pages-line text-pink-500"></i>
+            Page-Specific SEO
+          </h2>
+        </div>
+        <div class="p-6 space-y-6">
+          <!-- Homepage -->
+          <div class="border-b border-gray-200 pb-6">
+            <h3 class="font-medium text-gray-900 mb-4">Homepage</h3>
+            <div class="space-y-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Homepage Meta Title</label>
+                <input 
+                  type="text" 
+                  name="homepageMetaTitle" 
+                  value="<%= settings.homepageMetaTitle || '' %>"
+                  maxlength="60"
+                  class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500"
+                  placeholder="Muslim Matrimony UK | D'amour Muslim"
+                >
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Homepage Meta Description</label>
+                <textarea 
+                  name="homepageMetaDescription" 
+                  rows="2"
+                  maxlength="160"
+                  class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500 resize-none"
+                  placeholder="Find your Muslim life partner..."
+                ><%= settings.homepageMetaDescription || '' %></textarea>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Profiles Page -->
+          <div>
+            <h3 class="font-medium text-gray-900 mb-4">Profiles Listing Page</h3>
+            <div class="space-y-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Profiles Page Meta Title</label>
+                <input 
+                  type="text" 
+                  name="profilesPageMetaTitle" 
+                  value="<%= settings.profilesPageMetaTitle || '' %>"
+                  maxlength="60"
+                  class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500"
+                  placeholder="Browse Muslim Profiles | D'amour Muslim"
+                >
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Profiles Page Meta Description</label>
+                <textarea 
+                  name="profilesPageMetaDescription" 
+                  rows="2"
+                  maxlength="160"
+                  class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500 resize-none"
+                  placeholder="Browse verified Muslim profiles..."
+                ><%= settings.profilesPageMetaDescription || '' %></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Organization Schema -->
+      <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+        <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
+          <h2 class="text-lg font-semibold text-gray-900 flex items-center gap-2">
+            <i class="ri-code-s-slash-line text-pink-500"></i>
+            Organization Schema
+            <span class="text-xs font-normal text-gray-500 ml-2">(For Rich Snippets)</span>
+          </h2>
+        </div>
+        <div class="p-6 space-y-5">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Organization Name</label>
+              <input 
+                type="text" 
+                name="organizationName" 
+                value="<%= settings.organizationName || '' %>"
+                class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500"
+                placeholder="D'amour Muslim"
+              >
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Organization URL</label>
+              <input 
+                type="url" 
+                name="organizationUrl" 
+                value="<%= settings.organizationUrl || '' %>"
+                class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500"
+                placeholder="https://damourmuslim.com"
+              >
+            </div>
+          </div>
+          
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Organization Logo URL</label>
+            <input 
+              type="url" 
+              name="organizationLogo" 
+              value="<%= settings.organizationLogo || '' %>"
+              class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500"
+              placeholder="https://damourmuslim.com/images/logo.png"
+            >
+          </div>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Contact Email</label>
+              <input 
+                type="email" 
+                name="organizationEmail" 
+                value="<%= settings.organizationEmail || '' %>"
+                class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500"
+                placeholder="contact@damourmuslim.com"
+              >
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Contact Phone</label>
+              <input 
+                type="tel" 
+                name="organizationPhone" 
+                value="<%= settings.organizationPhone || '' %>"
+                class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500"
+                placeholder="+44 ..."
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Advanced Settings -->
+      <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+        <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
+          <h2 class="text-lg font-semibold text-gray-900 flex items-center gap-2">
+            <i class="ri-settings-3-line text-pink-500"></i>
+            Advanced Settings
+          </h2>
+        </div>
+        <div class="p-6 space-y-5">
+          <!-- Global No-Index -->
+          <div class="flex items-center justify-between p-4 bg-red-50 rounded-lg border border-red-200">
+            <div>
+              <label class="font-medium text-red-800">Global No-Index</label>
+              <p class="text-sm text-red-600">⚠️ This will prevent ALL pages from being indexed by search engines</p>
+            </div>
+            <label class="relative inline-flex items-center cursor-pointer">
+              <input 
+                type="checkbox" 
+                name="globalNoIndex" 
+                value="true"
+                <%= settings.globalNoIndex ? 'checked' : '' %>
+                class="sr-only peer"
+              >
+              <div class="w-11 h-6 bg-gray-300 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-red-300 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-red-600"></div>
+            </label>
+          </div>
+          
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Robots.txt Additions</label>
+            <textarea 
+              name="robotsTxtAdditions" 
+              rows="4"
+              class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500 font-mono text-sm resize-none"
+              placeholder="# Additional robots.txt rules&#10;Disallow: /private/"
+            ><%= settings.robotsTxtAdditions || '' %></textarea>
+            <p class="text-xs text-gray-500 mt-1">Additional rules to append to robots.txt</p>
+          </div>
+          
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Footer SEO Text</label>
+            <textarea 
+              name="footerSeoText" 
+              rows="3"
+              class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500 resize-none"
+              placeholder="Additional SEO text for the footer..."
+            ><%= settings.footerSeoText || '' %></textarea>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Last Updated Info -->
+      <% if (settings.updatedAt) { %>
+      <div class="text-sm text-gray-500 text-center">
+        Last updated: <%= new Date(settings.updatedAt).toLocaleString() %>
+        <% if (settings.updatedBy) { %> by <%= settings.updatedBy %><% } %>
+      </div>
+      <% } %>
+      
+      <!-- Submit -->
+      <div class="flex justify-end">
+        <button type="submit" class="px-8 py-3 gradient-bg text-white rounded-lg font-medium hover:opacity-90 transition-opacity flex items-center gap-2">
+          <i class="ri-save-line"></i>
+          Save Global Settings
+        </button>
+      </div>
+    </form>
+  </main>
+</body>
+</html>

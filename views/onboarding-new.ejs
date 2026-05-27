@@ -1,0 +1,1095 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Complete Your Profile - D'amour Muslim</title>
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+  <link rel="manifest" href="/images/site.webmanifest">
+  <meta name="theme-color" content="#E91E63">
+  <link rel="stylesheet" href="/css/output.css">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+  <style>
+    :where([class^="ri-"])::before {
+      content: "\f3c2";
+    }
+
+    .material-shadow {
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .gradient-bg {
+      background: linear-gradient(135deg, #E91E63 0%, #673AB7 100%);
+    }
+
+    .step-content {
+      display: none;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .step-content.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .progress-bar {
+      transition: width 0.4s ease;
+    }
+
+    .profile-for-card {
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    input[type="radio"]:checked + .profile-for-card {
+      border-color: #E91E63;
+      background-color: #fdf2f8;
+      box-shadow: 0 0 0 2px #E91E63;
+    }
+
+    input[type="radio"]:checked + .profile-for-card .card-icon {
+      background-color: #E91E63;
+      color: white;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 1px solid #d1d5db;
+      border-radius: 0.75rem;
+      font-size: 1rem;
+      color: #111827;
+      background-color: white;
+      transition: all 0.2s;
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: #E91E63;
+      box-shadow: 0 0 0 2px rgba(233, 30, 99, 0.2);
+    }
+
+    .form-select {
+      width: 100%;
+      padding: 0.75rem 2.5rem 0.75rem 1rem;
+      border: 1px solid #d1d5db;
+      border-radius: 0.75rem;
+      font-size: 1rem;
+      color: #111827;
+      background-color: white;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+      background-position: right 0.75rem center;
+      background-repeat: no-repeat;
+      background-size: 1.5em 1.5em;
+      transition: all 0.2s;
+    }
+
+    .form-select:focus {
+      outline: none;
+      border-color: #E91E63;
+      box-shadow: 0 0 0 2px rgba(233, 30, 99, 0.2);
+    }
+
+    .form-select:disabled {
+      background-color: #f3f4f6;
+      cursor: not-allowed;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: #374151;
+      margin-bottom: 0.5rem;
+    }
+
+    .step-pill {
+      width: 2rem;
+      height: 2rem;
+      border-radius: 9999px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.875rem;
+      font-weight: 600;
+      transition: all 0.3s;
+    }
+
+    @media (min-width: 640px) {
+      .step-pill {
+        width: 2.5rem;
+        height: 2.5rem;
+      }
+    }
+
+    .step-pill.active {
+      background-color: #E91E63;
+      color: white;
+    }
+
+    .step-pill.completed {
+      background-color: #22c55e;
+      color: white;
+    }
+
+    .step-pill.pending {
+      background-color: #e5e7eb;
+      color: #6b7280;
+    }
+
+    .border-red-500 {
+      border-color: #ef4444 !important;
+    }
+
+    /* Hide header on mobile during onboarding */
+    @media (max-width: 768px) {
+      .onboarding-hide-mobile {
+        display: none !important;
+      }
+    }
+
+    .phone-error {
+      color: #ef4444;
+      font-size: 0.75rem;
+      margin-top: 0.25rem;
+    }
+  </style>
+  <%- include('partials/clarity') %>
+  <%- include('partials/thirdparty') %>
+  <%- include('partials/analytics') %>
+</head>
+
+<body class="bg-gray-50 font-['Roboto']">
+  <div class="onboarding-hide-mobile">
+    <%- include('partials/header') %>
+  </div>
+
+  <main class="pt-6 md:pt-20 pb-16 min-h-screen">
+    <div class="max-w-2xl mx-auto px-4 sm:px-6">
+      
+      <!-- Progress Section -->
+      <div class="text-center mb-6">
+        <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 mb-2 font-['Playfair_Display']">Complete Your Profile</h2>
+        <p class="text-gray-600 text-sm sm:text-base mb-4">Just a few quick steps to get started</p>
+
+        <!-- Step Indicators -->
+        <div class="flex justify-center items-center gap-1 sm:gap-2 mb-4">
+          <div class="step-pill active" data-step="1">1</div>
+          <div class="w-3 sm:w-6 h-0.5 bg-gray-200 step-line" data-line="1"></div>
+          <div class="step-pill pending" data-step="2">2</div>
+          <div class="w-3 sm:w-6 h-0.5 bg-gray-200 step-line" data-line="2"></div>
+          <div class="step-pill pending" data-step="3">3</div>
+          <div class="w-3 sm:w-6 h-0.5 bg-gray-200 step-line" data-line="3"></div>
+          <div class="step-pill pending" data-step="4">4</div>
+          <div class="w-3 sm:w-6 h-0.5 bg-gray-200 step-line" data-line="4"></div>
+          <div class="step-pill pending" data-step="5">5</div>
+          <div class="w-3 sm:w-6 h-0.5 bg-gray-200 step-line" data-line="5"></div>
+          <div class="step-pill pending" data-step="6">6</div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="bg-gray-200 rounded-full h-1.5 mb-2">
+          <div class="progress-bar bg-gradient-to-r from-pink-500 to-purple-500 h-1.5 rounded-full" style="width: 20%"></div>
+        </div>
+        <p class="text-xs text-gray-500">Step <span id="currentStep">1</span> of 5 · <span id="progressPercent">20%</span></p>
+      </div>
+
+      <!-- Form Container -->
+      <div class="bg-white rounded-2xl p-4 sm:p-6 md:p-8 material-shadow">
+        <form id="onboardingForm" class="space-y-6">
+
+          <!-- Step 1: Profile For Selection -->
+          <div id="step-1" class="step-content active">
+            <div class="text-center mb-6">
+              <div class="w-16 h-16 bg-pink-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i class="ri-parent-line text-3xl text-pink-500"></i>
+              </div>
+              <h3 class="text-xl sm:text-2xl font-semibold text-gray-800 mb-2">Who is this profile for?</h3>
+              <p class="text-gray-600 text-sm">Select who you are creating this profile for</p>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3 sm:gap-4 max-w-sm mx-auto">
+              <label class="cursor-pointer">
+                <input type="radio" name="profileFor" value="son" class="sr-only" required>
+                <div class="profile-for-card border-2 border-gray-200 rounded-xl p-4 sm:p-6 text-center hover:border-pink-300">
+                  <div class="card-icon w-12 h-12 sm:w-16 sm:h-16 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-2 sm:mb-3">
+                    <i class="ri-user-line text-xl sm:text-2xl"></i>
+                  </div>
+                  <span class="text-base sm:text-lg font-medium text-gray-700">Son</span>
+                </div>
+              </label>
+
+              <label class="cursor-pointer">
+                <input type="radio" name="profileFor" value="daughter" class="sr-only" required>
+                <div class="profile-for-card border-2 border-gray-200 rounded-xl p-4 sm:p-6 text-center hover:border-pink-300">
+                  <div class="card-icon w-12 h-12 sm:w-16 sm:h-16 bg-pink-100 text-pink-600 rounded-full flex items-center justify-center mx-auto mb-2 sm:mb-3">
+                    <i class="ri-user-3-line text-xl sm:text-2xl"></i>
+                  </div>
+                  <span class="text-base sm:text-lg font-medium text-gray-700">Daughter</span>
+                </div>
+              </label>
+            </div>
+
+            <!-- Username Section (shown after selection) -->
+            <div id="usernameSection" class="hidden mt-6">
+              <div class="bg-gradient-to-r from-pink-50 to-purple-50 border border-pink-200 rounded-xl p-4 sm:p-6">
+                <div class="text-center mb-3">
+                  <i class="ri-user-star-line text-2xl text-pink-500"></i>
+                  <h4 class="text-base font-semibold text-gray-800 mt-1">Profile Username</h4>
+                  <p class="text-xs text-gray-600">This username will be used to sign in</p>
+                </div>
+                
+                <div class="relative">
+                  <input type="text" id="generatedUsername" name="username" readonly 
+                    class="form-input text-center font-bold pr-12" 
+                    placeholder="Generating...">
+                  <button type="button" id="copyUsername" 
+                    class="absolute right-3 top-1/2 -translate-y-1/2 p-2 text-pink-500 hover:text-pink-600 transition-colors"
+                    title="Copy username">
+                    <i class="ri-file-copy-line text-lg"></i>
+                  </button>
+                </div>
+                
+                <p id="copyMessage" class="hidden text-center text-xs text-green-600 mt-2">
+                  <i class="ri-check-line"></i> Username copied!
+                </p>
+                
+                <p class="text-center text-xs text-gray-500 mt-2">
+                  <i class="ri-information-line"></i> Save this username to sign in later
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 2: Personal Details -->
+          <div id="step-2" class="step-content">
+            <div class="text-center mb-6">
+              <div class="w-16 h-16 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i class="ri-user-heart-line text-3xl text-blue-600"></i>
+              </div>
+              <h3 class="text-xl sm:text-2xl font-semibold text-gray-800 mb-2">Personal Details</h3>
+              <p class="text-gray-600 text-sm" id="step2Subtitle">Tell us about your son/daughter</p>
+            </div>
+
+            <div class="space-y-4">
+              <!-- Name -->
+              <div>
+                <label for="name" class="form-label">
+                  <span id="nameLabel">What is your son's/daughter's name?</span> <span class="text-red-500">*</span>
+                </label>
+                <input type="text" id="name" name="name" required 
+                  class="form-input" 
+                  placeholder="Enter full name">
+              </div>
+
+              <!-- Age -->
+              <div>
+                <label for="age" class="form-label">
+                  <span id="ageLabel">What is their age?</span> <span class="text-red-500">*</span>
+                </label>
+                <select id="age" name="age" required class="form-select">
+                  <option value="">Select age</option>
+                  <% for(let i = 18; i <= 70; i++) { %>
+                    <option value="<%= i %>"><%= i %> years old</option>
+                  <% } %>
+                </select>
+              </div>
+
+              <!-- Height -->
+              <div>
+                <label for="height" class="form-label">
+                  <span id="heightLabel">What is their height?</span> <span class="text-red-500">*</span>
+                </label>
+                <select id="height" name="height" required class="form-select">
+                  <option value="">Select height</option>
+                  <option value="140">4'7" (140 cm)</option>
+                  <option value="142">4'8" (142 cm)</option>
+                  <option value="145">4'9" (145 cm)</option>
+                  <option value="147">4'10" (147 cm)</option>
+                  <option value="150">4'11" (150 cm)</option>
+                  <option value="152">5'0" (152 cm)</option>
+                  <option value="155">5'1" (155 cm)</option>
+                  <option value="157">5'2" (157 cm)</option>
+                  <option value="160">5'3" (160 cm)</option>
+                  <option value="163">5'4" (163 cm)</option>
+                  <option value="165">5'5" (165 cm)</option>
+                  <option value="168">5'6" (168 cm)</option>
+                  <option value="170">5'7" (170 cm)</option>
+                  <option value="173">5'8" (173 cm)</option>
+                  <option value="175">5'9" (175 cm)</option>
+                  <option value="178">5'10" (178 cm)</option>
+                  <option value="180">5'11" (180 cm)</option>
+                  <option value="183">6'0" (183 cm)</option>
+                  <option value="185">6'1" (185 cm)</option>
+                  <option value="188">6'2" (188 cm)</option>
+                  <option value="191">6'3" (191 cm)</option>
+                  <option value="193">6'4" (193 cm)</option>
+                  <option value="196">6'5" (196 cm)</option>
+                  <option value="198">6'6" (198 cm)</option>
+                  <option value="201">6'7" (201 cm)</option>
+                </select>
+              </div>
+
+              <!-- Marital Status -->
+              <div>
+                <label for="maritalStatus" class="form-label">
+                  <span id="maritalLabel">What is their marital status?</span> <span class="text-red-500">*</span>
+                </label>
+                <select id="maritalStatus" name="maritalStatus" required class="form-select">
+                  <option value="">Select marital status</option>
+                  <option value="nevermarried">Never Married</option>
+                  <option value="divorced">Divorced</option>
+                  <option value="widowed">Widowed</option>
+                  <option value="annulled">Annulled</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 3: Location -->
+          <div id="step-3" class="step-content">
+            <div class="text-center mb-6">
+              <div class="w-16 h-16 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i class="ri-map-pin-line text-3xl text-green-600"></i>
+              </div>
+              <h3 class="text-xl sm:text-2xl font-semibold text-gray-800 mb-2">Location</h3>
+              <p class="text-gray-600 text-sm" id="step3Subtitle">Where does your son/daughter live?</p>
+            </div>
+
+            <div class="space-y-4">
+              <!-- Country First -->
+              <div>
+                <label for="country" class="form-label">
+                  <span id="countryLabel">What country do they live in?</span> <span class="text-red-500">*</span>
+                </label>
+                <select id="country" name="country" required class="form-select">
+                  <option value="">Select country</option>
+                  <option value="uk">🇬🇧 United Kingdom</option>
+                  <option value="pakistan">🇵🇰 Pakistan</option>
+                  <option value="bangladesh">🇧🇩 Bangladesh</option>
+                  <option value="india">🇮🇳 India</option>
+                  <option value="usa">🇺🇸 United States</option>
+                  <option value="canada">🇨🇦 Canada</option>
+                  <option value="uae">🇦🇪 United Arab Emirates</option>
+                  <option value="saudi_arabia">🇸🇦 Saudi Arabia</option>
+                  <option value="australia">🇦🇺 Australia</option>
+                  <option value="germany">🇩🇪 Germany</option>
+                  <option value="france">🇫🇷 France</option>
+                  <option value="malaysia">🇲🇾 Malaysia</option>
+                  <option value="singapore">🇸🇬 Singapore</option>
+                  <option value="other">🌍 Other</option>
+                </select>
+              </div>
+
+              <!-- City (dynamic based on country) -->
+              <div>
+                <label for="city" class="form-label">
+                  <span id="cityLabel">What city do they live in?</span> <span class="text-red-500">*</span>
+                </label>
+                <select id="city" name="city" required class="form-select" disabled>
+                  <option value="">Select country first</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 4: Education & Work -->
+          <div id="step-4" class="step-content">
+            <div class="text-center mb-6">
+              <div class="w-16 h-16 bg-purple-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i class="ri-graduation-cap-line text-3xl text-purple-600"></i>
+              </div>
+              <h3 class="text-xl sm:text-2xl font-semibold text-gray-800 mb-2">Education & Work</h3>
+              <p class="text-gray-600 text-sm" id="step4Subtitle">Tell us about your son's/daughter's background</p>
+            </div>
+
+            <div class="space-y-4">
+              <!-- Highest Education -->
+              <div>
+                <label for="highestEducation" class="form-label">
+                  <span id="educationLabel">What is their highest education?</span> <span class="text-red-500">*</span>
+                </label>
+                <select id="highestEducation" name="highestEducation" required class="form-select">
+                  <option value="">Select education level</option>
+                  <option value="High School">High School / Secondary</option>
+                  <option value="Diploma">Diploma / Certificate</option>
+                  <option value="Bachelor's Degree">Bachelor's Degree</option>
+                  <option value="Master's Degree">Master's Degree</option>
+                  <option value="Doctorate / PhD">Doctorate / PhD</option>
+                  <option value="Professional Degree">Professional Degree (MBBS, LLB, etc.)</option>
+                  <option value="Islamic Studies">Islamic Studies / Alim</option>
+                  <option value="Hafiz-e-Quran">Hafiz-e-Quran</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+
+              <!-- Work/Occupation -->
+              <div>
+                <label for="work" class="form-label">
+                  <span id="workLabel">What do they do for work?</span> <span class="text-red-500">*</span>
+                </label>
+                <select id="work" name="work" required class="form-select">
+                  <option value="">Select occupation</option>
+                  <option value="Doctor / Medical Professional">Doctor / Medical Professional</option>
+                  <option value="Engineer">Engineer</option>
+                  <option value="Teacher / Lecturer">Teacher / Lecturer</option>
+                  <option value="IT Professional">IT Professional / Software</option>
+                  <option value="Accountant / Finance">Accountant / Finance</option>
+                  <option value="Lawyer / Legal">Lawyer / Legal</option>
+                  <option value="Business Owner">Business Owner</option>
+                  <option value="Civil Servant">Civil Servant / Government</option>
+                  <option value="Healthcare Worker">Healthcare Worker</option>
+                  <option value="Student">Student</option>
+                  <option value="Self Employed">Self Employed</option>
+                  <option value="Homemaker">Homemaker</option>
+                  <option value="Currently Unemployed">Currently Unemployed</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+              <div id="otherWorkSection" class="hidden">
+                <label for="otherWork" class="form-label">
+                  Please specify the occupation <span class="text-red-500">*</span>
+                </label>
+                <input type="text" id="otherWork" name="otherWork" 
+                  class="form-input" 
+                  placeholder="e.g., Graphic Designer, Freelancer, etc."
+                  minlength="2">
+                <p class="text-xs text-gray-500 mt-1">Minimum 2 characters</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 5: About & Contact -->
+          <div id="step-5" class="step-content">
+            <div class="text-center mb-6">
+              <div class="w-16 h-16 bg-amber-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i class="ri-heart-2-line text-3xl text-amber-600"></i>
+              </div>
+              <h3 class="text-xl sm:text-2xl font-semibold text-gray-800 mb-2">About Them</h3>
+              <p class="text-gray-600 text-sm" id="step5Subtitle">Tell us more about your son/daughter</p>
+            </div>
+
+            <div class="space-y-4">
+              <!-- About Them -->
+              <div>
+                <label for="aboutMe" class="form-label">
+                  <span id="aboutLabel">Tell us about them</span> <span class="text-red-500">*</span>
+                </label>
+                <textarea id="aboutMe" name="aboutMe" required 
+                  class="form-input" style="min-height: 150px; resize: none;"
+                  placeholder="Share a brief description about their personality, interests, what they're looking for in a spouse, and what makes them special..."
+                  minlength="20"></textarea>
+                <p class="text-xs text-gray-500 mt-1">Minimum 20 characters</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 6: Contact Information -->
+          <div id="step-6" class="step-content">
+            <div class="text-center mb-6">
+              <div class="w-16 h-16 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i class="ri-whatsapp-line text-3xl text-green-600"></i>
+              </div>
+              <h3 class="text-xl sm:text-2xl font-semibold text-gray-800 mb-2">Contact Information</h3>
+              <p class="text-gray-600 text-sm">How can we reach you?</p>
+            </div>
+
+            <div class="space-y-4">
+              <!-- WhatsApp Contact with Country Code -->
+              <div>
+                <label for="contact" class="form-label">
+                  <i class="ri-whatsapp-line text-green-500 mr-1"></i>
+                  WhatsApp Contact Number <span class="text-red-500">*</span>
+                </label>
+                <div class="flex gap-2">
+                  <select id="countryCode" name="countryCode" required class="form-select" style="width: 140px; flex-shrink: 0;">
+                    <option value="+44">🇬🇧 +44</option>
+                    <option value="+92">🇵🇰 +92</option>
+                    <option value="+880">🇧🇩 +880</option>
+                    <option value="+91">🇮🇳 +91</option>
+                    <option value="+1">🇺🇸 +1</option>
+                    <option value="+1">🇨🇦 +1</option>
+                    <option value="+971">🇦🇪 +971</option>
+                    <option value="+966">🇸🇦 +966</option>
+                    <option value="+61">🇦🇺 +61</option>
+                    <option value="+49">🇩🇪 +49</option>
+                    <option value="+33">🇫🇷 +33</option>
+                    <option value="+60">🇲🇾 +60</option>
+                    <option value="+65">🇸🇬 +65</option>
+                  </select>
+                  <input type="tel" id="contact" name="contact" required 
+                    class="form-input flex-1" 
+                    placeholder="7XXX XXXXXX"
+                    oninput="validatePhoneNumber()">
+                </div>
+                <p id="phoneError" class="phone-error hidden"></p>
+                <p id="phoneSuccess" class="text-xs text-green-600 mt-1 hidden">
+                  <i class="ri-checkbox-circle-line"></i> Valid phone number
+                </p>
+                <p class="text-xs text-gray-500 mt-1">
+                  <i class="ri-shield-check-line text-green-500"></i>
+                  We'll use this to contact you about profile status and potential matches
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Navigation Buttons -->
+          <div class="flex justify-between pt-6 border-t border-gray-100 gap-3">
+            <button type="button" id="prevBtn" class="hidden flex-1 sm:flex-none px-4 sm:px-6 py-3 border-2 border-gray-300 text-gray-700 hover:border-pink-500 hover:text-pink-500 transition-all duration-300 rounded-xl font-medium">
+              <i class="ri-arrow-left-line mr-1 sm:mr-2"></i>
+              <span class="hidden sm:inline">Previous</span>
+              <span class="sm:hidden">Back</span>
+            </button>
+
+            <button type="button" id="nextBtn" class="flex-1 sm:flex-none px-4 sm:px-6 py-3 bg-pink-500 text-white hover:bg-pink-600 transition-all duration-300 rounded-xl material-shadow font-medium ml-auto" disabled>
+              <span id="nextBtnText">Next</span>
+              <i class="ri-arrow-right-line ml-1 sm:ml-2"></i>
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Pending Approval Notice -->
+      <div class="mt-4 bg-blue-50 border border-blue-200 rounded-xl p-3 sm:p-4 text-center">
+        <div class="flex items-center justify-center gap-2 text-blue-700">
+          <i class="ri-information-line text-lg"></i>
+          <p class="text-xs sm:text-sm">After completing, your profile will be reviewed before it becomes visible.</p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      let currentStep = 1;
+      const totalSteps = 6;
+      
+      // Gender context for dynamic labels
+      let selectedGender = null; // 'son' or 'daughter'
+      
+      const profileForInputs = document.querySelectorAll('input[name="profileFor"]');
+      const usernameSection = document.getElementById('usernameSection');
+      const generatedUsername = document.getElementById('generatedUsername');
+      const copyUsernameBtn = document.getElementById('copyUsername');
+      const copyMessage = document.getElementById('copyMessage');
+      const nextBtn = document.getElementById('nextBtn');
+      const prevBtn = document.getElementById('prevBtn');
+
+      // Initialize UI
+      updateUI();
+
+      // Profile For selection handler
+      profileForInputs.forEach(input => {
+        input.addEventListener('change', async function() {
+          if (this.checked) {
+            selectedGender = this.value;
+            
+            // Update all dynamic labels
+            updateDynamicLabels();
+            
+            // Show username section
+            usernameSection.classList.remove('hidden');
+            generatedUsername.value = 'Generating...';
+            
+            // Determine gender based on selection
+            const gender = this.value === 'son' ? 'male' : 'female';
+            
+            try {
+              const response = await fetch(`/generate-username?gender=${gender}`);
+              const data = await response.json();
+              generatedUsername.value = data.username;
+              nextBtn.disabled = false;
+            } catch (error) {
+              console.error('Error generating username:', error);
+              generatedUsername.value = 'Error - Please refresh';
+            }
+          }
+        });
+      });
+
+      // Function to update all dynamic labels based on gender
+      function updateDynamicLabels() {
+        const isSon = selectedGender === 'son';
+        const possessive = isSon ? "your son's" : "your daughter's";
+        const they = isSon ? 'he' : 'she';
+        const their = isSon ? 'his' : 'her';
+        const them = isSon ? 'him' : 'her';
+        const relationship = isSon ? 'son' : 'daughter';
+
+        // Step 2 labels
+        document.getElementById('step2Subtitle').textContent = `Tell us about your ${relationship}`;
+        document.getElementById('nameLabel').textContent = `What is ${possessive} name?`;
+        document.getElementById('ageLabel').textContent = `What is ${their} age?`;
+        document.getElementById('heightLabel').textContent = `What is ${their} height?`;
+        document.getElementById('maritalLabel').textContent = `What is ${their} marital status?`;
+
+        // Step 3 labels
+        document.getElementById('step3Subtitle').textContent = `Where does your ${relationship} live?`;
+        document.getElementById('cityLabel').textContent = `What city does ${they} live in?`;
+        document.getElementById('countryLabel').textContent = `What country does ${they} live in?`;
+
+        // Step 4 labels
+        document.getElementById('step4Subtitle').textContent = `Tell us about ${possessive} background`;
+        document.getElementById('educationLabel').textContent = `What is ${their} highest education?`;
+        document.getElementById('workLabel').textContent = `What does ${they} do for work?`;
+
+        // Step 5 labels
+        document.getElementById('step5Subtitle').textContent = `Tell us more about your ${relationship}`;
+        document.getElementById('aboutLabel').textContent = `Tell us about ${them}`;
+      }
+
+      // Copy username functionality
+      copyUsernameBtn.addEventListener('click', function() {
+        const username = generatedUsername.value;
+        if (username && username !== 'Generating...' && username !== 'Error - Please refresh') {
+          navigator.clipboard.writeText(username).then(() => {
+            copyMessage.classList.remove('hidden');
+            setTimeout(() => {
+              copyMessage.classList.add('hidden');
+            }, 2000);
+          });
+        }
+      });
+
+      function updateUI() {
+        const progress = (currentStep / totalSteps) * 100;
+        
+        document.querySelector('.progress-bar').style.width = `${progress}%`;
+        document.getElementById('currentStep').textContent = currentStep;
+        document.getElementById('progressPercent').textContent = `${Math.round(progress)}%`;
+
+        // Update step pills
+        document.querySelectorAll('.step-pill').forEach((pill, index) => {
+          const stepNum = index + 1;
+          pill.classList.remove('active', 'completed', 'pending');
+          
+          if (stepNum < currentStep) {
+            pill.classList.add('completed');
+            pill.innerHTML = '<i class="ri-check-line"></i>';
+          } else if (stepNum === currentStep) {
+            pill.classList.add('active');
+            pill.textContent = stepNum;
+          } else {
+            pill.classList.add('pending');
+            pill.textContent = stepNum;
+          }
+        });
+
+        // Update step lines
+        document.querySelectorAll('.step-line').forEach((line, index) => {
+          const lineNum = index + 1;
+          if (lineNum < currentStep) {
+            line.classList.remove('bg-gray-200');
+            line.classList.add('bg-pink-500');
+          } else {
+            line.classList.remove('bg-pink-500');
+            line.classList.add('bg-gray-200');
+          }
+        });
+
+        // Show/hide steps
+        document.querySelectorAll('.step-content').forEach(step => {
+          step.classList.remove('active');
+        });
+        document.getElementById(`step-${currentStep}`).classList.add('active');
+
+        // Update navigation buttons
+        prevBtn.classList.toggle('hidden', currentStep === 1);
+
+        if (currentStep === totalSteps) {
+          document.getElementById('nextBtnText').textContent = 'Complete Profile';
+          nextBtn.querySelector('i').className = 'ri-check-line ml-1 sm:ml-2';
+        } else {
+          document.getElementById('nextBtnText').textContent = 'Next';
+          nextBtn.querySelector('i').className = 'ri-arrow-right-line ml-1 sm:ml-2';
+        }
+
+        // Enable/disable next button based on step requirements
+        checkStepValidity();
+      }
+
+      function checkStepValidity() {
+        if (currentStep === 1) {
+          const selectedProfileFor = document.querySelector('input[name="profileFor"]:checked');
+          const hasUsername = generatedUsername.value && generatedUsername.value !== 'Generating...' && generatedUsername.value !== 'Error - Please refresh';
+          nextBtn.disabled = !selectedProfileFor || !hasUsername;
+        } else if (currentStep === 6) {
+          // For step 6, check if phone validation passes
+          const phoneValid = window.validatePhoneNumber ? window.validatePhoneNumber() : false;
+          nextBtn.disabled = !phoneValid;
+        } else {
+          nextBtn.disabled = false;
+        }
+      }
+
+      function collectStepData(step) {
+        const stepElement = document.getElementById(`step-${step}`);
+        const formData = {};
+
+        const inputs = stepElement.querySelectorAll('input, select, textarea');
+        inputs.forEach(input => {
+          if (input.name && input.value && input.value.trim() !== '') {
+            if (input.type === 'radio') {
+              if (input.checked) {
+                formData[input.name] = input.value.trim();
+              }
+            } else {
+              formData[input.name] = input.value.trim();
+            }
+          }
+        });
+
+        // Add gender based on profileFor for step 1
+        if (step === 1 && formData.profileFor) {
+          formData.gender = formData.profileFor === 'son' ? 'male' : 'female';
+        }
+        if (step === 4 && formData.work === 'Other' && formData.otherWork) {
+          formData.work = formData.otherWork;
+          delete formData.otherWork; // Remove the otherWork field as we've merged it into work
+        }
+
+        return formData;
+      }
+
+      async function saveStepData(step, data) {
+        try {
+          const response = await fetch('/api/onboarding/save', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ step, data }),
+            credentials: 'same-origin'
+          });
+
+          const result = await response.json();
+          
+          if (result.success === true || (result.message && !result.error)) {
+            return result;
+          }
+          
+          if (result.error) {
+            throw new Error(result.error);
+          }
+          
+          if (!response.ok) {
+            throw new Error(`Server error: ${response.status}`);
+          }
+
+          return result;
+        } catch (error) {
+          console.error('Error saving step:', error);
+          throw error;
+        }
+      }
+
+      async function completeOnboarding() {
+        try {
+          const response = await fetch('/api/onboarding/complete', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'same-origin'
+          });
+
+          const result = await response.json();
+          
+          if (result.success === true || result.redirectUrl) {
+            window.location.href = result.redirectUrl || '/account/info?from=onboarding';
+            return;
+          }
+          
+          if (result.error) {
+            throw new Error(result.error);
+          }
+          
+          window.location.href = '/account/info?from=onboarding';
+        } catch (error) {
+          console.error('Error completing onboarding:', error);
+          alert('Failed to complete onboarding. Please try again.');
+        }
+      }
+
+      function validateStep(step) {
+        const stepElement = document.getElementById(`step-${step}`);
+        const requiredFields = stepElement.querySelectorAll('[required]');
+        let isValid = true;
+        let firstInvalidField = null;
+
+        requiredFields.forEach(field => {
+          field.classList.remove('border-red-500');
+          
+          if (field.type === 'radio') {
+            const radioGroup = stepElement.querySelectorAll(`input[name="${field.name}"]`);
+            const isChecked = Array.from(radioGroup).some(r => r.checked);
+            if (!isChecked) {
+              isValid = false;
+            }
+          } else if (!field.value.trim()) {
+            field.classList.add('border-red-500');
+            if (!firstInvalidField) firstInvalidField = field;
+            isValid = false;
+          } else if (field.minLength && field.value.trim().length < field.minLength) {
+            field.classList.add('border-red-500');
+            if (!firstInvalidField) firstInvalidField = field;
+            isValid = false;
+          }
+        });
+
+        if (firstInvalidField) {
+          firstInvalidField.focus();
+        }
+
+        // Additional validation for step 6: phone number must be valid
+        if (step === 6) {
+          const phoneValid = window.validatePhoneNumber ? window.validatePhoneNumber() : false;
+          if (!phoneValid) {
+            isValid = false;
+          }
+        }
+
+        return isValid;
+      }
+
+      // Next button handler
+      nextBtn.addEventListener('click', async function() {
+        if (!validateStep(currentStep)) {
+          alert('Please fill in all required fields before proceeding.');
+          return;
+        }
+
+        const originalText = nextBtn.innerHTML;
+        nextBtn.disabled = true;
+        nextBtn.innerHTML = '<i class="ri-loader-4-line animate-spin mr-2"></i>Saving...';
+
+        let saveSucceeded = false;
+        
+        try {
+          const stepData = collectStepData(currentStep);
+          await saveStepData(currentStep, stepData);
+          saveSucceeded = true;
+          
+          if (currentStep < totalSteps) {
+            currentStep++;
+            updateUI();
+            // Scroll to top of form on mobile
+            document.querySelector('.bg-white.rounded-2xl').scrollIntoView({ behavior: 'smooth', block: 'start' });
+          } else {
+            await completeOnboarding();
+          }
+        } catch (error) {
+          console.error('Error processing step:', error);
+          if (!saveSucceeded) {
+            alert('Failed to save your information. Please try again.');
+          }
+        } finally {
+          nextBtn.disabled = false;
+          nextBtn.innerHTML = originalText;
+          try {
+            checkStepValidity();
+          } catch (e) {
+            console.error('Error in checkStepValidity:', e);
+          }
+        }
+      });
+
+      // Previous button handler
+      prevBtn.addEventListener('click', function() {
+        if (currentStep > 1) {
+          currentStep--;
+          updateUI();
+          document.querySelector('.bg-white.rounded-2xl').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+
+      // City data by country
+      const cityData = {
+        uk: ['London', 'Birmingham', 'Manchester', 'Glasgow', 'Liverpool', 'Leeds', 'Sheffield', 'Edinburgh', 'Bristol', 'Leicester', 'Bradford', 'Cardiff', 'Nottingham', 'Newcastle', 'Other'],
+        pakistan: [
+  'Karachi', 'Lahore', 'Islamabad', 'Rawalpindi', 'Faisalabad',
+  'Multan', 'Peshawar', 'Quetta', 'Sialkot', 'Gujranwala',
+  'Hyderabad', 'Abbottabad', 'Bahawalpur', 'Sargodha', 'Sukkur',
+  'Larkana', 'Mardan', 'Gujrat', 'Sahiwal', 'Mirpur',
+  'Sheikhupura', 'Jhang', 'Rahim Yar Khan', 'Kasur', 'Muzaffargarh',
+  'Nawabshah', 'Chiniot', 'Kamoke', 'Hafizabad', 'Sadiqabad',
+  'Burewala', 'Jacobabad', 'Shikarpur', 'Kohat', 'Jhelum',
+  'Khanewal', 'Gojra', 'Mandi Bahauddin', 'Daska', 'Dera Ghazi Khan',
+  'Dera Ismail Khan', 'Mingora', 'Bannu', 'Khuzdar','Other'
+],
+        bangladesh: ['Dhaka', 'Chittagong', 'Sylhet', 'Khulna', 'Rajshahi', 'Comilla', 'Gazipur', 'Narayanganj', 'Other'],
+        india: ['Mumbai', 'Delhi', 'Bangalore', 'Hyderabad', 'Chennai', 'Kolkata', 'Ahmedabad', 'Pune', 'Lucknow', 'Jaipur', 'Other'],
+        usa: ['New York', 'Los Angeles', 'Chicago', 'Houston', 'Dallas', 'San Francisco', 'Miami', 'Atlanta', 'Washington DC', 'Boston', 'Other'],
+        canada: ['Toronto', 'Vancouver', 'Montreal', 'Calgary', 'Ottawa', 'Edmonton', 'Mississauga', 'Brampton', 'Other'],
+        uae: ['Dubai', 'Abu Dhabi', 'Sharjah', 'Ajman', 'Al Ain', 'Ras Al Khaimah', 'Other'],
+        saudi_arabia: ['Riyadh', 'Jeddah', 'Mecca', 'Medina', 'Dammam', 'Dhahran', 'Other'],
+        australia: ['Sydney', 'Melbourne', 'Brisbane', 'Perth', 'Adelaide', 'Gold Coast', 'Other'],
+        germany: ['Berlin', 'Munich', 'Frankfurt', 'Hamburg', 'Cologne', 'Dusseldorf', 'Other'],
+        france: ['Paris', 'Lyon', 'Marseille', 'Toulouse', 'Nice', 'Strasbourg', 'Other'],
+        malaysia: ['Kuala Lumpur', 'George Town', 'Johor Bahru', 'Ipoh', 'Shah Alam', 'Other'],
+        singapore: ['Singapore', 'Other'],
+        other: ['Other']
+      };
+
+      const countrySelect = document.getElementById('country');
+      const citySelect = document.getElementById('city');
+
+      countrySelect.addEventListener('change', function() {
+        const country = this.value;
+        citySelect.innerHTML = '<option value="">Select city</option>';
+        
+        if (country && cityData[country]) {
+          citySelect.disabled = false;
+          cityData[country].forEach(city => {
+            const option = document.createElement('option');
+            option.value = city.toLowerCase().replace(/\s+/g, '_');
+            option.textContent = city;
+            citySelect.appendChild(option);
+          });
+        } else {
+          citySelect.disabled = true;
+        }
+      });
+            // Handle input changes for real-time validation feedback
+      document.querySelectorAll('input, select, textarea').forEach(field => {
+        field.addEventListener('change', function() {
+          if (this.value.trim()) {
+            this.classList.remove('border-red-500');
+          }
+        });
+        
+        field.addEventListener('input', function() {
+          if (this.value.trim()) {
+            this.classList.remove('border-red-500');
+          }
+        });
+      });
+
+      // **NEW**: Handle "Other" selection for work field
+      const workSelect = document.getElementById('work');
+      const otherWorkSection = document.getElementById('otherWorkSection');
+      const otherWorkInput = document.getElementById('otherWork');
+
+      workSelect.addEventListener('change', function() {
+        if (this.value === 'Other') {
+          otherWorkSection.classList.remove('hidden');
+          otherWorkInput.setAttribute('required', 'required');
+        } else {
+          otherWorkSection.classList.add('hidden');
+          otherWorkInput.removeAttribute('required');
+          otherWorkInput.value = ''; // Clear the input when hidden
+          otherWorkInput.classList.remove('border-red-500');
+        }
+      });
+
+      // Handle input changes for real-time validation feedback
+      document.querySelectorAll('input, select, textarea').forEach(field => {
+        field.addEventListener('change', function() {
+          if (this.value.trim()) {
+            this.classList.remove('border-red-500');
+          }
+        });
+        
+        field.addEventListener('input', function() {
+          if (this.value.trim()) {
+            this.classList.remove('border-red-500');
+          }
+        });
+      });
+
+      // Phone number validation based on country code
+      // Phone number length rules by country code (without country code)
+      const phoneRules = {
+        '+44': { min: 10, max: 10, name: 'UK', example: '7XXX XXXXXX' },           // UK: 10 digits after +44
+        '+92': { min: 10, max: 10, name: 'Pakistan', example: '3XX XXXXXXX' },     // Pakistan: 10 digits after +92
+        '+880': { min: 10, max: 10, name: 'Bangladesh', example: '1XXX XXXXXX' },  // Bangladesh: 10 digits after +880
+        '+91': { min: 10, max: 10, name: 'India', example: '9XXX XXXXXX' },        // India: 10 digits after +91
+        '+1': { min: 10, max: 10, name: 'USA/Canada', example: 'XXX XXX XXXX' },   // USA/Canada: 10 digits after +1
+        '+971': { min: 9, max: 9, name: 'UAE', example: '5X XXX XXXX' },           // UAE: 9 digits after +971
+        '+966': { min: 9, max: 9, name: 'Saudi Arabia', example: '5X XXX XXXX' },  // Saudi: 9 digits after +966
+        '+61': { min: 9, max: 9, name: 'Australia', example: '4XX XXX XXX' },      // Australia: 9 digits after +61
+        '+49': { min: 10, max: 11, name: 'Germany', example: 'XXX XXXXXXX' },      // Germany: 10-11 digits after +49
+        '+33': { min: 9, max: 9, name: 'France', example: '6 XX XX XX XX' },       // France: 9 digits after +33
+        '+60': { min: 9, max: 10, name: 'Malaysia', example: '1X XXX XXXX' },      // Malaysia: 9-10 digits after +60
+        '+65': { min: 8, max: 8, name: 'Singapore', example: '8XXX XXXX' }         // Singapore: 8 digits after +65
+      };
+
+      window.validatePhoneNumber = function() {
+        const countryCode = document.getElementById('countryCode').value;
+        const contactInput = document.getElementById('contact');
+        const phoneError = document.getElementById('phoneError');
+        const phoneSuccess = document.getElementById('phoneSuccess');
+        
+        // Remove any non-digit characters for validation
+        const phoneDigits = contactInput.value.replace(/\D/g, '');
+        
+        const rule = phoneRules[countryCode];
+        
+        if (!rule) {
+          phoneError.classList.add('hidden');
+          phoneSuccess.classList.add('hidden');
+          return true;
+        }
+        
+        if (phoneDigits.length === 0) {
+          phoneError.classList.add('hidden');
+          phoneSuccess.classList.add('hidden');
+          contactInput.classList.remove('border-red-500');
+          return false;
+        }
+        
+        if (phoneDigits.length < rule.min) {
+          phoneError.textContent = `${rule.name} phone number needs ${rule.min} digits (you have ${phoneDigits.length}). Example: ${rule.example}`;
+          phoneError.classList.remove('hidden');
+          phoneSuccess.classList.add('hidden');
+          contactInput.classList.add('border-red-500');
+          return false;
+        }
+        
+        if (phoneDigits.length > rule.max) {
+          phoneError.textContent = `${rule.name} phone number should be max ${rule.max} digits (you have ${phoneDigits.length})`;
+          phoneError.classList.remove('hidden');
+          phoneSuccess.classList.add('hidden');
+          contactInput.classList.add('border-red-500');
+          return false;
+        }
+        
+        // Valid!
+        phoneError.classList.add('hidden');
+        phoneSuccess.classList.remove('hidden');
+        contactInput.classList.remove('border-red-500');
+        return true;
+      };
+
+      // Update placeholder when country code changes
+      document.getElementById('countryCode').addEventListener('change', function() {
+        const rule = phoneRules[this.value];
+        const contactInput = document.getElementById('contact');
+        if (rule) {
+          contactInput.placeholder = rule.example;
+        }
+        // Re-validate if there's already a value
+        if (contactInput.value) {
+          validatePhoneNumber();
+        }
+        // Check button validity
+        checkStepValidity();
+      });
+
+      // Add input listener to contact field for real-time validation
+      document.getElementById('contact').addEventListener('input', function() {
+        validatePhoneNumber();
+        checkStepValidity();
+      });
+    });
+  </script>
+</body>
+
+</html>

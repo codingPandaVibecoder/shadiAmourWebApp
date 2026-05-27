@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Blog SEO Management | D'amour Muslim</title>
+  <link rel="stylesheet" href="/css/output.css">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+  <style>
+    .gradient-bg { background: linear-gradient(135deg, #E91E63 0%, #673AB7 100%); }
+  </style>
+  <%- include('../partials/analytics') %>
+</head>
+<body class="bg-gray-50 min-h-screen font-['Roboto']">
+  <%- include('partials/header', { currentPage: 'blogs' }) %>
+  
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- Page Header -->
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+      <div>
+        <h1 class="text-2xl font-bold text-gray-900 font-['Playfair_Display']">Blog SEO Management</h1>
+        <p class="text-gray-600 mt-1">Edit SEO metadata for blog posts</p>
+      </div>
+      <div class="text-sm text-gray-500">
+        <%= blogs.length %> blog posts
+      </div>
+    </div>
+    
+    <!-- Search -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-4 mb-6">
+      <form action="/seoadmin/blogs" method="GET" class="flex flex-col sm:flex-row gap-4">
+        <div class="flex-1 relative">
+          <input 
+            type="text" 
+            name="search" 
+            value="<%= typeof search !== 'undefined' ? search : '' %>"
+            placeholder="Search by title or slug..."
+            class="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500"
+          >
+          <i class="ri-search-line absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+        </div>
+        <select name="status" class="px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500 bg-white">
+          <option value="">All Status</option>
+          <option value="published" <%= typeof status !== 'undefined' && status === 'published' ? 'selected' : '' %>>Published</option>
+          <option value="draft" <%= typeof status !== 'undefined' && status === 'draft' ? 'selected' : '' %>>Draft</option>
+        </select>
+        <button type="submit" class="px-6 py-2.5 gradient-bg text-white rounded-lg font-medium hover:opacity-90 transition-opacity flex items-center gap-2">
+          <i class="ri-search-line"></i>
+          Search
+        </button>
+      </form>
+    </div>
+    
+    <!-- Blogs Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <% if (blogs && blogs.length > 0) { %>
+        <% blogs.forEach(blog => { %>
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow">
+          <!-- Featured Image -->
+          <div class="aspect-video bg-gray-100 relative">
+            <% if (blog.featuredImage) { %>
+            <img src="<%= blog.featuredImage %>" alt="Featured image for <%= blog.title %>" class="w-full h-full object-cover">
+            <% } else { %>
+            <div class="w-full h-full flex items-center justify-center">
+              <i class="ri-article-line text-4xl text-gray-300"></i>
+            </div>
+            <% } %>
+            
+            <!-- Status Badge -->
+            <span class="absolute top-3 right-3 px-2 py-1 text-xs font-medium rounded <%= blog.status === 'published' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800' %>">
+              <%= blog.status === 'published' ? 'Published' : 'Draft' %>
+            </span>
+          </div>
+          
+          <div class="p-4">
+            <h3 class="font-semibold text-gray-900 line-clamp-2 mb-2"><%= blog.title %></h3>
+            
+            <!-- SEO Info -->
+            <div class="space-y-2 text-sm">
+              <div class="flex items-start gap-2">
+                <span class="text-gray-500 flex-shrink-0">Title:</span>
+                <span class="text-gray-700 truncate" title="<%= blog.metaTitle || 'Not set' %>">
+                  <%= blog.metaTitle || '<span class="text-gray-400 italic">Not set</span>' %>
+                </span>
+              </div>
+              <div class="flex items-start gap-2">
+                <span class="text-gray-500 flex-shrink-0">Desc:</span>
+                <span class="text-gray-700 truncate" title="<%= blog.metaDescription || 'Not set' %>">
+                  <% if (blog.metaDescription) { %>
+                  <%= blog.metaDescription.substring(0, 50) %>...
+                  <% } else { %>
+                  <span class="text-gray-400 italic">Not set</span>
+                  <% } %>
+                </span>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="text-gray-500">Keywords:</span>
+                <span class="text-gray-700">
+                  <% if (blog.keywords && blog.keywords.length > 0) { %>
+                  <%= blog.keywords.length %> keywords
+                  <% } else { %>
+                  <span class="text-gray-400 italic">None</span>
+                  <% } %>
+                </span>
+              </div>
+            </div>
+            
+            <!-- Actions -->
+            <div class="flex items-center justify-between mt-4 pt-4 border-t border-gray-100">
+              <a href="/blog/<%= blog.slug %>" target="_blank" 
+                 class="text-sm text-gray-500 hover:text-blue-600 transition-colors flex items-center gap-1">
+                <i class="ri-external-link-line"></i> View
+              </a>
+              <a href="/seoadmin/blog/<%= blog._id %>" 
+                 class="px-4 py-2 text-sm gradient-bg text-white rounded-lg hover:opacity-90 transition-opacity flex items-center gap-1">
+                <i class="ri-edit-line"></i> Edit SEO
+              </a>
+            </div>
+          </div>
+        </div>
+        <% }) %>
+      <% } else { %>
+      <div class="col-span-full">
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-12 text-center">
+          <i class="ri-article-line text-4xl text-gray-300 mb-2"></i>
+          <p class="font-medium text-gray-700">No blog posts found</p>
+          <p class="text-sm text-gray-500">Try adjusting your search filters</p>
+        </div>
+      </div>
+      <% } %>
+    </div>
+  </main>
+</body>
+</html>

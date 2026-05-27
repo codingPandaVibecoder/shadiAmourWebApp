@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+  <link rel="manifest" href="/images/site.webmanifest">
+  <meta name="theme-color" content="#E91E63">
+  <title>D'amour Muslim - Export Data</title>
+  <link rel="stylesheet" href="/css/output.css">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+  <style>
+    :where([class^="ri-"])::before { content: "\f3c2"; }
+    .material-shadow { box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); }
+  </style>
+</head>
+
+<body class="bg-gray-50 font-['Roboto']">
+  <!-- Header -->
+  <header class="bg-white border-b border-gray-200 sticky top-0 z-50">
+    <div class="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <a href="/admin/dashboard" class="p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors">
+          <i class="ri-arrow-left-line text-xl"></i>
+        </a>
+        <h1 class="text-xl font-semibold text-gray-900">Export Data</h1>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-5xl mx-auto px-4 py-8">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+      <!-- Export Newsletter Subscribers -->
+      <div class="bg-white rounded-xl material-shadow p-6">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="w-10 h-10 bg-pink-100 text-pink-600 rounded-lg flex items-center justify-center">
+            <i class="ri-mail-line text-xl"></i>
+          </div>
+          <h2 class="text-lg font-semibold text-gray-900">Newsletter Subscribers</h2>
+        </div>
+        <p class="text-sm text-gray-500 mb-4">Export subscriber emails with optional gender filter.</p>
+        <div class="mb-4">
+          <label class="block text-sm font-medium text-gray-700 mb-1">Filter by Interest</label>
+          <select id="newsletterFilter" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-pink-500 focus:border-pink-500">
+            <option value="">All Subscribers</option>
+            <option value="male">Interested in Male</option>
+            <option value="female">Interested in Female</option>
+            <option value="both">Interested in Both</option>
+          </select>
+        </div>
+        <button id="exportNewsletterBtn" class="w-full px-4 py-2.5 bg-pink-500 text-white hover:bg-pink-600 rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-2">
+          <i class="ri-download-2-line"></i>
+          Export Newsletter CSV
+        </button>
+      </div>
+
+      <!-- Export User Emails -->
+      <div class="bg-white rounded-xl material-shadow p-6">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="w-10 h-10 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center">
+            <i class="ri-user-line text-xl"></i>
+          </div>
+          <h2 class="text-lg font-semibold text-gray-900">User Emails</h2>
+        </div>
+        <p class="text-sm text-gray-500 mb-4">Export user emails filtered by approval status.</p>
+        <div class="mb-4">
+          <label class="block text-sm font-medium text-gray-700 mb-1">Filter by Status</label>
+          <select id="usersFilter" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+            <option value="">All Users</option>
+            <option value="approved">Approved</option>
+            <option value="pending">Pending</option>
+            <option value="rejected">Rejected</option>
+          </select>
+        </div>
+        <button id="exportUsersBtn" class="w-full px-4 py-2.5 bg-blue-500 text-white hover:bg-blue-600 rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-2">
+          <i class="ri-download-2-line"></i>
+          Export Users CSV
+        </button>
+      </div>
+
+      <!-- Export Chats -->
+      <div class="bg-white rounded-xl material-shadow p-6">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="w-10 h-10 bg-green-100 text-green-600 rounded-lg flex items-center justify-center">
+            <i class="ri-chat-3-line text-xl"></i>
+          </div>
+          <h2 class="text-lg font-semibold text-gray-900">Chats</h2>
+        </div>
+        <p class="text-sm text-gray-500 mb-4">Export all conversations with usernames and messages.</p>
+        <button id="exportChatsBtn" class="w-full px-4 py-2.5 bg-green-500 text-white hover:bg-green-600 rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-2">
+          <i class="ri-download-2-line"></i>
+          Export Chats CSV
+        </button>
+      </div>
+
+      <!-- Export Requests -->
+      <div class="bg-white rounded-xl material-shadow p-6">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="w-10 h-10 bg-purple-100 text-purple-600 rounded-lg flex items-center justify-center">
+            <i class="ri-mail-send-line text-xl"></i>
+          </div>
+          <h2 class="text-lg font-semibold text-gray-900">Requests</h2>
+        </div>
+        <p class="text-sm text-gray-500 mb-4">Export all connection requests with status details.</p>
+        <button id="exportRequestsBtn" class="w-full px-4 py-2.5 bg-purple-500 text-white hover:bg-purple-600 rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-2">
+          <i class="ri-download-2-line"></i>
+          Export Requests CSV
+        </button>
+      </div>
+
+    </div>
+  </main>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      function downloadCSV(url) {
+        window.location.href = url;
+      }
+
+      document.getElementById('exportNewsletterBtn').addEventListener('click', function() {
+        const filter = document.getElementById('newsletterFilter').value;
+        let url = '/api/admin/export/newsletter';
+        if (filter) url += '?interestedIn=' + encodeURIComponent(filter);
+        downloadCSV(url);
+      });
+
+      document.getElementById('exportUsersBtn').addEventListener('click', function() {
+        const filter = document.getElementById('usersFilter').value;
+        let url = '/api/admin/export/users';
+        if (filter) url += '?status=' + encodeURIComponent(filter);
+        downloadCSV(url);
+      });
+
+      document.getElementById('exportChatsBtn').addEventListener('click', function() {
+        downloadCSV('/api/admin/export/chats');
+      });
+
+      document.getElementById('exportRequestsBtn').addEventListener('click', function() {
+        downloadCSV('/api/admin/export/requests');
+      });
+    });
+  </script>
+</body>
+</html>

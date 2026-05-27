@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <%
+  let pageTitle = "Staff-Verified Muslim Profiles | Hand-Picked Matches | D'amour Muslim";
+  let metaDescription = "Browse Muslim marriage profiles hand-picked and verified by our matchmaking team. Trusted, staff-added profiles for serious Islamic wedding and Nikkah seekers in the UK.";
+  let keywords = "verified Muslim profiles, staff verified matrimony, trusted Muslim marriage, hand-picked Muslim matches, halal marriage UK, Muslim matchmaking team";
+
+  const hasNonGenderFilters = filters && (filters.minAge || filters.maxAge || filters.minHeight || filters.maxHeight || filters.city || filters.country);
+  const isDeepPagination = page > 1;
+  const shouldNoIndexPage = hasNonGenderFilters || isDeepPagination;
+
+  let canonicalUrl = "https://damourmuslim.com/profiles/addedBy/staff";
+  if (filters && filters.gender && !hasNonGenderFilters && !isDeepPagination) {
+    canonicalUrl = "https://damourmuslim.com/profiles/addedBy/staff?gender=" + encodeURIComponent(filters.gender);
+  }
+
+  if (filters && filters.gender === 'male') {
+    pageTitle = "Staff-Verified Muslim Men | Hand-Picked Grooms | D'amour Muslim";
+    metaDescription = "Browse staff-verified Muslim men for Islamic wedding and Nikkah ceremony. Hand-picked male profiles added by our matchmaking team.";
+  } else if (filters && filters.gender === 'female') {
+    pageTitle = "Staff-Verified Muslim Women | Hand-Picked Brides | D'amour Muslim";
+    metaDescription = "Browse staff-verified Muslim women for Islamic wedding and Nikkah ceremony. Hand-picked female profiles added by our matchmaking team.";
+  }
+  %>
+  <title><%= pageTitle %></title>
+
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="<%= metaDescription %>">
+  <meta name="keywords" content="<%= keywords %>">
+  <% if (shouldNoIndexPage) { %>
+  <meta name="robots" content="noindex, follow">
+  <% } %>
+  <link rel="canonical" href="<%= canonicalUrl %>">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+  <link rel="manifest" href="/images/site.webmanifest">
+  <meta name="theme-color" content="#E91E63">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="<%= canonicalUrl %>">
+  <meta property="og:title" content="<%= pageTitle %>">
+  <meta property="og:description" content="<%= metaDescription %>">
+  <meta property="og:image" content="https://damourmuslim.com/images/og-image-profiles.jpg">
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="<%= canonicalUrl %>">
+  <meta property="twitter:title" content="<%= pageTitle %>">
+  <meta property="twitter:description" content="<%= metaDescription %>">
+  <meta property="twitter:image" content="https://damourmuslim.com/images/og-image-profiles.jpg">
+
+  <link rel="stylesheet" href="/css/output.css">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+  <style>
+    :where([class^="ri-"])::before { content: "\f3c2"; }
+    .material-shadow { box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); }
+    .material-shadow-hover { box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15); }
+    .material-shadow-elevated { box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2); }
+    #mobileFilterPanel { box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1); }
+    #mobileFilterOverlay { backdrop-filter: blur(2px); }
+    #mobileFilterOverlay, #mobileFilterPanel { will-change: transform, opacity; }
+    .ripple { position: relative; overflow: hidden; }
+    .ripple::before { content: ''; position: absolute; top: 50%; left: 50%; width: 0; height: 0; border-radius: 50%; background: rgba(255, 255, 255, 0.3); transform: translate(-50%, -50%); transition: width 0.6s, height 0.6s; }
+    .ripple:active::before { width: 300px; height: 300px; }
+    .gradient-bg { background: linear-gradient(135deg, #E91E63 0%, #673AB7 100%); }
+    img { opacity: 0; transition: opacity 0.3s ease; }
+    img.loaded, img[src*="ui-avatars"] { opacity: 1; }
+    .aspect-\[4\/5\] { background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%); background-size: 200% 100%; animation: loading 1.5s infinite; }
+    @keyframes loading { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+    .aspect-\[4\/5\]:has(img.loaded) { background: none; animation: none; }
+    @media (max-width: 640px) {
+      #profileGrid .p-4 { padding: 0.75rem; }
+      #profileGrid h3 { font-size: 0.875rem; }
+      #profileGrid .text-gray-600 { font-size: 0.75rem; }
+      #profileGrid i { font-size: 0.875rem; }
+    }
+    body { overflow-x: hidden; }
+    html { overflow-x: hidden; }
+  </style>
+
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": "<%= pageTitle %>",
+    "description": "<%= metaDescription %>",
+    "url": "<%= canonicalUrl %>",
+    "mainEntity": {
+      "@type": "ItemList",
+      "name": "Staff-Verified Muslim Matrimony Profiles",
+      "description": "Hand-picked and verified Muslim marriage profiles added by the D'amour Muslim matchmaking team",
+      "numberOfItems": "<%= totalProfiles %>"
+    },
+    "breadcrumb": {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://damourmuslim.com" },
+        { "@type": "ListItem", "position": 2, "name": "Profiles", "item": "https://damourmuslim.com/profiles" },
+        { "@type": "ListItem", "position": 3, "name": "Staff-Verified Profiles", "item": "<%= canonicalUrl %>" }
+      ]
+    },
+    "provider": {
+      "@type": "Organization",
+      "name": "D'amour Muslim",
+      "description": "UK's leading Muslim matrimony and Islamic wedding service"
+    }
+  }
+  </script>
+  <%- include('partials/clarity') %>
+  <%- include('partials/thirdparty') %>
+  <%- include('partials/analytics') %>
+</head>
+
+<body class="bg-gray-50 font-['Roboto']">
+  <%- include('partials/header') %>
+  <main class="pt-24 pb-16 min-h-screen">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6">
+
+      <div class="flex gap-8">
+        <!-- Filter Sidebar -->
+        <div class="w-80 flex-shrink-0 hidden lg:block">
+          <%- include('partials/profilesFilter') %>
+        </div>
+
+        <!-- Main Content -->
+        <div class="flex-1">
+          <!-- Breadcrumb Navigation -->
+          <nav class="flex py-3 px-2 mb-4 bg-gray-50 rounded-lg text-sm text-gray-600" aria-label="Breadcrumb">
+            <ol class="flex flex-wrap items-center">
+              <li class="flex items-center">
+                <a href="/" class="hover:text-primary transition-colors">Home</a>
+                <i class="ri-arrow-right-s-line mx-2"></i>
+              </li>
+              <li class="flex items-center">
+                <a href="/profiles" class="hover:text-primary transition-colors">Profiles</a>
+                <i class="ri-arrow-right-s-line mx-2"></i>
+              </li>
+              <li class="text-primary font-medium">Staff-Verified Profiles</li>
+            </ol>
+          </nav>
+
+          <!-- Page Heading -->
+          <div class="mb-6 text-center md:text-left">
+            <div class="flex items-center justify-center md:justify-start gap-3 mb-2">
+              <i class="ri-shield-check-fill text-3xl text-green-500"></i>
+              <h1 class="text-3xl md:text-4xl font-bold text-gray-800 font-['Playfair_Display']">Staff-Verified Profiles</h1>
+            </div>
+            <p class="text-gray-600 max-w-2xl">These profiles have been hand-picked and added by our matchmaking team. Each one is personally verified for authenticity and quality.</p>
+          </div>
+
+          <!-- Grid Controls -->
+          <div class="flex justify-between items-center mb-8">
+            <!-- Mobile Filter Button -->
+            <button id="mobileFilterBtn" class="lg:hidden px-4 py-2 bg-primary text-white rounded-button hover:bg-pink-600 hover:shadow-md transition-all duration-300">
+              <i class="ri-filter-line mr-2"></i>Filters
+            </button>
+
+            <!-- Results Count and Active Filters -->
+            <div class="flex-1 min-w-0">
+              <% if (totalProfiles > 0) { %>
+              <% if (filters && Object.values(filters).some(f => f)) { %>
+              <div class="mb-4">
+                <div class="flex ml-3 flex-wrap gap-1.5 sm:gap-2">
+                  <% if (filters.gender) { %>
+                  <span class="inline-flex items-center gap-1 px-2 py-1 bg-primary bg-opacity-10 text-primary rounded text-xs sm:text-sm border border-primary border-opacity-20 whitespace-nowrap">
+                    <span class="hidden sm:inline">Gender: </span><%= filters.gender.charAt(0).toUpperCase() + filters.gender.slice(1) %>
+                    <button onclick="removeFilter('gender')" class="ml-1 text-red-500 hover:text-red-700 transition-colors flex-shrink-0"><i class="ri-close-line text-xs"></i></button>
+                  </span>
+                  <% } %>
+                  <% if (filters.city) { %>
+                  <span class="inline-flex items-center gap-1 px-2 py-1 bg-primary bg-opacity-10 text-primary rounded text-xs sm:text-sm border border-primary border-opacity-20 max-w-xs">
+                    <span class="hidden sm:inline">Location: </span><span class="truncate"><%= filters.city %></span>
+                    <button onclick="removeFilter('city')" class="ml-1 text-red-500 hover:text-red-700 transition-colors flex-shrink-0"><i class="ri-close-line text-xs"></i></button>
+                  </span>
+                  <% } %>
+                  <% if (filters.minAge) { %>
+                  <span class="inline-flex items-center gap-1 px-2 py-1 bg-primary bg-opacity-10 text-primary rounded text-xs sm:text-sm border border-primary border-opacity-20 whitespace-nowrap">
+                    <span class="hidden sm:inline">Min Age: </span><%= filters.minAge %>+
+                    <button onclick="removeFilter('minAge')" class="ml-1 text-red-500 hover:text-red-700 transition-colors flex-shrink-0"><i class="ri-close-line text-xs"></i></button>
+                  </span>
+                  <% } %>
+                  <% if (filters.maxAge) { %>
+                  <span class="inline-flex items-center gap-1 px-2 py-1 bg-primary bg-opacity-10 text-primary rounded text-xs sm:text-sm border border-primary border-opacity-20 whitespace-nowrap">
+                    <span class="hidden sm:inline">Max Age: </span><%= filters.maxAge %>
+                    <button onclick="removeFilter('maxAge')" class="ml-1 text-red-500 hover:text-red-700 transition-colors flex-shrink-0"><i class="ri-close-line text-xs"></i></button>
+                  </span>
+                  <% } %>
+                  <button onclick="clearAllFilters()" class="inline-flex items-center gap-1 px-2 py-1 bg-red-50 text-red-600 hover:bg-red-100 rounded text-xs sm:text-sm border border-red-200 transition-colors whitespace-nowrap">
+                    <i class="ri-close-circle-line"></i>
+                    <span class="hidden sm:inline">Clear All</span><span class="sm:hidden">Clear</span>
+                  </button>
+                </div>
+              </div>
+              <% } %>
+              <% } %>
+            </div>
+
+            <!-- Grid Layout Controls -->
+            <div class="hidden md:flex gap-2">
+              <button id="threeCol" class="w-10 h-10 flex items-center justify-center rounded-button border-2 border-gray-300 text-gray-500 hover:border-primary hover:text-primary transition-all duration-300">
+                <i class="ri-layout-row-line text-lg"></i>
+              </button>
+              <button id="fourCol" class="w-10 h-10 flex items-center justify-center rounded-button border-2 border-primary text-primary hover:bg-primary hover:text-white transition-all duration-300 active">
+                <i class="ri-layout-grid-line text-lg"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Profiles Count -->
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-8 gap-4">
+            <div>
+              <h2 class="text-2xl font-bold text-gray-800 font-['Playfair_Display'] mb-1">
+                <i class="ri-shield-check-line text-green-500 mr-2"></i><%= totalProfiles %> Staff-Verified <%= totalProfiles === 1 ? 'Profile' : 'Profiles' %>
+              </h2>
+              <p class="text-sm text-gray-500">Showing page <%= page %> of <%= totalPages || 1 %></p>
+            </div>
+          </div>
+
+          <!-- Profiles Grid -->
+          <div id="profileGrid" class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
+            <% if (profiles && profiles.length > 0) { %>
+            <% profiles.forEach(profile => { %>
+            <a href="/profiles/<%= profile.profileSlug || profile._id %>" class="bg-white rounded-2xl overflow-hidden material-shadow hover:material-shadow-hover transition-all duration-300 block relative">
+              <div class="absolute top-2 right-2 z-10 bg-green-500 text-white px-2 py-1 rounded-full text-xs font-medium flex items-center gap-1">
+                <i class="ri-shield-check-line"></i>
+                <span class="hidden sm:inline">Staff Verified</span>
+              </div>
+              <div class="aspect-[4/5] overflow-hidden">
+                <img src="https://ui-avatars.com/api/?name=<%= encodeURIComponent(profile.name || profile.username) %>&background=<%= profile.gender === 'male' ? '0077be' : 'e91e63' %>&color=fff&size=300&format=png" alt="<%= profile.name || profile.username %><%= profile.age ? ', ' + profile.age + ' year old' : '' %><%= profile.work ? ' ' + profile.work : '' %> - Staff verified Muslim marriage profile<%= profile.city ? ' in ' + profile.city : '' %>" class="w-full h-full object-cover" loading="lazy" width="300" height="300">
+              </div>
+              <div class="p-4">
+                <h3 class="text-lg font-semibold text-gray-900 mb-1">
+                  <%= profile.username %>
+                </h3>
+                <div class="flex items-center text-gray-600 mb-2">
+                  <i class="ri-map-pin-line mr-2"></i>
+                  <span>
+                    <% if (profile.city && profile.country) { %>
+                    <%= profile.city %>, <%= profile.country %>
+                    <% } else if (profile.city) { %>
+                    <%= profile.city %>
+                    <% } else if (profile.country) { %>
+                    <%= profile.country %>
+                    <% } else { %>
+                    Location not specified
+                    <% } %>
+                  </span>
+                </div>
+                <% if (profile.age) { %>
+                <div class="flex items-center text-gray-600 mb-2">
+                  <i class="ri-calendar-line mr-2"></i>
+                  <span><%= profile.age %> years old</span>
+                </div>
+                <% } %>
+              </div>
+            </a>
+            <% }) %>
+            <% } else { %>
+            <!-- No profiles found message -->
+            <div class="col-span-full text-center py-16">
+              <div class="max-w-md mx-auto">
+                <i class="ri-search-line text-6xl text-gray-300 mb-4"></i>
+                <h3 class="text-xl font-semibold text-gray-600 mb-2">No Profiles Found</h3>
+                <p class="text-gray-500 mb-6">
+                  <% if (filters) { %>
+                  No staff-verified profiles match your current filters. Try adjusting your search criteria.
+                  <% } else { %>
+                  There are currently no staff-added profiles to display.
+                  <% } %>
+                </p>
+                <% if (filters) { %>
+                <a href="/profiles/addedBy/staff" class="inline-flex items-center gap-2 px-6 py-2 bg-primary text-white rounded-button hover:bg-pink-600 transition-all duration-300">
+                  <i class="ri-refresh-line"></i><span>Clear Filters</span>
+                </a>
+                <% } %>
+                <div class="mt-4">
+                  <a href="/profiles" class="text-primary hover:text-pink-600 font-medium">← Browse All Profiles</a>
+                </div>
+              </div>
+            </div>
+            <% } %>
+          </div>
+
+          <!-- Pagination -->
+          <% if (profiles && profiles.length > 0 && totalPages > 1) { %>
+          <div class="flex justify-center items-center gap-2 sm:gap-4 mt-12 overflow-x-auto pb-2">
+            <% if (page > 1) { %>
+            <a href="/profiles/addedBy/staff?page=<%= page - 1 %><% if (filters) { %><% Object.keys(filters).forEach(key => { if (filters[key]) { %>&<%= key %>=<%= encodeURIComponent(filters[key]) %><% } }) %><% } %>" class="flex items-center gap-1 sm:gap-2 px-2 sm:px-4 py-2 border border-gray-300 rounded-button text-gray-600 hover:border-primary hover:text-primary transition-all duration-300 whitespace-nowrap flex-shrink-0">
+              <i class="ri-arrow-left-line"></i>
+              <span class="sm:hidden">Prev</span>
+            </a>
+            <% } %>
+
+            <div class="flex items-center gap-1 sm:gap-2 flex-shrink-0">
+              <% for (let i = Math.max(1, page - 2); i <= Math.min(totalPages, page + 2); i++) { %>
+              <% if (i === page) { %>
+              <span class="w-10 h-10 flex items-center justify-center bg-primary text-white rounded-button"><%= i %></span>
+              <% } else { %>
+              <a href="/profiles/addedBy/staff?page=<%= i %><% if (filters) { %><% Object.keys(filters).forEach(key => { if (filters[key]) { %>&<%= key %>=<%= encodeURIComponent(filters[key]) %><% } }) %><% } %>" class="w-10 h-10 flex items-center justify-center border border-gray-300 rounded-button text-gray-600 hover:border-primary hover:text-primary transition-all duration-300">
+                <%= i %>
+              </a>
+              <% } %>
+              <% } %>
+            </div>
+
+            <% if (page < totalPages) { %>
+            <a href="/profiles/addedBy/staff?page=<%= page + 1 %><% if (filters) { %><% Object.keys(filters).forEach(key => { if (filters[key]) { %>&<%= key %>=<%= encodeURIComponent(filters[key]) %><% } }) %><% } %>" class="flex items-center gap-1 sm:gap-2 px-2 sm:px-4 py-2 border border-gray-300 rounded-button text-gray-600 hover:border-primary hover:text-primary transition-all duration-300 whitespace-nowrap flex-shrink-0">
+              <span>Next</span>
+              <i class="ri-arrow-right-line"></i>
+            </a>
+            <% } %>
+          </div>
+          <% } %>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Mobile Filter Overlay -->
+  <div id="mobileFilterOverlay" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden lg:hidden transition-opacity duration-300 opacity-0">
+    <div id="mobileFilterPanel" class="fixed left-0 top-0 h-full w-80 bg-white overflow-y-auto transform -translate-x-full transition-transform duration-300 ease-in-out">
+      <div class="p-6">
+        <div class="flex items-center justify-between mb-6">
+          <h3 class="text-lg font-semibold text-gray-900 font-['Playfair_Display']">Filter Profiles</h3>
+          <button id="closeMobileFilter" class="text-gray-500 hover:text-gray-700 transition-colors duration-200">
+            <i class="ri-close-line text-2xl"></i>
+          </button>
+        </div>
+        <div class="bg-white rounded-2xl p-6">
+          <form id="mobileFilterForm" class="space-y-6">
+            <!-- Gender Filter -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-3">Gender</label>
+              <div class="space-y-2">
+                <label class="flex items-center cursor-pointer">
+                  <input type="radio" name="gender" value="" class="h-4 w-4 text-primary" <%= !filters?.gender ? 'checked' : '' %>>
+                  <span class="ml-2 text-sm text-gray-700">All</span>
+                </label>
+                <label class="flex items-center cursor-pointer">
+                  <input type="radio" name="gender" value="male" class="h-4 w-4 text-primary" <%= filters?.gender === 'male' ? 'checked' : '' %>>
+                  <span class="ml-2 text-sm text-gray-700">Male</span>
+                </label>
+                <label class="flex items-center cursor-pointer">
+                  <input type="radio" name="gender" value="female" class="h-4 w-4 text-primary" <%= filters?.gender === 'female' ? 'checked' : '' %>>
+                  <span class="ml-2 text-sm text-gray-700">Female</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Age Range -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-3">Age Range</label>
+              <div class="flex gap-3">
+                <select name="minAge" class="w-1/2 py-2 px-3 border border-gray-300 rounded-button text-sm bg-white">
+                  <option value="">Min</option>
+                  <% for (let a = 18; a <= 70; a++) { %>
+                  <option value="<%= a %>" <%= filters?.minAge == a ? 'selected' : '' %>><%= a %></option>
+                  <% } %>
+                </select>
+                <select name="maxAge" class="w-1/2 py-2 px-3 border border-gray-300 rounded-button text-sm bg-white">
+                  <option value="">Max</option>
+                  <% for (let a = 18; a <= 70; a++) { %>
+                  <option value="<%= a %>" <%= filters?.maxAge == a ? 'selected' : '' %>><%= a %></option>
+                  <% } %>
+                </select>
+              </div>
+            </div>
+
+            <!-- Country & City -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-3">Location</label>
+              <select name="country" id="mobileFilterCountry" class="block w-full py-2 px-3 border border-gray-300 rounded-button text-sm bg-white mb-3">
+                <option value="">Select Country</option>
+                <% const countries = ['United Kingdom','Pakistan','Bangladesh','India','United States','Canada','United Arab Emirates','Saudi Arabia','Australia','Germany','France','Malaysia','Singapore','Other']; %>
+                <% countries.forEach(c => { %>
+                <option value="<%= c %>" <%= filters?.country === c ? 'selected' : '' %>><%= c %></option>
+                <% }) %>
+              </select>
+              <select name="city" id="mobileFilterCity" class="block w-full py-2 px-3 border border-gray-300 rounded-button text-sm bg-white" disabled>
+                <option value="">Select City</option>
+              </select>
+            </div>
+
+            <button type="submit" class="w-full py-2.5 px-4 bg-primary text-white hover:bg-pink-600 transition-all duration-300 !rounded-button ripple material-shadow">
+              <i class="ri-search-line mr-2"></i>Apply Filters
+            </button>
+            <button type="button" id="mobileClearFilters" class="w-full py-2.5 px-4 border-2 border-gray-300 text-gray-500 hover:border-primary hover:text-primary transition-all duration-300 !rounded-button">
+              <i class="ri-refresh-line mr-2"></i>Clear All Filters
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <%- include('partials/footer') %>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Grid layout controls
+      const threeColBtn = document.getElementById('threeCol');
+      const fourColBtn = document.getElementById('fourCol');
+      const profileGrid = document.getElementById('profileGrid');
+
+      if (window.innerWidth >= 768 && fourColBtn && threeColBtn) {
+        function resetGridClasses() {
+          ['grid-cols-1','grid-cols-2','grid-cols-3','grid-cols-4','md:grid-cols-1','md:grid-cols-2','md:grid-cols-3','md:grid-cols-4','lg:grid-cols-1','lg:grid-cols-2','lg:grid-cols-3','lg:grid-cols-4','xl:grid-cols-1','xl:grid-cols-2','xl:grid-cols-3','xl:grid-cols-4'].forEach(cls => profileGrid.classList.remove(cls));
+        }
+        function updateButtonStates(activeBtn, inactiveBtn) {
+          activeBtn.classList.remove('border-gray-300', 'text-gray-500');
+          activeBtn.classList.add('border-primary', 'text-primary', 'active');
+          inactiveBtn.classList.remove('border-primary', 'text-primary', 'active');
+          inactiveBtn.classList.add('border-gray-300', 'text-gray-500');
+        }
+        updateButtonStates(fourColBtn, threeColBtn);
+        threeColBtn.addEventListener('click', function() {
+          resetGridClasses();
+          profileGrid.classList.add('grid-cols-1','md:grid-cols-2','lg:grid-cols-2','xl:grid-cols-3');
+          updateButtonStates(threeColBtn, fourColBtn);
+        });
+        fourColBtn.addEventListener('click', function() {
+          resetGridClasses();
+          profileGrid.classList.add('grid-cols-1','md:grid-cols-2','lg:grid-cols-3','xl:grid-cols-4');
+          updateButtonStates(fourColBtn, threeColBtn);
+        });
+      }
+
+      // Mobile filter
+      const mobileFilterBtn = document.getElementById('mobileFilterBtn');
+      const mobileFilterOverlay = document.getElementById('mobileFilterOverlay');
+      const mobileFilterPanel = document.getElementById('mobileFilterPanel');
+      const closeMobileFilterBtn = document.getElementById('closeMobileFilter');
+      const mobileFilterForm = document.getElementById('mobileFilterForm');
+      const mobileClearFilters = document.getElementById('mobileClearFilters');
+
+      function openMobileFilter() {
+        if (mobileFilterOverlay && mobileFilterPanel) {
+          mobileFilterOverlay.classList.remove('hidden');
+          mobileFilterOverlay.offsetHeight;
+          setTimeout(() => {
+            mobileFilterOverlay.classList.remove('opacity-0');
+            mobileFilterOverlay.classList.add('opacity-100');
+            mobileFilterPanel.classList.remove('-translate-x-full');
+            mobileFilterPanel.classList.add('translate-x-0');
+          }, 10);
+          document.body.style.overflow = 'hidden';
+        }
+      }
+      function closeMobileFilter() {
+        if (mobileFilterOverlay && mobileFilterPanel) {
+          mobileFilterOverlay.classList.remove('opacity-100');
+          mobileFilterOverlay.classList.add('opacity-0');
+          mobileFilterPanel.classList.remove('translate-x-0');
+          mobileFilterPanel.classList.add('-translate-x-full');
+          setTimeout(() => { mobileFilterOverlay.classList.add('hidden'); }, 300);
+          document.body.style.overflow = '';
+        }
+      }
+
+      if (mobileFilterBtn) mobileFilterBtn.addEventListener('click', e => { e.preventDefault(); openMobileFilter(); });
+      if (closeMobileFilterBtn) closeMobileFilterBtn.addEventListener('click', e => { e.preventDefault(); closeMobileFilter(); });
+      if (mobileFilterOverlay) mobileFilterOverlay.addEventListener('click', e => { if (e.target === mobileFilterOverlay) closeMobileFilter(); });
+      document.addEventListener('keydown', e => { if (e.key === 'Escape' && mobileFilterOverlay && !mobileFilterOverlay.classList.contains('hidden')) closeMobileFilter(); });
+
+      if (mobileFilterForm) {
+        mobileFilterForm.addEventListener('submit', function(e) {
+          e.preventDefault();
+          const formData = new FormData(mobileFilterForm);
+          const params = new URLSearchParams();
+          for (let [key, value] of formData.entries()) { if (value.trim() !== '') params.append(key, value); }
+          closeMobileFilter();
+          setTimeout(() => { window.location.href = '/profiles/addedBy/staff?' + params.toString(); }, 300);
+        });
+      }
+      if (mobileClearFilters) {
+        mobileClearFilters.addEventListener('click', e => { e.preventDefault(); closeMobileFilter(); setTimeout(() => { window.location.href = '/profiles/addedBy/staff'; }, 300); });
+      }
+
+      // Country-City dropdown
+      const mobileFilterCountry = document.getElementById('mobileFilterCountry');
+      const mobileFilterCity = document.getElementById('mobileFilterCity');
+      <% if (typeof geoFilterUI !== 'undefined' && geoFilterUI) { %>
+      const mobileCityData = <%- JSON.stringify(geoFilterUI.cities) %>;
+      <% } else { %>
+      const mobileCityData = {
+        'United Kingdom': ['London','Birmingham','Manchester','Glasgow','Liverpool','Leeds','Sheffield','Edinburgh','Bristol','Leicester','Bradford','Cardiff','Nottingham','Newcastle','Other'],
+        'Pakistan': ['Karachi','Lahore','Islamabad','Rawalpindi','Faisalabad','Multan','Peshawar','Quetta','Sialkot','Gujranwala','Hyderabad','Abbottabad','Bahawalpur','Sargodha','Sukkur','Larkana','Mardan','Gujrat','Sahiwal','Mirpur','Other'],
+        'Bangladesh': ['Dhaka','Chittagong','Sylhet','Khulna','Rajshahi','Comilla','Gazipur','Narayanganj','Other'],
+        'India': ['Mumbai','Delhi','Bangalore','Hyderabad','Chennai','Kolkata','Ahmedabad','Pune','Lucknow','Jaipur','Other'],
+        'United States': ['New York','Los Angeles','Chicago','Houston','Dallas','San Francisco','Miami','Atlanta','Washington DC','Boston','Other'],
+        'Canada': ['Toronto','Vancouver','Montreal','Calgary','Ottawa','Edmonton','Mississauga','Brampton','Other'],
+        'United Arab Emirates': ['Dubai','Abu Dhabi','Sharjah','Ajman','Al Ain','Ras Al Khaimah','Other'],
+        'Saudi Arabia': ['Riyadh','Jeddah','Mecca','Medina','Dammam','Dhahran','Other'],
+        'Australia': ['Sydney','Melbourne','Brisbane','Perth','Adelaide','Gold Coast','Other'],
+        'Other': ['Other']
+      };
+      <% } %>
+
+      if (mobileFilterCountry && mobileFilterCity) {
+        mobileFilterCountry.addEventListener('change', function() {
+          const country = this.value;
+          mobileFilterCity.innerHTML = '<option value="">Select City</option>';
+          if (country && mobileCityData[country]) {
+            mobileFilterCity.disabled = false;
+            mobileCityData[country].forEach(c => { const opt = document.createElement('option'); opt.value = c; opt.textContent = c; mobileFilterCity.appendChild(opt); });
+          } else { mobileFilterCity.disabled = true; }
+        });
+        if (mobileFilterCountry.value) {
+          mobileFilterCountry.dispatchEvent(new Event('change'));
+          const currentCity = new URLSearchParams(window.location.search).get('city');
+          if (currentCity) Array.from(mobileFilterCity.options).forEach(o => { if (o.value.toLowerCase() === currentCity.toLowerCase()) o.selected = true; });
+        }
+      }
+
+      // Progressive image loading
+      const images = document.querySelectorAll('img[loading="lazy"]');
+      if ('IntersectionObserver' in window) {
+        const imageObserver = new IntersectionObserver((entries, observer) => {
+          entries.forEach(entry => { if (entry.isIntersecting) { entry.target.addEventListener('load', function() { this.classList.add('loaded'); }); observer.unobserve(entry.target); } });
+        });
+        images.forEach(img => imageObserver.observe(img));
+      } else {
+        images.forEach(img => { img.addEventListener('load', function() { this.classList.add('loaded'); }); });
+      }
+    });
+
+    function removeFilter(param) {
+      const urlParams = new URLSearchParams(window.location.search);
+      urlParams.delete(param);
+      const newUrl = urlParams.toString() ? '/profiles/addedBy/staff?' + urlParams.toString() : '/profiles/addedBy/staff';
+      window.location.href = newUrl;
+    }
+    function clearAllFilters() { window.location.href = '/profiles/addedBy/staff'; }
+  </script>
+</body>
+</html>

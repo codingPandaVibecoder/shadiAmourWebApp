@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FAQ Management - D'amour Muslim Admin</title>
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+  <link rel="manifest" href="/images/site.webmanifest">
+  <meta name="theme-color" content="#E91E63">
+  <link rel="stylesheet" href="/css/output.css">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.0.0/fonts/remixicon.css" rel="stylesheet">
+</head>
+
+<body class="bg-gray-50 font-['Roboto']">
+  <%- include('../partials/header') %>
+
+  <main class="pt-24 pb-16 min-h-screen">
+    <div class="max-w-7xl mx-auto px-6">
+
+      <!-- Page Header -->
+      <div class="flex flex-col md:flex-row md:items-center justify-between mb-8">
+        <div>
+          <h1 class="text-3xl font-bold text-gray-900 mb-2 font-['Playfair_Display']">Islamic FAQs Management</h1>
+          <p class="text-gray-600">Create and manage Islamic Q&amp;A entries</p>
+        </div>
+        <a href="/admin/faqs/create" class="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-button hover:bg-pink-600 transition-colors mt-4 md:mt-0">
+          <i class="ri-add-line"></i>
+          Add New Question
+        </a>
+      </div>
+
+      <!-- Stats Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div class="bg-white rounded-xl p-6 material-shadow">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-2xl font-bold text-gray-900"><%= stats.total %></p>
+              <p class="text-sm text-gray-600 mt-1">Total Questions</p>
+            </div>
+            <div class="w-12 h-12 bg-amber-100 rounded-full flex items-center justify-center">
+              <i class="ri-question-answer-line text-xl text-amber-600"></i>
+            </div>
+          </div>
+        </div>
+        <div class="bg-white rounded-xl p-6 material-shadow">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-2xl font-bold text-gray-900"><%= stats.published %></p>
+              <p class="text-sm text-gray-600 mt-1">Published</p>
+            </div>
+            <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+              <i class="ri-checkbox-circle-line text-xl text-green-600"></i>
+            </div>
+          </div>
+        </div>
+        <div class="bg-white rounded-xl p-6 material-shadow">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-2xl font-bold text-gray-900"><%= stats.drafts %></p>
+              <p class="text-sm text-gray-600 mt-1">Drafts</p>
+            </div>
+            <div class="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center">
+              <i class="ri-draft-line text-xl text-yellow-600"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Filters -->
+      <div class="bg-white rounded-xl p-6 material-shadow mb-6">
+        <div class="flex flex-col md:flex-row gap-4">
+          <div class="flex-1">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Status</label>
+            <select id="statusFilter" class="w-full px-3 py-2 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary">
+              <option value="all"      <%= currentFilter.status === 'all'       ? 'selected' : '' %>>All Questions</option>
+              <option value="published" <%= currentFilter.status === 'published' ? 'selected' : '' %>>Published</option>
+              <option value="draft"     <%= currentFilter.status === 'draft'     ? 'selected' : '' %>>Drafts</option>
+            </select>
+          </div>
+          <div class="flex-1">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Category</label>
+            <select id="categoryFilter" class="w-full px-3 py-2 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary">
+              <option value="all" <%= currentFilter.category === 'all' ? 'selected' : '' %>>All Categories</option>
+              <% ['Destiny','Birth','Divorce','Engagement','Family','Getting Married','Intimacy','Prayer & Purification','Rights & Responsibilities','Spouse Search'].forEach(cat => { %>
+              <option value="<%= cat %>" <%= currentFilter.category === cat ? 'selected' : '' %>><%= cat %></option>
+              <% }) %>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- FAQ List Table -->
+      <div class="bg-white rounded-xl material-shadow overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="w-full">
+            <thead class="bg-gray-50 border-b border-gray-200">
+              <tr>
+                <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Question</th>
+                <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
+                <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Created</th>
+                <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+              </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+              <% if (faqs.length === 0) { %>
+              <tr>
+                <td colspan="5" class="px-6 py-12 text-center text-gray-500">
+                  <i class="ri-question-answer-line text-5xl text-gray-300 block mb-3"></i>
+                  <p class="font-medium">No questions found</p>
+                  <a href="/admin/faqs/create" class="text-primary hover:underline text-sm mt-1 inline-block">Add your first question</a>
+                </td>
+              </tr>
+              <% } else { %>
+              <% faqs.forEach(faq => { %>
+              <tr class="hover:bg-gray-50 transition-colors">
+                <td class="px-6 py-4">
+                  <div>
+                    <p class="font-medium text-gray-900 line-clamp-2"><%= faq.question %></p>
+                    <p class="text-xs text-gray-400 mt-1">/<%= faq.slug %></p>
+                    <% if (faq.scholar) { %>
+                    <p class="text-xs text-amber-600 mt-0.5">– <%= faq.scholar %></p>
+                    <% } %>
+                  </div>
+                </td>
+                <td class="px-6 py-4">
+                  <span class="inline-block px-2.5 py-0.5 bg-amber-100 text-amber-800 rounded-full text-xs font-medium"><%= faq.category %></span>
+                </td>
+                <td class="px-6 py-4">
+                  <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium <%= faq.isPublished ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800' %>">
+                    <i class="<%= faq.isPublished ? 'ri-checkbox-circle-line' : 'ri-draft-line' %> mr-1"></i>
+                    <%= faq.isPublished ? 'Published' : 'Draft' %>
+                  </span>
+                </td>
+                <td class="px-6 py-4 text-sm text-gray-500">
+                  <%= new Date(faq.createdAt).toLocaleDateString('en-GB', { year:'numeric', month:'short', day:'numeric' }) %>
+                </td>
+                <td class="px-6 py-4">
+                  <div class="flex items-center gap-2">
+                    <% if (faq.isPublished) { %>
+                    <a href="/islamic-faqs/<%= faq.slug %>" target="_blank" class="text-gray-400 hover:text-blue-600 transition-colors" title="View Live">
+                      <i class="ri-external-link-line text-lg"></i>
+                    </a>
+                    <% } %>
+                    <a href="/admin/faqs/<%= faq._id %>/edit" class="text-gray-400 hover:text-yellow-600 transition-colors" title="Edit">
+                      <i class="ri-edit-line text-lg"></i>
+                    </a>
+                    <button data-faq-id="<%= faq._id %>" data-faq-question="<%= faq.question.replace(/"/g, '&quot;').replace(/'/g, '&#39;') %>" onclick="deleteFaq(this.dataset.faqId, this.dataset.faqQuestion)" class="text-gray-400 hover:text-red-600 transition-colors" title="Delete">
+                      <i class="ri-delete-bin-line text-lg"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              <% }) %>
+              <% } %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Delete Confirmation Modal -->
+  <div id="deleteModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-xl max-w-md w-full p-6">
+      <div class="flex items-center mb-4">
+        <i class="ri-error-warning-line text-2xl text-red-500 mr-3"></i>
+        <h3 class="text-lg font-semibold text-gray-900">Delete Question</h3>
+      </div>
+      <p class="text-gray-600 mb-6">Are you sure you want to delete "<span id="deleteFaqTitle" class="font-medium"></span>"? This action cannot be undone.</p>
+      <div class="flex justify-end gap-3">
+        <button onclick="closeDeleteModal()" class="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-button transition-colors">Cancel</button>
+        <button id="confirmDeleteBtn" class="px-4 py-2 bg-red-500 text-white rounded-button hover:bg-red-600 transition-colors">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Filters
+    document.getElementById('statusFilter').addEventListener('change', applyFilters);
+    document.getElementById('categoryFilter').addEventListener('change', applyFilters);
+    function applyFilters() {
+      const status = document.getElementById('statusFilter').value;
+      const category = document.getElementById('categoryFilter').value;
+      const url = new URL(window.location);
+      status === 'all' ? url.searchParams.delete('status') : url.searchParams.set('status', status);
+      category === 'all' ? url.searchParams.delete('category') : url.searchParams.set('category', category);
+      window.location.href = url.toString();
+    }
+
+    // Delete FAQ
+    let faqToDelete = null;
+    function deleteFaq(faqId, faqQuestion) {
+      faqToDelete = faqId;
+      document.getElementById('deleteFaqTitle').textContent = faqQuestion;
+      document.getElementById('deleteModal').classList.remove('hidden');
+    }
+    function closeDeleteModal() {
+      document.getElementById('deleteModal').classList.add('hidden');
+      faqToDelete = null;
+    }
+    document.getElementById('confirmDeleteBtn').addEventListener('click', async function () {
+      if (!faqToDelete) return;
+      try {
+        const res = await fetch(`/admin/faqs/${faqToDelete}`, {
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' }
+        });
+        const data = await res.json();
+        if (data.success) window.location.reload();
+        else alert('Failed to delete: ' + data.error);
+      } catch (e) {
+        alert('Failed to delete question');
+      }
+      closeDeleteModal();
+    });
+    document.getElementById('deleteModal').addEventListener('click', function (e) {
+      if (e.target === this) closeDeleteModal();
+    });
+  </script>
+
+  <style>
+    .material-shadow { box-shadow: 0 2px 8px rgba(0,0,0,.1); }
+    .material-shadow-hover { box-shadow: 0 4px 16px rgba(0,0,0,.15); }
+    .line-clamp-2 { display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden; }
+  </style>
+</body>
+
+</html>

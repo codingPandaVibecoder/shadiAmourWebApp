@@ -142,6 +142,9 @@ const userSchema = new mongoose.Schema({
       year: { type: String },
     },
   ],
+  highestEducation: {
+    type: String,
+  },
   work: {
     type: String,
   },
@@ -299,6 +302,10 @@ const userSchema = new mongoose.Schema({
     sparse: true, // Allows multiple documents without this field
     index: true, // For faster lookups
   },
+  profileSlugHistory: {
+    type: [String],
+    default: [],
+  },
   registrationSource: {
     type: String,
     enum: ["register", "admin", "google"],
@@ -336,11 +343,145 @@ const userSchema = new mongoose.Schema({
   },
   seoField1: {
     type: String,
-    maxlength: [500, 'SEO Field 1 cannot exceed 500 characters']
   },
   seoField2: {
     type: String,
-    maxlength: [500, 'SEO Field 2 cannot exceed 500 characters']
+  },
+  // Nested SEO settings for SEO admin panel
+  seoSettings: {
+    customMetaTitle: {
+      type: String,
+      maxlength: 60,
+    },
+    customMetaDescription: {
+      type: String,
+      maxlength: 160,
+    },
+    customKeywords: [{
+      type: String,
+    }],
+    focusKeyword: {
+      type: String,
+    },
+    noIndex: {
+      type: Boolean,
+      default: false,
+    },
+    ogImageOverride: {
+      type: String,
+    },
+    canonicalUrlOverride: {
+      type: String,
+    },
+    internalNotes: {
+      type: String,
+    },
+    lastSeoEditedAt: {
+      type: Date,
+    },
+    lastSeoEditedBy: {
+      type: String,
+    },
+  },
+  // Profile approval system
+  isApproved: {
+    type: Boolean,
+    default: false,
+  },
+  approvalStatus: {
+    type: String,
+    enum: ["pending", "approved", "rejected"],
+    default: "pending",
+  },
+  approvedAt: {
+    type: Date,
+    default: null,
+  },
+  approvedBy: {
+    type: String,
+    default: null,
+  },
+  rejectedAt: {
+    type: Date,
+    default: null,
+  },
+  rejectionReason: {
+    type: String,
+    default: null,
+  },
+  rejectionReason: {
+    type: String,
+    default: null,
+  },
+  // Identity verification (KYC)
+  idVerified: {
+    type: Boolean,
+    default: false,
+  },
+  faceVerified: {
+    type: Boolean,
+    default: false,
+  },
+  idFrontUrl: {
+    type: String,
+    default: '',
+  },
+  idBackUrl: {
+    type: String,
+    default: '',
+  },
+  selfieUrl: {
+    type: String,
+    default: '',
+  },
+  // Account deactivation system
+  isDeactivated: {
+    type: Boolean,
+    default: false,
+  },
+  deactivatedAt: {
+    type: Date,
+    default: null,
+  },
+  deactivatedBy: {
+    type: String,
+    default: null,
+  },
+  deactivationReason: {
+    type: String,
+    default: null,
   },
 });
+
+// Pre-delete middleware to clean up associated data
+userSchema.pre('findOneAndDelete', async function(next) {
+  try {
+    const userId = this.getFilter()._id;
+    
+    if (userId) {
+      // Import models here to avoid circular dependency
+      const Request = require('./Request');
+      const Notification = require('./Notification');
+      
+      // Delete all requests where user is sender or receiver
+      const requestsDeleted = await Request.deleteMany({
+        $or: [
+          { from: userId },
+          { to: userId }
+        ]
+      });
+      console.log(`Deleted ${requestsDeleted.deletedCount} requests for user ${userId}`);
+      
+      // Delete all notifications for this user
+      const notificationsDeleted = await Notification.deleteMany({ userId: userId });
+      console.log(`Deleted ${notificationsDeleted.deletedCount} notifications for user ${userId}`);
+    }
+    
+    next();
+  } catch (error) {
+    console.error('Error in pre-delete middleware:', error);
+    next(error);
+  }
+});
+
 module.exports = mongoose.model("User", userSchema);

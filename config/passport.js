@@ -8,8 +8,9 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: "/auth/google/callback",
+      callbackURL: `${process.env.BASE_URL}/auth/google/callback`,
       passReqToCallback: true,
+      proxy: true
     },
     async (req, accessToken, refreshToken, profile, done) => {
       try {
@@ -49,44 +50,47 @@ passport.use(
           }
         }
 
-        // **IMPORTANT**: Only create new user if coming from registration flow
-        // Check if there's a temp user from registration process
-        if (req.session && req.session.tempUserId) {
-          console.log("Creating new user from registration flow");
-          const tempUser = await User.findById(req.session.tempUserId);
-          if (tempUser) {
-            // Update temp user with Google data
-            tempUser.googleId = profile.id;
-            tempUser.name = profile.displayName || tempUser.name;
-            tempUser.email =
-              profile.emails && profile.emails.length > 0
-                ? profile.emails[0].value.toLowerCase()
-                : tempUser.email;
-            tempUser.isEmailVerified = true;
-            tempUser.googleProfilePic =
-              profile.photos && profile.photos.length > 0
-                ? profile.photos[0].value
-                : null;
+        // **NEW**: Create new user directly from Google OAuth for simplified flow
+        // Generate unique username
+        const generateUsername = () => {
+          const adjectives = ['happy', 'bright', 'noble', 'kind', 'wise', 'calm', 'pure', 'true'];
+          const nouns = ['soul', 'heart', 'star', 'light', 'moon', 'rose', 'pearl', 'gem'];
+          const adj = adjectives[Math.floor(Math.random() * adjectives.length)];
+          const noun = nouns[Math.floor(Math.random() * nouns.length)];
+          const num = Math.floor(Math.random() * 9999);
+          return `${adj}${noun}${num}`;
+        };
 
-            // Generate profile slug
-            tempUser.profileSlug = await generateUniqueSlug(tempUser);
-            await tempUser.save();
-
-            // Clean up session
-            delete req.session.tempUserId;
-
-            return done(null, tempUser);
-          }
+        let username = generateUsername();
+        // Ensure username is unique
+        while (await User.findOne({ username })) {
+          username = generateUsername();
         }
 
-        // **NEW**: If no temp user, this might be a direct login attempt
-        // For security, don't auto-create accounts from login page
-        console.log(
-          "No existing user found for Google login, redirecting to register"
-        );
-        return done(null, false, {
-          message: "No account found. Please register first.",
+        // Create new user with Google data
+        const newUser = new User({
+          username,
+          googleId: profile.id,
+          name: profile.displayName || null,
+          email: profile.emails && profile.emails.length > 0 
+            ? profile.emails[0].value.toLowerCase() 
+            : null,
+          isEmailVerified: true,
+          googleProfilePic: profile.photos && profile.photos.length > 0 
+            ? profile.photos[0].value 
+            : null,
+          password: await require('bcrypt').hash('google_oauth_' + profile.id, 12), // Placeholder password
+          registrationSource: "google",
+          isApproved: false,
+          approvalStatus: "pending",
         });
+
+        // Generate profile slug
+        newUser.profileSlug = await generateUniqueSlug(newUser);
+        await newUser.save();
+
+        console.log("New Google user created:", newUser.username);
+        return done(null, newUser);
       } catch (error) {
         console.error("Google OAuth error:", error);
         return done(error, null);

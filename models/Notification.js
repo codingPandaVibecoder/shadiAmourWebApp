@@ -16,7 +16,10 @@ const notificationSchema = new mongoose.Schema({
       "request_accepted", // **NEW**
       "request_rejected", // **NEW**
       "request_revoked", // **NEW**
+      "request_sent",        // **ADD THIS**
+      "connection_made",
       "system_announcement",
+      "profile_approved",
     ],
   },
   title: {

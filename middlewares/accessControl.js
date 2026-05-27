@@ -8,8 +8,17 @@ const requireAdminOrModerator = (req, res, next) => {
 
 // Middleware to check if user is admin only (for edit/delete/add operations)
 const requireAdminOnly = (req, res, next) => {
-  if (req.session.isAdmin) {
+  const apiKey = req.headers['x-api-key'];
+  const expectedKey = process.env.ADMIN_API_KEY;
+
+ 
+  console.log("------------------------------------------------");
+  if (apiKey && apiKey === process.env.ADMIN_API_KEY) {
+    req.isApiRequest = true; // Flag for later use if needed
     return next();
+  }
+  if (req.session.isAdmin) {
+    return next(); 
   }
   return res.status(403).json({
     error: "Forbidden: Admin access required for this operation",

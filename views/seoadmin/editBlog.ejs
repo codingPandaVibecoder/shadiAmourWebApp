@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Edit Blog SEO - <%= blog.title %> | D'amour Muslim</title>
+  <link rel="stylesheet" href="/css/output.css">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+  <style>
+    .gradient-bg { background: linear-gradient(135deg, #E91E63 0%, #673AB7 100%); }
+    .char-counter { transition: color 0.2s; }
+    .char-counter.warning { color: #F59E0B; }
+    .char-counter.danger { color: #EF4444; }
+    .serp-preview { font-family: Arial, sans-serif; }
+    .serp-title { color: #1a0dab; font-size: 18px; line-height: 1.3; }
+    .serp-url { color: #006621; font-size: 14px; }
+    .serp-desc { color: #545454; font-size: 13px; line-height: 1.4; }
+  </style>
+  <%- include('../partials/analytics') %>
+</head>
+<body class="bg-gray-50 min-h-screen font-['Roboto']">
+  <%- include('partials/header', { currentPage: 'blogs' }) %>
+  
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- Breadcrumb -->
+    <nav class="flex items-center gap-2 text-sm text-gray-500 mb-6">
+      <a href="/seoadmin/blogs" class="hover:text-pink-600 transition-colors">Blogs</a>
+      <i class="ri-arrow-right-s-line"></i>
+      <span class="text-gray-900 truncate max-w-[200px]"><%= blog.title %></span>
+    </nav>
+    
+    <!-- Messages -->
+    <% if (typeof success !== 'undefined' && success) { %>
+    <div class="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg mb-6 flex items-center gap-2">
+      <i class="ri-check-circle-line"></i>
+      <span><%= success %></span>
+    </div>
+    <% } %>
+    <% if (typeof error !== 'undefined' && error) { %>
+    <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-6 flex items-center gap-2">
+      <i class="ri-error-warning-line"></i>
+      <span><%= error %></span>
+    </div>
+    <% } %>
+    
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <!-- Main Form Column -->
+      <div class="lg:col-span-2 space-y-6">
+        <!-- Blog Info (Read-Only) -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+          <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
+            <h2 class="text-lg font-semibold text-gray-900 flex items-center gap-2">
+              <i class="ri-article-line text-pink-500"></i>
+              Blog Information
+              <span class="text-xs font-normal text-gray-500 ml-2">(Read-Only)</span>
+            </h2>
+          </div>
+          <div class="p-6">
+            <div class="flex items-start gap-4">
+              <% if (blog.featuredImage) { %>
+              <div class="w-32 h-20 rounded-lg overflow-hidden bg-gray-100 flex-shrink-0">
+                <img src="<%= blog.featuredImage %>" alt="Featured image for <%= blog.title %>" class="w-full h-full object-cover">
+              </div>
+              <% } %>
+              <div class="flex-1">
+                <h3 class="font-semibold text-gray-900 text-lg"><%= blog.title %></h3>
+                <div class="flex items-center gap-4 mt-2 text-sm text-gray-500">
+                  <span class="flex items-center gap-1">
+                    <i class="ri-calendar-line"></i>
+                    <%= blog.publishedAt ? new Date(blog.publishedAt).toLocaleDateString() : 'Not published' %>
+                  </span>
+                  <span class="flex items-center gap-1">
+                    <i class="ri-eye-line"></i>
+                    <%= blog.views || 0 %> views
+                  </span>
+                  <span class="px-2 py-0.5 text-xs font-medium rounded <%= blog.status === 'published' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800' %>">
+                    <%= blog.status %>
+                  </span>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Slug Display -->
+            <div class="mt-4 pt-4 border-t border-gray-200">
+              <div class="bg-gray-50 rounded-lg p-3">
+                <label class="text-xs text-gray-500 flex items-center gap-1">
+                  <i class="ri-links-line"></i> Current Slug
+                </label>
+                <p class="font-mono text-sm text-gray-700 mt-1"><%= blog.slug %></p>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- SEO Form -->
+        <form action="/seoadmin/blog/<%= blog._id %>/update" method="POST">
+          <!-- Meta Information -->
+          <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden mb-6">
+            <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
+              <h2 class="text-lg font-semibold text-gray-900 flex items-center gap-2">
+                <i class="ri-file-text-line text-pink-500"></i>
+                Meta Information
+              </h2>
+            </div>
+            <div class="p-6 space-y-5">
+              <!-- Slug -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">URL Slug</label>
+                <div class="flex items-center gap-2">
+                  <span class="text-sm text-gray-400 whitespace-nowrap">/blog/</span>
+                  <input
+                    type="text"
+                    name="slug"
+                    value="<%= blog.slug %>"
+                    pattern="[a-z0-9\-]+"
+                    class="flex-1 px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500 font-mono text-sm"
+                    placeholder="my-blog-post-slug"
+                  >
+                </div>
+                <p class="text-xs text-gray-500 mt-1">Lowercase letters, numbers, and hyphens only.</p>
+                <div class="mt-2 flex items-start gap-2 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2">
+                  <i class="ri-alert-line text-amber-500 text-sm mt-0.5 flex-shrink-0"></i>
+                  <p class="text-xs text-amber-700">Changing the slug changes the blog URL. Existing links and Google rankings for the old URL will break.</p>
+                </div>
+              </div>
+
+              <!-- Meta Title -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">
+                  Meta Title
+                  <span class="char-counter text-gray-400 font-normal" id="titleCounter">(0/60)</span>
+                </label>
+                <input 
+                  type="text" 
+                  name="metaTitle" 
+                  id="metaTitle"
+                  value="<%= blog.metaTitle || '' %>"
+                  maxlength="60"
+                  class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500"
+                  placeholder="Enter meta title (max 60 characters)"
+                  oninput="updateCharCount('metaTitle', 'titleCounter', 60); updateSerpPreview();"
+                >
+              </div>
+              
+              <!-- Meta Description -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">
+                  Meta Description
+                  <span class="char-counter text-gray-400 font-normal" id="descCounter">(0/160)</span>
+                </label>
+                <textarea 
+                  name="metaDescription" 
+                  id="metaDescription"
+                  maxlength="160"
+                  rows="3"
+                  class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500 resize-none"
+                  placeholder="Enter meta description (max 160 characters)"
+                  oninput="updateCharCount('metaDescription', 'descCounter', 160); updateSerpPreview();"
+                ><%= blog.metaDescription || '' %></textarea>
+              </div>
+              
+              <!-- Keywords -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Keywords</label>
+                <input 
+                  type="text" 
+                  name="keywords" 
+                  value="<%= blog.keywords ? blog.keywords.join(', ') : '' %>"
+                  class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500"
+                  placeholder="Enter keywords separated by commas"
+                >
+                <p class="text-xs text-gray-500 mt-1">Comma-separated list of keywords</p>
+              </div>
+              
+              <!-- Canonical URL -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Canonical URL</label>
+                <input 
+                  type="url" 
+                  name="canonicalUrl" 
+                  value="<%= blog.canonicalUrl || '' %>"
+                  class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500"
+                  placeholder="https://damourmuslim.com/blog/..."
+                >
+                <p class="text-xs text-gray-500 mt-1">Leave empty to use default URL</p>
+              </div>
+            </div>
+          </div>
+          
+          <!-- FAQ Schema -->
+          <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden mb-6">
+            <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
+              <h2 class="text-lg font-semibold text-gray-900 flex items-center gap-2">
+                <i class="ri-question-answer-line text-pink-500"></i>
+                FAQ Schema
+                <span class="text-xs font-normal text-gray-500 ml-2">(For Rich Snippets)</span>
+              </h2>
+            </div>
+            <div class="p-6 space-y-4" id="faqContainer">
+              <% if (blog.faqSchema && blog.faqSchema.length > 0) { %>
+                <% blog.faqSchema.forEach((faq, index) => { %>
+                <div class="faq-item border border-gray-200 rounded-lg p-4">
+                  <div class="flex items-center justify-between mb-3">
+                    <span class="text-sm font-medium text-gray-700">FAQ #<%= index + 1 %></span>
+                    <button type="button" onclick="removeFaq(this)" class="text-red-500 hover:text-red-700 text-sm">
+                      <i class="ri-delete-bin-line"></i> Remove
+                    </button>
+                  </div>
+                  <input 
+                    type="text" 
+                    name="faqQuestion[]" 
+                    value="<%= faq.question %>"
+                    placeholder="Question"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-lg mb-2 focus:ring-2 focus:ring-pink-500 focus:border-pink-500"
+                  >
+                  <textarea 
+                    name="faqAnswer[]" 
+                    placeholder="Answer"
+                    rows="2"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-lg resize-none focus:ring-2 focus:ring-pink-500 focus:border-pink-500"
+                  ><%= faq.answer %></textarea>
+                </div>
+                <% }) %>
+              <% } %>
+            </div>
+            <div class="px-6 pb-6">
+              <button type="button" onclick="addFaq()" class="text-sm text-pink-600 hover:text-pink-700 flex items-center gap-1">
+                <i class="ri-add-line"></i> Add FAQ
+              </button>
+            </div>
+          </div>
+          
+          <!-- Submit Button -->
+          <div class="flex items-center justify-between">
+            <a href="/seoadmin/blogs" class="px-6 py-2.5 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors">
+              Cancel
+            </a>
+            <button type="submit" class="px-6 py-2.5 gradient-bg text-white rounded-lg font-medium hover:opacity-90 transition-opacity flex items-center gap-2">
+              <i class="ri-save-line"></i>
+              Save SEO Changes
+            </button>
+          </div>
+        </form>
+      </div>
+      
+      <!-- Right Sidebar -->
+      <div class="space-y-6">
+        <!-- SERP Preview -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden sticky top-24">
+          <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
+            <h2 class="text-lg font-semibold text-gray-900 flex items-center gap-2">
+              <i class="ri-google-line text-pink-500"></i>
+              Google SERP Preview
+            </h2>
+          </div>
+          <div class="p-6">
+            <div class="serp-preview bg-white border border-gray-200 rounded-lg p-4">
+              <p class="serp-title hover:underline cursor-pointer" id="serpTitle">
+                <%= blog.metaTitle || blog.title %>
+              </p>
+              <p class="serp-url mt-1" id="serpUrl">
+                https://damourmuslim.com/blog/<%= blog.slug %>
+              </p>
+              <p class="serp-desc mt-1" id="serpDesc">
+                <%= blog.metaDescription || (blog.excerpt ? blog.excerpt.substring(0, 160) : 'No description set') %>
+              </p>
+            </div>
+          </div>
+          
+          <!-- Quick Links -->
+          <div class="px-6 py-4 border-t border-gray-200 bg-gray-50">
+            <h3 class="text-sm font-medium text-gray-700 mb-3">Quick Links</h3>
+            <div class="space-y-2">
+              <a href="/blog/<%= blog.slug %>" target="_blank" 
+                 class="flex items-center gap-2 text-sm text-gray-600 hover:text-pink-600 transition-colors">
+                <i class="ri-external-link-line"></i> View Live Post
+              </a>
+              <a href="/admin/blogs/<%= blog._id %>/edit" target="_blank" 
+                 class="flex items-center gap-2 text-sm text-gray-600 hover:text-pink-600 transition-colors">
+                <i class="ri-edit-line"></i> Edit in Admin
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  
+  <script>
+    // Character counter function
+    function updateCharCount(inputId, counterId, maxLength) {
+      const input = document.getElementById(inputId);
+      const counter = document.getElementById(counterId);
+      const length = input.value.length;
+      
+      counter.textContent = `(${length}/${maxLength})`;
+      
+      counter.classList.remove('warning', 'danger');
+      if (length >= maxLength * 0.9) {
+        counter.classList.add('danger');
+      } else if (length >= maxLength * 0.75) {
+        counter.classList.add('warning');
+      }
+    }
+    
+    // SERP Preview updater
+    function updateSerpPreview() {
+      const titleInput = document.getElementById('metaTitle');
+      const descInput = document.getElementById('metaDescription');
+      const serpTitle = document.getElementById('serpTitle');
+      const serpDesc = document.getElementById('serpDesc');
+      
+      serpTitle.textContent = titleInput.value || '<%= blog.title %>';
+      serpDesc.textContent = descInput.value || '<%= blog.excerpt ? blog.excerpt.substring(0, 160) : "No description set" %>';
+    }
+    
+    // FAQ Management
+    let faqCount = <%= blog.faqSchema ? blog.faqSchema.length : 0 %>;
+    
+    function addFaq() {
+      faqCount++;
+      const container = document.getElementById('faqContainer');
+      const faqItem = document.createElement('div');
+      faqItem.className = 'faq-item border border-gray-200 rounded-lg p-4';
+      faqItem.innerHTML = `
+        <div class="flex items-center justify-between mb-3">
+          <span class="text-sm font-medium text-gray-700">FAQ #${faqCount}</span>
+          <button type="button" onclick="removeFaq(this)" class="text-red-500 hover:text-red-700 text-sm">
+            <i class="ri-delete-bin-line"></i> Remove
+          </button>
+        </div>
+        <input 
+          type="text" 
+          name="faqQuestion[]" 
+          placeholder="Question"
+          class="w-full px-3 py-2 border border-gray-300 rounded-lg mb-2 focus:ring-2 focus:ring-pink-500 focus:border-pink-500"
+        >
+        <textarea 
+          name="faqAnswer[]" 
+          placeholder="Answer"
+          rows="2"
+          class="w-full px-3 py-2 border border-gray-300 rounded-lg resize-none focus:ring-2 focus:ring-pink-500 focus:border-pink-500"
+        ></textarea>
+      `;
+      container.appendChild(faqItem);
+    }
+    
+    function removeFaq(button) {
+      button.closest('.faq-item').remove();
+      // Renumber FAQs
+      const faqs = document.querySelectorAll('.faq-item');
+      faqs.forEach((faq, index) => {
+        faq.querySelector('span').textContent = `FAQ #${index + 1}`;
+      });
+      faqCount = faqs.length;
+    }
+    
+    // Initialize counters on page load
+    document.addEventListener('DOMContentLoaded', function() {
+      updateCharCount('metaTitle', 'titleCounter', 60);
+      updateCharCount('metaDescription', 'descCounter', 160);
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,1490 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+  <link rel="manifest" href="/images/site.webmanifest">
+  <meta name="theme-color" content="#E91E63">
+  <title>D'amour Muslim - Admin View: <%= user.name || user.username %></title>
+  <link rel="stylesheet" href="/css/output.css">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+  <style>
+    :where([class^="ri-"])::before { content: "\f3c2"; }
+    .material-shadow { box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); }
+    .material-shadow-hover { box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15); }
+    .material-shadow-elevated { box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2); }
+    .gradient-bg { background: linear-gradient(135deg, #E91E63 0%, #673AB7 100%); }
+    
+    .tab-active { background-color: #E91E63; color: white; }
+    .section-card { transition: all 0.3s ease; }
+    .section-card:hover { box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1); }
+    
+    /* Responsive info rows */
+    .info-row { 
+      display: flex; 
+      flex-direction: column;
+      padding: 12px 0; 
+      border-bottom: 1px solid #f3f4f6; 
+      gap: 4px;
+    }
+    .info-row:last-child { border-bottom: none; }
+    .info-label { 
+      font-weight: 500; 
+      color: #6b7280; 
+      font-size: 13px;
+    }
+    .info-value { 
+      color: #111827; 
+      word-break: break-word;
+    }
+    
+    /* Desktop: side by side layout for info rows */
+    @media (min-width: 768px) {
+      .info-row {
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 16px;
+      }
+      .info-label { 
+        width: 200px; 
+        flex-shrink: 0;
+        font-size: 14px;
+      }
+      .info-value {
+        flex: 1;
+        min-width: 0;
+      }
+    }
+    
+    /* Large screens - wider labels */
+    @media (min-width: 1280px) {
+      .info-label { 
+        width: 240px; 
+      }
+    }
+    
+    .info-value.editable { cursor: pointer; padding: 4px 8px; border-radius: 4px; transition: background-color 0.2s; }
+    .info-value.editable:hover { background-color: #f3f4f6; }
+    
+    .request-card { transition: all 0.3s ease; }
+    .request-card:hover { transform: translateY(-2px); }
+    
+    .status-pending { background-color: #fef3c7; color: #92400e; }
+    .status-accepted { background-color: #d1fae5; color: #065f46; }
+    .status-rejected { background-color: #fee2e2; color: #991b1b; }
+    .status-revoked { background-color: #e5e7eb; color: #374151; }
+
+    /* Edit mode styles */
+    .edit-input { 
+      width: 100%; 
+      padding: 8px 12px; 
+      border: 1px solid #d1d5db; 
+      border-radius: 6px; 
+      font-size: 14px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .edit-input:focus { 
+      outline: none; 
+      border-color: #E91E63; 
+      box-shadow: 0 0 0 3px rgba(233, 30, 99, 0.1); 
+    }
+    .edit-textarea {
+      width: 100%;
+      padding: 8px 12px;
+      border: 1px solid #d1d5db;
+      border-radius: 6px;
+      font-size: 14px;
+      resize: vertical;
+      min-height: 80px;
+    }
+    .edit-textarea:focus {
+      outline: none;
+      border-color: #E91E63;
+      box-shadow: 0 0 0 3px rgba(233, 30, 99, 0.1);
+    }
+    .edit-input select,
+    select.edit-input {
+      width: 100%;
+      padding: 8px 12px;
+      border: 1px solid #d1d5db;
+      border-radius: 6px;
+      font-size: 14px;
+      background-color: white;
+      cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+      background-position: right 8px center;
+      background-repeat: no-repeat;
+      background-size: 16px;
+      padding-right: 32px;
+    }
+    select.edit-input:focus {
+      outline: none;
+      border-color: #E91E63;
+      box-shadow: 0 0 0 3px rgba(233, 30, 99, 0.1);
+    }
+
+
+    /* Sidebar styles */
+    .sidebar-section {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 16px;
+    }
+
+    /* Sticky sidebar for desktop */
+    @media (min-width: 1024px) {
+      .sidebar-sticky {
+        position: sticky;
+        top: 80px;
+        max-height: calc(100vh - 100px);
+        overflow-y: auto;
+      }
+    }
+
+    /* Main content grid layout */
+    .admin-layout {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+    
+    @media (min-width: 1024px) {
+      .admin-layout {
+        grid-template-columns: 300px 1fr;
+      }
+    }
+    
+    @media (min-width: 1440px) {
+      .admin-layout {
+        grid-template-columns: 320px 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body class="bg-gray-50 font-['Roboto']">
+  <!-- Header -->
+    <!-- Header -->
+  <header class="bg-white border-b border-gray-200 sticky top-0 z-50">
+    <div class="max-w-full mx-auto px-3 sm:px-4 py-2 sm:py-3">
+      <div class="flex items-center justify-between gap-2">
+        <!-- Left side - Back button and badge -->
+        <div class="flex items-center gap-2 sm:gap-4 min-w-0">
+          <a href="/admin/dashboard" class="flex items-center gap-1 sm:gap-2 text-gray-600 hover:text-primary transition-colors">
+            <i class="ri-arrow-left-line text-lg sm:text-xl"></i>
+            <span class="font-medium text-xs sm:text-sm hidden sm:inline">Back to Dashboard</span>
+          </a>
+          <div class="h-4 sm:h-6 w-px bg-gray-300 hidden sm:block"></div>
+          <span class="px-2 py-0.5 sm:px-3 sm:py-1 bg-orange-100 text-orange-600 text-xs sm:text-sm rounded-full font-medium whitespace-nowrap">
+            <i class="ri-admin-line mr-0.5 sm:mr-1"></i>
+            <span class="hidden xs:inline"><%= isModerator ? 'Moderator' : 'Admin' %></span>
+          </span>
+        </div>
+        
+        <!-- Right side - Action buttons -->
+        <div class="flex items-center gap-1.5 sm:gap-3 flex-shrink-0">
+          <% if (isAdmin) { %>
+          <button id="saveAllBtn" class="px-2 sm:px-4 py-1.5 sm:py-2 bg-green-500 text-white hover:bg-green-600 transition-all duration-300 rounded-lg text-xs sm:text-sm font-medium hidden">
+            <i class="ri-save-line sm:mr-2"></i>
+            <span class="hidden sm:inline">Save All Changes</span>
+          </button>
+          <% } %>
+          <a href="/profiles/<%= user.profileSlug %>" target="_blank" class="px-2 sm:px-4 py-1.5 sm:py-2 bg-primary text-white hover:bg-pink-600 transition-all duration-300 rounded-lg text-xs sm:text-sm font-medium">
+            <i class="ri-external-link-line sm:mr-2"></i>
+            <span class="hidden sm:inline">View Public Profile</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="py-6">
+     <div class="max-w-[1600px] mx-auto px-4 lg:px-6">
+      <div class="admin-layout">
+        
+        <!-- Left Sidebar - Profile Summary & Quick Actions -->
+        <div class="sidebar-sticky">
+          <!-- Profile Card -->
+          <div class="sidebar-section material-shadow text-center">
+            <div class="relative inline-block mb-4">
+              <% if (user.profilePic && user.profilePic.url) { %>
+              <img src="<%= user.profilePic.url %>" class="w-32 h-32 rounded-full object-cover border-4 border-white shadow-lg mx-auto" alt="Profile">
+              <% } else { %>
+              <div class="w-32 h-32 rounded-full bg-gradient-to-br <%= user.gender === 'male' ? 'from-blue-400 to-blue-600' : 'from-pink-400 to-pink-600' %> flex items-center justify-center mx-auto border-4 border-white shadow-lg">
+                <span class="text-4xl font-bold text-white"><%= (user.name || user.username).charAt(0).toUpperCase() %></span>
+              </div>
+              <% } %>
+              <% if (user.isFeatured) { %>
+              <div class="absolute -top-1 -right-1 w-8 h-8 bg-yellow-400 rounded-full flex items-center justify-center shadow">
+                <i class="ri-star-fill text-white text-sm"></i>
+              </div>
+              <% } %>
+            </div>
+            <h2 class="text-xl font-bold text-gray-900 mb-1"><%= user.name || user.username %></h2>
+            <p class="text-gray-500 text-sm mb-2">@<%= user.username %></p>
+            <div class="flex items-center justify-center gap-2 mb-4">
+              <span class="px-2 py-1 text-xs rounded-full <%= user.gender === 'male' ? 'bg-blue-100 text-blue-600' : 'bg-pink-100 text-pink-600' %>">
+                <%= user.gender === 'male' ? 'Male' : 'Female' %>
+              </span>
+              <% if (user.age) { %>
+              <span class="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded-full"><%= user.age %> years</span>
+              <% } %>
+            </div>
+            <% if (user.city || user.country) { %>
+            <p class="text-gray-600 text-sm flex items-center justify-center gap-1">
+              <i class="ri-map-pin-line"></i>
+              <%= user.city %><%= user.city && user.country ? ', ' : '' %><%= user.country %>
+            </p>
+            <% } %>
+          </div>
+
+          <!-- Quick Stats -->
+          <div class="sidebar-section material-shadow">
+            <h3 class="font-semibold text-gray-900 mb-4">Quick Stats</h3>
+            <div class="space-y-3">
+              <div class="flex items-center justify-between">
+                <span class="text-sm text-gray-600">Registration</span>
+                <span class="text-sm font-medium <%= user.registrationSource === 'admin' ? 'text-purple-600' : 'text-green-600' %>">
+                  <%= user.registrationSource === 'admin' ? 'By Admin' : 'Self' %>
+                </span>
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="text-sm text-gray-600">Email Verified</span>
+                <span class="text-sm font-medium <%= user.isEmailVerified ? 'text-green-600' : 'text-red-600' %>">
+                  <%= user.isEmailVerified ? 'Yes' : 'No' %>
+                </span>
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="text-sm text-gray-600">Featured</span>
+                <span class="text-sm font-medium <%= user.isFeatured ? 'text-yellow-600' : 'text-gray-400' %>">
+                  <%= user.isFeatured ? 'Yes' : 'No' %>
+                </span>
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="text-sm text-gray-600">Pending Requests</span>
+                <span class="text-sm font-medium text-orange-600"><%= pendingRequests.length %></span>
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="text-sm text-gray-600">Accepted Requests</span>
+                <span class="text-sm font-medium text-green-600"><%= acceptedRequests.length %></span>
+              </div>
+              <% if (user.registeredAt || user.createdAt) { %>
+              <div class="flex items-center justify-between">
+                <span class="text-sm text-gray-600">Joined</span>
+                <span class="text-sm text-gray-900"><%= new Date(user.registeredAt || user.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) %></span>
+              </div>
+              <% } %>
+            </div>
+          </div>
+
+          <% if (isAdmin) { %>
+          <div class="sidebar-section material-shadow">
+            <h3 class="font-semibold text-gray-900 mb-4">Quick Actions</h3>
+            <div class="space-y-2">
+              <button id="toggleFeatureBtn" class="w-full px-4 py-2 <%= user.isFeatured ? 'bg-gray-100 text-gray-700 hover:bg-gray-200' : 'bg-yellow-50 text-yellow-700 hover:bg-yellow-100' %> transition-all duration-300 rounded-lg text-sm font-medium flex items-center justify-center gap-2">
+                <i class="ri-star-<%= user.isFeatured ? 'line' : 'fill' %>"></i>
+                <%= user.isFeatured ? 'Remove from Featured' : 'Feature Profile' %>
+              </button>
+              <button id="resetPasswordBtn" class="w-full px-4 py-2 bg-blue-50 text-blue-700 hover:bg-blue-100 transition-all duration-300 rounded-lg text-sm font-medium flex items-center justify-center gap-2">
+                <i class="ri-lock-password-line"></i>
+                Reset Password
+              </button>
+              <button id="deleteAccountBtn" class="w-full px-4 py-2.5 bg-red-500 text-white hover:bg-red-600 transition-all duration-300 rounded-lg text-sm font-medium flex items-center justify-center gap-2">
+                <i class="ri-delete-bin-line"></i>
+                Delete Account
+              </button>
+              <% if (user.approvalStatus !== 'rejected') { %>
+              <button id="rejectProfileBtn" class="w-full px-4 py-2 bg-orange-500 text-white hover:bg-orange-600 transition-all duration-300 rounded-lg text-sm font-medium flex items-center justify-center gap-2" data-user-id="<%= user._id %>">
+                <i class="ri-close-circle-line"></i>
+                Reject Profile
+              </button>
+              <% } %>
+              <% if (user.contact) { %>
+              <a href="https://wa.me/<%= user.contact %>" target="_blank" class="w-full px-4 py-2 bg-green-50 text-green-700 hover:bg-green-100 transition-all duration-300 rounded-lg text-sm font-medium flex items-center justify-center gap-2">
+                <i class="ri-whatsapp-line"></i>
+                Send WhatsApp Message
+              </a>
+              <% } %>
+            </div>
+          </div>
+          <% } %>
+            </div> 
+
+        <!-- Main Content Area -->
+       <div class="space-y-6 min-w-0">
+          <!-- Tab Navigation -->
+          <div class="bg-white rounded-xl p-2 material-shadow">
+            <div class="flex flex-wrap gap-2">
+              <button class="tab-btn tab-active flex-1 py-2.5 px-4 text-center transition-all duration-300 rounded-lg whitespace-nowrap" data-tab="basic">
+                <i class="ri-user-line mr-2"></i>Basic Info
+              </button>
+              <button class="tab-btn flex-1 py-2.5 px-4 text-gray-500 hover:text-primary transition-all duration-300 rounded-lg whitespace-nowrap" data-tab="contact">
+                <i class="ri-contacts-line mr-2"></i>Contact & Location
+              </button>
+              <button class="tab-btn flex-1 py-2.5 px-4 text-gray-500 hover:text-primary transition-all duration-300 rounded-lg whitespace-nowrap" data-tab="appearance">
+                <i class="ri-user-heart-line mr-2"></i>Physical Appearance
+              </button>
+              <button class="tab-btn flex-1 py-2.5 px-4 text-gray-500 hover:text-primary transition-all duration-300 rounded-lg whitespace-nowrap" data-tab="religion">
+                <i class="ri-moon-line mr-2"></i>Religion & Faith
+              </button>
+              <button class="tab-btn flex-1 py-2.5 px-4 text-gray-500 hover:text-primary transition-all duration-300 rounded-lg whitespace-nowrap" data-tab="family">
+                <i class="ri-group-line mr-2"></i>Family & Background
+              </button>
+              <button class="tab-btn flex-1 py-2.5 px-4 text-gray-500 hover:text-primary transition-all duration-300 rounded-lg whitespace-nowrap" data-tab="preferences">
+                <i class="ri-heart-line mr-2"></i>Partner Preferences
+              </button>
+              <button class="tab-btn flex-1 py-2.5 px-4 text-gray-500 hover:text-primary transition-all duration-300 rounded-lg whitespace-nowrap" data-tab="requests">
+                <i class="ri-mail-line mr-2"></i>Requests (<%= userRequests.length %>)
+              </button>
+            </div>
+          </div>
+
+          <!-- ==================== 1. Basic Info Tab ==================== -->
+          <div id="basic-tab" class="tab-content">
+            <div class="bg-white rounded-xl material-shadow section-card">
+              <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+                <h3 class="font-semibold text-gray-900 flex items-center gap-2">
+                  <i class="ri-user-3-line text-primary"></i>
+                  Basic Information
+                </h3>
+                <% if (isAdmin) { %>
+                <button class="edit-section-btn text-primary hover:text-pink-600 text-sm font-medium" data-section="basic">
+                  <i class="ri-edit-line mr-1"></i>Edit
+                </button>
+                <% } %>
+              </div>
+              <div class="p-6" id="basic-section">
+                <div class="info-row">
+                  <span class="info-label">Username</span>
+                  <span class="info-value"><%= user.username %></span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label">Email</span>
+                  <span class="info-value" data-field="email" data-readonly="true">
+                    <%= user.email || '-' %>
+                    <% if (user.isEmailVerified) { %>
+                    <i class="ri-verified-badge-fill text-green-500 ml-1" title="Verified"></i>
+                    <% } %>
+                  </span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label">Full Name</span>
+                  <span class="info-value" data-field="name"><%= user.name || '-' %></span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label">Age</span>
+                  <span class="info-value" data-field="age"><%= user.age || '-' %></span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label">Gender</span>
+                  <span class="info-value"><%= user.gender || '-' %></span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label">Marital Status</span>
+                  <span class="info-value" data-field="maritalStatus"><%= user.maritalStatus || '-' %></span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label">Profession/Work</span>
+                  <span class="info-value" data-field="work"><%= user.work || '-' %></span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label">About Me</span>
+                  <span class="info-value" data-field="aboutMe"><%= user.aboutMe || '-' %></span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label">Hobbies</span>
+                  <span class="info-value" data-field="hobbies"><%= user.hobbies && user.hobbies.length ? user.hobbies.join(', ') : '-' %></span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ==================== 2. Contact & Location Tab ==================== -->
+          <div id="contact-tab" class="tab-content hidden">
+            <div class="bg-white rounded-xl material-shadow section-card">
+              <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+                <h3 class="font-semibold text-gray-900 flex items-center gap-2">
+                  <i class="ri-contacts-line text-primary"></i>
+                  Contact & Location Information
+                </h3>
+                <% if (isAdmin) { %>
+                <button class="edit-section-btn text-primary hover:text-pink-600 text-sm font-medium" data-section="contact">
+                  <i class="ri-edit-line mr-1"></i>Edit
+                </button>
+                <% } %>
+              </div>
+              <div class="p-6" id="contact-section">
+                <div class="info-row">
+                  <span class="info-label">Contact Number</span>
+                  <span class="info-value" data-field="contact"><%= user.contact || '-' %></span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label">Wali Contact Details</span>
+                  <span class="info-value" data-field="waliMyContactDetails"><%= user.waliMyContactDetails || '-' %></span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label">Address</span>
+                  <span class="info-value" data-field="adress"><%= user.adress || '-' %></span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label">City</span>
+                  <span class="info-value" data-field="city"><%= user.city || '-' %></span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label">State/Province</span>
+                  <span class="info-value" data-field="state"><%= user.state || '-' %></span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label">Country</span>
+                  <span class="info-value" data-field="country"><%= user.country || '-' %></span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label">Nationality</span>
+                  <span class="info-value" data-field="nationality"><%= user.nationality || '-' %></span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label">Birth Place</span>
+                  <span class="info-value" data-field="birthPlace"><%= user.birthPlace || '-' %></span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label">Willing to Relocate</span>
+                  <span class="info-value" data-field="willingToRelocate"><%= user.willingToRelocate || '-' %></span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label">Languages Spoken</span>
+                  <span class="info-value" data-field="languagesSpoken"><%= user.languagesSpoken && user.languagesSpoken.length ? user.languagesSpoken.join(', ') : '-' %></span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ==================== 3. Physical Appearance Tab ==================== -->
+          <div id="appearance-tab" class="tab-content hidden">
+            <div class="bg-white rounded-xl material-shadow section-card">
+              <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+                <h3 class="font-semibold text-gray-900 flex items-center gap-2">
+                  <i class="ri-user-heart-line text-primary"></i>
+                  Physical Appearance
+                </h3>
+                <% if (isAdmin) { %>
+                <button class="edit-section-btn text-primary hover:text-pink-600 text-sm font-medium" data-section="appearance">
+                  <i class="ri-edit-line mr-1"></i>Edit
+                </button>
+                <% } %>
+              </div>
+              <div class="p-6" id="appearance-section">
+                <div class="info-row">
+                  <span class="info-label">Height</span>
+                  <span class="info-value" data-field="height"><%= user.height ? user.height + ' cm' : '-' %></span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label">Build</span>
+                  <span class="info-value" data-field="build"><%= user.build || '-' %></span>
+                </div>
+                <% if (user.gender === 'female') { %>
+                <div class="info-row">
+                  <span class="info-label">Wears Hijab</span>
+                  <span class="info-value" data-field="wearHijab"><%= user.wearHijab || '-' %></span>
+                </div>
+                <% } else { %>
+                <div class="info-row">
+                  <span class="info-label">Beard</span>
+                  <span class="info-value" data-field="beard"><%= user.beard || '-' %></span>
+                </div>
+                <% } %>
+                <div class="info-row">
+                  <span class="info-label">Eye Color</span>
+                  <span class="info-value" data-field="eyeColor"><%= user.eyeColor || '-' %></span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label">Hair Color</span>
+                  <span class="info-value" data-field="hairColor"><%= user.hairColor || '-' %></span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label">Complexion</span>
+                  <span class="info-value" data-field="complexion"><%= user.complexion || '-' %></span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label">Ethnicity</span>
+                  <span class="info-value" data-field="ethnicity"><%= user.ethnicity || '-' %></span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label">Disability</span>
+                  <span class="info-value" data-field="disability"><%= user.disability || 'no' %></span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label">Smoker</span>
+                  <span class="info-value" data-field="smoker"><%= user.smoker === true ? 'Yes' : user.smoker === false ? 'No' : '-' %></span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ==================== 4. Religion & Faith Tab ==================== -->
+          <div id="religion-tab" class="tab-content hidden">
+            <div class="bg-white rounded-xl material-shadow section-card">
+              <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+                <h3 class="font-semibold text-gray-900 flex items-center gap-2">
+                  <i class="ri-moon-line text-primary"></i>
+                  Religion & Faith
+                </h3>
+                <% if (isAdmin) { %>
+                <button class="edit-section-btn text-primary hover:text-pink-600 text-sm font-medium" data-section="religion">
+                  <i class="ri-edit-line mr-1"></i>Edit
+                </button>
+                <% } %>
+              </div>
+              <div class="p-6" id="religion-section">
+                <div class="info-row">
+                  <span class="info-label">Religion</span>
+                  <span class="info-value" data-field="religion"><%= user.religion || '-' %></span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label">Caste</span>
+                  <span class="info-value" data-field="caste"><%= user.caste || '-' %></span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label">Islamic Sect</span>
+                  <span class="info-value" data-field="islamicSect"><%= user.islamicSect || '-' %></span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label">Born Muslim</span>
+                  <span class="info-value" data-field="bornMuslim"><%= user.bornMuslim === true ? 'Yes' : user.bornMuslim === false ? 'No' : '-' %></span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label">Prays Regularly</span>
+                  <span class="info-value" data-field="prays"><%= user.prays === true ? 'Yes' : user.prays === false ? 'No' : '-' %></span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label">Celebrates Milaad</span>
+                  <span class="info-value" data-field="celebratesMilaad"><%= user.celebratesMilaad === true ? 'Yes' : user.celebratesMilaad === false ? 'No' : '-' %></span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label">Celebrates Khatams</span>
+                  <span class="info-value" data-field="celebrateKhatams"><%= user.celebrateKhatams === true ? 'Yes' : user.celebrateKhatams === false ? 'No' : '-' %></span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label">How Important is Islam to You</span>
+                  <span class="info-value" data-field="islamIsImportantToMeInfo"><%= user.islamIsImportantToMeInfo || '-' %></span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ==================== 5. Family & Background Tab ==================== -->
+          <div id="family-tab" class="tab-content hidden">
+            <div class="bg-white rounded-xl material-shadow section-card">
+              <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+                <h3 class="font-semibold text-gray-900 flex items-center gap-2">
+                  <i class="ri-group-line text-primary"></i>
+                  Family & Background
+                </h3>
+                <% if (isAdmin) { %>
+                <button class="edit-section-btn text-primary hover:text-pink-600 text-sm font-medium" data-section="family">
+                  <i class="ri-edit-line mr-1"></i>Edit
+                </button>
+                <% } %>
+              </div>
+              <div class="p-6" id="family-section">
+                <div class="info-row">
+                  <span class="info-label">Father's Name</span>
+                  <span class="info-value" data-field="fatherName"><%= user.fatherName || '-' %></span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label">Mother's Name</span>
+                  <span class="info-value" data-field="motherName"><%= user.motherName || '-' %></span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label">Father's Profession</span>
+                  <span class="info-value" data-field="fatherProfession"><%= user.fatherProfession || '-' %></span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label">Number of Siblings</span>
+                  <span class="info-value" data-field="siblings"><%= user.siblings !== undefined ? user.siblings : '-' %></span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label">Living Arrangements After Marriage</span>
+                  <span class="info-value" data-field="livingArrangementsAfterMarriage"><%= user.livingArrangementsAfterMarriage || '-' %></span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label">Future Plans</span>
+                  <span class="info-value" data-field="futurePlans"><%= user.futurePlans || '-' %></span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label">Who Completed Profile</span>
+                  <span class="info-value" data-field="whoCompletedProfile"><%= user.whoCompletedProfile || '-' %></span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label">Highest Education</span>
+                  <span class="info-value" data-field="highestEducation"><%= user.highestEducation || '-' %></span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label">Education</span>
+                  <span class="info-value" data-field="education" data-readonly="true">
+                    <% if (user.education && user.education.length > 0) { %>
+                      <% user.education.forEach(edu => { %>
+                      <div class="mb-2">
+                        <strong><%= edu.title %></strong>
+                        <% if (edu.institute) { %> - <%= edu.institute %><% } %>
+                        <% if (edu.year) { %> (<%= edu.year %>)<% } %>
+                      </div>
+                      <% }) %>
+                    <% } else { %>-<% } %>
+                  </span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label">Children</span>
+                  <span class="info-value" data-field="children" data-readonly="true">
+                    <% if (user.children && user.children.length > 0) { %>
+                      <% user.children.forEach(child => { %>
+                      <div class="mb-2">
+                        <strong><%= child.name %></strong> - Age: <%= child.age %>
+                        <% if (child.livingLocation) { %>, Lives in: <%= child.livingLocation %><% } %>
+                      </div>
+                      <% }) %>
+                    <% } else { %>-<% } %>
+                  </span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label">Describe Your Nature</span>
+                  <span class="info-value" data-field="describeNature"><%= user.describeNature || '-' %></span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label">Qualities You Can Bring to Marriage</span>
+                  <span class="info-value" data-field="QualitiesThatYouCanBringToYourMarriage"><%= user.QualitiesThatYouCanBringToYourMarriage && user.QualitiesThatYouCanBringToYourMarriage.length ? user.QualitiesThatYouCanBringToYourMarriage.join(', ') : '-' %></span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label">Any Special Information</span>
+                  <span class="info-value" data-field="anySpecialInformationPeopleShouldKnow"><%= user.anySpecialInformationPeopleShouldKnow || '-' %></span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ==================== 6. Partner Preferences Tab ==================== -->
+          <div id="preferences-tab" class="tab-content hidden">
+            <div class="bg-white rounded-xl material-shadow section-card">
+              <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+                <h3 class="font-semibold text-gray-900 flex items-center gap-2">
+                  <i class="ri-heart-line text-primary"></i>
+                  Partner Preferences
+                </h3>
+                <% if (isAdmin) { %>
+                <button class="edit-section-btn text-primary hover:text-pink-600 text-sm font-medium" data-section="preferences">
+                  <i class="ri-edit-line mr-1"></i>Edit
+                </button>
+                <% } %>
+              </div>
+              <div class="p-6" id="preferences-section">
+                <div class="info-row">
+                  <span class="info-label">Preferred Age Range</span>
+                  <span class="info-value" data-field="preferredAgeRange"><%= user.preferredAgeRange || '-' %></span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label">Preferred Height Range</span>
+                  <span class="info-value" data-field="preferredHeightRange"><%= user.preferredHeightRange || '-' %></span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label">Preferred Caste</span>
+                  <span class="info-value" data-field="preferredCaste"><%= user.preferredCaste || '-' %></span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label">Preferred Ethnicity</span>
+                  <span class="info-value" data-field="preferredEthnicity"><%= user.preferredEthnicity || '-' %></span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label">Allow Partner to Work</span>
+                  <span class="info-value" data-field="allowParnterToWork"><%= user.allowParnterToWork === true ? 'Yes' : user.allowParnterToWork === false ? 'No' : '-' %></span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label">Allow Partner to Study</span>
+                  <span class="info-value" data-field="allowPartnerToStudy"><%= user.allowPartnerToStudy === true ? 'Yes' : user.allowPartnerToStudy === false ? 'No' : '-' %></span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label">Accept Someone with Children</span>
+                  <span class="info-value" data-field="acceptSomeoneWithChildren"><%= user.acceptSomeoneWithChildren === true ? 'Yes' : user.acceptSomeoneWithChildren === false ? 'No' : '-' %></span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label">Accept a Divorced Person</span>
+                  <span class="info-value" data-field="acceptADivorcedPerson"><%= user.acceptADivorcedPerson === true ? 'Yes' : user.acceptADivorcedPerson === false ? 'No' : '-' %></span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label">Accept a Widow</span>
+                  <span class="info-value" data-field="acceptAWidow"><%= user.acceptAWidow === true ? 'Yes' : user.acceptAWidow === false ? 'No' : '-' %></span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label">Agrees with Polygamy</span>
+                  <span class="info-value" data-field="agreesWithPolygamy"><%= user.agreesWithPolygamy === true ? 'Yes' : user.agreesWithPolygamy === false ? 'No' : '-' %></span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label">Accept Someone with Beard</span>
+                  <span class="info-value" data-field="AcceptSomeoneWithBeard"><%= user.AcceptSomeoneWithBeard === true ? 'Yes' : user.AcceptSomeoneWithBeard === false ? 'No' : '-' %></span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label">Accept Someone with Hijab</span>
+                  <span class="info-value" data-field="AcceptSomeoneWithHijab"><%= user.AcceptSomeoneWithHijab === true ? 'Yes' : user.AcceptSomeoneWithHijab === false ? 'No' : '-' %></span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label">Consider a Revert</span>
+                  <span class="info-value" data-field="ConsiderARevert"><%= user.ConsiderARevert === true ? 'Yes' : user.ConsiderARevert === false ? 'No' : '-' %></span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label">Accept Someone in Other Country</span>
+                  <span class="info-value" data-field="acceptSomeoneInOtherCountry"><%= user.acceptSomeoneInOtherCountry || '-' %></span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label">Willing to Share Photos Upon Request</span>
+                  <span class="info-value" data-field="willingToSharePhotosUponRequest"><%= user.willingToSharePhotosUponRequest || '-' %></span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label">Willing to Meet Up Outside</span>
+                  <span class="info-value" data-field="willingToMeetUpOutside"><%= user.willingToMeetUpOutside || '-' %></span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label">Willing to Consider a Non-UK Citizen</span>
+                  <span class="info-value" data-field="willingToConsiderANonUkCitizen"><%= user.willingToConsiderANonUkCitizen || '-' %></span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label">Looking for a Spouse That Is</span>
+                  <span class="info-value" data-field="lookingForASpouseThatIs"><%= user.lookingForASpouseThatIs || '-' %></span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label">Qualities You Need in Your Partner</span>
+                  <span class="info-value" data-field="qualitiesYouNeedInYourPartner"><%= user.qualitiesYouNeedInYourPartner && user.qualitiesYouNeedInYourPartner.length ? user.qualitiesYouNeedInYourPartner.join(', ') : '-' %></span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ==================== Requests Tab ==================== -->
+          <div id="requests-tab" class="tab-content hidden">
+            <!-- Pending Requests -->
+            <div class="bg-white rounded-xl material-shadow section-card mb-6">
+              <div class="px-6 py-4 border-b border-gray-100">
+                <h3 class="font-semibold text-gray-900 flex items-center gap-2">
+                  <i class="ri-time-line text-orange-500"></i>
+                  Pending Requests (<%= pendingRequests.length %>)
+                </h3>
+              </div>
+              <div class="p-6">
+                <% if (pendingRequests.length > 0) { %>
+                <div class="space-y-4">
+                  <% pendingRequests.forEach(request => { %>
+                  <div class="request-card flex items-center justify-between p-4 bg-orange-50 rounded-lg border border-orange-100">
+                    <div class="flex items-center gap-4">
+                      <div class="w-12 h-12 rounded-full bg-orange-200 flex items-center justify-center">
+                        <i class="ri-user-line text-orange-600"></i>
+                      </div>
+                      <div>
+                        <% if (request.from._id.toString() === user._id.toString()) { %>
+                        <p class="font-medium text-gray-900">Sent to: <%= request.to.name || request.to.username %></p>
+                        <p class="text-sm text-gray-500">@<%= request.to.username %></p>
+                        <% } else { %>
+                        <p class="font-medium text-gray-900">From: <%= request.from.name || request.from.username %></p>
+                        <p class="text-sm text-gray-500">@<%= request.from.username %></p>
+                        <% } %>
+                        <p class="text-xs text-gray-400 mt-1">
+                          <% if (request.createdAt) { %>
+                          <%= new Date(request.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) %>
+                          <% } %>
+                        </p>
+                      </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                      <span class="px-3 py-1 status-pending text-xs rounded-full font-medium">Pending</span>
+                      <button class="request-action-btn px-3 py-1.5 bg-green-500 text-white hover:bg-green-600 rounded text-xs font-medium" data-request-id="<%= request._id %>" data-action="accepted">
+                        Accept
+                      </button>
+                      <button class="request-action-btn px-3 py-1.5 bg-red-500 text-white hover:bg-red-600 rounded text-xs font-medium" data-request-id="<%= request._id %>" data-action="rejected">
+                        Reject
+                      </button>
+                    </div>
+                  </div>
+                  <% }) %>
+                </div>
+                <% } else { %>
+                <div class="text-center py-8 text-gray-500">
+                  <i class="ri-inbox-line text-4xl mb-2 text-gray-300"></i>
+                  <p>No pending requests</p>
+                </div>
+                <% } %>
+              </div>
+            </div>
+
+            <!-- Accepted Requests -->
+            <div class="bg-white rounded-xl material-shadow section-card mb-6">
+              <div class="px-6 py-4 border-b border-gray-100">
+                <h3 class="font-semibold text-gray-900 flex items-center gap-2">
+                  <i class="ri-check-double-line text-green-500"></i>
+                  Accepted Requests (<%= acceptedRequests.length %>)
+                </h3>
+              </div>
+              <div class="p-6">
+                <% if (acceptedRequests.length > 0) { %>
+                <div class="space-y-4">
+                  <% acceptedRequests.forEach(request => { %>
+                  <% if (request.from && request.to) { %>
+                  <div class="request-card flex items-center justify-between p-4 bg-green-50 rounded-lg border border-green-100">
+                    <div class="flex items-center gap-4">
+                      <div class="w-12 h-12 rounded-full bg-green-200 flex items-center justify-center">
+                        <i class="ri-user-heart-line text-green-600"></i>
+                      </div>
+                      <div>
+                        <% if (request.from._id.toString() === user._id.toString()) { %>
+                        <p class="font-medium text-gray-900">Connected with: <%= request.to.name || request.to.username %></p>
+                        <p class="text-sm text-gray-500">@<%= request.to.username %></p>
+                        <% } else { %>
+                        <p class="font-medium text-gray-900">Connected with: <%= request.from.name || request.from.username %></p>
+                        <p class="text-sm text-gray-500">@<%= request.from.username %></p>
+                        <% } %>
+                      </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                      <span class="px-3 py-1 status-accepted text-xs rounded-full font-medium">Accepted</span>
+                      <button class="request-action-btn px-3 py-1.5 bg-gray-500 text-white hover:bg-gray-600 rounded text-xs font-medium" data-request-id="<%= request._id %>" data-action="revoke">
+                        Revoke
+                      </button>
+                    </div>
+                  </div>
+                  <% } %>
+                  <% }) %>
+                </div>
+                <% } else { %>
+                <div class="text-center py-8 text-gray-500">
+                  <i class="ri-user-unfollow-line text-4xl mb-2 text-gray-300"></i>
+                  <p>No accepted requests</p>
+                </div>
+                <% } %>
+              </div>
+            </div>
+
+            <!-- All Requests History -->
+            <div class="bg-white rounded-xl material-shadow section-card">
+              <div class="px-6 py-4 border-b border-gray-100">
+                <h3 class="font-semibold text-gray-900 flex items-center gap-2">
+                  <i class="ri-history-line text-gray-500"></i>
+                  All Request History (<%= userRequests.length %>)
+                </h3>
+              </div>
+              <div class="p-6">
+                <% if (userRequests.length > 0) { %>
+                <div class="overflow-x-auto">
+                  <table class="w-full text-sm">
+                    <thead class="bg-gray-50">
+                      <tr>
+                        <th class="px-4 py-2 text-left text-xs font-semibold text-gray-600">Direction</th>
+                        <th class="px-4 py-2 text-left text-xs font-semibold text-gray-600">User</th>
+                        <th class="px-4 py-2 text-left text-xs font-semibold text-gray-600">Status</th>
+                        <th class="px-4 py-2 text-left text-xs font-semibold text-gray-600">Date</th>
+                      </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100">
+                      <% userRequests.forEach(request => { %>
+                      <% if (request.from && request.to) { %>
+                      <tr>
+                        <td class="px-4 py-3">
+                          <% if (request.from._id.toString() === user._id.toString()) { %>
+                          <span class="text-blue-600"><i class="ri-arrow-right-line mr-1"></i>Sent</span>
+                          <% } else { %>
+                          <span class="text-green-600"><i class="ri-arrow-left-line mr-1"></i>Received</span>
+                          <% } %>
+                        </td>
+                        <td class="px-4 py-3">
+                          <% if (request.from._id.toString() === user._id.toString()) { %>
+                          <%= request.to.name || request.to.username %>
+                          <% } else { %>
+                          <%= request.from.name || request.from.username %>
+                          <% } %>
+                        </td>
+                        <td class="px-4 py-3">
+                          <span class="px-2 py-1 text-xs rounded-full font-medium status-<%= request.status %>">
+                            <%= request.status.charAt(0).toUpperCase() + request.status.slice(1) %>
+                          </span>
+                        </td>
+                        <td class="px-4 py-3 text-gray-500">
+                          <% if (request.createdAt) { %>
+                          <%= new Date(request.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) %>
+                          <% } else { %>-<% } %>
+                        </td>
+                      </tr>
+                      <% } %>
+                      <% }) %>
+                    </tbody>
+                  </table>
+                </div>
+                <% } else { %>
+                <div class="text-center py-8 text-gray-500">
+                  <i class="ri-mail-line text-4xl mb-2 text-gray-300"></i>
+                  <p>No request history</p>
+                </div>
+                <% } %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Reset Password Modal -->
+  <div id="resetPasswordModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+    <div class="bg-white rounded-2xl p-8 max-w-md mx-4 material-shadow-elevated">
+      <div class="text-center mb-6">
+        <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+          <i class="ri-lock-password-line text-3xl text-blue-500"></i>
+        </div>
+        <h3 class="text-2xl font-bold text-gray-900 mb-2">Reset Password</h3>
+        <p class="text-gray-600">Enter a new password for this user.</p>
+      </div>
+      <div class="space-y-4 mb-6">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">New Password</label>
+          <input type="password" id="newPasswordInput" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Enter new password">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Confirm Password</label>
+          <input type="password" id="confirmPasswordInput" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Confirm new password">
+        </div>
+      </div>
+      <div class="flex gap-3">
+        <button id="cancelResetBtn" class="flex-1 px-6 py-3 border-2 border-gray-300 text-gray-700 hover:bg-gray-50 transition-all duration-300 rounded-lg font-medium">
+          Cancel
+        </button>
+        <button id="confirmResetBtn" class="flex-1 px-6 py-3 bg-blue-500 text-white hover:bg-blue-600 transition-all duration-300 rounded-lg font-medium">
+          Reset Password
+        </button>
+      </div>
+    </div>
+  </div>
+    <!-- Delete Account Modal -->
+  <div id="deleteAccountModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+    <div class="bg-white rounded-2xl p-8 max-w-md mx-4 material-shadow-elevated">
+      <div class="text-center mb-6">
+        <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+          <i class="ri-delete-bin-line text-3xl text-red-500"></i>
+        </div>
+        <h3 class="text-2xl font-bold text-gray-900 mb-2">Delete Account</h3>
+        <p class="text-gray-600">This will permanently delete the account. A copy of all user data will be saved in the archive for admin reference.</p>
+      </div>
+      <div class="bg-gray-50 rounded-lg p-4 mb-6">
+        <div class="flex items-center">
+          <div class="flex-shrink-0">
+            <i class="ri-information-line text-blue-500 text-xl"></i>
+          </div>
+          <div class="ml-3">
+            <p class="text-sm text-gray-700">
+              <span class="font-semibold" id="deleteModalUserName"></span>
+              <br>
+              <span class="text-gray-500" id="deleteModalUserUsername"></span>
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="mb-6">
+        <label class="text-sm font-medium text-gray-700 mb-2 block">Reason for deletion (optional):</label>
+        <textarea id="deleteReasonInput" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 text-gray-900 placeholder-gray-400 resize-vertical" placeholder="User requested account deletion..." rows="3"></textarea>
+      </div>
+      <div class="flex gap-3">
+        <button id="cancelDeleteAccountBtn" class="flex-1 px-6 py-3 border-2 border-gray-300 text-gray-700 hover:bg-gray-50 transition-all duration-300 rounded-lg font-medium">
+          Cancel
+        </button>
+        <button id="confirmDeleteAccountBtn" class="flex-1 px-6 py-3 bg-red-500 text-white hover:bg-red-600 transition-all duration-300 rounded-lg font-medium">
+          <span id="deleteButtonText">Delete Account</span>
+          <i id="deleteLoadingIcon" class="ri-loader-4-line animate-spin ml-2 hidden"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const userId = '<%= user._id %>';
+      
+      // Tab functionality
+      const tabBtns = document.querySelectorAll('.tab-btn');
+      const tabContents = document.querySelectorAll('.tab-content');
+      
+      tabBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+          const tabId = this.getAttribute('data-tab');
+          
+          tabBtns.forEach(b => {
+            b.classList.remove('tab-active');
+            b.classList.add('text-gray-500');
+          });
+          this.classList.add('tab-active');
+          this.classList.remove('text-gray-500');
+          
+          tabContents.forEach(content => {
+            content.classList.add('hidden');
+          });
+          document.getElementById(`${tabId}-tab`).classList.remove('hidden');
+        });
+      });
+
+      // Reset password functionality
+      const resetPasswordBtn = document.getElementById('resetPasswordBtn');
+      const resetPasswordModal = document.getElementById('resetPasswordModal');
+      const cancelResetBtn = document.getElementById('cancelResetBtn');
+      const confirmResetBtn = document.getElementById('confirmResetBtn');
+      const newPasswordInput = document.getElementById('newPasswordInput');
+      const confirmPasswordInput = document.getElementById('confirmPasswordInput');
+
+      if (resetPasswordBtn) {
+        resetPasswordBtn.addEventListener('click', () => {
+          resetPasswordModal.classList.remove('hidden');
+          newPasswordInput.value = '';
+          confirmPasswordInput.value = '';
+        });
+
+        cancelResetBtn.addEventListener('click', () => {
+          resetPasswordModal.classList.add('hidden');
+        });
+
+        confirmResetBtn.addEventListener('click', async function() {
+          const newPassword = newPasswordInput.value;
+          const confirmPassword = confirmPasswordInput.value;
+
+          if (!newPassword || newPassword.length < 6) {
+            showNotification('Error', 'Password must be at least 6 characters', 'error');
+            return;
+          }
+
+          if (newPassword !== confirmPassword) {
+            showNotification('Error', 'Passwords do not match', 'error');
+            return;
+          }
+
+          this.disabled = true;
+          this.innerHTML = '<i class="ri-loader-4-line animate-spin mr-2"></i>Resetting...';
+
+          try {
+            const response = await fetch('/admin/user/reset-password', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ userId, newPassword })
+            });
+
+            const data = await response.json();
+            if (data.success) {
+              showNotification('Success', 'Password reset successfully', 'success');
+              resetPasswordModal.classList.add('hidden');
+            } else {
+              showNotification('Error', data.error || 'Failed to reset password', 'error');
+            }
+          } catch (error) {
+            showNotification('Error', 'An error occurred', 'error');
+          } finally {
+            this.disabled = false;
+            this.innerHTML = 'Reset Password';
+          }
+        });
+
+        resetPasswordModal.addEventListener('click', function(e) {
+          if (e.target === this) this.classList.add('hidden');
+        });
+      }
+            // Delete account functionality
+      const deleteAccountBtn = document.getElementById('deleteAccountBtn');
+      const deleteAccountModal = document.getElementById('deleteAccountModal');
+      const cancelDeleteAccountBtn = document.getElementById('cancelDeleteAccountBtn');
+      const confirmDeleteAccountBtn = document.getElementById('confirmDeleteAccountBtn');
+      const deleteReasonInput = document.getElementById('deleteReasonInput');
+      const deleteModalUserName = document.getElementById('deleteModalUserName');
+      const deleteModalUserUsername = document.getElementById('deleteModalUserUsername');
+      const deleteButtonText = document.getElementById('deleteButtonText');
+      const deleteLoadingIcon = document.getElementById('deleteLoadingIcon');
+
+      if (deleteAccountBtn) {
+        deleteAccountBtn.addEventListener('click', () => {
+          deleteModalUserName.textContent = '<%= user.name || user.username %>';
+          deleteModalUserUsername.textContent = '@<%= user.username %>';
+          deleteReasonInput.value = '';
+          deleteAccountModal.classList.remove('hidden');
+        });
+
+        cancelDeleteAccountBtn.addEventListener('click', () => {
+          deleteAccountModal.classList.add('hidden');
+        });
+
+        confirmDeleteAccountBtn.addEventListener('click', async function() {
+          this.disabled = true;
+          deleteButtonText.textContent = 'Deleting...';
+          deleteLoadingIcon.classList.remove('hidden');
+
+          try {
+            const response = await fetch(`/api/admin/user/${userId}/delete`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                reason: deleteReasonInput.value.trim() || 'Admin deleted account'
+              })
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+              showNotification('Account Deleted', 'The account has been deleted and archived successfully.', 'success');
+              setTimeout(() => {
+                window.location.href = '/admin/deletedaccounts';
+              }, 1500);
+            } else {
+              throw new Error(result.error || 'Failed to delete account');
+            }
+          } catch (error) {
+            console.error('Deletion error:', error);
+            showNotification('Deletion Failed', error.message, 'error');
+            this.disabled = false;
+            deleteButtonText.textContent = 'Delete Account';
+            deleteLoadingIcon.classList.add('hidden');
+          }
+        });
+
+        deleteAccountModal.addEventListener('click', function(e) {
+          if (e.target === this) this.classList.add('hidden');
+        });
+      }
+
+      // Feature toggle
+      const toggleFeatureBtn = document.getElementById('toggleFeatureBtn');
+
+      // Reject profile functionality
+      const rejectProfileBtn = document.getElementById('rejectProfileBtn');
+      if (rejectProfileBtn) {
+        rejectProfileBtn.addEventListener('click', async function() {
+          const uid = this.getAttribute('data-user-id');
+          const reason = prompt('Please provide a reason for rejecting this profile (optional):');
+          if (reason === null) return;
+
+          this.disabled = true;
+          this.innerHTML = '<i class="ri-loader-4-line animate-spin"></i> Rejecting...';
+
+          try {
+            const response = await fetch('/api/admin/user/' + uid + '/reject', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ reason: reason || '' })
+            });
+            const data = await response.json();
+            if (data.success) {
+              showNotification('Profile Rejected', 'The profile has been rejected.', 'success');
+              setTimeout(() => location.reload(), 1000);
+            } else {
+              showNotification('Rejection Failed', data.error || 'Failed to reject profile.', 'error');
+              this.disabled = false;
+              this.innerHTML = '<i class="ri-close-circle-line"></i> Reject Profile';
+            }
+          } catch (error) {
+            console.error('Reject error:', error);
+            showNotification('Rejection Failed', 'An error occurred.', 'error');
+            this.disabled = false;
+            this.innerHTML = '<i class="ri-close-circle-line"></i> Reject Profile';
+          }
+        });
+      }
+
+      if (toggleFeatureBtn) {
+        toggleFeatureBtn.addEventListener('click', async function() {
+          const isFeatured = '<%= user.isFeatured %>' === 'true';
+          const action = isFeatured ? 'unfeature' : 'feature';
+
+          this.disabled = true;
+          this.innerHTML = '<i class="ri-loader-4-line animate-spin mr-2"></i>Updating...';
+
+          try {
+            const response = await fetch(`/admin/user/${userId}/feature`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ action })
+            });
+
+            const data = await response.json();
+            if (data.success) {
+              showNotification('Success', `Profile ${action}d successfully`, 'success');
+              setTimeout(() => location.reload(), 1000);
+            } else {
+              showNotification('Error', data.error || 'Failed to update', 'error');
+              this.disabled = false;
+              this.innerHTML = isFeatured ? 
+                '<i class="ri-star-line mr-2"></i>Remove from Featured' : 
+                '<i class="ri-star-fill mr-2"></i>Feature Profile';
+            }
+          } catch (error) {
+            showNotification('Error', 'An error occurred', 'error');
+            this.disabled = false;
+            this.innerHTML = isFeatured ? 
+              '<i class="ri-star-line mr-2"></i>Remove from Featured' : 
+              '<i class="ri-star-fill mr-2"></i>Feature Profile';
+          }
+        });
+      }
+
+      // Request actions (accept, reject, revoke)
+      const requestActionBtns = document.querySelectorAll('.request-action-btn');
+      requestActionBtns.forEach(btn => {
+        btn.addEventListener('click', async function() {
+          const requestId = this.getAttribute('data-request-id');
+          const action = this.getAttribute('data-action');
+          
+          // Create user-friendly action name for confirmation
+          const actionName = action === 'accepted' ? 'accept' : action === 'rejected' ? 'reject' : action;
+          
+          if (!confirm(`Are you sure you want to ${actionName} this request?`)) return;
+
+          this.disabled = true;
+          const originalText = this.textContent;
+          this.innerHTML = '<i class="ri-loader-4-line animate-spin"></i>';
+
+          try {
+            const response = await fetch(`/admin/requests/${requestId}/respond`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ action })
+            });
+
+            const data = await response.json();
+            if (data.success) {
+              const actionMsg = action === 'accepted' ? 'accepted' : action === 'rejected' ? 'rejected' : action === 'revoke' ? 'revoked' : action;
+              showNotification('Success', `Request ${actionMsg} successfully`, 'success');
+              setTimeout(() => location.reload(), 1000);
+            } else {
+              showNotification('Error', data.error || `Failed to ${actionName} request`, 'error');
+              this.disabled = false;
+              this.textContent = originalText;
+            }
+          } catch (error) {
+            showNotification('Error', 'An error occurred', 'error');
+            this.disabled = false;
+            this.textContent = originalText;
+          }
+        });
+      });
+
+      // Edit section functionality
+      const editSectionBtns = document.querySelectorAll('.edit-section-btn');
+      const saveAllBtn = document.getElementById('saveAllBtn');
+      let pendingChanges = {};
+      let isEditMode = false;
+
+      editSectionBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+          const sectionId = this.getAttribute('data-section');
+          const section = document.getElementById(`${sectionId}-section`);
+          
+          if (!section) return;
+
+          const isEditing = this.textContent.includes('Cancel');
+          
+          if (isEditing) {
+            // Cancel editing - restore original values
+            const infoValues = section.querySelectorAll('.info-value[data-field]');
+            infoValues.forEach(el => {
+              const field = el.getAttribute('data-field');
+              const originalValue = el.getAttribute('data-original') || '-';
+              el.innerHTML = originalValue;
+              delete pendingChanges[field];
+            });
+            this.innerHTML = '<i class="ri-edit-line mr-1"></i>Edit';
+          } else {
+            // Start editing
+          const infoValues = section.querySelectorAll('.info-value[data-field]:not([data-readonly="true"])');
+            infoValues.forEach(el => {
+              const field = el.getAttribute('data-field');
+              const currentValue = el.textContent.trim();
+              el.setAttribute('data-original', currentValue);
+              
+              // Define field types
+              const booleanFields = [
+                'smoker', 'bornMuslim', 'prays', 'celebratesMilaad', 'celebrateKhatams',
+                'allowParnterToWork', 'allowPartnerToStudy', 'acceptSomeoneWithChildren',
+                'acceptADivorcedPerson', 'agreesWithPolygamy', 'acceptAWidow',
+                'AcceptSomeoneWithBeard', 'AcceptSomeoneWithHijab', 'ConsiderARevert'
+              ];
+              
+              const enumFields = {
+                maritalStatus: ['', 'nevermarried', 'divorced', 'widowed', 'annulled'],
+                build: ['', 'slim', 'average', 'athletic', 'heavy', 'N/A'],
+                eyeColor: ['', 'black', 'brown', 'grey', 'other', 'N/A'],
+                hairColor: ['', 'black', 'brown', 'blonde', 'N/A'],
+                complexion: ['', 'fair', 'wheatish', 'dark', 'N/A'],
+                ethnicity: ['', 'bangladeshi', 'pakistani', 'indian', 'british', 'other', 'N/A'],
+                wearHijab: ['', 'yes', 'no'],
+                beard: ['', 'no', 'short', 'medium', 'long', 'N/A'],
+                highestEducation: ['', 'High School', "Bachelor's Degree", "Master's Degree", 'Doctorate / PhD', 'Diploma', 'Professional Degree', 'Islamic Studies', 'Hafiz-e-Quran', 'Other']
+              };
+              
+              const textareaFields = ['aboutMe', 'futurePlans', 'islamIsImportantToMeInfo', 'describeNature', 'livingArrangementsAfterMarriage', 'anySpecialInformationPeopleShouldKnow', 'lookingForASpouseThatIs'];
+              
+              // Height select options (value in cm)
+              const heightOptions = [
+                {v:'',l:'-- Select --'},{v:'122',l:"4'0\" - 122cm"},{v:'124',l:"4'1\" - 124cm"},{v:'127',l:"4'2\" - 127cm"},{v:'130',l:"4'3\" - 130cm"},
+                {v:'132',l:"4'4\" - 132cm"},{v:'135',l:"4'5\" - 135cm"},{v:'137',l:"4'6\" - 137cm"},{v:'140',l:"4'7\" - 140cm"},
+                {v:'142',l:"4'8\" - 142cm"},{v:'145',l:"4'9\" - 145cm"},{v:'147',l:"4'10\" - 147cm"},{v:'150',l:"4'11\" - 150cm"},
+                {v:'152',l:"5'0\" - 152cm"},{v:'155',l:"5'1\" - 155cm"},{v:'157',l:"5'2\" - 157cm"},{v:'160',l:"5'3\" - 160cm"},
+                {v:'163',l:"5'4\" - 163cm"},{v:'165',l:"5'5\" - 165cm"},{v:'168',l:"5'6\" - 168cm"},{v:'170',l:"5'7\" - 170cm"},
+                {v:'173',l:"5'8\" - 173cm"},{v:'175',l:"5'9\" - 175cm"},{v:'178',l:"5'10\" - 178cm"},{v:'180',l:"5'11\" - 180cm"},
+                {v:'183',l:"6'0\" - 183cm"},{v:'185',l:"6'1\" - 185cm"},{v:'188',l:"6'2\" - 188cm"},{v:'191',l:"6'3\" - 191cm"},
+                {v:'193',l:"6'4\" - 193cm"},{v:'196',l:"6'5\" - 196cm"},{v:'198',l:"6'6\" - 198cm"},{v:'201',l:"6'7\" - 201cm"},
+                {v:'203',l:"6'8\" - 203cm"},{v:'206',l:"6'9\" - 206cm"},{v:'208',l:"6'10\" - 208cm"},{v:'211',l:"6'11\" - 211cm"},
+                {v:'213',l:"7'0\" - 213cm"},{v:'216',l:"7'1\" - 216cm"},{v:'218',l:"7'2\" - 218cm"},{v:'221',l:"7'3\" - 221cm"},
+                {v:'224',l:"7'4\" - 224cm"},{v:'226',l:"7'5\" - 226cm"},{v:'229',l:"7'6\" - 229cm"},{v:'231',l:"7'7\" - 231cm"},
+                {v:'234',l:"7'8\" - 234cm"},{v:'236',l:"7'9\" - 236cm"},{v:'239',l:"7'10\" - 239cm"},{v:'241',l:"7'11\" - 241cm"},
+                {v:'244',l:"8'0\" - 244cm"}
+              ];
+
+              // Create input based on field type
+              let inputHtml = '';
+              
+              if (booleanFields.includes(field)) {
+                // Boolean fields - use Yes/No/Not Set select
+                const currentBoolValue = currentValue === 'Yes' ? 'true' : currentValue === 'No' ? 'false' : '';
+                inputHtml = `
+                  <select class="edit-input" data-field="${field}">
+                    <option value="" ${currentBoolValue === '' ? 'selected' : ''}>-- Not Set --</option>
+                    <option value="true" ${currentBoolValue === 'true' ? 'selected' : ''}>Yes</option>
+                    <option value="false" ${currentBoolValue === 'false' ? 'selected' : ''}>No</option>
+                  </select>`;
+              } else if (enumFields[field]) {
+                // Enum fields - use dropdown with predefined options
+                const options = enumFields[field];
+                const currentEnumValue = currentValue === '-' ? '' : currentValue.toLowerCase();
+                inputHtml = `<select class="edit-input" data-field="${field}">`;
+                options.forEach(opt => {
+                  const displayText = opt === '' ? '-- Select --' : opt.charAt(0).toUpperCase() + opt.slice(1);
+                  const isSelected = opt.toLowerCase() === currentEnumValue ? 'selected' : '';
+                  inputHtml += `<option value="${opt}" ${isSelected}>${displayText}</option>`;
+                });
+                inputHtml += `</select>`;
+              } else if (textareaFields.includes(field)) {
+                // Textarea fields
+                inputHtml = `<textarea class="edit-textarea" data-field="${field}">${currentValue === '-' ? '' : currentValue}</textarea>`;
+              } else if (field === 'height') {
+                // Height select dropdown
+                const currentHeightValue = currentValue.replace(' cm', '').trim();
+                inputHtml = `<select class="edit-input" data-field="height">`;
+                heightOptions.forEach(opt => {
+                  const isSelected = opt.v === currentHeightValue ? 'selected' : '';
+                  inputHtml += `<option value="${opt.v}" ${isSelected}>${opt.l}</option>`;
+                });
+                inputHtml += `</select>`;
+              } else {
+                // Regular text input
+                inputHtml = `<input type="text" class="edit-input" data-field="${field}" value="${currentValue === '-' ? '' : currentValue}">`;
+              }
+              el.innerHTML = inputHtml;
+            });
+            this.innerHTML = '<i class="ri-close-line mr-1"></i>Cancel';
+          }
+
+          updateSaveButtonVisibility();
+        });
+      });
+
+      // Track changes in inputs
+      document.addEventListener('input', function(e) {
+        if (e.target.classList.contains('edit-input') || e.target.classList.contains('edit-textarea')) {
+          const field = e.target.getAttribute('data-field');
+          const value = e.target.value;
+          pendingChanges[field] = value;
+          updateSaveButtonVisibility();
+        }
+      });
+      document.addEventListener('change', function(e) {
+        if (e.target.tagName === 'SELECT' && e.target.classList.contains('edit-input')) {
+          const field = e.target.getAttribute('data-field');
+          const value = e.target.value;
+          pendingChanges[field] = value;
+          updateSaveButtonVisibility();
+        }
+      });
+
+      function updateSaveButtonVisibility() {
+        const hasChanges = Object.keys(pendingChanges).length > 0;
+        const hasEditingFields = document.querySelectorAll('.edit-input, .edit-textarea').length > 0;
+        
+        if (hasEditingFields) {
+          saveAllBtn.classList.remove('hidden');
+        } else {
+          saveAllBtn.classList.add('hidden');
+        }
+      }
+
+      // Save all changes
+      if(saveAllBtn)
+      {
+      saveAllBtn.addEventListener('click', async function() {
+        if (Object.keys(pendingChanges).length === 0) {
+          showNotification('Info', 'No changes to save', 'info');
+          return;
+        }
+
+        this.disabled = true;
+        this.innerHTML = '<i class="ri-loader-4-line animate-spin mr-2"></i>Saving...';
+
+        try {
+          const response = await fetch('/admin/user/update', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ userId, ...pendingChanges })
+          });
+
+          const data = await response.json();
+          if (data.success) {
+            showNotification('Success', 'Profile updated successfully', 'success');
+            setTimeout(() => location.reload(), 1000);
+          } else {
+            showNotification('Error', data.error || 'Failed to save changes', 'error');
+            this.disabled = false;
+            this.innerHTML = '<i class="ri-save-line mr-2"></i>Save All Changes';
+          }
+        } catch (error) {
+          showNotification('Error', 'An error occurred while saving', 'error');
+          this.disabled = false;
+          this.innerHTML = '<i class="ri-save-line mr-2"></i>Save All Changes';
+        }
+      });
+    }
+
+      // Notification function
+      function showNotification(title, message, type = 'info') {
+        const notification = document.createElement('div');
+        const bgColor = type === 'success' ? 'bg-green-500' : type === 'info' ? 'bg-blue-500' : 'bg-red-500';
+        const icon = type === 'success' ? 'ri-checkbox-circle-line' : type === 'info' ? 'ri-information-line' : 'ri-error-warning-line';
+
+        notification.className = `fixed bottom-4 right-4 ${bgColor} text-white rounded-xl p-4 material-shadow-elevated flex items-center gap-3 transform translate-y-0 opacity-100 transition-all duration-300 z-50`;
+        notification.innerHTML = `
+          <i class="${icon} text-xl"></i>
+          <div>
+            <p class="font-medium">${title}</p>
+            <p class="text-sm opacity-90">${message}</p>
+          </div>
+        `;
+
+        document.body.appendChild(notification);
+
+        setTimeout(() => {
+          notification.style.transform = 'translateY(100%)';
+          notification.style.opacity = '0';
+          setTimeout(() => notification.remove(), 300);
+        }, 3000);
+      }
+
+      // Escape key to close modals
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+          if (resetPasswordModal) resetPasswordModal.classList.add('hidden');
+          if (deleteAccountModal) deleteAccountModal.classList.add('hidden');
+        }
+      });
+    });
+  </script>
+</body>
+
+</html>

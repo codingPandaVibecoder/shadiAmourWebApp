@@ -5,10 +5,21 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <%
-  let pageTitle = "Muslim Matrimony UK | Islamic Wedding & Nikkah Partners | Halal Marriage Site";
-  let metaDescription = "Find your perfect Muslim matrimony partner for Islamic wedding and Nikkah ceremony. Browse verified Muslim couples, Pakistani marriage profiles in London, Manchester. UK's leading halal marriage site.";
+  let pageTitle = globalSeoSettings && globalSeoSettings.profilesPageMetaTitle ? globalSeoSettings.profilesPageMetaTitle : "Muslim Matrimony UK | Browse 500+ Verified Profiles | D'amour";
+  let metaDescription = globalSeoSettings && globalSeoSettings.profilesPageMetaDescription ? globalSeoSettings.profilesPageMetaDescription : "Find your perfect Muslim matrimony partner for Islamic wedding and Nikkah ceremony. Browse verified Muslim couples, Pakistani marriage profiles in London, Manchester. UK's leading halal marriage site.";
   let keywords = "Muslim matrimony, Islamic wedding, Nikkah wedding ceremony, Pakistani marriage, Shaadi London, Nikkah London, halal marriage site UK, Pakistani couple, Muslim couple, Sunni Muslim marriage, Muslim marriage services, Islam love marriage, Muslim matrimonial, Muslim marriage Manchester, Pakistani wedding London";
   
+  // Determine if this is a filtered/paginated view (non-indexable)
+  const hasNonGenderFilters = filters && (filters.minAge || filters.maxAge || filters.minHeight || filters.maxHeight || filters.city || filters.country || filters.nationality);
+  const isDeepPagination = page > 1;
+  const shouldNoIndexPage = hasNonGenderFilters || isDeepPagination;
+
+  // Build canonical URL: only gender filter is canonical-worthy
+  let canonicalUrl = "https://shadiamour.com/profiles";
+  if (filters && filters.gender && !hasNonGenderFilters && !isDeepPagination) {
+    canonicalUrl = "https://shadiamour.com/profiles?gender=" + encodeURIComponent(filters.gender);
+  }
+
   if (filters && filters.gender === 'male') {
     pageTitle = "Muslim Men for Matrimony | Islamic Wedding Grooms | Nikkah Partners UK";
     metaDescription = "Discover Muslim men seeking Islamic wedding and Nikkah ceremony. Browse Pakistani marriage profiles of single Muslim men in London, Manchester for halal matrimony.";
@@ -19,12 +30,15 @@
     keywords = "Muslim women matrimony, Islamic wedding brides, Nikkah ceremony women, Pakistani marriage women, Muslim couple women, Sunni Muslim women marriage, halal marriage women UK, Shaadi London women, Muslim matrimonial women";
   }
 %>
-  <title><%= pageTitle %> | shadiAmour</title>
+  <title><%= pageTitle %> | shadiamour</title>
 
   <!-- SEO Meta Tags -->
   <meta name="description" content="<%= metaDescription %>">
   <meta name="keywords" content="<%= keywords %>">
-  <link rel="canonical" href="https://www.shadiamour.com/profiles">
+  <% if (shouldNoIndexPage) { %>
+  <meta name="robots" content="noindex, follow">
+  <% } %>
+  <link rel="canonical" href="<%= canonicalUrl %>">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
@@ -34,23 +48,66 @@
 
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://www.shadiamour.com/profiles">
-  <meta property="og:title" content="<%= pageTitle %> | shadiAmour">
+  <meta property="og:url" content="https://shadiamour.com/profiles">
+  <meta property="og:title" content="<%= pageTitle %> | shadiamour">
   <meta property="og:description" content="<%= metaDescription %>">
-  <meta property="og:image" content="https://www.shadiamour.com/images/og-image-profiles.jpg">
+  <meta property="og:image" content="https://shadiamour.com/images/og-image-profiles.jpg">
 
   <!-- Twitter -->
   <meta property="twitter:card" content="summary_large_image">
-  <meta property="twitter:url" content="https://www.shadiamour.com/profiles">
-  <meta property="twitter:title" content="<%= pageTitle %> | shadiAmour">
+  <meta property="twitter:url" content="https://shadiamour.com/profiles">
+  <meta property="twitter:title" content="<%= pageTitle %> | shadiamour">
   <meta property="twitter:description" content="<%= metaDescription %>">
-  <meta property="twitter:image" content="https://www.shadiamour.com/images/og-image-profiles.jpg">
+  <meta property="twitter:image" content="https://shadiamour.com/images/og-image-profiles.jpg">
+
+  <link rel="preconnect" href="https://res.cloudinary.com" crossorigin>
+
+  <!-- FAQ Schema for profiles page (GEO) -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How do I find a Muslim spouse on shadiamour?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Browse verified Muslim profiles by gender, age, location, and ethnicity using the filters on this page. Create a free account to view full profiles and express interest. All profiles are manually verified by our team to ensure authenticity."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Are the Muslim marriage profiles on shadiamour verified?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, every profile on shadiamour is manually reviewed and verified by our matchmaking team before it becomes visible. We check for authenticity, completeness, and genuine intent for halal marriage. Fake profiles and time wasters are rejected."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the safest matrimony site for Muslim women in the UK?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "shadiamour is designed with women's safety as a priority. Your phone number is never shared without explicit consent, profiles are verified before approval, and all communication can be managed through our team. We are GDPR-compliant and built exclusively for serious halal marriage — not casual dating."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I search Muslim profiles by city in the UK?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. You can filter profiles by city including London, Birmingham, Manchester, Bradford, Leeds, Leicester, Sheffield, and more. We also have dedicated city hub pages for the most popular Muslim marriage locations in the UK."
+          }
+        }
+      ]
+    }
+  </script>
 
   <link rel="stylesheet" href="/css/output.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Playfair+Display:wght@400;600;700&family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css"></noscript>
   <style>
     :where([class^="ri-"])::before {
       content: "\f3c2";
@@ -157,6 +214,41 @@
       background: none;
       animation: none;
     }
+    /* Mobile profile card adjustments */
+@media (max-width: 640px) {
+  /* Reduce padding on mobile */
+  #profileGrid .p-4 {
+    padding: 0.75rem;
+  }
+  
+  /* Smaller text on mobile */
+  #profileGrid h3 {
+    font-size: 0.875rem;
+  }
+  
+  #profileGrid .text-gray-600 {
+    font-size: 0.75rem;
+  }
+  
+  /* Adjust icon sizes */
+  #profileGrid i {
+    font-size: 0.875rem;
+  }
+}
+/* Prevent horizontal overflow */
+body {
+  overflow-x: hidden;
+}
+
+html {
+  overflow-x: hidden;
+}
+
+/* Ensure pagination stays within viewport */
+.pagination-container {
+  max-width: 100%;
+  overflow-x: auto;
+}
   </style>
   <!-- **ENHANCED**: Structured Data for SEO -->
   <script type="application/ld+json">
@@ -165,26 +257,26 @@
       "@type": "WebPage",
       "name": "<%= pageTitle %>",
       "description": "<%= metaDescription %>",
-      "url": "https://www.shadiamour.com/profiles",
+      "url": "https://shadiamour.com/profiles",
       "mainEntity": {
         "@type": "ItemList",
-        "name": "Muslim Matrimony Profiles for Halal Marriage UK",
-        "description": "Browse verified Muslim singles for halal Muslim matchmaking, Islamic wedding, modern Nikkah ceremony, and young Muslim marriage across London, Manchester, Birmingham & Leicester",
+        "name": "Muslim Matrimony Profiles",
+        "description": "Browse verified Muslim singles for Islamic wedding, Nikkah ceremony, and Pakistani marriage across the UK",
         "numberOfItems": "<%= totalProfiles %>",
         "itemListElement": [{
             "@type": "Service",
-            "name": "Halal Muslim Matchmaking UK",
-            "description": "Connect Muslim singles for halal marriage and Islamic wedding through our trusted Muslim matrimonial platform"
+            "name": "Islamic Wedding Matching",
+            "description": "Connect Muslim singles for Islamic wedding and Nikkah ceremony"
           },
           {
             "@type": "Service",
-            "name": "Young Muslim Marriage Services",
-            "description": "Specialized Muslim dating app halal for young Muslim singles seeking modern Nikkah and Muslim relationships"
+            "name": "Pakistani Marriage Service",
+            "description": "Specialized Pakistani marriage and matrimony services"
           },
           {
             "@type": "Service",
-            "name": "Online Muslim Matchmaking Platform",
-            "description": "UK's leading Muslim shaadi app for single Muslim marriage, Muslim soulmate connections and halal dating"
+            "name": "Halal Marriage Site UK",
+            "description": "UK's leading halal marriage platform for Muslim couples"
           }
         ]
       },
@@ -193,25 +285,21 @@
         "itemListElement": [{
             "@type": "ListItem",
             "position": 1,
-            "name": "Muslim Marriage Home",
-            "item": "https://www.shadiamour.com"
+            "name": "Home",
+            "item": "https://shadiamour.com"
           },
           {
             "@type": "ListItem",
             "position": 2,
             "name": "Muslim Matrimony Profiles",
-            "item": "https://www.shadiamour.com/profiles"
+            "item": "https://shadiamour.com/profiles"
           }
         ]
       },
       "provider": {
         "@type": "Organization",
-        "name": "ShadiAmour",
-        "description": "UK's leading halal Muslim matchmaking platform for young Muslim marriage and Islamic wedding connections"
-      },
-      "audience": {
-        "@type": "Audience",
-        "audienceType": "Muslim Singles seeking halal marriage, Islamic wedding, and modern Nikkah ceremony"
+        "name": "shadiamour",
+        "description": "UK's leading Muslim matrimony and Islamic wedding service"
       }
     }
   </script>
@@ -224,7 +312,7 @@
       "description": "Professional Muslim matrimony service for Islamic wedding, Nikkah ceremony, and Pakistani marriage across the UK",
       "provider": {
         "@type": "Organization",
-        "name": "shadiAmour"
+        "name": "shadiamour"
       },
       "serviceType": [
         "Muslim Matrimony",
@@ -247,26 +335,42 @@
       }
     }
   </script>
+  <%- include('partials/clarity') %>
+  <%- include('partials/thirdparty') %>
+  <%- include('partials/analytics') %>
 </head>
-<% if (isProd && !isAdmin) { %>
-<!-- Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=<%= GA_ID %>"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-
-  function gtag() {
-    dataLayer.push(arguments);
-  }
-  gtag('js', new Date());
-  gtag('config', '<%= GA_ID %>');
-</script>
-<% } %>
-
 
 <body class="bg-gray-50 font-['Roboto']">
   <%- include('partials/header') %>
   <main class="pt-24 pb-16 min-h-screen">
-    <div class="max-w-7xl mx-auto px-6">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6">
+      <!-- Pending Approval Notice for Current User -->
+      <% if (currentUserProfile && !currentUserProfile.isApproved) { %>
+      <div class="mb-6 bg-amber-50 border border-amber-200 rounded-xl p-4 sm:p-5">
+        <div class="flex flex-col sm:flex-row sm:items-start gap-3 sm:gap-4">
+          <div class="flex-shrink-0 self-center sm:self-start">
+            
+          </div>
+          <div class="flex-1 text-center sm:text-left">
+            <h3 class="text-base sm:text-lg font-semibold text-amber-800 mb-1 sm:mb-2">Your Profile is Pending Approval</h3>
+            <p class="text-sm sm:text-base text-amber-700 mb-3">
+              Your profile is currently only visible to yourself. Once our team reviews and approves your profile, other users will be able to see it and connect with you.
+            </p>
+            <div class="bg-white rounded-lg p-3 sm:p-4 border border-amber-200">
+              <p class="text-xs sm:text-sm text-gray-700 mb-2">
+                <i class="ri-lightbulb-line text-amber-500 mr-1"></i>
+                <strong>Tip:</strong> Complete as many fields as possible to increase your chances of approval!
+              </p>
+              <a href="/account/info" data-track="true" data-event-name="complete_profile_from_profiles" data-category="engagement" data-label="Complete Your Profile" class="inline-flex items-center gap-2 text-primary hover:text-pink-600 font-medium text-sm transition-colors">
+                <i class="ri-edit-line"></i>
+                Complete Your Profile
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <% } %>
+
       <div class="flex gap-8">
         <!-- Filter Sidebar -->
         <div class="w-80 flex-shrink-0 hidden lg:block">
@@ -331,21 +435,13 @@
           <!-- Grid Controls -->
           <div class="flex justify-between items-center mb-8">
             <!-- Mobile Filter Button -->
-            <button id="mobileFilterBtn" class="lg:hidden px-4 py-2 bg-primary text-white rounded-button hover:bg-pink-600 hover:shadow-md transition-all duration-300">
+            <button id="mobileFilterBtn" data-track="true" data-event-name="mobile_filter_open" data-category="engagement" data-label="Open Filters" class="lg:hidden px-4 py-2 bg-primary text-white rounded-button hover:bg-pink-600 hover:shadow-md transition-all duration-300">
               <i class="ri-filter-line mr-2"></i>Filters
             </button>
 
             <!-- Results Count and Active Filters - RESPONSIVE VERSION -->
             <div class="flex-1 min-w-0">
               <% if (totalProfiles > 0) { %>
-              <div class="mb-3">
-                <span class=" ml-3 text-gray-600">
-                  Showing <%= totalProfiles %> <%= totalProfiles === 1 ? 'profile' : 'profiles' %>
-                  <% if (filters && Object.values(filters).some(f => f)) { %>
-                  filtered
-                  <% } %>
-                </span>
-              </div>
 
               <!-- Active Filters Display - MOBILE OPTIMIZED -->
               <% if (filters && Object.values(filters).some(f => f)) { %>
@@ -504,7 +600,7 @@
             </p>
 
             <!-- Featured Profiles Grid -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-8">
               <% featuredProfiles.forEach(profile => { %>
               <div class="bg-white rounded-2xl overflow-hidden material-shadow hover:material-shadow-hover transition-all duration-300 group relative">
                 <!-- Featured Badge -->
@@ -518,7 +614,7 @@
                 <!-- Profile Image -->
                 <div class="aspect-[4/5] overflow-hidden relative">
                   <% if (profile.profilePic && profile.profilePic.url) { %>
-                  <img src="<%= profile.profilePic.url.replace('/upload/', '/upload/c_fill,w_300,h_400,q_auto,f_auto/') %>" alt="<%= profile.name || profile.username %> - Muslim matrimony profile for Islamic wedding and Nikkah ceremony" class="w-full h-full object-cover transition-transform duration-300 hover:scale-105" loading="lazy" onload="this.classList.add('loaded')" onerror="this.src='https://ui-avatars.com/api/?name=<%= encodeURIComponent(profile.name || profile.username) %>&background=<%= profile.gender === 'male' ? '0077be' : 'e91e63' %>&color=fff&size=300&format=png'">
+                  <img src="<%= profile.profilePic.url.replace('/upload/', '/upload/c_fill,w_300,h_400,q_auto,f_auto/') %>" srcset="<%= profile.profilePic.url.replace('/upload/', '/upload/c_fill,w_200,h_267,q_auto,f_auto/') %> 200w, <%= profile.profilePic.url.replace('/upload/', '/upload/c_fill,w_300,h_400,q_auto,f_auto/') %> 300w, <%= profile.profilePic.url.replace('/upload/', '/upload/c_fill,w_400,h_533,q_auto,f_auto/') %> 400w" sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 300px" alt="<%= profile.name || profile.username %><%= profile.age ? ', ' + profile.age + ' year old' : '' %><%= profile.work ? ' ' + profile.work : '' %> - Muslim matrimony profile<%= profile.city ? ' in ' + profile.city : '' %>" class="w-full h-full object-cover transition-transform duration-300 hover:scale-105" loading="lazy" width="300" height="400" onerror="this.src='https://ui-avatars.com/api/?name=<%= encodeURIComponent(profile.name || profile.username) %>&background=<%= profile.gender === 'male' ? '0077be' : 'e91e63' %>&color=fff&size=300&format=png'">
                   <% } else { %>
                   <!-- Default avatar based on gender -->
                   <img src="https://ui-avatars.com/api/?name=<%= encodeURIComponent(profile.name || profile.username) %>&background=<%= profile.gender === 'male' ? '0077be' : 'e91e63' %>&color=fff&size=300&format=png" alt="<%= profile.name || profile.username %>" class="w-full h-full object-cover" loading="lazy">
@@ -555,7 +651,7 @@
                   </div>
 
                   <!-- View Profile Button -->
-                  <a href="/profiles/<%= profile.profileSlug || profile._id %>" class="w-full bg-gradient-to-r from-primary to-secondary text-white py-2 px-4 rounded-button hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300 text-center inline-block font-medium">
+                  <a href="/profiles/<%= profile.profileSlug || profile._id %>" data-track="true" data-event-name="featured_profile_click" data-category="engagement" data-label="<%= profile.username %>" class="w-full bg-gradient-to-r from-primary to-secondary text-white py-2 px-4 rounded-button hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300 text-center inline-block font-medium">
                     <i class="ri-eye-line mr-2"></i>
                     View Profile
                   </a>
@@ -599,17 +695,56 @@
             </div>
           </div>
           <!-- Profiles Grid -->
-          <div id="profileGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <div id="profileGrid" class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
+            <!-- Show user's own profile card if not approved -->
+            <% if (currentUserProfile && !currentUserProfile.isApproved) { %>
+            <a href="/profiles/<%= currentUserProfile.profileSlug || currentUserProfile._id %>" data-track="true" data-event-name="own_profile_view" data-category="engagement" data-label="Your Pending Profile" class="bg-white rounded-2xl overflow-hidden material-shadow hover:material-shadow-hover transition-all duration-300 block relative border-2 border-amber-300">
+              <div class="absolute top-2 left-2 z-10 bg-amber-500 text-white px-2 py-1 rounded-full text-xs font-medium flex items-center gap-1">
+                <i class="ri-eye-off-line"></i>
+                Your Profile (Pending)
+              </div>
+              <div class="aspect-[4/5] overflow-hidden">
+                <% if (currentUserProfile.profilePic && currentUserProfile.profilePic.url) { %>
+                <img src="<%= currentUserProfile.profilePic.url.replace('/upload/', '/upload/c_fill,w_300,h_400,q_auto,f_auto/') %>" alt="<%= currentUserProfile.name || currentUserProfile.username %>" class="w-full h-full object-cover transition-transform duration-300 hover:scale-105" loading="lazy" onload="this.classList.add('loaded')">
+                <% } else { %>
+                <img src="https://ui-avatars.com/api/?name=<%= encodeURIComponent(currentUserProfile.name || currentUserProfile.username) %>&background=<%= currentUserProfile.gender === 'male' ? '0077be' : 'e91e63' %>&color=fff&size=300&format=png" alt="<%= currentUserProfile.name || currentUserProfile.username %>" class="w-full h-full object-cover" loading="lazy">
+                <% } %>
+              </div>
+              <div class="p-4">
+                <h3 class="text-lg font-semibold text-gray-900 mb-1">
+                  <%= currentUserProfile.username %>
+                </h3>
+                <div class="flex items-center text-gray-600 mb-2">
+                  <i class="ri-map-pin-line mr-2"></i>
+                  <span>
+                    <% if (currentUserProfile.city && currentUserProfile.country) { %>
+                    <%= currentUserProfile.city %>, <%= currentUserProfile.country %>
+                    <% } else if (currentUserProfile.city) { %>
+                    <%= currentUserProfile.city %>
+                    <% } else if (currentUserProfile.country) { %>
+                    <%= currentUserProfile.country %>
+                    <% } else { %>
+                    Location not specified
+                    <% } %>
+                  </span>
+                </div>
+                <% if (currentUserProfile.age) { %>
+                <div class="flex items-center text-gray-600 mb-2">
+                  <i class="ri-calendar-line mr-2"></i>
+                  <span><%= currentUserProfile.age %> years old</span>
+                </div>
+                <% } %>
+              </div>
+            </a>
+            <% } %>
+            
             <% if (profiles && profiles.length > 0) { %>
             <% profiles.forEach(profile => { %>
-            <a href="/profiles/<%= profile.profileSlug || profile._id %>" class="bg-white rounded-2xl overflow-hidden material-shadow hover:material-shadow-hover transition-all duration-300 block">
+            <a href="/profiles/<%= profile.profileSlug || profile._id %>" data-track="true" data-event-name="profile_card_click" data-category="engagement" data-label="<%= profile.username %>" class="bg-white rounded-2xl overflow-hidden material-shadow hover:material-shadow-hover transition-all duration-300 block">
               <div class="aspect-[4/5] overflow-hidden">
-                <% if (profile.profilePic && profile.profilePic.url) { %>
-                <img src="<%= profile.profilePic.url.replace('/upload/', '/upload/c_fill,w_300,h_400,q_auto,f_auto/') %>" alt="<%= profile.name || profile.username %> - Pakistani marriage profile for Muslim matrimony UK" class="w-full h-full object-cover transition-transform duration-300 hover:scale-105" loading="lazy" onload="this.classList.add('loaded')" onerror="this.src='https://ui-avatars.com/api/?name=<%= encodeURIComponent(profile.name || profile.username) %>&background=<%= profile.gender === 'male' ? '0077be' : 'e91e63' %>&color=fff&size=300&format=png'">
-                <% } else { %>
                 <!-- Default placeholder based on gender -->
-                <img src="https://ui-avatars.com/api/?name=<%= encodeURIComponent(profile.name || profile.username) %>&background=<%= profile.gender === 'male' ? '0077be' : 'e91e63' %>&color=fff&size=300&format=png" alt="<%= profile.name || profile.username %>" class="w-full h-full object-cover" loading="lazy">
-                <% } %>
+                <img src="https://ui-avatars.com/api/?name=<%= encodeURIComponent(profile.name || profile.username) %>&background=<%= profile.gender === 'male' ? '0077be' : 'e91e63' %>&color=fff&size=300&format=png" alt="<%= profile.name || profile.username %><%= profile.age ? ', ' + profile.age + ' year old' : '' %><%= profile.work ? ' ' + profile.work : '' %> - Muslim marriage profile<%= profile.city ? ' in ' + profile.city : '' %>" class="w-full h-full object-cover" loading="lazy" width="300" height="300">
+                
               </div>
               <div class="p-4">
                 <h3 class="text-lg font-semibold text-gray-900 mb-1">
@@ -666,22 +801,22 @@
 
           <!-- Pagination -->
           <% if (profiles && profiles.length > 0 && totalPages > 1) { %>
-          <div class="flex justify-center items-center gap-4 mt-12">
+          <div class="flex justify-center items-center gap-2 sm:gap-4 mt-12 overflow-x-auto pb-2">
             <% if (page > 1) { %>
-            <a href="/profiles?page=<%= page - 1 %><% if (filters) { %><% Object.keys(filters).forEach(key => { if (filters[key]) { %>&<%= key %>=<%= encodeURIComponent(filters[key]) %><% } }) %><% } %><% if (sortBy && sortBy !== 'newly-created') { %>&sortBy=<%= sortBy %><% } %>" class="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-button text-gray-600 hover:border-primary hover:text-primary transition-all duration-300">
+            <a href="/profiles?page=<%= page - 1 %><% if (filters) { %><% Object.keys(filters).forEach(key => { if (filters[key]) { %>&<%= key %>=<%= encodeURIComponent(filters[key]) %><% } }) %><% } %><% if (sortBy && sortBy !== 'newly-created') { %>&sortBy=<%= sortBy %><% } %>" data-track="true" data-event-name="pagination_prev" data-category="engagement" data-label="Previous Page" class="flex items-center gap-1 sm:gap-2 px-2 sm:px-4 py-2 border border-gray-300 rounded-button text-gray-600 hover:border-primary hover:text-primary transition-all duration-300 whitespace-nowrap flex-shrink-0">
               <i class="ri-arrow-left-line"></i>
-              <span>Previous</span>
+              <span class="sm:hidden">Prev</span>
             </a>
             <% } %>
 
-            <div class="flex items-center gap-2">
+            <div class="flex items-center gap-1 sm:gap-2 flex-shrink-0">
               <% for (let i = Math.max(1, page - 2); i <= Math.min(totalPages, page + 2); i++) { %>
               <% if (i === page) { %>
               <span class="w-10 h-10 flex items-center justify-center bg-primary text-white rounded-button">
                 <%= i %>
               </span>
               <% } else { %>
-              <a href="/profiles?page=<%= i %><% if (filters) { %><% Object.keys(filters).forEach(key => { if (filters[key]) { %>&<%= key %>=<%= encodeURIComponent(filters[key]) %><% } }) %><% } %><% if (sortBy && sortBy !== 'newly-created') { %>&sortBy=<%= sortBy %><% } %>" class="w-10 h-10 flex items-center justify-center border border-gray-300 rounded-button text-gray-600 hover:border-primary hover:text-primary transition-all duration-300">
+              <a href="/profiles?page=<%= i %><% if (filters) { %><% Object.keys(filters).forEach(key => { if (filters[key]) { %>&<%= key %>=<%= encodeURIComponent(filters[key]) %><% } }) %><% } %><% if (sortBy && sortBy !== 'newly-created') { %>&sortBy=<%= sortBy %><% } %>" data-track="true" data-event-name="pagination_page" data-category="engagement" data-label="Page <%= i %>" class="w-10 h-10 flex items-center justify-center border border-gray-300 rounded-button text-gray-600 hover:border-primary hover:text-primary transition-all duration-300">
                 <%= i %>
               </a>
               <% } %>
@@ -689,15 +824,12 @@
             </div>
 
             <% if (page < totalPages) { %>
-            <a href="/profiles?page=<%= page + 1 %><% if (filters) { %><% Object.keys(filters).forEach(key => { if (filters[key]) { %>&<%= key %>=<%= encodeURIComponent(filters[key]) %><% } }) %><% } %><% if (sortBy && sortBy !== 'newly-created') { %>&sortBy=<%= sortBy %><% } %>" class="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-button text-gray-600 hover:border-primary hover:text-primary transition-all duration-300">
-              <span>Next</span>
+            <a href="/profiles?page=<%= page + 1 %><% if (filters) { %><% Object.keys(filters).forEach(key => { if (filters[key]) { %>&<%= key %>=<%= encodeURIComponent(filters[key]) %><% } }) %><% } %><% if (sortBy && sortBy !== 'newly-created') { %>&sortBy=<%= sortBy %><% } %>" data-track="true" data-event-name="pagination_next" data-category="engagement" data-label="Next Page" class="flex items-center gap-1 sm:gap-2 px-2 sm:px-4 py-2 border border-gray-300 rounded-button text-gray-600 hover:border-primary hover:text-primary transition-all duration-300 whitespace-nowrap flex-shrink-0">
+              <span class="hidden sm:inline">Next</span>
+              <span class="sm:hidden">Next</span>
               <i class="ri-arrow-right-line"></i>
             </a>
             <% } %>
-          </div>
-
-          <div class="text-center text-gray-500 text-sm mt-4">
-            Showing <%= (page - 1) * 10 + 1 %> to <%= Math.min(page * 10, totalProfiles) %> of <%= totalProfiles %> profiles
           </div>
           <% } %>
         </div>
@@ -738,15 +870,25 @@
               </div>
             </div>
 
-            <!-- Age Range Filter -->
+            <!-- Age Range Filter (selects) -->
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-3">Age Range</label>
               <div class="grid grid-cols-2 gap-3">
                 <div>
-                  <input type="number" name="minAge" placeholder="Min Age" min="18" max="70" value="<%= filters?.minAge || '' %>" class="block w-full px-3 py-2 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white text-sm">
+                  <select name="minAge" id="mobileMinAgeSelect" class="block w-full px-3 py-2 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 bg-white text-sm">
+                    <option value="">Min Age</option>
+                    <% for (let a = 18; a <= 70; a++) { %>
+                      <option value="<%= a %>" <%= (filters?.minAge && Number(filters.minAge) === a) ? 'selected' : '' %>><%= a %></option>
+                    <% } %>
+                  </select>
                 </div>
                 <div>
-                  <input type="number" name="maxAge" placeholder="Max Age" min="18" max="70" value="<%= filters?.maxAge || '' %>" class="block w-full px-3 py-2 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white text-sm">
+                  <select name="maxAge" id="mobileMaxAgeSelect" class="block w-full px-3 py-2 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 bg-white text-sm">
+                    <option value="">Max Age</option>
+                    <% for (let a = 18; a <= 70; a++) { %>
+                      <option value="<%= a %>" <%= (filters?.maxAge && Number(filters.maxAge) === a) ? 'selected' : '' %>><%= a %></option>
+                    <% } %>
+                  </select>
                 </div>
               </div>
             </div>
@@ -802,36 +944,52 @@
               </div>
             </div>
 
-            <!-- Location Filter -->
+            <!-- Location Filter: Country & City Selects -->
             <div>
-              <label for="mobile-city" class="block text-sm font-medium text-gray-700 mb-3">Location</label>
-              <div class="relative">
-                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <i class="ri-map-pin-line text-gray-400"></i>
+              <label class="block text-sm font-medium text-gray-700 mb-3">Location</label>
+              <div class="space-y-3">
+                <div class="relative">
+                  <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <i class="ri-earth-line text-gray-400"></i>
+                  </div>
+                  <select name="country" id="mobileFilterCountry" class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 bg-white text-sm appearance-none">
+                    <% if (typeof geoFilterUI !== 'undefined' && geoFilterUI) { %>
+                      <!-- Geo-restricted: show only allowed countries -->
+                      <option value="">All Cities</option>
+                      <% geoFilterUI.countries.forEach(function(c) { %>
+                        <option value="<%= c.value %>" <%= filters?.country === c.value ? 'selected' : '' %>><%= c.label %></option>
+                      <% }); %>
+                    <% } else { %>
+                      <!-- No geo-restriction: show all countries -->
+                      <option value="">All Countries</option>
+                      <option value="United Kingdom" <%= filters?.country === 'United Kingdom' ? 'selected' : '' %> >United Kingdom</option>
+                      <option value="Pakistan" <%= filters?.country === 'Pakistan' ? 'selected' : '' %> >Pakistan</option>
+                      <option value="Bangladesh" <%= filters?.country === 'Bangladesh' ? 'selected' : '' %> >Bangladesh</option>
+                      <option value="India" <%= filters?.country === 'India' ? 'selected' : '' %> >India</option>
+                      <option value="United States" <%= filters?.country === 'United States' ? 'selected' : '' %> >United States</option>
+                      <option value="Canada" <%= filters?.country === 'Canada' ? 'selected' : '' %> >Canada</option>
+                      <option value="United Arab Emirates" <%= filters?.country === 'United Arab Emirates' ? 'selected' : '' %> >United Arab Emirates</option>
+                      <option value="Saudi Arabia" <%= filters?.country === 'Saudi Arabia' ? 'selected' : '' %> >Saudi Arabia</option>
+                      <option value="Australia" <%= filters?.country === 'Australia' ? 'selected' : '' %> >Australia</option>
+                      <option value="Germany" <%= filters?.country === 'Germany' ? 'selected' : '' %> >Germany</option>
+                      <option value="France" <%= filters?.country === 'France' ? 'selected' : '' %> >France</option>
+                      <option value="Malaysia" <%= filters?.country === 'Malaysia' ? 'selected' : '' %> >Malaysia</option>
+                      <option value="Singapore" <%= filters?.country === 'Singapore' ? 'selected' : '' %> >Singapore</option>
+                      <option value="Other" <%= filters?.country === 'Other' ? 'selected' : '' %> >Other</option>
+                    <% } %>
+                  </select>
                 </div>
-                <input type="text" name="city" id="mobile-city" placeholder="Enter city or location" value="<%= filters?.city || '' %>" class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white text-sm">
+                <div class="relative">
+                  <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <i class="ri-map-pin-line text-gray-400"></i>
+                  </div>
+                  <select name="city" id="mobileFilterCity" class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 bg-white text-sm appearance-none" disabled>
+                    <option value="">Select City</option>
+                  </select>
+                </div>
               </div>
             </div>
 
-            <!-- Nationality Filter -->
-            <div>
-              <label for="mobile-nationality" class="block text-sm font-medium text-gray-700 mb-3">Nationality</label>
-              <div class="relative">
-                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <i class="ri-earth-line text-gray-400"></i>
-                </div>
-                <select name="nationality" id="mobile-nationality" class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 bg-white text-sm appearance-none">
-                  <option value="">All Nationalities</option>
-                  <option value="British" <%= filters?.nationality === 'British' ? 'selected' : '' %>>British</option>
-                  <option value="Pakistani" <%= filters?.nationality === 'Pakistani' ? 'selected' : '' %>>Pakistani</option>
-                  <option value="Bangladeshi" <%= filters?.nationality === 'Bangladeshi' ? 'selected' : '' %>>Bangladeshi</option>
-                  <option value="Other" <%= filters?.nationality === 'Other' ? 'selected' : '' %>>Other</option>
-                </select>
-                <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-                  <i class="ri-arrow-down-s-line text-gray-400"></i>
-                </div>
-              </div>
-            </div>
             <!-- Apply Filters Button -->
             <button type="submit" class="w-full py-2.5 px-4 bg-primary text-white hover:bg-pink-600 transition-all duration-300 !rounded-button ripple material-shadow">
               <i class="ri-search-line mr-2"></i>Apply Filters
@@ -1076,6 +1234,75 @@
           closeMobileFilterPanel();
         }
       });
+
+      // Mobile filter: Country and City functionality
+      const mobileFilterCountry = document.getElementById('mobileFilterCountry');
+      const mobileFilterCity = document.getElementById('mobileFilterCity');
+
+      <% if (typeof geoFilterUI !== 'undefined' && geoFilterUI) { %>
+      const mobileCityData = <%- JSON.stringify(geoFilterUI.cities) %>;
+      <% } else { %>
+      const mobileCityData = {
+        'United Kingdom': ['London','Birmingham','Manchester','Glasgow','Liverpool','Leeds','Sheffield','Edinburgh','Bristol','Leicester','Bradford','Cardiff','Nottingham','Newcastle','Other'],
+        'Pakistan': [
+  'Karachi', 'Lahore', 'Islamabad', 'Rawalpindi', 'Faisalabad',
+  'Multan', 'Peshawar', 'Quetta', 'Sialkot', 'Gujranwala',
+  'Hyderabad', 'Abbottabad', 'Bahawalpur', 'Sargodha', 'Sukkur',
+  'Larkana', 'Mardan', 'Gujrat', 'Sahiwal', 'Mirpur',
+  'Sheikhupura', 'Jhang', 'Rahim Yar Khan', 'Kasur', 'Muzaffargarh',
+  'Nawabshah', 'Chiniot', 'Kamoke', 'Hafizabad', 'Sadiqabad',
+  'Burewala', 'Jacobabad', 'Shikarpur', 'Kohat', 'Jhelum',
+  'Khanewal', 'Gojra', 'Mandi Bahauddin', 'Daska', 'Dera Ghazi Khan',
+  'Dera Ismail Khan', 'Mingora', 'Bannu', 'Khuzdar','Other'
+],
+        'Bangladesh': ['Dhaka','Chittagong','Sylhet','Khulna','Rajshahi','Comilla','Gazipur','Narayanganj','Other'],
+        'India': ['Mumbai','Delhi','Bangalore','Hyderabad','Chennai','Kolkata','Ahmedabad','Pune','Lucknow','Jaipur','Other'],
+        'United States': ['New York','Los Angeles','Chicago','Houston','Dallas','San Francisco','Miami','Atlanta','Washington DC','Boston','Other'],
+        'Canada': ['Toronto','Vancouver','Montreal','Calgary','Ottawa','Edmonton','Mississauga','Brampton','Other'],
+        'United Arab Emirates': ['Dubai','Abu Dhabi','Sharjah','Ajman','Al Ain','Ras Al Khaimah','Other'],
+        'Saudi Arabia': ['Riyadh','Jeddah','Mecca','Medina','Dammam','Dhahran','Other'],
+        'Australia': ['Sydney','Melbourne','Brisbane','Perth','Adelaide','Gold Coast','Other'],
+        'Germany': ['Berlin','Munich','Frankfurt','Hamburg','Cologne','Dusseldorf','Other'],
+        'France': ['Paris','Lyon','Marseille','Toulouse','Nice','Strasbourg','Other'],
+        'Malaysia': ['Kuala Lumpur','George Town','Johor Bahru','Ipoh','Shah Alam','Other'],
+        'Singapore': ['Singapore','Other'],
+        'Other': ['Other']
+      };
+      <% } %>
+
+      if (mobileFilterCountry && mobileFilterCity) {
+        mobileFilterCountry.addEventListener('change', function() {
+          const country = this.value;
+          mobileFilterCity.innerHTML = '<option value="">Select City</option>';
+          if (country && mobileCityData[country]) {
+            mobileFilterCity.disabled = false;
+            mobileCityData[country].forEach(c => {
+              const opt = document.createElement('option');
+              opt.value = c;
+              opt.textContent = c;
+              mobileFilterCity.appendChild(opt);
+            });
+          } else {
+            mobileFilterCity.disabled = true;
+          }
+        });
+
+        // Initialize if a country is already selected
+        if (mobileFilterCountry.value) {
+          const evt = new Event('change');
+          mobileFilterCountry.dispatchEvent(evt);
+          // If a city filter exists, set it
+          const urlParams = new URLSearchParams(window.location.search);
+          const currentCity = urlParams.get('city');
+          if (currentCity) {
+            Array.from(mobileFilterCity.options).forEach(o => {
+              if (o.value.toLowerCase() === currentCity.toLowerCase()) {
+                o.selected = true;
+              }
+            });
+          }
+        }
+      }
     });
   </script>
   <script id="active-filters">

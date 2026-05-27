@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Edit Profile SEO - <%= profile.username %> | D'amour Muslim</title>
+  <link rel="stylesheet" href="/css/output.css">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+  <style>
+    .gradient-bg { background: linear-gradient(135deg, #E91E63 0%, #673AB7 100%); }
+    .char-counter { transition: color 0.2s; }
+    .char-counter.warning { color: #F59E0B; }
+    .char-counter.danger { color: #EF4444; }
+    .serp-preview { font-family: Arial, sans-serif; }
+    .serp-title { color: #1a0dab; font-size: 18px; line-height: 1.3; }
+    .serp-url { color: #006621; font-size: 14px; }
+    .serp-desc { color: #545454; font-size: 13px; line-height: 1.4; }
+  </style>
+  <%- include('../partials/analytics') %>
+</head>
+<body class="bg-gray-50 min-h-screen font-['Roboto']">
+  <%- include('partials/header', { currentPage: 'profiles' }) %>
+  
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- Breadcrumb -->
+    <nav class="flex items-center gap-2 text-sm text-gray-500 mb-6">
+      <a href="/seoadmin/profiles" class="hover:text-pink-600 transition-colors">Profiles</a>
+      <i class="ri-arrow-right-s-line"></i>
+      <span class="text-gray-900"><%= profile.username %></span>
+    </nav>
+    
+    <!-- Success/Error Messages -->
+    <% if (typeof success !== 'undefined' && success) { %>
+    <div class="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg mb-6 flex items-center gap-2">
+      <i class="ri-check-circle-line"></i>
+      <span><%= success %></span>
+    </div>
+    <% } %>
+    <% if (typeof error !== 'undefined' && error) { %>
+    <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-6 flex items-center gap-2">
+      <i class="ri-error-warning-line"></i>
+      <span><%= error %></span>
+    </div>
+    <% } %>
+    
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <!-- Main Form Column -->
+      <div class="lg:col-span-2 space-y-6">
+        <!-- Profile Context (Read-Only) -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+          <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
+            <h2 class="text-lg font-semibold text-gray-900 flex items-center gap-2">
+              <i class="ri-user-line text-pink-500"></i>
+              Profile Information
+              <span class="text-xs font-normal text-gray-500 ml-2">(Read-Only)</span>
+            </h2>
+          </div>
+          <div class="p-6">
+            <div class="flex items-start gap-4">
+              <div class="w-20 h-20 rounded-xl overflow-hidden bg-gray-100 flex-shrink-0">
+                <% if (profile.profilePic && profile.profilePic.url) { %>
+                <img src="<%= profile.profilePic.url %>" alt="Profile photo of <%= profile.username %>" class="w-full h-full object-cover">
+                <% } else { %>
+                <div class="w-full h-full flex items-center justify-center">
+                  <i class="ri-user-line text-3xl text-gray-400"></i>
+                </div>
+                <% } %>
+              </div>
+              <div class="flex-1 grid grid-cols-2 gap-4">
+                <div>
+                  <label class="text-xs text-gray-500">Username</label>
+                  <p class="font-medium text-gray-900"><%= profile.username %></p>
+                </div>
+                <div>
+                  <label class="text-xs text-gray-500">Gender / Age</label>
+                  <p class="font-medium text-gray-900"><%= profile.gender === 'male' ? 'Male' : 'Female' %> · <%= profile.age || 'N/A' %> years</p>
+                </div>
+                <div>
+                  <label class="text-xs text-gray-500">Location</label>
+                  <p class="font-medium text-gray-900"><%= profile.city || 'N/A' %>, <%= profile.country || 'UK' %></p>
+                </div>
+                <div>
+                  <label class="text-xs text-gray-500">Ethnicity</label>
+                  <p class="font-medium text-gray-900"><%= profile.ethnicity || 'N/A' %></p>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Protected Fields -->
+            <div class="mt-6 pt-6 border-t border-gray-200">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="bg-gray-50 rounded-lg p-3">
+                  <label class="text-xs text-gray-500 flex items-center gap-1">
+                    <i class="ri-lock-line"></i> Profile ID (Protected)
+                  </label>
+                  <p class="font-mono text-sm text-gray-700 mt-1"><%= profile._id %></p>
+                </div>
+                <div class="bg-white rounded-lg p-3 border border-gray-300">
+                  <label class="text-xs text-gray-700 font-medium flex items-center gap-1 mb-2">
+                    <i class="ri-link"></i> Profile Slug (Editable)
+                  </label>
+                  <input 
+                    type="text" 
+                    id="profileSlug"
+                    value="<%= profile.profileSlug || '' %>"
+                    class="w-full px-3 py-1.5 border border-gray-300 rounded font-mono text-sm focus:ring-2 focus:ring-pink-500 focus:border-pink-500"
+                    placeholder="e.g., ahmed-from-london-28"
+                    oninput="validateSlug(this); updateSerpPreview(); syncSlugToForm();"
+                  >
+                  <p class="text-xs text-gray-500 mt-2">Use lowercase letters, numbers, and hyphens only</p>
+                </div>
+              </div>
+              <div class="bg-amber-50 border border-amber-200 rounded-lg p-3 mt-3">
+                <p class="text-xs text-amber-800 flex items-start gap-2">
+                  <i class="ri-alert-line text-base flex-shrink-0 mt-0.5"></i>
+                  <span><strong>Warning:</strong> Changing the profile slug will change the profile's URL. Old links will redirect (301) to the new URL automatically, but bookmarks and external links may break. Only change if absolutely necessary.</span>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- SEO Edit Form -->
+        <form action="/seoadmin/profile/<%= profile._id %>/update" method="POST" id="seoForm">
+          <!-- Hidden input for profile slug (synced from display field above) -->
+          <input type="hidden" name="profileSlug" id="profileSlugHidden" value="<%= profile.profileSlug || '' %>">
+          
+          <!-- Meta Information -->
+          <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden mb-6">
+            <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
+              <h2 class="text-lg font-semibold text-gray-900 flex items-center gap-2">
+                <i class="ri-file-text-line text-pink-500"></i>
+                Meta Information
+              </h2>
+            </div>
+            <div class="p-6 space-y-5">
+              <!-- SEO Name -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                  SEO Display Name
+                  <span class="text-gray-400 font-normal">(Used in meta title/description)</span>
+                </label>
+                <input 
+                  type="text" 
+                  name="randomNameForSeo" 
+                  value="<%= profile.randomNameForSeo || '' %>"
+                  class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500"
+                  placeholder="e.g., Ahmed, Fatima, etc."
+                >
+                <p class="text-xs text-gray-500 mt-2">Leave empty to use username. This name appears in search results.</p>
+              </div>
+              
+              <!-- Custom Meta Title -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                  Custom Meta Title
+                  <span class="char-counter text-gray-400 font-normal" id="titleCounter">(0/60)</span>
+                </label>
+                <input 
+                  type="text" 
+                  name="customMetaTitle" 
+                  id="customMetaTitle"
+                  value="<%= profile.seoSettings && profile.seoSettings.customMetaTitle ? profile.seoSettings.customMetaTitle : '' %>"
+                  maxlength="60"
+                  class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500"
+                  placeholder="Leave empty for auto-generated title"
+                  oninput="updateCharCount('customMetaTitle', 'titleCounter', 60); updateSerpPreview();"
+                >
+                <p class="text-xs text-gray-500 mt-2">
+                  Auto: <%= profile.ethnicity || 'Muslim' %> <%= profile.gender === 'male' ? 'Muslim Man' : 'Muslim Woman' %> for Halal Marriage in <%= profile.city || 'UK' %> | D'amour Muslim
+                </p>
+              </div>
+              
+              <!-- Custom Meta Description -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                  Custom Meta Description
+                  <span class="char-counter text-gray-400 font-normal" id="descCounter">(0/160)</span>
+                </label>
+                <textarea 
+                  name="customMetaDescription" 
+                  id="customMetaDescription"
+                  maxlength="160"
+                  rows="3"
+                  class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500 resize-none"
+                  placeholder="Leave empty for auto-generated description"
+                  oninput="updateCharCount('customMetaDescription', 'descCounter', 160); updateSerpPreview();"
+                ><%= profile.seoSettings && profile.seoSettings.customMetaDescription ? profile.seoSettings.customMetaDescription : '' %></textarea>
+                <p class="text-xs text-gray-500 mt-2">
+                  Auto: Meet <%= profile.randomNameForSeo || profile.username %>, a verified <%= profile.ethnicity || 'Muslim' %> <%= profile.gender === 'male' ? 'Muslim man' : 'Muslim woman' %> for Muslim marriage in <%= profile.city || 'UK' %>, UK...
+                </p>
+              </div>
+              
+              <!-- Focus Keyword -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Focus Keyword</label>
+                <input 
+                  type="text" 
+                  name="focusKeyword" 
+                  value="<%= profile.seoSettings && profile.seoSettings.focusKeyword ? profile.seoSettings.focusKeyword : '' %>"
+                  class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500"
+                  placeholder="e.g., Pakistani Muslim marriage London"
+                >
+                <p class="text-xs text-gray-500 mt-2">Primary keyword this profile should rank for</p>
+              </div>
+              
+              <!-- Custom Keywords -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Custom Keywords</label>
+                <input 
+                  type="text" 
+                  name="customKeywords" 
+                  value="<%= profile.seoSettings && profile.seoSettings.customKeywords ? profile.seoSettings.customKeywords.join(', ') : '' %>"
+                  class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500"
+                  placeholder="Enter keywords separated by commas"
+                >
+                <p class="text-xs text-gray-500 mt-2">Additional keywords (comma-separated). These are merged with auto-generated keywords.</p>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Advanced SEO Settings -->
+          <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden mb-6">
+            <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
+              <h2 class="text-lg font-semibold text-gray-900 flex items-center gap-2">
+                <i class="ri-settings-3-line text-pink-500"></i>
+                Advanced Settings
+              </h2>
+            </div>
+            <div class="p-6 space-y-5">
+              <!-- No-Index Toggle -->
+              <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                <div>
+                  <label class="font-medium text-gray-900">Exclude from Search Engines</label>
+                  <p class="text-sm text-gray-500">Add noindex meta tag to prevent indexing</p>
+                </div>
+                <label class="relative inline-flex items-center cursor-pointer">
+                  <input 
+                    type="checkbox" 
+                    name="noIndex" 
+                    value="true"
+                    <%= profile.seoSettings && profile.seoSettings.noIndex ? 'checked' : '' %>
+                    class="sr-only peer"
+                  >
+                  <div class="w-11 h-6 bg-gray-300 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-pink-300 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-pink-600"></div>
+                </label>
+              </div>
+              
+              <!-- OG Image Override -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">OG Image Override URL</label>
+                <input 
+                  type="url" 
+                  name="ogImageOverride" 
+                  value="<%= profile.seoSettings && profile.seoSettings.ogImageOverride ? profile.seoSettings.ogImageOverride : '' %>"
+                  class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500"
+                  placeholder="https://example.com/image.jpg"
+                >
+                <p class="text-xs text-gray-500 mt-2">Leave empty to use profile picture. Must be a valid image URL.</p>
+              </div>
+              
+              <!-- Canonical URL Override -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Canonical URL Override</label>
+                <input 
+                  type="url" 
+                  name="canonicalUrlOverride" 
+                  value="<%= profile.seoSettings && profile.seoSettings.canonicalUrlOverride ? profile.seoSettings.canonicalUrlOverride : '' %>"
+                  class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500"
+                  placeholder="https://damourmuslim.com/profiles/..."
+                >
+                <p class="text-xs text-gray-500 mt-2">Leave empty to use default URL. Only change if you know what you're doing.</p>
+              </div>
+            </div>
+          </div>
+          
+          <!-- SEO Content Fields -->
+          <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden mb-6">
+            <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
+              <h2 class="text-lg font-semibold text-gray-900 flex items-center gap-2">
+                <i class="ri-article-line text-pink-500"></i>
+                SEO Content Fields
+              </h2>
+            </div>
+            <div class="p-6 space-y-5">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">SEO Field 1</label>
+                <textarea 
+                  name="seoField1" 
+                  rows="4"
+                  class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500 resize-none"
+                  placeholder="Additional SEO content (appears on profile page)"
+                ><%= profile.seoField1 || '' %></textarea>
+              </div>
+              
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">SEO Field 2</label>
+                <textarea 
+                  name="seoField2" 
+                  rows="4"
+                  class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500 resize-none"
+                  placeholder="Additional SEO content (appears on profile page)"
+                ><%= profile.seoField2 || '' %></textarea>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Internal Notes -->
+          <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden mb-6">
+            <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
+              <h2 class="text-lg font-semibold text-gray-900 flex items-center gap-2">
+                <i class="ri-sticky-note-line text-pink-500"></i>
+                Internal Notes
+                <span class="text-xs font-normal text-gray-500">(Not visible to users)</span>
+              </h2>
+            </div>
+            <div class="p-6">
+              <textarea 
+                name="internalNotes" 
+                rows="3"
+                class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500 resize-none"
+                placeholder="Private notes for SEO team..."
+              ><%= profile.seoSettings && profile.seoSettings.internalNotes ? profile.seoSettings.internalNotes : '' %></textarea>
+            </div>
+          </div>
+          
+          <!-- Submit Button -->
+          <div class="flex items-center justify-between">
+            <a href="/seoadmin/profiles" class="px-6 py-2.5 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors">
+              Cancel
+            </a>
+            <button type="submit" class="px-6 py-2.5 gradient-bg text-white rounded-lg font-medium hover:opacity-90 transition-opacity flex items-center gap-2">
+              <i class="ri-save-line"></i>
+              Save SEO Changes
+            </button>
+          </div>
+        </form>
+      </div>
+      
+      <!-- Right Sidebar - Preview & Info -->
+      <div class="space-y-6">
+        <!-- SERP Preview -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden sticky top-24">
+          <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
+            <h2 class="text-lg font-semibold text-gray-900 flex items-center gap-2">
+              <i class="ri-google-line text-pink-500"></i>
+              Google SERP Preview
+            </h2>
+          </div>
+          <div class="p-6">
+            <div class="serp-preview bg-white border border-gray-200 rounded-lg p-4">
+              <p class="serp-title hover:underline cursor-pointer" id="serpTitle">
+                <%= profile.seoSettings && profile.seoSettings.customMetaTitle 
+                  ? profile.seoSettings.customMetaTitle 
+                  : (profile.ethnicity || 'Muslim') + ' ' + (profile.gender === 'male' ? 'Muslim Man' : 'Muslim Woman') + ' for Halal Marriage in ' + (profile.city || 'UK') + " | D'amour Muslim" %>
+              </p>
+              <p class="serp-url mt-1" id="serpUrl">
+                https://damourmuslim.com/profiles/<span id="serpSlug"><%= profile.profileSlug || profile._id %></span>
+              </p>
+              <p class="serp-desc mt-1" id="serpDesc">
+                <%= profile.seoSettings && profile.seoSettings.customMetaDescription 
+                  ? profile.seoSettings.customMetaDescription 
+                  : 'Meet ' + (profile.randomNameForSeo || profile.username) + ', a verified ' + (profile.ethnicity || 'Muslim') + ' ' + (profile.gender === 'male' ? 'Muslim man' : 'Muslim woman') + ' for Muslim marriage in ' + (profile.city || 'UK') + ", UK. Join D'amour Muslim to find Muslim rishta in uk." %>
+              </p>
+            </div>
+            <p class="text-xs text-gray-500 mt-3">
+              <i class="ri-information-line"></i> This is an approximate preview. Actual appearance may vary.
+            </p>
+          </div>
+          
+          <!-- Quick Links -->
+          <div class="px-6 py-4 border-t border-gray-200 bg-gray-50">
+            <h3 class="text-sm font-medium text-gray-700 mb-3">Quick Links</h3>
+            <div class="space-y-2">
+              <a href="/profiles/<%= profile.profileSlug || profile._id %>" target="_blank" 
+                 class="flex items-center gap-2 text-sm text-gray-600 hover:text-pink-600 transition-colors">
+                <i class="ri-external-link-line"></i> View Live Profile
+              </a>
+              <a href="https://search.google.com/search-console" target="_blank" 
+                 class="flex items-center gap-2 text-sm text-gray-600 hover:text-pink-600 transition-colors">
+                <i class="ri-google-line"></i> Google Search Console
+              </a>
+            </div>
+          </div>
+          
+          <!-- Last Edit Info -->
+          <% if (profile.seoSettings && profile.seoSettings.lastSeoEditedAt) { %>
+          <div class="px-6 py-4 border-t border-gray-200">
+            <p class="text-xs text-gray-500">
+              Last edited: <%= new Date(profile.seoSettings.lastSeoEditedAt).toLocaleString() %>
+              <% if (profile.seoSettings.lastSeoEditedBy) { %>
+              by <%= profile.seoSettings.lastSeoEditedBy %>
+              <% } %>
+            </p>
+          </div>
+          <% } %>
+        </div>
+      </div>
+    </div>
+  </main>
+  
+  <script>
+    // Character counter function
+    function updateCharCount(inputId, counterId, maxLength) {
+      const input = document.getElementById(inputId);
+      const counter = document.getElementById(counterId);
+      const length = input.value.length;
+      
+      counter.textContent = `(${length}/${maxLength})`;
+      
+      counter.classList.remove('warning', 'danger');
+      if (length >= maxLength * 0.9) {
+        counter.classList.add('danger');
+      } else if (length >= maxLength * 0.75) {
+        counter.classList.add('warning');
+      }
+    }
+    
+    // Slug validation function
+    function validateSlug(input) {
+      // Convert to lowercase and replace invalid characters
+      let value = input.value.toLowerCase();
+      value = value.replace(/[^a-z0-9-]/g, '-');
+      value = value.replace(/-+/g, '-'); // Remove consecutive hyphens
+      value = value.replace(/^-|-$/g, ''); // Remove leading/trailing hyphens
+      
+      if (input.value !== value) {
+        input.value = value;
+      }
+    }
+    
+    // Sync slug to hidden form field
+    function syncSlugToForm() {
+      const slugInput = document.getElementById('profileSlug');
+      const hiddenSlugInput = document.getElementById('profileSlugHidden');
+      if (slugInput && hiddenSlugInput) {
+        hiddenSlugInput.value = slugInput.value;
+      }
+    }
+    
+    // SERP Preview updater
+    function updateSerpPreview() {
+      const titleInput = document.getElementById('customMetaTitle');
+      const descInput = document.getElementById('customMetaDescription');
+      const slugInput = document.getElementById('profileSlug');
+      const serpTitle = document.getElementById('serpTitle');
+      const serpDesc = document.getElementById('serpDesc');
+      const serpSlug = document.getElementById('serpSlug');
+      
+      const defaultTitle = <%- JSON.stringify((profile.ethnicity || 'Muslim') + ' ' + (profile.gender === 'male' ? 'Muslim Man' : 'Muslim Woman') + ' for Halal Marriage in ' + (profile.city || 'UK') + " | D'amour Muslim") %>;
+      const defaultDesc = <%- JSON.stringify('Meet ' + (profile.randomNameForSeo || profile.username) + ', a verified ' + (profile.ethnicity || 'Muslim') + ' ' + (profile.gender === 'male' ? 'Muslim man' : 'Muslim woman') + ' for Muslim marriage in ' + (profile.city || 'UK') + ", UK. Join D'amour Muslim to find Muslim rishta in uk.") %>;
+      const defaultSlug = <%- JSON.stringify(profile.profileSlug || profile._id.toString()) %>;
+      
+      serpTitle.textContent = titleInput.value || defaultTitle;
+      serpDesc.textContent = descInput.value || defaultDesc;
+      serpSlug.textContent = slugInput.value || defaultSlug;
+    }
+    
+    // Initialize counters on page load
+    document.addEventListener('DOMContentLoaded', function() {
+      updateCharCount('customMetaTitle', 'titleCounter', 60);
+      updateCharCount('customMetaDescription', 'descCounter', 160);
+    });
+  </script>
+</body>
+</html>
