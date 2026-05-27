@@ -12,9 +12,7 @@
   <meta name="theme-color" content="#E91E63">
   <title>D'amour Muslim - Edit User</title>
   <link rel="stylesheet" href="/css/output.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Playfair+Display:wght@400;600;700&family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
   <style>
     :where([class^="ri-"])::before {
@@ -151,20 +149,10 @@
       font-size: 0.75rem;
     }
   </style>
+  <%- include('../partials/clarity') %>
+  <%- include('../partials/thirdparty') %>
+  <%- include('../partials/analytics') %>
 </head>
-<% if (isProd && !isAdmin) { %>
-<!-- Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=<%= GA_ID %>"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-
-  function gtag() {
-    dataLayer.push(arguments);
-  }
-  gtag('js', new Date());
-  gtag('config', '<%= GA_ID %>');
-</script>
-<% } %>
 
 <body class="bg-gray-50 font-['Roboto']">
   <!-- Profile Completion Dialog -->
@@ -189,11 +177,11 @@
       </div>
 
       <div class="space-y-3">
-        <button id="addMoreInfoBtn" class="w-full px-6 py-3 bg-primary text-white hover:bg-pink-600 transition-all duration-300 rounded-button ripple material-shadow">
+        <button id="addMoreInfoBtn" data-track="true" data-event-name="profile_completion_add_info" data-category="engagement" data-label="Add More Profile Information" class="w-full px-6 py-3 bg-primary text-white hover:bg-pink-600 transition-all duration-300 rounded-button ripple material-shadow">
           <i class="ri-add-circle-line mr-2"></i>
           Yes, add more information!
         </button>
-        <button id="browseProfilesBtn" class="w-full px-6 py-3 border-2 border-gray-300 text-gray-700 hover:border-primary hover:text-primary transition-all duration-300 rounded-button ripple">
+        <button id="browseProfilesBtn" data-track="true" data-event-name="profile_completion_browse" data-category="engagement" data-label="Browse Profiles from Completion Dialog" class="w-full px-6 py-3 border-2 border-gray-300 text-gray-700 hover:border-primary hover:text-primary transition-all duration-300 rounded-button ripple">
           <i class="ri-group-line mr-2"></i>
           No, browse profiles
         </button>
@@ -342,12 +330,12 @@
                 <!-- **NEW**: Email Field, verification will be added here after everything goes right wih smtp server -->
 
                 <div class="space-y-2">
-                  <label for="email" class="block text-sm font-medium text-gray-700">Email Address <span class="text-gray-400 text-xs">(Optional)</span></label>
+                  <label for="email" class="block text-sm font-medium text-gray-700">Email Address <span class="text-gray-400 text-xs">(Cannot be changed)</span></label>
                   <div class="relative">
                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                       <i class="ri-mail-line text-gray-400"></i>
                     </div>
-                    <input type="email" id="email" name="email" class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="Enter your email address">
+                    <input type="email" id="email" name="email" class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-button text-gray-900 placeholder-gray-400 bg-gray-100 cursor-not-allowed" placeholder="Enter your email address" disabled readonly>
                   </div>
 
                   <!-- Email Status Display -->
@@ -430,12 +418,18 @@
                 <div class="space-y-2">
                   <label for="maritalStatus" class="block text-sm font-medium text-gray-700">Marital Status</label>
                   <select id="maritalStatus" name="maritalStatus" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 bg-white">
-                    <option value="unmarried" <%= (accountInfo.maritalStatus === 'unmarried') ? 'selected' : '' %>>Unmarried</option>
-                    <option value="married" <%= (accountInfo.maritalStatus === 'married') ? 'selected' : '' %>>Married</option>
-                    <option value="divorced" <%= (accountInfo.maritalStatus === 'divorced') ? 'selected' : '' %>>Divorced</option>
-                    <option value="widowed" <%= (accountInfo.maritalStatus === 'widowed') ? 'selected' : '' %>>Widowed</option>
-                    <option value="separated" <%= (accountInfo.maritalStatus === 'separated') ? 'selected' : '' %>>Separated</option>
-                    <option value="N/A" <%= (!accountInfo.maritalStatus || accountInfo.maritalStatus === 'N/A') ? 'selected' : '' %>>N/A</option>
+                    <% 
+                      const standardStatuses = ['nevermarried', 'divorced', 'widowed', 'annulled'];
+                      const currentStatus = accountInfo.maritalStatus || '';
+                      const isNonStandard = currentStatus && !standardStatuses.includes(currentStatus.toLowerCase());
+                    %>
+                    <% if (isNonStandard) { %>
+                    <option value="<%= currentStatus %>" selected><%= currentStatus.charAt(0).toUpperCase() + currentStatus.slice(1) %></option>
+                    <% } %>
+                    <option value="nevermarried" <%= (currentStatus.toLowerCase() === 'nevermarried') ? 'selected' : '' %>>Never Married</option>
+                    <option value="divorced" <%= (currentStatus.toLowerCase() === 'divorced') ? 'selected' : '' %>>Divorced</option>
+                    <option value="widowed" <%= (currentStatus.toLowerCase() === 'widowed') ? 'selected' : '' %>>Widowed</option>
+                    <option value="annulled" <%= (currentStatus.toLowerCase() === 'annulled') ? 'selected' : '' %>>Annulled</option>
                   </select>
                 </div>
                 <div class="space-y-2">
@@ -838,6 +832,28 @@
                     <i class="ri-add-line mr-1"></i>Add Education
                   </button>
                 </div>
+                <!-- Highest Education (new primary field) -->
+                <div class="grid md:grid-cols-2 gap-6">
+                  <div class="space-y-2">
+                    <label for="highestEducation" class="block text-sm font-medium text-gray-700">Highest Education</label>
+                    <select id="highestEducation" name="highestEducation" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 bg-white">
+                      <option value="" <%= !accountInfo.highestEducation ? 'selected' : '' %> >Select education level</option>
+                      <option value="High School" <%= accountInfo.highestEducation === 'High School' ? 'selected' : '' %> >High School / Secondary</option>
+                      <option value="Diploma" <%= accountInfo.highestEducation === 'Diploma' ? 'selected' : '' %> >Diploma / Certificate</option>
+                      <option value="Bachelor's Degree" <%= accountInfo.highestEducation === "Bachelor's Degree" ? 'selected' : '' %> >Bachelor's Degree</option>
+                      <option value="Master's Degree" <%= accountInfo.highestEducation === "Master's Degree" ? 'selected' : '' %> >Master's Degree</option>
+                      <option value="Doctorate / PhD" <%= accountInfo.highestEducation === 'Doctorate / PhD' ? 'selected' : '' %> >Doctorate / PhD</option>
+                      <option value="Professional Degree" <%= accountInfo.highestEducation === 'Professional Degree' ? 'selected' : '' %> >Professional Degree (MBBS, LLB, etc.)</option>
+                      <option value="Islamic Studies" <%= accountInfo.highestEducation === 'Islamic Studies' ? 'selected' : '' %> >Islamic Studies / Alim</option>
+                      <option value="Hafiz-e-Quran" <%= accountInfo.highestEducation === 'Hafiz-e-Quran' ? 'selected' : '' %> >Hafiz-e-Quran</option>
+                      <option value="Other" <%= accountInfo.highestEducation === 'Other' ? 'selected' : '' %> >Other</option>
+                    </select>
+                  </div>
+                  <div class="space-y-2">
+                    <label for="work" class="block text-sm font-medium text-gray-700">Profession/Work</label>
+                    <input type="text" id="work" name="work" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="Enter profession" value="<%= accountInfo.work || '' %>">
+                  </div>
+                </div>
                 <div id="educationContainer" class="space-y-4">
                   <!-- Education items will be added here -->
                 </div>
@@ -1023,7 +1039,7 @@
 
           <!-- Save Button -->
           <div class="flex justify-end pt-6 border-t border-gray-200 mt-8">
-            <button type="submit" class="px-8 py-2.5 bg-primary text-white hover:bg-pink-600 transition-all duration-300 !rounded-button whitespace-nowrap ripple material-shadow">
+            <button type="submit" data-track="true" data-event-name="save_profile_changes" data-category="engagement" data-label="Save Profile Changes" class="px-8 py-2.5 bg-primary text-white hover:bg-pink-600 transition-all duration-300 !rounded-button whitespace-nowrap ripple material-shadow">
               <i class="ri-save-line mr-2"></i>Save Changes
             </button>
           </div>
@@ -1546,45 +1562,38 @@
       // Display sent requests
       // Find the displaySentRequests function (around line 1030) and replace it with this updated version
 
-      function displaySentRequests(requests) {
-        const container = document.getElementById('sentRequestsContainer');
+    // Find the displaySentRequests function and update it
 
-        // **NEW**: Calculate pending requests count
-        const pendingRequests = requests.filter(req => req.status === 'pending');
-        const pendingCount = pendingRequests.length;
-        const maxRequests = 3;
+function displaySentRequests(requests) {
+  const container = document.getElementById('sentRequestsContainer');
 
-        if (requests.length === 0) {
-          container.innerHTML = `
+  if (requests.length === 0) {
+    container.innerHTML = `
       <div class="mb-4 flex items-center justify-between">
         <h3 class="text-lg font-semibold text-gray-900">Your Sent Requests</h3>
-        <span class="px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
-          ${pendingCount}/${maxRequests} requests sent
-        </span>
+        <span class="px-3 py-1 rounded-full text-sm font-medium bg-gray-100 text-gray-800">0 / 5</span>
       </div>
       <div class="text-center py-8">
-        <i class="ri-send-plane-line text-3xl text-gray-400 mb-4"></i>
+        <i class="ri-inbox-line text-3xl text-gray-400 mb-4"></i>
         <p class="text-gray-500">No requests sent yet</p>
       </div>
     `;
-          return;
-        }
+    return;
+  }
 
-        // **NEW**: Create header with request limit indicator
-        const headerHtml = `
+  const headerHtml = `
     <div class="mb-4 flex items-center justify-between">
       <h3 class="text-lg font-semibold text-gray-900">Your Sent Requests</h3>
       <span class="px-3 py-1 rounded-full text-sm font-medium ${
-        pendingCount >= maxRequests ? 'bg-red-100 text-red-800' : 
-        pendingCount >= 2 ? 'bg-yellow-100 text-yellow-800' : 
+        requests.length >= 5 ? 'bg-red-100 text-red-800' : 
         'bg-green-100 text-green-800'
       }">
-        ${pendingCount}/${maxRequests} requests sent
+        ${requests.length} / 5
       </span>
     </div>
   `;
 
-        const requestsHtml = requests.map(request => `
+  const requestsHtml = requests.map(request => `
     <div class="border border-gray-200 rounded-lg p-6 mb-4">
       <div class="flex items-center justify-between">
         <div class="flex items-center">
@@ -1601,11 +1610,16 @@
           <span class="px-3 py-1 rounded-full text-xs font-medium ${
             request.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
             request.status === 'accepted' ? 'bg-green-100 text-green-800' :
+            request.status === 'revoked' ? 'bg-gray-100 text-gray-800' :
             'bg-red-100 text-red-800'
           }">${request.status}</span>
           ${request.status === 'pending' ? `
             <button onclick="cancelRequest('${request._id}')" class="ml-3 px-3 py-1 bg-red-500 text-white text-xs rounded hover:bg-red-600">
               Cancel
+            </button>
+          ` : request.status === 'accepted' ? `
+            <button onclick="revokeAccess('${request._id}')" class="ml-3 px-3 py-1 bg-orange-500 text-white text-xs rounded hover:bg-orange-600">
+              Revoke Access
             </button>
           ` : ''}
         </div>
@@ -1613,52 +1627,59 @@
     </div>
   `).join('');
 
-        container.innerHTML = headerHtml + requestsHtml;
-      }
+  container.innerHTML = headerHtml + requestsHtml;
+}
 
       // Display received requests
-      function displayReceivedRequests(requests) {
-        const container = document.getElementById('receivedRequestsContainer');
+      // Find the displayReceivedRequests function and update it
 
-        if (requests.length === 0) {
-          container.innerHTML = '<div class="text-center py-8"><i class="ri-inbox-line text-3xl text-gray-400 mb-4"></i><p class="text-gray-500">No requests received yet</p></div>';
-          return;
-        }
+function displayReceivedRequests(requests) {
+  const container = document.getElementById('receivedRequestsContainer');
 
-        const requestsHtml = requests.map(request => `
-          <div class="border border-gray-200 rounded-lg p-6 mb-4">
-            <div class="flex items-center justify-between">
-              <div class="flex items-center">
-                <div class="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center mr-4">
-                  <i class="ri-user-line text-gray-500"></i>
-                </div>
-                <div>
-                  <h4 class="font-medium text-gray-900">${request.from.username}</h4>
-                  <p class="text-sm text-gray-500">${request.from.city || ''}</p>
-                  <p class="text-xs text-gray-400">Received: ${new Date(request.createdAt).toLocaleDateString()}</p>
-                </div>
-              </div>
-              <div class="flex items-center">
-                <span class="px-3 py-1 rounded-full text-xs font-medium ${
-                  request.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
-                  request.status === 'accepted' ? 'bg-green-100 text-green-800' :
-                  'bg-red-100 text-red-800'
-                }">${request.status}</span>
-                ${request.status === 'pending' ? `
-                  <button onclick="respondToRequest('${request._id}', 'accepted')" class="ml-3 px-3 py-1 bg-green-500 text-white text-xs rounded hover:bg-green-600">
-                    Accept
-                  </button>
-                  <button onclick="respondToRequest('${request._id}', 'rejected')" class="ml-2 px-3 py-1 bg-red-500 text-white text-xs rounded hover:bg-red-600">
-                    Reject
-                  </button>
-                ` : ''}
-              </div>
-            </div>
+  if (requests.length === 0) {
+    container.innerHTML = '<div class="text-center py-8"><i class="ri-inbox-line text-3xl text-gray-400 mb-4"></i><p class="text-gray-500">No requests received yet</p></div>';
+    return;
+  }
+
+  const requestsHtml = requests.map(request => `
+    <div class="border border-gray-200 rounded-lg p-6 mb-4">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center">
+          <div class="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center mr-4">
+            <i class="ri-user-line text-gray-500"></i>
           </div>
-        `).join('');
+          <div>
+            <h4 class="font-medium text-gray-900">${request.from.username}</h4>
+            <p class="text-sm text-gray-500">${request.from.city || ''}</p>
+            <p class="text-xs text-gray-400">Received: ${new Date(request.createdAt).toLocaleDateString()}</p>
+          </div>
+        </div>
+        <div class="flex items-center">
+          <span class="px-3 py-1 rounded-full text-xs font-medium ${
+            request.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
+            request.status === 'accepted' ? 'bg-green-100 text-green-800' :
+            request.status === 'revoked' ? 'bg-gray-100 text-gray-800' :
+            'bg-red-100 text-red-800'
+          }">${request.status}</span>
+          ${request.status === 'pending' ? `
+            <button onclick="respondToRequest('${request._id}', 'accept')" class="ml-3 px-3 py-1 bg-green-500 text-white text-xs rounded hover:bg-green-600">
+              Accept
+            </button>
+            <button onclick="respondToRequest('${request._id}', 'reject')" class="ml-2 px-3 py-1 bg-red-500 text-white text-xs rounded hover:bg-red-600">
+              Reject
+            </button>
+          ` : request.status === 'accepted' ? `
+            <button onclick="revokeAccess('${request._id}')" class="ml-3 px-3 py-1 bg-orange-500 text-white text-xs rounded hover:bg-orange-600">
+              Revoke Access
+            </button>
+          ` : ''}
+        </div>
+      </div>
+    </div>
+  `).join('');
 
-        container.innerHTML = requestsHtml;
-      }
+  container.innerHTML = requestsHtml;
+}
 
       // Global functions for request actions
       window.cancelRequest = function(requestId) {
@@ -1686,7 +1707,7 @@
       };
 
       window.respondToRequest = function(requestId, action) {
-        const actionText = action === 'accepted' ? 'accept' : 'reject';
+        const actionText = action === 'accept' ? 'accept' : 'reject';
         if (confirm(`Are you sure you want to ${actionText} this request?`)) {
           fetch(`/api/requests/${requestId}/respond`, {
               method: 'POST',
@@ -1712,6 +1733,33 @@
             });
         }
       };
+      // Add after the respondToRequest function
+
+window.revokeAccess = function(requestId) {
+  if (confirm('Are you sure you want to revoke access? You will both become strangers and lose access to each other\'s full profiles.')) {
+    fetch(`/api/requests/${requestId}/revoke`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          showNotification('Access Revoked', data.message, 'success');
+          // Reload both sections since the request could be in either
+          loadSentRequests();
+          loadReceivedRequests();
+        } else {
+          showNotification('Error', data.error || 'Failed to revoke access', 'error');
+        }
+      })
+      .catch(error => {
+        console.error('Error revoking access:', error);
+        showNotification('Error', 'Failed to revoke access', 'error');
+      });
+  }
+};
 
       // Notification function
       function showNotification(title, message, type = 'info') {

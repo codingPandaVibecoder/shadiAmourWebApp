@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Deleted Account Details - <%= deletedAccount.username %></title>
+  <link rel="stylesheet" href="/css/output.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+  <style>
+    .material-shadow { box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); }
+    .info-row {
+      display: flex;
+      flex-direction: column;
+      padding: 12px 0;
+      border-bottom: 1px solid #f3f4f6;
+      gap: 4px;
+    }
+    @media (min-width: 768px) {
+      .info-row {
+        flex-direction: row;
+        gap: 16px;
+      }
+      .info-label {
+        width: 240px;
+        flex-shrink: 0;
+      }
+    }
+    .info-label {
+      font-weight: 500;
+      color: #6b7280;
+      font-size: 14px;
+    }
+    .info-value {
+      color: #111827;
+      word-break: break-word;
+    }
+  </style>
+</head>
+
+<body class="bg-gray-50 font-['Roboto']">
+  <!-- Header -->
+  <header class="bg-white border-b border-gray-200 sticky top-0 z-50">
+    <div class="max-w-full mx-auto px-4 py-3">
+      <div class="flex items-center justify-between gap-4">
+        <a href="/admin/deletedaccounts" class="flex items-center gap-2 text-gray-600 hover:text-primary">
+          <i class="ri-arrow-left-line"></i>
+          <span class="font-medium">Back to Deleted Accounts</span>
+        </a>
+        
+        <span class="px-3 py-1 bg-red-100 text-red-600 text-sm rounded-full font-medium">
+          <i class="ri-delete-bin-line"></i> Permanently Deleted Account
+        </span>
+
+        <div class="flex gap-3">
+          <button onclick="permanentlyDelete()" class="px-4 py-2 bg-red-500 text-white hover:bg-red-600 rounded-lg text-sm font-medium">
+            <i class="ri-delete-bin-line"></i> Delete Archive Record
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="py-6">
+    <div class="max-w-6xl mx-auto px-4">
+      
+      <!-- Deletion Metadata Card -->
+      <div class="bg-white rounded-xl p-6 material-shadow mb-6">
+        <h2 class="text-lg font-semibold text-gray-900 mb-4">Deletion Metadata</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <p class="text-sm text-gray-600 mb-1">Deleted By</p>
+            <p class="text-lg font-medium text-gray-900"><%= deletedAccount.deletedBy %></p>
+          </div>
+          <div>
+            <p class="text-sm text-gray-600 mb-1">Deleted At</p>
+            <p class="text-lg font-medium text-gray-900"><%= new Date(deletedAccount.deletedAt).toLocaleString() %></p>
+          </div>
+          <div class="md:col-span-2">
+            <p class="text-sm text-gray-600 mb-1">Reason</p>
+            <p class="text-base text-gray-900"><%= deletedAccount.deletionReason || 'No reason provided' %></p>
+          </div>
+          <% if (deletedAccount.reactivatedAt) { %>
+          <div>
+            <p class="text-sm text-gray-600 mb-1">Reactivated At</p>
+            <p class="text-lg font-medium text-green-600"><%= new Date(deletedAccount.reactivatedAt).toLocaleString() %></p>
+          </div>
+          <div>
+            <p class="text-sm text-gray-600 mb-1">Reactivated By</p>
+            <p class="text-lg font-medium text-green-600"><%= deletedAccount.reactivatedBy %></p>
+          </div>
+          <% } %>
+        </div>
+      </div>
+
+      <!-- User Data Snapshot -->
+      <div class="bg-white rounded-xl p-6 material-shadow">
+        <h2 class="text-lg font-semibold text-gray-900 mb-6">Complete User Data Snapshot</h2>
+        
+        <% const userData = deletedAccount.userData; %>
+        
+        <!-- Basic Information -->
+        <div class="mb-8">
+          <h3 class="text-md font-semibold text-gray-700 mb-4 pb-2 border-b">Basic Information</h3>
+          <div class="info-row">
+            <span class="info-label">Username</span>
+            <span class="info-value"><%= userData.username %></span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Name</span>
+            <span class="info-value"><%= userData.name || 'N/A' %></span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Email</span>
+            <span class="info-value"><%= userData.email || 'N/A' %></span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Age</span>
+            <span class="info-value"><%= userData.age || 'N/A' %></span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Gender</span>
+            <span class="info-value"><%= userData.gender || 'N/A' %></span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Profile For</span>
+            <span class="info-value"><%= userData.profileFor || 'N/A' %></span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Registered At</span>
+            <span class="info-value"><%= userData.registeredAt ? new Date(userData.registeredAt).toLocaleString() : 'N/A' %></span>
+          </div>
+        </div>
+
+        <!-- Contact & Location -->
+        <div class="mb-8">
+          <h3 class="text-md font-semibold text-gray-700 mb-4 pb-2 border-b">Contact & Location</h3>
+          <div class="info-row">
+            <span class="info-label">Contact</span>
+            <span class="info-value"><%= userData.contact || 'N/A' %></span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Address</span>
+            <span class="info-value"><%= userData.adress || 'N/A' %></span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">City</span>
+            <span class="info-value"><%= userData.city || 'N/A' %></span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Country</span>
+            <span class="info-value"><%= userData.country || 'N/A' %></span>
+          </div>
+        </div>
+
+        <!-- Complete Raw Data (JSON) -->
+        <div class="mt-8">
+          <h3 class="text-md font-semibold text-gray-700 mb-4 pb-2 border-b">Complete Raw Data (JSON)</h3>
+          <pre class="bg-gray-100 p-4 rounded-lg overflow-x-auto text-xs"><%= JSON.stringify(userData, null, 2) %></pre>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    function permanentlyDelete() {
+      if (!confirm('⚠️ WARNING: This will permanently delete the archive record. This action CANNOT be undone.\n\nType "DELETE" in the next prompt to confirm.')) return;
+      
+      const confirmation = prompt('Type "DELETE" to confirm permanent deletion:');
+      if (confirmation !== 'DELETE') {
+        alert('Deletion cancelled - confirmation text did not match.');
+        return;
+      }
+
+      fetch(`/admin/deletedaccounts/<%= deletedAccount._id %>/permanent-delete`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' }
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          alert('Archive record permanently deleted.');
+          window.location.href = '/admin/deletedaccounts';
+        } else {
+          alert('Error: ' + data.error);
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('Failed to delete archive record');
+      });
+    }
+  </script>
+</body>
+</html>

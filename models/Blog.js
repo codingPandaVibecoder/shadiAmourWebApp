@@ -47,7 +47,7 @@ const blogSchema = new mongoose.Schema(
             type: String,
             trim: true,
             default: function () {
-                return `https://www.damourmuslim.com/blog/${this.slug}`;
+                return `https://damourmuslim.com/blog/${this.slug}`;
             },
         },
 

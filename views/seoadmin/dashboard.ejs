@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>SEO Dashboard | D'amour Muslim</title>
+  <link rel="stylesheet" href="/css/output.css">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+  <style>
+    .gradient-bg { background: linear-gradient(135deg, #E91E63 0%, #673AB7 100%); }
+    .stat-card { transition: transform 0.2s, box-shadow 0.2s; }
+    .stat-card:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(0,0,0,0.1); }
+  </style>
+  <%- include('../partials/analytics') %>
+</head>
+<body class="bg-gray-50 min-h-screen font-['Roboto']">
+  <%- include('partials/header', { currentPage: 'dashboard' }) %>
+  
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- Page Header -->
+    <div class="mb-8">
+      <h1 class="text-2xl font-bold text-gray-900 font-['Playfair_Display']">SEO Dashboard</h1>
+      <p class="text-gray-600 mt-1">Overview of SEO status and quick actions</p>
+    </div>
+    
+    <!-- Stats Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+      <!-- Total Profiles -->
+      <div class="stat-card bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+        <div class="flex items-center justify-between mb-4">
+          <div class="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center">
+            <i class="ri-user-line text-2xl text-blue-600"></i>
+          </div>
+          <span class="text-xs text-gray-500 font-medium">PROFILES</span>
+        </div>
+        <p class="text-3xl font-bold text-gray-900"><%= stats.totalProfiles %></p>
+        <p class="text-sm text-gray-500 mt-1">Total Profiles</p>
+      </div>
+      
+      <!-- Custom SEO -->
+      <div class="stat-card bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+        <div class="flex items-center justify-between mb-4">
+          <div class="w-12 h-12 bg-green-50 rounded-lg flex items-center justify-center">
+            <i class="ri-edit-line text-2xl text-green-600"></i>
+          </div>
+          <span class="text-xs text-gray-500 font-medium">CUSTOMIZED</span>
+        </div>
+        <p class="text-3xl font-bold text-gray-900"><%= stats.customSeoProfiles %></p>
+        <p class="text-sm text-gray-500 mt-1">With Custom SEO</p>
+      </div>
+      
+      <!-- No Index -->
+      <div class="stat-card bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+        <div class="flex items-center justify-between mb-4">
+          <div class="w-12 h-12 bg-orange-50 rounded-lg flex items-center justify-center">
+            <i class="ri-eye-off-line text-2xl text-orange-600"></i>
+          </div>
+          <span class="text-xs text-gray-500 font-medium">HIDDEN</span>
+        </div>
+        <p class="text-3xl font-bold text-gray-900"><%= stats.noIndexProfiles %></p>
+        <p class="text-sm text-gray-500 mt-1">No-Index Profiles</p>
+      </div>
+      
+      <!-- Blog Posts -->
+      <div class="stat-card bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+        <div class="flex items-center justify-between mb-4">
+          <div class="w-12 h-12 bg-purple-50 rounded-lg flex items-center justify-center">
+            <i class="ri-article-line text-2xl text-purple-600"></i>
+          </div>
+          <span class="text-xs text-gray-500 font-medium">CONTENT</span>
+        </div>
+        <p class="text-3xl font-bold text-gray-900"><%= stats.totalBlogs %></p>
+        <p class="text-sm text-gray-500 mt-1">Blog Posts</p>
+      </div>
+    </div>
+    
+    <!-- Quick Actions & Recent Activity -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <!-- Quick Actions -->
+      <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+        <h2 class="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+          <i class="ri-flashlight-line text-pink-500"></i>
+          Quick Actions
+        </h2>
+        <div class="grid grid-cols-2 gap-3">
+          <a href="/seoadmin/profiles" class="flex items-center gap-3 p-4 bg-gray-50 hover:bg-pink-50 rounded-lg transition-colors group">
+            <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center shadow-sm group-hover:shadow">
+              <i class="ri-user-search-line text-gray-600 group-hover:text-pink-600"></i>
+            </div>
+            <div>
+              <p class="font-medium text-gray-900 text-sm">Edit Profile SEO</p>
+              <p class="text-xs text-gray-500">Search & modify</p>
+            </div>
+          </a>
+          
+          <a href="/seoadmin/blogs" class="flex items-center gap-3 p-4 bg-gray-50 hover:bg-pink-50 rounded-lg transition-colors group">
+            <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center shadow-sm group-hover:shadow">
+              <i class="ri-article-line text-gray-600 group-hover:text-pink-600"></i>
+            </div>
+            <div>
+              <p class="font-medium text-gray-900 text-sm">Edit Blog SEO</p>
+              <p class="text-xs text-gray-500">Meta & keywords</p>
+            </div>
+          </a>
+          
+          <a href="/seoadmin/global-settings" class="flex items-center gap-3 p-4 bg-gray-50 hover:bg-pink-50 rounded-lg transition-colors group">
+            <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center shadow-sm group-hover:shadow">
+              <i class="ri-global-line text-gray-600 group-hover:text-pink-600"></i>
+            </div>
+            <div>
+              <p class="font-medium text-gray-900 text-sm">Global Settings</p>
+              <p class="text-xs text-gray-500">Site-wide SEO</p>
+            </div>
+          </a>
+          
+          <a href="/seoadmin/profiles?filter=noCustomSeo" class="flex items-center gap-3 p-4 bg-gray-50 hover:bg-pink-50 rounded-lg transition-colors group">
+            <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center shadow-sm group-hover:shadow">
+              <i class="ri-file-warning-line text-gray-600 group-hover:text-pink-600"></i>
+            </div>
+            <div>
+              <p class="font-medium text-gray-900 text-sm">Needs SEO</p>
+              <p class="text-xs text-gray-500">Profiles without custom SEO</p>
+            </div>
+          </a>
+        </div>
+      </div>
+      
+      <!-- Recent SEO Edits -->
+      <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+        <h2 class="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+          <i class="ri-history-line text-pink-500"></i>
+          Recent SEO Edits
+        </h2>
+        
+        <% if (recentEdits && recentEdits.length > 0) { %>
+        <div class="space-y-3">
+          <% recentEdits.forEach(edit => { %>
+          <a href="/seoadmin/profile/<%= edit._id %>" class="flex items-center gap-3 p-3 hover:bg-gray-50 rounded-lg transition-colors">
+            <div class="w-10 h-10 rounded-full overflow-hidden bg-gray-100 flex-shrink-0">
+              <% if (edit.profilePic && edit.profilePic.url) { %>
+              <img src="<%= edit.profilePic.url %>" alt="Profile photo of <%= edit.username %>" class="w-full h-full object-cover">
+              <% } else { %>
+              <div class="w-full h-full flex items-center justify-center">
+                <i class="ri-user-line text-gray-400"></i>
+              </div>
+              <% } %>
+            </div>
+            <div class="flex-1 min-w-0">
+              <p class="font-medium text-gray-900 text-sm truncate"><%= edit.username %></p>
+              <p class="text-xs text-gray-500">
+                <% if (edit.seoSettings && edit.seoSettings.lastSeoEditedAt) { %>
+                Edited <%= new Date(edit.seoSettings.lastSeoEditedAt).toLocaleDateString() %>
+                <% if (edit.seoSettings.lastSeoEditedBy) { %>
+                by <%= edit.seoSettings.lastSeoEditedBy %>
+                <% } %>
+                <% } else { %>
+                No recent edits
+                <% } %>
+              </p>
+            </div>
+            <i class="ri-arrow-right-s-line text-gray-400"></i>
+          </a>
+          <% }) %>
+        </div>
+        <% } else { %>
+        <div class="text-center py-8 text-gray-500">
+          <i class="ri-inbox-line text-4xl text-gray-300 mb-2"></i>
+          <p class="text-sm">No recent SEO edits</p>
+        </div>
+        <% } %>
+      </div>
+    </div>
+    
+    <!-- SEO Health Overview -->
+    <div class="mt-6 bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+      <h2 class="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+        <i class="ri-heart-pulse-line text-pink-500"></i>
+        SEO Health Overview
+      </h2>
+      
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Custom Meta Title -->
+        <div class="p-4 bg-gray-50 rounded-lg">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-sm font-medium text-gray-600">Custom Meta Titles</span>
+            <span class="text-lg font-bold text-gray-900"><%= stats.profilesWithCustomTitle || 0 %></span>
+          </div>
+          <div class="w-full bg-gray-200 rounded-full h-2">
+            <div class="bg-green-500 h-2 rounded-full" style="width: <%= stats.totalProfiles > 0 ? ((stats.profilesWithCustomTitle || 0) / stats.totalProfiles * 100) : 0 %>%"></div>
+          </div>
+          <p class="text-xs text-gray-500 mt-1"><%= stats.totalProfiles > 0 ? Math.round((stats.profilesWithCustomTitle || 0) / stats.totalProfiles * 100) : 0 %>% of profiles</p>
+        </div>
+        
+        <!-- Custom Meta Description -->
+        <div class="p-4 bg-gray-50 rounded-lg">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-sm font-medium text-gray-600">Custom Meta Descriptions</span>
+            <span class="text-lg font-bold text-gray-900"><%= stats.profilesWithCustomDesc || 0 %></span>
+          </div>
+          <div class="w-full bg-gray-200 rounded-full h-2">
+            <div class="bg-blue-500 h-2 rounded-full" style="width: <%= stats.totalProfiles > 0 ? ((stats.profilesWithCustomDesc || 0) / stats.totalProfiles * 100) : 0 %>%"></div>
+          </div>
+          <p class="text-xs text-gray-500 mt-1"><%= stats.totalProfiles > 0 ? Math.round((stats.profilesWithCustomDesc || 0) / stats.totalProfiles * 100) : 0 %>% of profiles</p>
+        </div>
+        
+        <!-- Approved Profiles -->
+        <div class="p-4 bg-gray-50 rounded-lg">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-sm font-medium text-gray-600">Approved & Indexed</span>
+            <span class="text-lg font-bold text-gray-900"><%= stats.approvedProfiles || 0 %></span>
+          </div>
+          <div class="w-full bg-gray-200 rounded-full h-2">
+            <div class="bg-purple-500 h-2 rounded-full" style="width: <%= stats.totalProfiles > 0 ? ((stats.approvedProfiles || 0) / stats.totalProfiles * 100) : 0 %>%"></div>
+          </div>
+          <p class="text-xs text-gray-500 mt-1"><%= stats.totalProfiles > 0 ? Math.round((stats.approvedProfiles || 0) / stats.totalProfiles * 100) : 0 %>% of profiles</p>
+        </div>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

@@ -12,9 +12,7 @@
   <link rel="manifest" href="/images/site.webmanifest">
   <meta name="theme-color" content="#E91E63">
   <link rel="stylesheet" href="/css/output.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Playfair+Display:wght@400;600;700&family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
   <style>
     :where([class^="ri-"])::before {
@@ -654,6 +652,25 @@
               <div class="space-y-2">
                 <label for="whoCompletedProfile" class="block text-sm font-medium text-gray-700">Who Completed Profile</label>
                 <input type="text" id="whoCompletedProfile" name="whoCompletedProfile" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="e.g., Self, Family member">
+              </div>
+            </div>
+
+            <!-- Highest Education -->
+            <div class="grid md:grid-cols-2 gap-6">
+              <div class="space-y-2">
+                <label for="highestEducation" class="block text-sm font-medium text-gray-700">Highest Education</label>
+                <select id="highestEducation" name="highestEducation" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 bg-white">
+                  <option value="" selected>Select</option>
+                  <option value="High School">High School</option>
+                  <option value="Bachelor's Degree">Bachelor's Degree</option>
+                  <option value="Master's Degree">Master's Degree</option>
+                  <option value="Doctorate / PhD">Doctorate / PhD</option>
+                  <option value="Diploma">Diploma</option>
+                  <option value="Professional Degree">Professional Degree</option>
+                  <option value="Islamic Studies">Islamic Studies</option>
+                  <option value="Hafiz-e-Quran">Hafiz-e-Quran</option>
+                  <option value="Other">Other</option>
+                </select>
               </div>
             </div>
 

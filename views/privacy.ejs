@@ -7,26 +7,12 @@
   <title>Privacy Policy - D'amour Muslim</title>
   <meta name="description" content="Privacy Policy for D'amour Muslim matrimonial platform. Learn how we protect your personal information and data.">
 
-  <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            primary: '#e91e63',
-            secondary: '#9c27b0'
-          }
-        }
-      }
-    }
-  </script>
-
-  <!-- Remix Icons -->
-  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
-
-  <!-- Custom CSS -->
-  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/output.css">
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css"></noscript>
+  <%- include('partials/clarity') %>
+  <%- include('partials/thirdparty') %>
+  <%- include('partials/analytics') %>
 </head>
 
 <body class="bg-gray-50 font-['Roboto']">

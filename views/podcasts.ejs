@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Muslim Marriage Podcasts — D'amour Muslim</title>
+
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="Watch D'amour Muslim's podcast episodes on Islamic marriage, Muslim matchmaking, halal relationships, and finding a Muslim spouse. Video episodes from our YouTube channel." />
+  <meta name="keywords" content="muslim marriage podcast, islamic marriage advice, muslim matchmaking podcast, halal relationship podcast, muslim matrimony video" />
+  <link rel="canonical" href="https://damourmuslim.com/podcasts" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Muslim Marriage Podcasts — D'amour Muslim" />
+  <meta property="og:description" content="Watch our podcast episodes on Islamic marriage, Muslim matchmaking, and halal relationships." />
+  <meta property="og:url" content="https://damourmuslim.com/podcasts" />
+  <meta property="og:type" content="website" />
+
+  <!-- Favicon -->
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+  <link rel="manifest" href="/images/site.webmanifest">
+  <meta name="theme-color" content="#E91E63">
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="/css/output.css" />
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css" />
+
+  <!-- lite-youtube-embed for performance (no iframe on page load) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lite-youtube-embed@0.3.3/src/lite-yt-embed.css" />
+
+  <style>
+    .gradient-bg {
+      background: linear-gradient(135deg, #E91E63 0%, #673AB7 100%);
+    }
+    .material-shadow {
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .material-shadow-hover {
+      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+    }
+
+    /* Podcast card */
+    .podcast-card {
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    .podcast-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 28px rgba(0,0,0,0.15);
+    }
+
+    /* Thumbnail wrapper — keeps 16:9 */
+    .thumb-wrapper {
+      position: relative;
+      width: 100%;
+      padding-top: 56.25%;
+      overflow: hidden;
+      background: #111;
+      border-radius: 0.75rem 0.75rem 0 0;
+    }
+    .thumb-wrapper img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+    .podcast-card:hover .thumb-wrapper img {
+      transform: scale(1.04);
+    }
+
+    /* Play overlay */
+    .play-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0,0,0,0.25);
+      transition: background 0.25s ease;
+    }
+    .podcast-card:hover .play-overlay {
+      background: rgba(0,0,0,0.4);
+    }
+    .play-icon {
+      width: 56px;
+      height: 56px;
+      background: rgba(233, 30, 99, 0.92);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.2s ease, background 0.2s ease;
+      box-shadow: 0 4px 20px rgba(233,30,99,0.5);
+    }
+    .podcast-card:hover .play-icon {
+      transform: scale(1.12);
+      background: #E91E63;
+    }
+
+    /* Modal */
+    #podcast-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: rgba(0,0,0,0.85);
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+    #podcast-modal.open {
+      display: flex;
+    }
+    #podcast-modal-inner {
+      position: relative;
+      width: 100%;
+      max-width: 900px;
+      background: #000;
+      border-radius: 1rem;
+      overflow: hidden;
+      box-shadow: 0 24px 80px rgba(0,0,0,0.7);
+    }
+    #podcast-modal-close {
+      position: absolute;
+      top: -44px;
+      right: 0;
+      background: rgba(255,255,255,0.15);
+      border: none;
+      color: #fff;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      font-size: 1.25rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+      z-index: 10;
+    }
+    #podcast-modal-close:hover {
+      background: rgba(255,255,255,0.3);
+    }
+    #modal-video-container {
+      position: relative;
+      width: 100%;
+      padding-top: 56.25%;
+    }
+    #modal-video-container lite-youtube {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Pagination */
+    .pagination-btn {
+      min-width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.875rem;
+      font-weight: 500;
+      cursor: pointer;
+      border: 1.5px solid #e5e7eb;
+      background: #fff;
+      color: #374151;
+      transition: all 0.2s;
+    }
+    .pagination-btn:hover:not(:disabled) {
+      border-color: #E91E63;
+      color: #E91E63;
+    }
+    .pagination-btn.active {
+      background: #E91E63;
+      border-color: #E91E63;
+      color: #fff;
+    }
+    .pagination-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    /* Schema / structured data */
+    [class^="ri-"]::before { content: "\f3c2"; }
+  </style>
+
+  <!-- JSON-LD: VideoObject list -->
+  <% if (podcasts && podcasts.length > 0) { %>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "name": "D'amour Muslim Podcast Episodes",
+    "url": "https://damourmuslim.com/podcasts",
+    "itemListElement": [
+      <% podcasts.forEach(function(p, i) { %>
+      {
+        "@type": "ListItem",
+        "position": <%= i + 1 %>,
+        "item": {
+          "@type": "VideoObject",
+          "name": "<%- p.title.replace(/"/g, '&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;') %>",
+          "description": "<%- (p.description || 'Watch this episode of the D\u2019amour Muslim podcast on Islamic marriage and matchmaking.').replace(/"/g, '&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;') %>",
+          "thumbnailUrl": [
+            "https://img.youtube.com/vi/<%= p.youtubeId %>/maxresdefault.jpg",
+            "https://img.youtube.com/vi/<%= p.youtubeId %>/hqdefault.jpg"
+          ],
+          "uploadDate": "<%= p.createdAt ? new Date(p.createdAt).toISOString() : new Date().toISOString() %>",
+          "embedUrl": "https://www.youtube.com/embed/<%= p.youtubeId %>",
+          "url": "https://www.youtube.com/watch?v=<%= p.youtubeId %>",
+          "contentUrl": "https://www.youtube.com/watch?v=<%= p.youtubeId %>",
+          "publisher": {
+            "@type": "Organization",
+            "name": "D'amour Muslim",
+            "url": "https://damourmuslim.com",
+            "logo": {
+              "@type": "ImageObject",
+              "url": "https://damourmuslim.com/images/android-chrome-192x192.png"
+            }
+          }
+        }
+      }<% if (i < podcasts.length - 1) { %>,<% } %>
+      <% }); %>
+    ]
+  }
+  </script>
+  <% } %>
+  <%- include('partials/clarity') %>
+  <%- include('partials/thirdparty') %>
+  <%- include('partials/analytics') %>
+</head>
+
+<body class="bg-gray-50 font-['Roboto']">
+  <%- include('partials/header') %>
+
+  <main class="pt-24 pb-16 min-h-screen">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6">
+
+      <!-- Hero -->
+      <div class="text-center mb-12">
+        <span class="inline-block bg-pink-100 text-pink-600 text-xs font-semibold uppercase tracking-widest px-3 py-1 rounded-full mb-4">Video Podcast</span>
+        <h1 class="text-4xl md:text-5xl font-bold text-gray-800 mb-4 font-['Playfair_Display']">D'amour Muslim Podcasts</h1>
+        <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+          Watch our video episodes on Islamic marriage, Muslim matchmaking, and building a halal relationship — straight from our YouTube channel.
+        </p>
+      </div>
+
+      <!-- Podcast Grid -->
+      <% if (podcasts && podcasts.length > 0) { %>
+      <div id="podcast-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-10">
+        <% podcasts.forEach(function(podcast) { %>
+        <article class="podcast-card bg-white rounded-xl overflow-hidden material-shadow cursor-pointer podcast-trigger"
+                 data-youtube-id="<%= podcast.youtubeId %>"
+                 data-title="<%= podcast.title.replace(/"/g, '&quot;') %>"
+                 role="button"
+                 tabindex="0"
+                 aria-label="Play: <%= podcast.title %>">
+          <!-- Thumbnail -->
+          <div class="thumb-wrapper">
+            <img
+              src="https://img.youtube.com/vi/<%= podcast.youtubeId %>/maxresdefault.jpg"
+              alt="<%= podcast.title %>"
+              loading="lazy"
+              onerror="this.src='https://img.youtube.com/vi/<%= podcast.youtubeId %>/hqdefault.jpg'"
+            />
+            <div class="play-overlay">
+              <div class="play-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>
+              </div>
+            </div>
+          </div>
+          <!-- Info -->
+          <div class="p-4">
+            <h2 class="text-sm font-semibold text-gray-800 leading-snug line-clamp-2"><%= podcast.title %></h2>
+            <% if (podcast.description) { %>
+            <p class="text-xs text-gray-500 mt-1 line-clamp-2"><%= podcast.description %></p>
+            <% } %>
+          </div>
+        </article>
+        <% }); %>
+      </div>
+
+      <!-- Pagination -->
+      <% if (totalPages > 1) { %>
+      <div id="pagination" class="flex items-center justify-center gap-2 mt-8">
+        <button class="pagination-btn" id="prev-btn" aria-label="Previous page" <%= currentPage <= 1 ? 'disabled' : '' %>>
+          <i class="ri-arrow-left-s-line"></i>
+        </button>
+
+        <% for (let p = 1; p <= totalPages; p++) { %>
+        <button class="pagination-btn <%= p === currentPage ? 'active' : '' %>" data-page="<%= p %>"><%= p %></button>
+        <% } %>
+
+        <button class="pagination-btn" id="next-btn" aria-label="Next page" <%= currentPage >= totalPages ? 'disabled' : '' %>>
+          <i class="ri-arrow-right-s-line"></i>
+        </button>
+      </div>
+      <% } %>
+
+      <% } else { %>
+      <!-- Empty state -->
+      <div class="text-center py-24">
+        <div class="w-20 h-20 bg-pink-100 rounded-full flex items-center justify-center mx-auto mb-6">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#E91E63" stroke-width="1.5"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+        </div>
+        <h2 class="text-2xl font-semibold text-gray-700 mb-2 font-['Playfair_Display']">No Episodes Yet</h2>
+        <p class="text-gray-500">Check back soon — new podcast episodes are coming.</p>
+      </div>
+      <% } %>
+
+    </div>
+  </main>
+
+  <%- include('partials/footer') %>
+
+  <!-- ======== MODAL ======== -->
+  <div id="podcast-modal" role="dialog" aria-modal="true" aria-label="Podcast video player">
+    <div id="podcast-modal-inner">
+      <button id="podcast-modal-close" aria-label="Close video">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+      </button>
+      <div id="modal-video-container"></div>
+    </div>
+  </div>
+
+  <!-- lite-youtube-embed JS (loaded after body content) -->
+  <script src="https://cdn.jsdelivr.net/npm/lite-youtube-embed@0.3.3/src/lite-yt-embed.js" defer></script>
+
+  <script>
+    (function () {
+      const modal = document.getElementById('podcast-modal');
+      const modalClose = document.getElementById('podcast-modal-close');
+      const videoContainer = document.getElementById('modal-video-container');
+
+      function openModal(youtubeId) {
+        videoContainer.innerHTML = '<lite-youtube videoid="' + youtubeId + '" params="autoplay=1&rel=0&modestbranding=1"></lite-youtube>';
+        modal.classList.add('open');
+        document.body.style.overflow = 'hidden';
+
+        // Wait for lite-youtube to be defined, then trigger click to auto-play
+        function tryPlay() {
+          const lyt = videoContainer.querySelector('lite-youtube');
+          if (lyt) {
+            if (window.customElements && window.customElements.get('lite-youtube')) {
+              lyt.click();
+            } else {
+              // lite-youtube not yet registered — retry shortly
+              setTimeout(tryPlay, 80);
+            }
+          }
+        }
+        setTimeout(tryPlay, 50);
+      }
+
+      function closeModal() {
+        modal.classList.remove('open');
+        document.body.style.overflow = '';
+        // Destroy the element entirely so audio stops
+        videoContainer.innerHTML = '';
+      }
+
+      // Trigger click on any podcast card
+      document.addEventListener('click', function (e) {
+        const trigger = e.target.closest('.podcast-trigger');
+        if (trigger) {
+          e.preventDefault();
+          const vid = trigger.getAttribute('data-youtube-id');
+          if (vid) openModal(vid);
+          return;
+        }
+        // Click outside the inner modal box closes it
+        if (e.target === modal) {
+          closeModal();
+        }
+      });
+
+      // Keyboard: Enter/Space on cards, Escape to close
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') { closeModal(); return; }
+        if ((e.key === 'Enter' || e.key === ' ') && document.activeElement.classList.contains('podcast-trigger')) {
+          e.preventDefault();
+          const vid = document.activeElement.getAttribute('data-youtube-id');
+          if (vid) openModal(vid);
+        }
+      });
+
+      modalClose.addEventListener('click', closeModal);
+
+      // ---- Pagination ----
+      const prevBtn = document.getElementById('prev-btn');
+      const nextBtn = document.getElementById('next-btn');
+      const pageButtons = document.querySelectorAll('.pagination-btn[data-page]');
+      let currentPage = <%= currentPage %>;
+
+      function goToPage(page) {
+        window.location.href = '/podcasts?page=' + page;
+      }
+
+      if (prevBtn) prevBtn.addEventListener('click', function () { goToPage(currentPage - 1); });
+      if (nextBtn) nextBtn.addEventListener('click', function () { goToPage(currentPage + 1); });
+      pageButtons.forEach(function (btn) {
+        btn.addEventListener('click', function () { goToPage(parseInt(btn.getAttribute('data-page'), 10)); });
+      });
+    })();
+  </script>
+</body>
+</html>

@@ -4,13 +4,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Muslim Marriage UK | Best Muslim Matchmaking Service London Leicester | D'amour Muslim</title>
+  <title><%= globalSeoSettings && globalSeoSettings.homepageMetaTitle ? globalSeoSettings.homepageMetaTitle : "Muslim Marriage UK | Halal Matchmaking Service | D'amour Muslim" %></title>
 
   <!-- SEO Meta Tags -->
-  <meta name="description" content="Find your perfect Muslim spouse through D'amour Muslim - the UK's leading halal marriage site. Verified Muslim profiles for marriage in London, Leicester & Birmingham. Trusted Islamic matrimonial service with Muslim rishta connections.">
+  <meta name="description" content="<%= globalSeoSettings && globalSeoSettings.homepageMetaDescription ? globalSeoSettings.homepageMetaDescription : "UK's most trusted Muslim marriage site. Verified profiles for halal rishta in London, Leicester & Birmingham. Free to join. Browse 1,000+ Muslim singles." %>">  
   <meta name="keywords" content="Muslim marriage UK, Muslim matchmaking London, halal marriage site, Muslim matrimonial UK, Islamic marriage site, Muslim rishta London, best Muslim marriage site, Muslim shaadi Birmingham, Pakistani Muslim wedding, verified Muslim profiles, halal Muslim marriage, Muslim arranged marriage, find Muslim spouse, online Muslim marriage, Muslim love marriage, Muslim marriage Leicester">
   <meta name="author" content="D'amour Muslim">
-  <link rel="canonical" href="https://www.damourmuslim.com">
+  <link rel="canonical" href="https://damourmuslim.com">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
@@ -20,23 +20,30 @@
 
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://www.damourmuslim.com/">
-  <meta property="og:title" content="Muslim Marriage UK | Best Muslim Matchmaking Service London Leicester">
-  <meta property="og:description" content="Join the UK's most trusted halal marriage site. Find verified Muslim profiles for marriage in London, Leicester & Birmingham. Islamic matrimonial service with proven results.">
-  <meta property="og:image" content="https://www.damourmuslim.com/images/homepageman.jpg">
+  <meta property="og:url" content="https://damourmuslim.com/">
+  <meta property="og:title" content="<%= globalSeoSettings && globalSeoSettings.homepageMetaTitle ? globalSeoSettings.homepageMetaTitle : 'Muslim Marriage UK | Best Muslim Matchmaking Service London Leicester' %>">
+  <meta property="og:description" content="<%= globalSeoSettings && globalSeoSettings.homepageMetaDescription ? globalSeoSettings.homepageMetaDescription : 'Join the UK\'s most trusted halal marriage site. Find verified Muslim profiles for marriage in London, Leicester & Birmingham. Islamic matrimonial service with proven results.' %>">
+  <meta property="og:image" content="https://damourmuslim.com/images/homepageman.jpg">
 
   <!-- Twitter -->
   <meta property="twitter:card" content="summary_large_image">
-  <meta property="twitter:url" content="https://www.damourmuslim.com/">
-  <meta property="twitter:title" content="Muslim Marriage UK | Best Muslim Matchmaking Service London Leicester">
-  <meta property="twitter:description" content="Discover your perfect Muslim spouse through the UK's leading Islamic matrimonial service. Verified profiles, halal connections.">
-  <meta property="twitter:image" content="https://www.damourmuslim.com/images/homepageman.jpg">
+  <meta property="twitter:url" content="https://damourmuslim.com/">
+  <meta property="twitter:title" content="<%= globalSeoSettings && globalSeoSettings.homepageMetaTitle ? globalSeoSettings.homepageMetaTitle : 'Muslim Marriage UK | Best Muslim Matchmaking Service London Leicester' %>">
+  <meta property="twitter:description" content="<%= globalSeoSettings && globalSeoSettings.homepageMetaDescription ? globalSeoSettings.homepageMetaDescription : 'Discover your perfect Muslim spouse through the UK\'s leading Islamic matrimonial service. Verified profiles, halal connections.' %>">
+  <meta property="twitter:image" content="https://damourmuslim.com/images/homepageman.jpg">
+
+  <!-- Preload hero images for LCP -->
+  <link rel="preload" as="image" href="https://res.cloudinary.com/dhuc2plh0/image/upload/c_fill,w_700,h_450,q_auto,f_auto/v1759650466/covermain_tfda9t.jpg" fetchpriority="high">
+  <link rel="preload" as="image" href="/images/homepagewoman.webp" type="image/webp" fetchpriority="high">
+
+  <!-- Preconnect to Cloudinary CDN -->
+  <link rel="preconnect" href="https://res.cloudinary.com" crossorigin>
+  <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
+  <link rel="dns-prefetch" href="//t.contentsquare.net">
 
   <link rel="stylesheet" href="/css/output.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Playfair+Display:wght@400;600;700&family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css"></noscript>
   <style>
     :where([class^="ri-"])::before {
       content: "\f3c2";
@@ -163,10 +170,10 @@
       "name": "D'amour Muslim",
       "alternateName": "Damour Muslim",
       "description": "UK's leading Muslim marriage and Islamic matrimonial service connecting Muslim singles in London, Leicester and Birmingham",
-      "url": "https://www.damourmuslim.com",
-      "logo": "https://www.damourmuslim.com/images/logo.png",
+      "url": "https://damourmuslim.com",
+      "logo": "https://damourmuslim.com/images/logo.png",
       "sameAs": [
-        "https://www.google.com/maps/place/D'Amour+Muslim/"
+        "https://google.com/maps/place/D'Amour+Muslim/"
       ],
       "contactPoint": {
         "@type": "ContactPoint",
@@ -192,11 +199,11 @@
       "@context": "https://schema.org",
       "@type": "WebSite",
       "name": "D'amour Muslim - Muslim Marriage UK",
-      "url": "https://www.damourmuslim.com",
+      "url": "https://damourmuslim.com",
       "description": "Best Muslim marriage site in UK for halal matchmaking in London, Leicester & Birmingham",
       "potentialAction": {
         "@type": "SearchAction",
-        "target": "https://www.damourmuslim.com/profiles?q={search_term_string}",
+        "target": "https://damourmuslim.com/profiles?q={search_term_string}",
         "query-input": "required name=search_term_string"
       }
     }
@@ -225,20 +232,137 @@
       }
     }
   </script>
-</head>
-<% if (isProd && !isAdmin) { %>
-<!-- Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=<%= GA_ID %>"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
 
-  function gtag() {
-    dataLayer.push(arguments);
-  }
-  gtag('js', new Date());
-  gtag('config', '<%= GA_ID %>');
-</script>
-<% } %>
+  <!-- AggregateRating + Review Schema -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "name": "D'amour Muslim",
+      "url": "https://damourmuslim.com",
+      "description": "UK's most trusted Muslim marriage and matchmaking service for halal matrimony in London, Leicester, Birmingham and across the United Kingdom.",
+      "image": "https://damourmuslim.com/images/homepageman.jpg",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "London",
+        "addressCountry": "GB"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.9",
+        "bestRating": "5",
+        "worstRating": "1",
+        "ratingCount": "127",
+        "reviewCount": "6"
+      },
+      "review": [
+        {
+          "@type": "Review",
+          "author": { "@type": "Person", "name": "Ahmed K." },
+          "datePublished": "2026-02-17",
+          "reviewBody": "I found my wife through D'amour Muslim, the best Muslim matchmaking platform in the UK. The service is genuine, privacy-focused, and rooted in Islamic values. Highly recommended for Muslims seeking halal marriage.",
+          "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" }
+        },
+        {
+          "@type": "Review",
+          "author": { "@type": "Person", "name": "Fatima S." },
+          "datePublished": "2026-03-17",
+          "reviewBody": "Excellent Muslim matrimony service! The profiles are authentic, the process is simple, and Alhamdulillah I found my spouse here. D'amour Muslim is perfect for serious Muslim marriage seekers in London and beyond.",
+          "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" }
+        },
+        {
+          "@type": "Review",
+          "author": { "@type": "Person", "name": "Mohammad A." },
+          "datePublished": "2026-03-27",
+          "reviewBody": "This is the best Muslim marriage platform I've ever used. It respects Islamic principles, offers privacy, and truly connects compatible matches. A must for anyone looking for Muslim matchmaking in the UK.",
+          "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" }
+        },
+        {
+          "@type": "Review",
+          "author": { "@type": "Person", "name": "Zainab H." },
+          "datePublished": "2026-04-10",
+          "reviewBody": "Professional and respectful service. The support team was very helpful, and the matchmaking system worked perfectly. I found my naseeb through this blessed Muslim marriage site in Leicester.",
+          "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" }
+        },
+        {
+          "@type": "Review",
+          "author": { "@type": "Person", "name": "Yusuf M." },
+          "datePublished": "2026-04-03",
+          "reviewBody": "Trustworthy and reliable — D'amour Muslim is my go-to for Muslim matrimony. Easy to use, full of genuine profiles, and most importantly, it delivers results. Highly recommend for Muslims in London looking for marriage.",
+          "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" }
+        },
+        {
+          "@type": "Review",
+          "author": { "@type": "Person", "name": "Aisha R." },
+          "datePublished": "2026-04-13",
+          "reviewBody": "Amazing Muslim matchmaking experience! The platform balances Islamic values with modern features, making it easy to connect with serious Muslims. BarakAllahu feeki for creating such a trusted UK matrimonial service.",
+          "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" }
+        }
+      ]
+    }
+  </script>
+
+  <!-- FAQ Schema (GEO) -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is the safest Muslim matrimony site in the UK?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "D'amour Muslim is the safest Muslim matrimony site in the UK. Every profile is manually verified by our team before approval. We enforce strict privacy controls — your phone number is never shared without your consent. The platform is built exclusively for serious halal marriage, not casual dating, and is designed with Islamic values and GDPR compliance at its core."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How does Muslim matchmaking work at D'amour Muslim?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "You create a free profile (or a parent/guardian can register on your behalf), our team manually verifies it, and your profile is shared across our platform and 10+ dedicated WhatsApp groups. Premium members receive 1–2 hand-picked, preference-matched profiles every week. Our Executive plan offers fully managed communication — we handle enquiries on your behalf so you can focus on finding the right match."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is D'amour Muslim free to join?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, the Standard plan is completely free. You can create a profile, browse all profiles on the website and in WhatsApp groups, and receive direct contact details. Paid plans (Premium from £50, Premium Plus from £100, Executive from £150) unlock additional features like curated weekly matches, privacy protection, and fully managed matchmaking."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the best Muslim marriage site for Pakistani Muslims in the UK?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "D'amour Muslim is widely regarded as the best Muslim marriage site for Pakistani Muslims in the UK. We have a large, active community of Pakistani Muslim singles and families in London, Birmingham, Leicester, Manchester, Bradford, and Leeds. Our service understands the cultural nuances of Pakistani Muslim weddings while keeping the process halal and family-focused."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can parents or guardians register on behalf of their child?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Absolutely. D'amour Muslim encourages family involvement in the marriage process. Parents, guardians, or siblings can create a profile on behalf of their family member. Many of our most successful matches begin with family-created profiles. Our team works closely with families to ensure the process is respectful and aligned with Islamic principles."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does D'amour Muslim offer a money-back guarantee?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. D'amour Muslim offers a 100% money-back guarantee. If you are not satisfied within the first 15 days, you receive a full refund — no questions asked. For paid plans, if we fail to deliver the committed services (such as curated matches), refunds are available according to our refund policy."
+          }
+        }
+      ]
+    }
+  </script>
+  <%- include('partials/clarity') %>
+  <%- include('partials/thirdparty') %>
+  <%- include('partials/analytics') %>
+</head>
 
 <body class="bg-gray-50 font-['Roboto']">
   <%- include('partials/header') %>
@@ -255,10 +379,10 @@
       </div>
 
       <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-        <a href="/profiles?gender=male" class="bg-white rounded-2xl material-shadow hover:material-shadow-hover transition-all duration-300 cursor-pointer group overflow-hidden">
+        <a href="/profiles?gender=male" data-track="true" data-event-name="browse_men_click" data-category="engagement" data-label="Browse Muslim Men" class="bg-white rounded-2xl material-shadow hover:material-shadow-hover transition-all duration-300 cursor-pointer group overflow-hidden">
           <div class="p-8 text-center">
             <div class="mb-6 relative">
-              <img src="https://res.cloudinary.com/dhuc2plh0/image/upload/v1759650466/covermain_tfda9t.jpg" alt="Muslim men for marriage in UK - halal matchmaking service London Leicester" class="w-full h-64 object-cover object-top rounded-xl group-hover:scale-105 transition-transform duration-500">
+              <img src="https://res.cloudinary.com/dhuc2plh0/image/upload/c_fill,w_700,h_450,q_auto,f_auto/v1759650466/covermain_tfda9t.jpg" srcset="https://res.cloudinary.com/dhuc2plh0/image/upload/c_fill,w_400,h_260,q_auto,f_auto/v1759650466/covermain_tfda9t.jpg 400w, https://res.cloudinary.com/dhuc2plh0/image/upload/c_fill,w_700,h_450,q_auto,f_auto/v1759650466/covermain_tfda9t.jpg 700w" sizes="(max-width: 768px) 100vw, 50vw" alt="Muslim men for marriage in UK - halal matchmaking service London Leicester" class="w-full h-64 object-cover object-top rounded-xl group-hover:scale-105 transition-transform duration-500" width="700" height="450" fetchpriority="high">
             </div>
             <h3 class="text-3xl font-bold text-gray-800 mb-4 font-['Playfair_Display'] group-hover:text-primary transition-colors duration-300">Muslim Men for Marriage</h3>
             <p class="text-gray-600 mb-6">Find your ideal Muslim husband among verified profiles of practising Muslim men seeking halal marriage in London, Leicester and across the UK. Connect with Pakistani, Bangladeshi, and Muslim men from all backgrounds.</p>
@@ -270,10 +394,13 @@
           </div>
         </a>
 
-        <a href="/profiles?gender=female" class="bg-white rounded-2xl material-shadow hover:material-shadow-hover transition-all duration-300 cursor-pointer group overflow-hidden">
+        <a href="/profiles?gender=female" data-track="true" data-event-name="browse_women_click" data-category="engagement" data-label="Browse Muslim Women" class="bg-white rounded-2xl material-shadow hover:material-shadow-hover transition-all duration-300 cursor-pointer group overflow-hidden">
           <div class="p-8 text-center">
             <div class="mb-6 relative">
-              <img src="/images/homepagewoman.jpg" alt="Muslim women for marriage UK - Islamic matrimonial service Birmingham London" class="w-full h-64 object-cover object-top rounded-xl group-hover:scale-105 transition-transform duration-500">
+              <picture>
+                <source type="image/webp" srcset="/images/homepagewoman.webp">
+                <img src="/images/homepagewoman.jpg" alt="Muslim women for marriage UK - Islamic matrimonial service Birmingham London" class="w-full h-64 object-cover object-top rounded-xl group-hover:scale-105 transition-transform duration-500" width="700" height="450" fetchpriority="high">
+              </picture>
             </div>
             <h3 class="text-3xl font-bold text-gray-800 mb-4 font-['Playfair_Display'] group-hover:text-primary transition-colors duration-300">Muslim Women for Marriage</h3>
             <p class="text-gray-600 mb-6">Connect with Muslim women seeking serious halal marriage. Browse verified profiles of practising Muslim women in London, Birmingham, Leicester ready for Islamic matrimony and arranged marriage.</p>
@@ -287,38 +414,188 @@
         </a>
       </div>
 
-      <div class="text-center mt-16">
-        <div class="inline-flex flex-wrap items-center justify-center gap-6 text-gray-500">
-          <div class="flex items-center gap-2">
-            <div class="w-5 h-5 flex items-center justify-center text-primary">
-              <i class="ri-shield-check-line"></i>
+    </div>
+
+    <!-- Trust Bar Section -->
+    <div class="bg-white py-8 mt-16 border-y border-gray-100">
+      <div class="max-w-6xl mx-auto px-6">
+        <div class="flex flex-wrap items-center justify-center gap-8 md:gap-12">
+          <div class="flex items-center gap-3">
+            <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
+              <i class="ri-shield-check-line text-2xl text-primary"></i>
             </div>
-            <span class="text-sm">Verified Muslim Profiles</span>
+            <div>
+              <p class="font-semibold text-gray-800">Verified Profiles</p>
+              <p class="text-sm text-gray-500">Every user is moderated</p>
+            </div>
           </div>
-          <div class="flex items-center gap-2">
-            <div class="w-5 h-5 flex items-center justify-center text-primary">
-              <i class="ri-heart-line"></i>
+          <div class="flex items-center gap-3">
+            <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
+              <i class="ri-heart-3-line text-2xl text-primary"></i>
             </div>
-            <span class="text-sm">Halal Marriage Focus</span>
+            <div>
+              <p class="font-semibold text-gray-800">Halal Only</p>
+              <p class="text-sm text-gray-500">Marriage-focused platform</p>
+            </div>
           </div>
-          <div class="flex items-center gap-2">
-            <div class="w-5 h-5 flex items-center justify-center text-primary">
-              <i class="ri-lock-line"></i>
+          <div class="flex items-center gap-3">
+            <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
+              <i class="ri-lock-line text-2xl text-primary"></i>
             </div>
-            <span class="text-sm">UK's Best Muslim Marriage Site</span>
+            <div>
+              <p class="font-semibold text-gray-800">Privacy First</p>
+              <p class="text-sm text-gray-500">Your data stays protected</p>
+            </div>
           </div>
-          <div class="flex items-center gap-2">
-            <div class="w-5 h-5 flex items-center justify-center text-primary">
-              <i class="ri-map-pin-line"></i>
+          <div class="flex items-center gap-3">
+            <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
+              <i class="ri-map-pin-line text-2xl text-primary"></i>
             </div>
-            <span class="text-sm">London • Leicester • Birmingham</span>
+            <div>
+              <p class="font-semibold text-gray-800">UK Focused</p>
+              <p class="text-sm text-gray-500">London • Leicester • Birmingham</p>
+            </div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- **NEW**: Reviews Section -->
-    <div class="mt-24 py-16 px-6 reviews-section relative overflow-hidden" style="background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 30%, #fce7f3 70%, #faf5ff 100%);">
+    <!-- How It Works Section -->
+    <div class="py-20 bg-gray-50">
+      <div class="max-w-6xl mx-auto px-6">
+        <div class="text-center mb-16">
+          <h2 class="text-4xl font-bold text-gray-800 mb-4 font-['Playfair_Display']">How It Works</h2>
+          <p class="text-lg text-gray-600 max-w-2xl mx-auto">Find your Muslim spouse in four simple steps</p>
+        </div>
+
+        <div class="grid md:grid-cols-4 gap-8">
+          <!-- Step 1 -->
+          <div class="text-center group">
+            <div class="relative mb-6">
+              <div class="w-20 h-20 mx-auto bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center text-white text-3xl font-bold group-hover:scale-110 transition-transform duration-300">
+                1
+              </div>
+              <div class="hidden md:block absolute top-1/2 left-full w-full h-0.5 bg-gradient-to-r from-primary/50 to-transparent -translate-y-1/2"></div>
+            </div>
+            <h3 class="text-xl font-bold text-gray-800 mb-2">Create Your Free Profile</h3>
+            <p class="text-gray-600">Takes 2 minutes — no payment required</p>
+          </div>
+
+          <!-- Step 2 -->
+          <div class="text-center group">
+            <div class="relative mb-6">
+              <div class="w-20 h-20 mx-auto bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center text-white text-3xl font-bold group-hover:scale-110 transition-transform duration-300">
+                2
+              </div>
+              <div class="hidden md:block absolute top-1/2 left-full w-full h-0.5 bg-gradient-to-r from-primary/50 to-transparent -translate-y-1/2"></div>
+            </div>
+            <h3 class="text-xl font-bold text-gray-800 mb-2">Browse Verified UK Muslim Profiles</h3>
+            <p class="text-gray-600">Filter by city, age, background and more</p>
+          </div>
+
+          <!-- Step 3 -->
+          <div class="text-center group">
+            <div class="relative mb-6">
+              <div class="w-20 h-20 mx-auto bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center text-white text-3xl font-bold group-hover:scale-110 transition-transform duration-300">
+                3
+              </div>
+              <div class="hidden md:block absolute top-1/2 left-full w-full h-0.5 bg-gradient-to-r from-primary/50 to-transparent -translate-y-1/2"></div>
+            </div>
+            <h3 class="text-xl font-bold text-gray-800 mb-2">Send Connection Requests</h3>
+            <p class="text-gray-600">You are in full control of who you connect with</p>
+          </div>
+
+          <!-- Step 4 -->
+          <div class="text-center group">
+            <div class="relative mb-6">
+              <div class="w-20 h-20 mx-auto bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center text-white text-3xl font-bold group-hover:scale-110 transition-transform duration-300">
+                4
+              </div>
+            </div>
+            <h3 class="text-xl font-bold text-gray-800 mb-2">Connect Through Halal Chat</h3>
+            <p class="text-gray-600">Respectful, private, and purpose-built for marriage</p>
+          </div>
+        </div>
+
+        <!-- CTAs -->
+        <div class="flex flex-wrap items-center justify-center gap-4 mt-12">
+          <a href="/register" data-track="true" data-event-name="cta_register_click" data-category="cta" data-label="Create Your Free Profile" class="gradient-bg text-white font-bold py-4 px-8 rounded-button hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 ripple text-lg">
+            <i class="ri-user-add-line mr-2"></i>Create Your Free Profile
+          </a>
+          <a href="/profiles" data-track="true" data-event-name="cta_browse_profiles" data-category="cta" data-label="Browse Profiles" class="bg-white text-primary font-bold py-4 px-8 rounded-button border-2 border-primary hover:bg-primary hover:text-white transition-all duration-300 text-lg">
+            <i class="ri-search-line mr-2"></i>Browse Profiles
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Muslim Marriage Across UK Cities Section -->
+    <!-- Recently Added by Our Team Section -->
+    <% if (typeof staffAddedProfiles !== 'undefined' && staffAddedProfiles.length > 0) { %>
+    <div class="py-20 bg-gray-50">
+      <div class="max-w-6xl mx-auto px-6">
+        <div class="text-center mb-12">
+          <h2 class="text-4xl font-bold text-gray-800 mb-4 font-['Playfair_Display']">Recently Added by Our Team</h2>
+          <p class="text-lg text-gray-600 max-w-2xl mx-auto">Hand-picked profiles added and verified by our matchmaking team</p>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+          <% staffAddedProfiles.slice(0, 4).forEach(function(profile) { %>
+            <a href="/profiles/<%= profile.profileSlug || profile._id %>" data-track="true" data-event-name="staff_profile_card_click" data-category="engagement" data-label="<%= profile.name || profile.username %>" class="bg-white rounded-2xl overflow-hidden material-shadow hover:material-shadow-hover transition-all duration-300 block group">
+              <div class="aspect-[4/5] relative overflow-hidden bg-gray-100">
+                <% if (profile.profilePic && profile.profilePic.url) { %>
+                  <img src="<%= profile.profilePic.url.replace('/upload/', '/upload/c_fill,w_300,h_400,q_auto,f_auto/') %>" srcset="<%= profile.profilePic.url.replace('/upload/', '/upload/c_fill,w_200,h_267,q_auto,f_auto/') %> 200w, <%= profile.profilePic.url.replace('/upload/', '/upload/c_fill,w_300,h_400,q_auto,f_auto/') %> 300w, <%= profile.profilePic.url.replace('/upload/', '/upload/c_fill,w_400,h_533,q_auto,f_auto/') %> 400w" sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 300px" alt="<%= profile.name || profile.username %><%= profile.age ? ', ' + profile.age + ' year old' : '' %><%= profile.work ? ' ' + profile.work : '' %> - Muslim marriage profile<%= profile.city ? ' in ' + profile.city : '' %>" class="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500" loading="lazy" width="300" height="400">
+                <% } else { %>
+                  <div class="w-full h-full bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center">
+                    <i class="ri-user-3-line text-6xl text-primary/40"></i>
+                  </div>
+                <% } %>
+                <div class="absolute top-2 right-2 bg-green-500 text-white px-2 py-1 rounded-full text-xs font-medium flex items-center gap-1">
+                  <i class="ri-shield-check-line"></i> Staff Verified
+                </div>
+              </div>
+              <div class="p-4 text-center">
+                <h4 class="font-semibold text-gray-800 mb-1"><%= profile.name || profile.username %><% if (profile.age) { %>, <%= profile.age %><% } %></h4>
+                <p class="text-sm text-gray-500"><i class="ri-map-pin-line"></i> <%= profile.city || 'UK' %></p>
+                <% if (profile.work) { %>
+                <p class="text-xs text-gray-400 mt-1"><%= profile.work %></p>
+                <% } %>
+              </div>
+            </a>
+          <% }); %>
+        </div>
+
+        <div class="text-center mt-10">
+          <a href="/profiles/addedBy/staff" data-track="true" data-event-name="staff_profiles_view_more" data-category="engagement" data-label="View More Staff-Added Profiles" class="inline-flex items-center gap-2 gradient-bg text-white font-semibold py-3 px-8 rounded-button hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-300">
+            View More Staff-Added Profiles <i class="ri-arrow-right-line"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+    <% } %>
+
+    <!-- Muslim Marriage Across UK Cities Section -->
+    <div class="py-20 bg-white">
+      <div class="max-w-4xl mx-auto px-6 text-center">
+        <h2 class="text-4xl font-bold text-gray-800 mb-6 font-['Playfair_Display']">Muslim Marriage Across Every Major UK City</h2>
+        <p class="text-lg text-gray-700 leading-relaxed mb-8">
+          D'amour Muslim connects serious Muslims seeking halal marriage across the UK — including London, Birmingham, Manchester, Bradford, Leeds, Leicester, Sheffield, and beyond. Whether you are searching for a Muslim spouse nearby or across the country, our verified profiles and halal matchmaking process make the journey easier, safer, and more dignified.
+        </p>
+        <div class="flex flex-wrap items-center justify-center gap-3 text-gray-600">
+          <span class="px-4 py-2 bg-white/80 rounded-full text-sm font-medium">London</span>
+          <span class="px-4 py-2 bg-white/80 rounded-full text-sm font-medium">Birmingham</span>
+          <span class="px-4 py-2 bg-white/80 rounded-full text-sm font-medium">Manchester</span>
+          <span class="px-4 py-2 bg-white/80 rounded-full text-sm font-medium">Bradford</span>
+          <span class="px-4 py-2 bg-white/80 rounded-full text-sm font-medium">Leeds</span>
+          <span class="px-4 py-2 bg-white/80 rounded-full text-sm font-medium">Leicester</span>
+          <span class="px-4 py-2 bg-white/80 rounded-full text-sm font-medium">Sheffield</span>
+          <span class="px-4 py-2 bg-white/80 rounded-full text-sm font-medium">& More</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Success Stories / Reviews Section -->
+    <div class="py-20 px-6 reviews-section relative overflow-hidden" style="background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 30%, #fce7f3 70%, #faf5ff 100%);">
       <!-- Background Pattern -->
       <div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(circle at 20% 30%, rgba(59, 130, 246, 0.15) 0%, transparent 50%), radial-gradient(circle at 80% 70%, rgba(147, 51, 234, 0.15) 0%, transparent 50%);"></div>
 
@@ -485,6 +762,55 @@
           </div>
         </div>
 
+        <!-- Halal Marriage Guide Lead Magnet -->
+        <!-- <div class="mt-16 mb-4">
+  <div class="relative rounded-3xl overflow-hidden" style="background: linear-gradient(135deg, #fdf2f8 0%, #ffffff 50%, #f8fafc 100%); border: 1px solid rgba(233,30,99,0.1);">
+    <div class="absolute top-0 right-0 w-48 h-48 rounded-full opacity-30" style="background: radial-gradient(circle, #fbcfe8, transparent); transform: translate(30%, -30%);"></div>
+    <div class="absolute bottom-0 left-0 w-40 h-40 rounded-full opacity-30" style="background: radial-gradient(circle, #e9d5ff, transparent); transform: translate(-30%, 30%);"></div>
+
+    <div class="relative px-8 py-12 text-center">
+      <div class="inline-flex items-center gap-2 bg-white/80 backdrop-blur-sm rounded-full px-4 py-2 mb-6 shadow-sm border border-pink-100">
+        <span class="text-lg">📖</span>
+        <span class="text-sm font-semibold text-gray-700 uppercase tracking-wide">Free Download</span>
+      </div>
+
+      <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-3 font-['Playfair_Display']">Get FREE Halal Marriage Guide (UK)</h2>
+      <p class="text-lg text-gray-600 mb-8 max-w-xl mx-auto">Learn how to find a practising Muslim spouse the halal way</p>
+
+      <form id="guideDownloadForm" class="max-w-md mx-auto flex flex-col sm:flex-row gap-3" novalidate>
+        <input
+          type="email"
+          id="guideEmail"
+          name="email"
+          placeholder="Enter your email address"
+          autocomplete="email"
+          required
+          class="flex-1 px-5 py-3.5 rounded-xl border border-gray-200 bg-white text-gray-800 placeholder-gray-400 focus:outline-none focus:border-pink-400 focus:ring-2 focus:ring-pink-200 transition-all duration-200 text-base shadow-sm"
+        />
+        <button
+          type="submit"
+          id="guideSubmitBtn"
+          class="whitespace-nowrap px-7 py-3.5 rounded-xl font-bold text-white text-base transition-all duration-300 hover:shadow-xl hover:-translate-y-0.5 ripple"
+          style="background: linear-gradient(135deg, #E91E63 0%, #673AB7 100%);"
+        >
+          📥 Download Free Guide
+        </button>
+      </form>
+
+      <div id="guideSuccess" class="hidden mt-5 inline-flex items-center gap-2 bg-green-50 border border-green-200 text-green-700 rounded-xl px-5 py-3 text-sm font-medium">
+        <i class="ri-checkbox-circle-fill text-lg"></i>
+        <span>The guide has been sent to your inbox! Check your email (and spam folder).</span>
+      </div>
+      <div id="guideError" class="hidden mt-5 inline-flex items-center gap-2 bg-red-50 border border-red-200 text-red-600 rounded-xl px-5 py-3 text-sm font-medium">
+        <i class="ri-error-warning-line text-lg"></i>
+        <span id="guideErrorText">Something went wrong. Please try again.</span>
+      </div>
+
+      <p class="text-xs text-gray-400 mt-5">No spam, ever. We respect your privacy.</p>
+    </div>
+  </div>
+</div> -->
+
         <!-- Add Review CTA -->
         <!-- Share Your Experience - Integrated -->
         <div class="mt-12 relative">
@@ -529,10 +855,225 @@
         </div>
       </div> <!-- Close relative max-w-7xl mx-auto -->
     </div> <!-- Close reviews-section -->
+
+    <!-- Why Choose Us Section -->
+    <div class="py-20 bg-white">
+      <div class="max-w-6xl mx-auto px-6">
+        <div class="text-center mb-16">
+          <h2 class="text-4xl font-bold text-gray-800 mb-4 font-['Playfair_Display']">Why Muslims Across the UK Choose D'amour Muslim</h2>
+          <p class="text-lg text-gray-600 max-w-2xl mx-auto">The trusted platform for serious, halal marriage seekers</p>
+        </div>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <!-- Feature 1 -->
+          <div class="bg-gray-50 rounded-2xl p-8 hover:bg-white hover:shadow-xl transition-all duration-300 border border-gray-100">
+            
+            <h3 class="text-xl font-bold text-gray-800 mb-3">Halal Only</h3>
+            <p class="text-gray-600">Serious marriage — never casual dating or socialising. Every connection is purposeful and respectful.</p>
+          </div>
+
+          <!-- Feature 2 -->
+          <div class="bg-gray-50 rounded-2xl p-8 hover:bg-white hover:shadow-xl transition-all duration-300 border border-gray-100">
+           
+            <h3 class="text-xl font-bold text-gray-800 mb-3">UK-Focused</h3>
+            <p class="text-gray-600">Built for British Muslims, not a generic global app. We understand the needs of the UK Muslim community.</p>
+          </div>
+
+          <!-- Feature 3 -->
+          <div class="bg-gray-50 rounded-2xl p-8 hover:bg-white hover:shadow-xl transition-all duration-300 border border-gray-100">
+           
+            <h3 class="text-xl font-bold text-gray-800 mb-3">Verified Profiles</h3>
+            <p class="text-gray-600">Real people with real intentions — moderated and approved. No fake profiles or time wasters.</p>
+          </div>
+
+          <!-- Feature 4 -->
+          <div class="bg-gray-50 rounded-2xl p-8 hover:bg-white hover:shadow-xl transition-all duration-300 border border-gray-100">
+            
+            <h3 class="text-xl font-bold text-gray-800 mb-3">Privacy by Design</h3>
+            <p class="text-gray-600">Your personal details stay protected at every step. Control who sees your profile and information.</p>
+          </div>
+
+          <!-- Feature 5 -->
+          <div class="bg-gray-50 rounded-2xl p-8 hover:bg-white hover:shadow-xl transition-all duration-300 border border-gray-100">
+            
+            <h3 class="text-xl font-bold text-gray-800 mb-3">Personal Support</h3>
+            <p class="text-gray-600">Our team is here if you need guidance along the way. Real humans ready to help you find your naseeb.</p>
+          </div>
+
+          <!-- Feature 6 -->
+          <div class="bg-gray-50 rounded-2xl p-8 hover:bg-white hover:shadow-xl transition-all duration-300 border border-gray-100">
+            
+            <h3 class="text-xl font-bold text-gray-800 mb-3">Free to Join</h3>
+            <p class="text-gray-600">Create your profile and browse matches completely free. No hidden costs to get started.</p>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <!-- **NEW**: Newsletter Section -->
-    <div class="mt-12 relative overflow-hidden">
+    <!-- Frequently Asked Questions Section (GEO-optimised) -->
+    <div class="py-20 bg-gray-50">
+      <div class="max-w-4xl mx-auto px-6">
+        <div class="text-center mb-12">
+          <h2 class="text-4xl font-bold text-gray-800 mb-4 font-['Playfair_Display']">Frequently Asked Questions About Muslim Marriage in the UK</h2>
+          <p class="text-lg text-gray-600 max-w-2xl mx-auto">Everything you need to know about finding a halal spouse through D'amour Muslim</p>
+        </div>
+
+        <div class="space-y-6">
+          <details class="bg-white rounded-2xl material-shadow overflow-hidden group" open>
+            <summary class="flex items-center justify-between p-6 cursor-pointer hover:bg-gray-50 transition-colors">
+              <h3 class="text-lg font-semibold text-gray-800 pr-4">What is the safest Muslim matrimony site in the UK?</h3>
+              <i class="ri-arrow-down-s-line text-2xl text-gray-400 group-open:rotate-180 transition-transform duration-300 flex-shrink-0"></i>
+            </summary>
+            <div class="px-6 pb-6 text-gray-600 leading-relaxed">
+              <p>D'amour Muslim is the safest Muslim matrimony site in the UK. Every profile is manually verified by our team before approval. We enforce strict privacy controls — your phone number is never shared without your consent. The platform is built exclusively for serious halal marriage, not casual dating, and is designed with Islamic values and GDPR compliance at its core.</p>
+            </div>
+          </details>
+
+          <details class="bg-white rounded-2xl material-shadow overflow-hidden group">
+            <summary class="flex items-center justify-between p-6 cursor-pointer hover:bg-gray-50 transition-colors">
+              <h3 class="text-lg font-semibold text-gray-800 pr-4">How does Muslim matchmaking work at D'amour Muslim?</h3>
+              <i class="ri-arrow-down-s-line text-2xl text-gray-400 group-open:rotate-180 transition-transform duration-300 flex-shrink-0"></i>
+            </summary>
+            <div class="px-6 pb-6 text-gray-600 leading-relaxed">
+              <p>You create a free profile (or a parent/guardian can register on your behalf), our team manually verifies it, and your profile is shared across our platform and 10+ dedicated WhatsApp groups. Premium members receive 1–2 hand-picked, preference-matched profiles every week. Our Executive plan offers fully managed communication — we handle enquiries on your behalf so you can focus on finding the right match.</p>
+            </div>
+          </details>
+
+          <details class="bg-white rounded-2xl material-shadow overflow-hidden group">
+            <summary class="flex items-center justify-between p-6 cursor-pointer hover:bg-gray-50 transition-colors">
+              <h3 class="text-lg font-semibold text-gray-800 pr-4">Is D'amour Muslim free to join?</h3>
+              <i class="ri-arrow-down-s-line text-2xl text-gray-400 group-open:rotate-180 transition-transform duration-300 flex-shrink-0"></i>
+            </summary>
+            <div class="px-6 pb-6 text-gray-600 leading-relaxed">
+              <p>Yes, the Standard plan is completely free. You can create a profile, browse all profiles on the website and in WhatsApp groups, and receive direct contact details. Paid plans (Premium from £50, Premium Plus from £100, Executive from £150) unlock additional features like curated weekly matches, privacy protection, and fully managed matchmaking.</p>
+            </div>
+          </details>
+
+          <details class="bg-white rounded-2xl material-shadow overflow-hidden group">
+            <summary class="flex items-center justify-between p-6 cursor-pointer hover:bg-gray-50 transition-colors">
+              <h3 class="text-lg font-semibold text-gray-800 pr-4">What is the best Muslim marriage site for Pakistani Muslims in the UK?</h3>
+              <i class="ri-arrow-down-s-line text-2xl text-gray-400 group-open:rotate-180 transition-transform duration-300 flex-shrink-0"></i>
+            </summary>
+            <div class="px-6 pb-6 text-gray-600 leading-relaxed">
+              <p>D'amour Muslim is widely regarded as the best Muslim marriage site for Pakistani Muslims in the UK. We have a large, active community of Pakistani Muslim singles and families in London, Birmingham, Leicester, Manchester, Bradford, and Leeds. Our service understands the cultural nuances of Pakistani Muslim weddings while keeping the process halal and family-focused.</p>
+            </div>
+          </details>
+
+          <details class="bg-white rounded-2xl material-shadow overflow-hidden group">
+            <summary class="flex items-center justify-between p-6 cursor-pointer hover:bg-gray-50 transition-colors">
+              <h3 class="text-lg font-semibold text-gray-800 pr-4">Can parents or guardians register on behalf of their child?</h3>
+              <i class="ri-arrow-down-s-line text-2xl text-gray-400 group-open:rotate-180 transition-transform duration-300 flex-shrink-0"></i>
+            </summary>
+            <div class="px-6 pb-6 text-gray-600 leading-relaxed">
+              <p>Absolutely. D'amour Muslim encourages family involvement in the marriage process. Parents, guardians, or siblings can create a profile on behalf of their family member. Many of our most successful matches begin with family-created profiles. Our team works closely with families to ensure the process is respectful and aligned with Islamic principles.</p>
+            </div>
+          </details>
+
+          <details class="bg-white rounded-2xl material-shadow overflow-hidden group">
+            <summary class="flex items-center justify-between p-6 cursor-pointer hover:bg-gray-50 transition-colors">
+              <h3 class="text-lg font-semibold text-gray-800 pr-4">Does D'amour Muslim offer a money-back guarantee?</h3>
+              <i class="ri-arrow-down-s-line text-2xl text-gray-400 group-open:rotate-180 transition-transform duration-300 flex-shrink-0"></i>
+            </summary>
+            <div class="px-6 pb-6 text-gray-600 leading-relaxed">
+              <p>Yes. D'amour Muslim offers a 100% money-back guarantee. If you are not satisfied within the first 15 days, you receive a full refund — no questions asked. For paid plans, if we fail to deliver the committed services (such as curated matches), refunds are available according to our refund policy.</p>
+            </div>
+          </details>
+        </div>
+      </div>
+    </div>
+
+    <!-- Blog / SEO Section -->
+    <div class="py-20 bg-gray-50">
+      <div class="max-w-6xl mx-auto px-6">
+        <div class="text-center mb-12">
+          <h2 class="text-4xl font-bold text-gray-800 mb-4 font-['Playfair_Display']">Muslim Marriage Advice &amp; Guides</h2>
+          <p class="text-lg text-gray-600 max-w-2xl mx-auto">Read our latest guides on halal marriage, rishta advice, and Islamic matrimony tips for UK Muslims.</p>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-8">
+          <!-- Blog 1 -->
+          <a href="/blog/uk-rishta-whatsapp-group" class="bg-white rounded-2xl material-shadow hover:material-shadow-hover transition-all duration-300 group overflow-hidden block">
+            <div class="p-6">
+              <div class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mb-4">
+                <i class="ri-whatsapp-line text-2xl text-primary"></i>
+              </div>
+              <h3 class="text-lg font-bold text-gray-800 mb-2 group-hover:text-primary transition-colors duration-300">UK Rishta WhatsApp Groups — What You Need to Know</h3>
+              <p class="text-gray-600 text-sm leading-relaxed">Find out everything about rishta WhatsApp groups for UK Muslims — benefits, risks, and a better alternative for serious marriage seekers.</p>
+              <div class="flex items-center gap-2 mt-4 text-primary text-sm font-medium">
+                <span>Read Guide</span><i class="ri-arrow-right-line group-hover:translate-x-1 transition-transform duration-300"></i>
+              </div>
+            </div>
+          </a>
+
+          <!-- Blog 2 -->
+          <a href="/blog/how-to-find-a-muslim-spouse-in-the-uk-simple-real-guide" class="bg-white rounded-2xl material-shadow hover:material-shadow-hover transition-all duration-300 group overflow-hidden block">
+            <div class="p-6">
+              <div class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mb-4">
+                <i class="ri-search-heart-line text-2xl text-primary"></i>
+              </div>
+              <h3 class="text-lg font-bold text-gray-800 mb-2 group-hover:text-primary transition-colors duration-300">How To Find a Muslim Spouse in the UK — Simple, Real Guide</h3>
+              <p class="text-gray-600 text-sm leading-relaxed">A practical, no-nonsense guide for UK Muslims on how to find a spouse the halal way — from mindset and family to the right platforms.</p>
+              <div class="flex items-center gap-2 mt-4 text-primary text-sm font-medium">
+                <span>Read Guide</span><i class="ri-arrow-right-line group-hover:translate-x-1 transition-transform duration-300"></i>
+              </div>
+            </div>
+          </a>
+
+          <!-- Blog 3 -->
+          <a href="/blog/benefits-of-halal-matchmaking-services-uk-muslim-marriage-rishta-guide" class="bg-white rounded-2xl material-shadow hover:material-shadow-hover transition-all duration-300 group overflow-hidden block">
+            <div class="p-6">
+              <div class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mb-4">
+                <i class="ri-heart-2-line text-2xl text-primary"></i>
+              </div>
+              <h3 class="text-lg font-bold text-gray-800 mb-2 group-hover:text-primary transition-colors duration-300">Benefits of Halal Matchmaking Services — UK Muslim Marriage Guide</h3>
+              <p class="text-gray-600 text-sm leading-relaxed">Discover why halal matchmaking is the trusted choice for serious UK Muslims seeking rishta and marriage — with real benefits explained.</p>
+              <div class="flex items-center gap-2 mt-4 text-primary text-sm font-medium">
+                <span>Read Guide</span><i class="ri-arrow-right-line group-hover:translate-x-1 transition-transform duration-300"></i>
+              </div>
+            </div>
+          </a>
+        </div>
+
+        <div class="text-center mt-10">
+          <a href="/blog" class="inline-flex items-center gap-2 gradient-bg text-white font-semibold py-3 px-8 rounded-button hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
+            <i class="ri-article-line"></i>
+            <span>View All Guides &amp; Advice</span>
+            <i class="ri-arrow-right-line"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA Section -->
+    <div class="py-20 gradient-bg relative overflow-hidden">
+      <!-- Background decorative elements -->
+      <div class="absolute inset-0 opacity-10">
+        <div class="absolute top-10 left-10 w-32 h-32 border-2 border-white rounded-full"></div>
+        <div class="absolute bottom-10 right-10 w-48 h-48 border-2 border-white rounded-full"></div>
+        <div class="absolute top-1/2 left-1/4 w-24 h-24 border border-white rounded-full"></div>
+      </div>
+
+      <div class="relative max-w-4xl mx-auto px-6 text-center">
+        <h2 class="text-4xl md:text-5xl font-bold text-white mb-6 font-['Playfair_Display']">
+          Start Your Halal Marriage Journey Today — It's Free
+        </h2>
+        <p class="text-xl text-white/90 mb-10 max-w-2xl mx-auto">
+          Join thousands of UK Muslims already on their path to naseeb.
+        </p>
+
+        <div class="flex flex-wrap items-center justify-center gap-4">
+          <a href="/register" class="bg-white text-primary font-bold py-4 px-10 rounded-button hover:bg-gray-100 hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 text-lg ripple">
+            <i class="ri-user-add-line mr-2"></i>Register Now Free
+          </a>
+          <a href="https://chat.whatsapp.com/Kjrn4Lwi54MLhd0NOZLxgl" target="_blank" class="bg-green-500 hover:bg-green-600 text-white font-bold py-4 px-10 rounded-button hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 text-lg ripple">
+            <i class="ri-whatsapp-fill mr-2"></i>Join Free WhatsApp Group
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Newsletter Section -->
+    <div class="relative overflow-hidden">
       <!-- Background Pattern -->
       <div class="absolute inset-0 bg-gradient-to-br from-primary/5 via-secondary/5 to-primary/10"></div>
       <div class="absolute inset-0 opacity-30" style="background-image: radial-gradient(circle at 25% 25%, rgba(233, 30, 99, 0.1) 0%, transparent 50%), radial-gradient(circle at 75% 75%, rgba(103, 58, 183, 0.1) 0%, transparent 50%);"></div>
@@ -726,6 +1267,57 @@
           }
         });
       }
+    });
+  </script>
+  <script id="guide-download-handler">
+    document.addEventListener('DOMContentLoaded', function () {
+      const guideForm = document.getElementById('guideDownloadForm');
+      if (!guideForm) return;
+
+      guideForm.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const emailInput = document.getElementById('guideEmail');
+        const submitBtn = document.getElementById('guideSubmitBtn');
+        const successEl = document.getElementById('guideSuccess');
+        const errorEl = document.getElementById('guideError');
+        const errorText = document.getElementById('guideErrorText');
+
+        const email = emailInput.value.trim();
+        if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+          errorText.textContent = 'Please enter a valid email address.';
+          errorEl.classList.remove('hidden');
+          successEl.classList.add('hidden');
+          return;
+        }
+
+        const originalLabel = submitBtn.innerHTML;
+        submitBtn.innerHTML = '<i class="ri-loader-4-line" style="animation:spin 1s linear infinite;display:inline-block;"></i> Sending...';
+        submitBtn.disabled = true;
+        successEl.classList.add('hidden');
+        errorEl.classList.add('hidden');
+
+        try {
+          const response = await fetch('/api/guide/download', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email })
+          });
+          const result = await response.json();
+          if (result.success) {
+            successEl.classList.remove('hidden');
+            guideForm.reset();
+          } else {
+            errorText.textContent = result.error || 'Something went wrong. Please try again.';
+            errorEl.classList.remove('hidden');
+          }
+        } catch (err) {
+          errorText.textContent = 'Network error. Please check your connection and try again.';
+          errorEl.classList.remove('hidden');
+        } finally {
+          submitBtn.innerHTML = originalLabel;
+          submitBtn.disabled = false;
+        }
+      });
     });
   </script>
 </body>

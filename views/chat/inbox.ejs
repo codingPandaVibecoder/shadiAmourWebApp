@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Chats - D'amour Muslim</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+  <link rel="manifest" href="/images/site.webmanifest">
+  <meta name="theme-color" content="#E91E63">
+  <link rel="stylesheet" href="/css/output.css">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+  <style>
+    :where([class^="ri-"])::before { content: "\f3c2"; }
+    .material-shadow { box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    .material-shadow-hover:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.15); }
+
+    .conversation-item {
+      transition: all 0.2s ease;
+    }
+    .conversation-item:hover {
+      background-color: #fdf2f8;
+    }
+    .unread-badge {
+      min-width: 20px;
+      height: 20px;
+      font-size: 11px;
+    }
+  </style>
+  <%- include('../partials/clarity') %>
+  <%- include('../partials/thirdparty') %>
+  <%- include('../partials/analytics') %>
+</head>
+
+<body class="bg-gray-50 font-['Roboto']">
+  <%- include('../partials/header') %>
+
+  <main class="pt-24 pb-16 min-h-screen">
+    <div class="max-w-3xl mx-auto px-4">
+      <!-- Page Header -->
+      <div class="flex items-center justify-between mb-6">
+        <div>
+          <h1 class="text-2xl font-bold text-gray-900 font-['Playfair_Display']">Messages</h1>
+            <p class="text-sm text-gray-500 mt-2 leading-relaxed max-w-md">
+            You can only chat to profiles if you both have access to each other's profile (one sent request, other accepted)
+            </p>
+        </div>
+        <a href="/profiles" class="inline-flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-pink-600 transition-all duration-300 text-sm font-medium">
+          <span>Browse Profiles</span>
+        </a>
+      </div>
+
+      <!-- Conversations List -->
+      <div class="bg-white rounded-2xl material-shadow overflow-hidden">
+        <% if (conversations && conversations.length > 0) { %>
+          <div class="divide-y divide-gray-100">
+            <% conversations.forEach(function(conv) { %>
+              <a href="/chats/<%= conv._id %>" class="conversation-item flex items-center gap-4 p-4 cursor-pointer">
+                <!-- Avatar -->
+                <div class="relative flex-shrink-0">
+                  <div class="w-14 h-14 rounded-full overflow-hidden border-2 <%= conv.unreadCount > 0 ? 'border-primary' : 'border-gray-200' %>">
+                    <% if (conv.otherUser && conv.otherUser.profilePic && conv.otherUser.profilePic.url) { %>
+                      <img src="<%= conv.otherUser.profilePic.url %>" class="w-full h-full object-cover" alt="<%= conv.otherUser.username %>">
+                    <% } else { %>
+                      <div class="w-full h-full flex items-center justify-center <%= conv.otherUser && conv.otherUser.gender === 'female' ? 'bg-pink-100 text-pink-500' : 'bg-blue-100 text-blue-500' %>">
+                        <i class="ri-user-3-line text-2xl"></i>
+                      </div>
+                    <% } %>
+                  </div>
+                </div>
+
+                <!-- Content -->
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-center justify-between mb-1">
+                    <h3 class="font-semibold text-gray-900 truncate <%= conv.unreadCount > 0 ? 'text-primary' : '' %>">
+                      <%= conv.otherUser ? conv.otherUser.username : 'Deleted User' %>
+                    </h3>
+                    <span class="text-xs text-gray-400 flex-shrink-0 ml-2">
+                      <% if (conv.lastMessage) { %>
+                        <%= new Date(conv.lastMessage.createdAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }) %>
+                      <% } %>
+                    </span>
+                  </div>
+                  <div class="flex items-center justify-between">
+                    <p class="text-sm text-gray-500 truncate max-w-[250px]">
+                      <% if (conv.lastMessage) { %>
+                        <% if (conv.lastMessage.senderId.toString() === user._id.toString()) { %>
+                          <span class="text-gray-400">You: </span>
+                        <% } %>
+                        <%= conv.lastMessage.text.substring(0, 60) %><%= conv.lastMessage.text.length > 60 ? '...' : '' %>
+                      <% } else { %>
+                        <span class="text-gray-400 italic">No messages yet</span>
+                      <% } %>
+                    </p>
+                    <% if (conv.unreadCount > 0) { %>
+                      <span class="unread-badge bg-primary text-white rounded-full flex items-center justify-center font-bold ml-2 px-1.5">
+                        <%= conv.unreadCount > 99 ? '99+' : conv.unreadCount %>
+                      </span>
+                    <% } %>
+                  </div>
+                </div>
+
+                <!-- Arrow -->
+                <div class="flex-shrink-0 text-gray-300">
+                  <i class="ri-arrow-right-s-line text-xl"></i>
+                </div>
+              </a>
+            <% }); %>
+          </div>
+        <% } else { %>
+          <!-- Empty State -->
+          <div class="py-16 text-center">
+            <div class="mb-4">
+              <i class="ri-chat-3-line text-6xl text-gray-200"></i>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-700 mb-2">No conversations yet</h3>
+            <p class="text-gray-500 mb-6 max-w-sm mx-auto">
+              Start chatting by visiting a profile and clicking the Chat button. You can chat with your accepted connections.
+            </p>
+            <a href="/profiles" class="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-lg hover:bg-pink-600 transition-all duration-300 font-medium">
+              <i class="ri-search-line"></i>
+              <span>Browse Profiles</span>
+            </a>
+          </div>
+        <% } %>
+      </div>
+
+      <!-- Potential Chats Section -->
+      <% if (potentialChats && potentialChats.length > 0) { %>
+        <div class="mt-8">
+          <div class="mb-4">
+            <h2 class="text-lg font-semibold text-gray-700 font-['Playfair_Display']">
+              <i class="ri-user-add-line text-primary mr-2"></i>
+              Initiate chats with those you both have access to
+            </h2>
+            <p class="text-sm text-gray-500 mt-1">
+              You both can see each other's profile
+            </p>
+          </div>
+          
+          <div class="bg-white rounded-2xl material-shadow overflow-hidden">
+            <div class="divide-y divide-gray-100">
+              <% potentialChats.forEach(function(chat) { %>
+                <div class="conversation-item flex items-center gap-4 p-4">
+                  <!-- Avatar -->
+                  <div class="relative flex-shrink-0">
+                    <div class="w-14 h-14 rounded-full overflow-hidden border-2 border-gray-200">
+                      <% if (chat.otherUser && chat.otherUser.profilePic && chat.otherUser.profilePic.url) { %>
+                        <img src="<%= chat.otherUser.profilePic.url %>" class="w-full h-full object-cover" alt="<%= chat.otherUser.username %>">
+                      <% } else { %>
+                        <div class="w-full h-full flex items-center justify-center <%= chat.otherUser && chat.otherUser.gender === 'female' ? 'bg-pink-100 text-pink-500' : 'bg-blue-100 text-blue-500' %>">
+                          <i class="ri-user-3-line text-2xl"></i>
+                        </div>
+                      <% } %>
+                    </div>
+                  </div>
+
+                  <!-- Content -->
+                  <div class="flex-1 min-w-0">
+                    <h3 class="font-semibold text-gray-900 truncate">
+                      <%= chat.otherUser ? chat.otherUser.username : 'User' %>
+                    </h3>
+                    <p class="text-sm text-gray-500">
+                      <i class="ri-check-double-line text-green-500"></i>
+                      Connected
+                    </p>
+                  </div>
+
+                  <!-- Start Chat Button -->
+                  <div class="flex-shrink-0">
+                    <% if (chat.otherUser && chat.otherUser.profileSlug) { %>
+                      <a href="/profiles/<%= chat.otherUser.profileSlug %>" class="inline-flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-pink-600 transition-all duration-300 text-sm font-medium">
+                        <i class="ri-chat-new-line"></i>
+                        <span>Chat</span>
+                      </a>
+                    <% } %>
+                  </div>
+                </div>
+              <% }); %>
+            </div>
+          </div>
+        </div>
+      <% } %>
+    </div>
+  </main>
+
+  <%- include('../partials/footer') %>
+</body>
+
+</html>
