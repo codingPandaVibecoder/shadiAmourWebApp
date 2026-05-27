@@ -10,7 +10,7 @@
   <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
   <link rel="manifest" href="/images/site.webmanifest">
   <meta name="theme-color" content="#E91E63">
-  <title>shadiamour - Admin Dashboard</title>
+  <title>D'amour Muslim - Admin Dashboard</title>
   <link rel="stylesheet" href="/css/output.css">
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
@@ -616,17 +616,8 @@
             <i class="ri-arrow-down-s-line text-lg"></i>
           </button>
         </div>
+        <% } %>
       </div>
-    </div>
-
-    <!-- Pagination -->
-    <% if (users && users.length > 0) { %>
-    <div class="flex justify-center items-center gap-4 mt-12">
-      <div class="text-sm text-gray-600">
-        Showing <%= users.length %> users
-      </div>
-    </div>
-    <% } %>
     </div>
   </main>
 
@@ -1247,8 +1238,6 @@
       });
 
       // Filter indicator function
-      // Replace the existing updateFilterIndicator function with this enhanced version
-
       function updateFilterIndicator(filter, count) {
         const container = document.getElementById('filter-indicator-container');
         const indicator = document.getElementById('filter-indicator');
