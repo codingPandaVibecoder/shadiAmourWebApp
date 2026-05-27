@@ -35,14 +35,14 @@ const notificationQueue = new Queue("notifications", {
 const emailTemplates = {
   // When someone sends a request
   requestSent: (senderUsername, receiverUsername) => ({
-    subject: `Profile Request Sent - D'amour Muslim`,
+    subject: `Profile Request Sent - shadiamour`,
     html: `
       <!DOCTYPE html>
       <html>
       <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Request Sent - D'amour Muslim</title>
+        <title>Request Sent - shadiamour</title>
         <style>
           body { font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f9f9f9; }
           .container { max-width: 600px; margin: 0 auto; background: white; }
@@ -59,7 +59,7 @@ const emailTemplates = {
       <body>
         <div class="container">
           <div class="header">
-            <h1>D'amour Muslim</h1>
+            <h1>shadiamour</h1>
             <p>Profile Request Sent</p>
           </div>
           <div class="content">
@@ -78,30 +78,30 @@ const emailTemplates = {
 </ul>
             </div>
             <div style="text-align: center; margin: 30px 0;">
-              <a style="color:white" href="https://damourmuslim.com/account" class="button">View Your Requests</a>
+              <a style="color:white" href="https://shadiamour.com/account" class="button">View Your Requests</a>
             </div>
           </div>
           <div class="footer">
-            <p><strong>© 2024 D'amour Muslim</strong> - Connecting Hearts, Building Futures</p>
-            <p>Need help? Contact us at <a href="mailto:support@damourmuslim.com">support@damourmuslim.com</a></p>
+            <p><strong>© 2024 shadiamour</strong> - Connecting Hearts, Building Futures</p>
+            <p>Need help? Contact us at <a href="mailto:support@shadiamour.com">support@shadiamour.com</a></p>
           </div>
         </div>
       </body>
       </html>
     `,
-    text: `Hello ${senderUsername}!\n\nYour profile sharing request has been sent to ${receiverUsername}. They can now view your complete profile.\n\nIf they accept, you'll be able to view their full profile too.\n\nView your requests at: https://damourmuslim.com/account\n\n© 2024 D'amour Muslim`,
+    text: `Hello ${senderUsername}!\n\nYour profile sharing request has been sent to ${receiverUsername}. They can now view your complete profile.\n\nIf they accept, you'll be able to view their full profile too.\n\nView your requests at: https://shadiamour.com/account\n\n© 2024 shadiamour`,
   }),
 
   // When someone receives a request
   requestReceived: (receiverUsername, senderUsername, senderProfileUrl) => ({
-    subject: `New Profile Request from ${senderUsername} - D'amour Muslim`,
+    subject: `New Profile Request from ${senderUsername} - shadiamour`,
     html: `
       <!DOCTYPE html>
       <html>
       <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>New Request - D'amour Muslim</title>
+        <title>New Request - shadiamour</title>
         <style>
           body { font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f9f9f9; }
           .container { max-width: 600px; margin: 0 auto; background: white; }
@@ -118,7 +118,7 @@ const emailTemplates = {
       <body>
         <div class="container">
           <div class="header">
-            <h1>D'amour Muslim</h1>
+            <h1>shadiamour</h1>
             <p>New Profile Request! 🌟</p>
           </div>
           <div class="content">
@@ -132,30 +132,30 @@ const emailTemplates = {
             </div>
             <div style="text-align: center; margin: 30px 0;">
               <a style="color:white" href="${senderProfileUrl}" class="button">View Their Profile</a>
-              <a style="color:white" href="https://damourmuslim.com/account" class="button button-secondary">Manage Requests</a>
+              <a style="color:white" href="https://shadiamour.com/account" class="button button-secondary">Manage Requests</a>
             </div>
           </div>
           <div class="footer">
-            <p><strong>© 2024 D'amour Muslim</strong> - Connecting Hearts, Building Futures</p>
-            <p>Need help? Contact us at <a href="mailto:support@damourmuslim.com">support@damourmuslim.com</a></p>
+            <p><strong>© 2024 shadiamour</strong> - Connecting Hearts, Building Futures</p>
+            <p>Need help? Contact us at <a href="mailto:support@shadiamour.com">support@shadiamour.com</a></p>
           </div>
         </div>
       </body>
       </html>
     `,
-    text: `Hello ${receiverUsername}!\n\n${senderUsername} is interested in connecting with you! You can now view their complete profile.\n\nIf you accept their request, they'll be able to view your full profile too.\n\nView their profile: ${senderProfileUrl}\nManage requests: https://damourmuslim.com/account\n\n© 2024 D'amour Muslim`,
+    text: `Hello ${receiverUsername}!\n\n${senderUsername} is interested in connecting with you! You can now view their complete profile.\n\nIf you accept their request, they'll be able to view your full profile too.\n\nView their profile: ${senderProfileUrl}\nManage requests: https://shadiamour.com/account\n\n© 2024 shadiamour`,
   }),
 
   // When request is accepted
   requestAccepted: (username, acceptedByUsername, acceptedByProfileUrl) => ({
-    subject: `Good News! ${acceptedByUsername} Accepted Your Request - D'amour Muslim`,
+    subject: `Good News! ${acceptedByUsername} Accepted Your Request - shadiamour`,
     html: `
       <!DOCTYPE html>
       <html>
       <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Request Accepted - D'amour Muslim</title>
+        <title>Request Accepted - shadiamour</title>
         <style>
           body { font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f9f9f9; }
           .container { max-width: 600px; margin: 0 auto; background: white; }
@@ -172,7 +172,7 @@ const emailTemplates = {
       <body>
         <div class="container">
           <div class="header">
-            <h1>D'amour Muslim</h1>
+            <h1>shadiamour</h1>
             <p>Request Accepted! 🎉</p>
           </div>
           <div class="content">
@@ -190,26 +190,26 @@ const emailTemplates = {
             </div>
           </div>
           <div class="footer">
-            <p><strong>© 2024 D'amour Muslim</strong> - Connecting Hearts, Building Futures</p>
-            <p>Need help? Contact us at <a href="mailto:support@damourmuslim.com">support@damourmuslim.com</a></p>
+            <p><strong>© 2024 shadiamour</strong> - Connecting Hearts, Building Futures</p>
+            <p>Need help? Contact us at <a href="mailto:support@shadiamour.com">support@shadiamour.com</a></p>
           </div>
         </div>
       </body>
       </html>
     `,
-    text: `Congratulations ${username}!\n\n${acceptedByUsername} accepted your profile request! You can now view their complete profile and contact details.\n\nView their profile: ${acceptedByProfileUrl}\n\n© 2024 D'amour Muslim`,
+    text: `Congratulations ${username}!\n\n${acceptedByUsername} accepted your profile request! You can now view their complete profile and contact details.\n\nView their profile: ${acceptedByProfileUrl}\n\n© 2024 shadiamour`,
   }),
 
   // Notification to acceptor
   youAcceptedRequest: (username, acceptedUsername, acceptedProfileUrl) => ({
-    subject: `You've Connected with ${acceptedUsername} - D'amour Muslim`,
+    subject: `You've Connected with ${acceptedUsername} - shadiamour`,
     html: `
       <!DOCTYPE html>
       <html>
       <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Connection Made - D'amour Muslim</title>
+        <title>Connection Made - shadiamour</title>
         <style>
           body { font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f9f9f9; }
           .container { max-width: 600px; margin: 0 auto; background: white; }
@@ -224,7 +224,7 @@ const emailTemplates = {
       <body>
         <div class="container">
           <div class="header">
-            <h1>D'amour Muslim</h1>
+            <h1>shadiamour</h1>
             <p>New Connection! 🤝</p>
           </div>
           <div class="content">
@@ -239,25 +239,25 @@ const emailTemplates = {
             </div>
           </div>
           <div class="footer">
-            <p><strong>© 2024 D'amour Muslim</strong> - Connecting Hearts, Building Futures</p>
+            <p><strong>© 2024 shadiamour</strong> - Connecting Hearts, Building Futures</p>
           </div>
         </div>
       </body>
       </html>
     `,
-    text: `Hello ${username}!\n\nYou've accepted the profile request from ${acceptedUsername}. They can now view your complete profile. You already have access to their full profile.\n\nView their profile: ${acceptedProfileUrl}\n\n© 2024 D'amour Muslim`,
+    text: `Hello ${username}!\n\nYou've accepted the profile request from ${acceptedUsername}. They can now view your complete profile. You already have access to their full profile.\n\nView their profile: ${acceptedProfileUrl}\n\n© 2024 shadiamour`,
   }),
 
   // When request is rejected
   requestRejected: (username, rejectedByUsername) => ({
-    subject: `Profile Request Update - D'amour Muslim`,
+    subject: `Profile Request Update - shadiamour`,
     html: `
       <!DOCTYPE html>
       <html>
       <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Request Update - D'amour Muslim</title>
+        <title>Request Update - shadiamour</title>
         <style>
           body { font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f9f9f9; }
           .container { max-width: 600px; margin: 0 auto; background: white; }
@@ -273,7 +273,7 @@ const emailTemplates = {
       <body>
         <div class="container">
           <div class="header">
-            <h1>D'amour Muslim</h1>
+            <h1>shadiamour</h1>
             <p>Request Update</p>
           </div>
           <div class="content">
@@ -287,17 +287,17 @@ const emailTemplates = {
               <p>Finding the right match takes time. We encourage you to explore more profiles and send requests to others who interest you.</p>
             </div>
             <div style="text-align: center; margin: 30px 0;">
-              <a style="color:white" href="https://damourmuslim.com/profiles" class="button">Browse More Profiles</a>
+              <a style="color:white" href="https://shadiamour.com/profiles" class="button">Browse More Profiles</a>
             </div>
           </div>
           <div class="footer">
-            <p><strong>© 2024 D'amour Muslim</strong> - Connecting Hearts, Building Futures</p>
+            <p><strong>© 2024 shadiamour</strong> - Connecting Hearts, Building Futures</p>
           </div>
         </div>
       </body>
       </html>
     `,
-    text: `Hello ${username},\n\n${rejectedByUsername} has declined your profile sharing request.\n\nDon't be discouraged! There are many other compatible profiles.\n\nBrowse more profiles: https://damourmuslim.com/profiles\n\n© 2024 D'amour Muslim`,
+    text: `Hello ${username},\n\n${rejectedByUsername} has declined your profile sharing request.\n\nDon't be discouraged! There are many other compatible profiles.\n\nBrowse more profiles: https://shadiamour.com/profiles\n\n© 2024 shadiamour`,
   }),
 };
 
@@ -313,15 +313,15 @@ async function sendEmail(to, template) {
   console.log("📧 Preparing to send email...");
   console.log("To:", to);
   console.log("Subject:", template.subject);
-  console.log("From Email:", process.env.ZEPTOMAIL_FROM_EMAIL || "noreply@damourmuslim.com");
-  console.log("From Name:", process.env.ZEPTOMAIL_FROM_NAME || "D'amour Muslim");
+  console.log("From Email:", process.env.ZEPTOMAIL_FROM_EMAIL || "noreply@shadiamour.com");
+  console.log("From Name:", process.env.ZEPTOMAIL_FROM_NAME || "shadiamour");
   console.log("ZeptoMail Token exists:", !!process.env.ZEPTOMAIL_TOKEN);
   console.log("ZeptoMail Token length:", process.env.ZEPTOMAIL_TOKEN?.length || 0);
 
   const emailPayload = {
     from: {
-      address: process.env.ZEPTOMAIL_FROM_EMAIL || "noreply@damourmuslim.com",
-      name: process.env.ZEPTOMAIL_FROM_NAME || "D'amour Muslim",
+      address: process.env.ZEPTOMAIL_FROM_EMAIL || "noreply@shadiamour.com",
+      name: process.env.ZEPTOMAIL_FROM_NAME || "shadiamour",
     },
     to: [
       {
@@ -429,7 +429,7 @@ const notificationWorker = new Worker(
           }
 
           if (receiver.email) {
-            const senderProfileUrl = `https://damourmuslim.com/profiles/${sender.profileSlug || sender.id}`;
+            const senderProfileUrl = `https://shadiamour.com/profiles/${sender.profileSlug || sender.id}`;
             await sendEmail(
               receiver.email,
               emailTemplates.requestReceived(receiver.username, sender.username, senderProfileUrl)
@@ -465,7 +465,7 @@ const notificationWorker = new Worker(
 
           // Send emails
           if (requester.email) {
-            const acceptorProfileUrl = `https://damourmuslim.com/profiles/${acceptor.profileSlug || acceptor.id}`;
+            const acceptorProfileUrl = `https://shadiamour.com/profiles/${acceptor.profileSlug || acceptor.id}`;
             await sendEmail(
               requester.email,
               emailTemplates.requestAccepted(requester.username, acceptor.username, acceptorProfileUrl)
@@ -473,7 +473,7 @@ const notificationWorker = new Worker(
           }
 
           if (acceptor.email) {
-            const requesterProfileUrl = `https://damourmuslim.com/profiles/${requester.profileSlug || requester.id}`;
+            const requesterProfileUrl = `https://shadiamour.com/profiles/${requester.profileSlug || requester.id}`;
             await sendEmail(
               acceptor.email,
               emailTemplates.youAcceptedRequest(acceptor.username, requester.username, requesterProfileUrl)

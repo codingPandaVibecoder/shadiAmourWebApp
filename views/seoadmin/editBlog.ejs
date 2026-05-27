@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex, nofollow">
-  <title>Edit Blog SEO - <%= blog.title %> | D'amour Muslim</title>
+  <title>Edit Blog SEO - <%= blog.title %> | shadiamour</title>
   <link rel="stylesheet" href="/css/output.css">
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
@@ -182,7 +182,7 @@
                   name="canonicalUrl" 
                   value="<%= blog.canonicalUrl || '' %>"
                   class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500"
-                  placeholder="https://damourmuslim.com/blog/..."
+                  placeholder="https://shadiamour.com/blog/..."
                 >
                 <p class="text-xs text-gray-500 mt-1">Leave empty to use default URL</p>
               </div>
@@ -261,7 +261,7 @@
                 <%= blog.metaTitle || blog.title %>
               </p>
               <p class="serp-url mt-1" id="serpUrl">
-                https://damourmuslim.com/blog/<%= blog.slug %>
+                https://shadiamour.com/blog/<%= blog.slug %>
               </p>
               <p class="serp-desc mt-1" id="serpDesc">
                 <%= blog.metaDescription || (blog.excerpt ? blog.excerpt.substring(0, 160) : 'No description set') %>

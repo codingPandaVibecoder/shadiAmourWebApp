@@ -5,26 +5,26 @@ const globalSeoSettingsSchema = new mongoose.Schema({
   // Site Identity
   siteName: {
     type: String,
-    default: "D'amour Muslim",
+    default: "shadiamour",
   },
   defaultMetaTitleSuffix: {
     type: String,
-    default: "| D'amour Muslim",
+    default: "| shadiamour",
   },
   defaultMetaDescription: {
     type: String,
     maxlength: 160,
-    default: "Find your Muslim life partner on D'amour Muslim - the trusted Islamic matrimony and matchmaking site for UK Muslims seeking Halal marriage.",
+    default: "Find your Muslim life partner on shadiamour - the trusted Islamic matrimony and matchmaking site for UK Muslims seeking Halal marriage.",
   },
   defaultOgImage: {
     type: String,
-    default: "https://damourmuslim.com/images/default-profile-og.jpg",
+    default: "https://shadiamour.com/images/default-profile-og.jpg",
   },
   
   // Social Media
   twitterHandle: {
     type: String,
-    default: "@damourmuslim",
+    default: "@shadiamour",
   },
   facebookPageUrl: {
     type: String,
@@ -62,14 +62,14 @@ const globalSeoSettingsSchema = new mongoose.Schema({
   // Schema.org Organization Data
   organizationName: {
     type: String,
-    default: "D'amour Muslim",
+    default: "shadiamour",
   },
   organizationLogo: {
     type: String,
   },
   organizationUrl: {
     type: String,
-    default: "https://damourmuslim.com",
+    default: "https://shadiamour.com",
   },
   organizationEmail: {
     type: String,

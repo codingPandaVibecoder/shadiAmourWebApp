@@ -8,7 +8,7 @@ const onlineUsers = new Map();
 function initializeSocket(server, sessionMiddleware) {
   const io = new Server(server, {
     cors: {
-      origin: process.env.BASE_URL || "https://damourmuslim.com",
+      origin: process.env.BASE_URL || "https://shadiamour.com",
       credentials: true,
     },
     // Coolify / reverse-proxy friendly settings

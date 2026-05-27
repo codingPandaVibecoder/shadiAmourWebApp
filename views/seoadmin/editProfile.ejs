@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex, nofollow">
-  <title>Edit Profile SEO - <%= profile.username %> | D'amour Muslim</title>
+  <title>Edit Profile SEO - <%= profile.username %> | shadiamour</title>
   <link rel="stylesheet" href="/css/output.css">
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
@@ -169,7 +169,7 @@
                   oninput="updateCharCount('customMetaTitle', 'titleCounter', 60); updateSerpPreview();"
                 >
                 <p class="text-xs text-gray-500 mt-2">
-                  Auto: <%= profile.ethnicity || 'Muslim' %> <%= profile.gender === 'male' ? 'Muslim Man' : 'Muslim Woman' %> for Halal Marriage in <%= profile.city || 'UK' %> | D'amour Muslim
+                  Auto: <%= profile.ethnicity || 'Muslim' %> <%= profile.gender === 'male' ? 'Muslim Man' : 'Muslim Woman' %> for Halal Marriage in <%= profile.city || 'UK' %> | shadiamour
                 </p>
               </div>
               
@@ -269,7 +269,7 @@
                   name="canonicalUrlOverride" 
                   value="<%= profile.seoSettings && profile.seoSettings.canonicalUrlOverride ? profile.seoSettings.canonicalUrlOverride : '' %>"
                   class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500"
-                  placeholder="https://damourmuslim.com/profiles/..."
+                  placeholder="https://shadiamour.com/profiles/..."
                 >
                 <p class="text-xs text-gray-500 mt-2">Leave empty to use default URL. Only change if you know what you're doing.</p>
               </div>
@@ -354,15 +354,15 @@
               <p class="serp-title hover:underline cursor-pointer" id="serpTitle">
                 <%= profile.seoSettings && profile.seoSettings.customMetaTitle 
                   ? profile.seoSettings.customMetaTitle 
-                  : (profile.ethnicity || 'Muslim') + ' ' + (profile.gender === 'male' ? 'Muslim Man' : 'Muslim Woman') + ' for Halal Marriage in ' + (profile.city || 'UK') + " | D'amour Muslim" %>
+                  : (profile.ethnicity || 'Muslim') + ' ' + (profile.gender === 'male' ? 'Muslim Man' : 'Muslim Woman') + ' for Halal Marriage in ' + (profile.city || 'UK') + " | shadiamour" %>
               </p>
               <p class="serp-url mt-1" id="serpUrl">
-                https://damourmuslim.com/profiles/<span id="serpSlug"><%= profile.profileSlug || profile._id %></span>
+                https://shadiamour.com/profiles/<span id="serpSlug"><%= profile.profileSlug || profile._id %></span>
               </p>
               <p class="serp-desc mt-1" id="serpDesc">
                 <%= profile.seoSettings && profile.seoSettings.customMetaDescription 
                   ? profile.seoSettings.customMetaDescription 
-                  : 'Meet ' + (profile.randomNameForSeo || profile.username) + ', a verified ' + (profile.ethnicity || 'Muslim') + ' ' + (profile.gender === 'male' ? 'Muslim man' : 'Muslim woman') + ' for Muslim marriage in ' + (profile.city || 'UK') + ", UK. Join D'amour Muslim to find Muslim rishta in uk." %>
+                  : 'Meet ' + (profile.randomNameForSeo || profile.username) + ', a verified ' + (profile.ethnicity || 'Muslim') + ' ' + (profile.gender === 'male' ? 'Muslim man' : 'Muslim woman') + ' for Muslim marriage in ' + (profile.city || 'UK') + ", UK. Join shadiamour to find Muslim rishta in uk." %>
               </p>
             </div>
             <p class="text-xs text-gray-500 mt-3">
@@ -449,8 +449,8 @@
       const serpDesc = document.getElementById('serpDesc');
       const serpSlug = document.getElementById('serpSlug');
       
-      const defaultTitle = <%- JSON.stringify((profile.ethnicity || 'Muslim') + ' ' + (profile.gender === 'male' ? 'Muslim Man' : 'Muslim Woman') + ' for Halal Marriage in ' + (profile.city || 'UK') + " | D'amour Muslim") %>;
-      const defaultDesc = <%- JSON.stringify('Meet ' + (profile.randomNameForSeo || profile.username) + ', a verified ' + (profile.ethnicity || 'Muslim') + ' ' + (profile.gender === 'male' ? 'Muslim man' : 'Muslim woman') + ' for Muslim marriage in ' + (profile.city || 'UK') + ", UK. Join D'amour Muslim to find Muslim rishta in uk.") %>;
+      const defaultTitle = <%- JSON.stringify((profile.ethnicity || 'Muslim') + ' ' + (profile.gender === 'male' ? 'Muslim Man' : 'Muslim Woman') + ' for Halal Marriage in ' + (profile.city || 'UK') + " | shadiamour") %>;
+      const defaultDesc = <%- JSON.stringify('Meet ' + (profile.randomNameForSeo || profile.username) + ', a verified ' + (profile.ethnicity || 'Muslim') + ' ' + (profile.gender === 'male' ? 'Muslim man' : 'Muslim woman') + ' for Muslim marriage in ' + (profile.city || 'UK') + ", UK. Join shadiamour to find Muslim rishta in uk.") %>;
       const defaultSlug = <%- JSON.stringify(profile.profileSlug || profile._id.toString()) %>;
       
       serpTitle.textContent = titleInput.value || defaultTitle;

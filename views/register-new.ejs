@@ -4,12 +4,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Register Free | Muslim Marriage UK | D'amour Muslim</title>
+  <title>Register Free | Muslim Marriage UK | shadiamour</title>
 
   <!-- SEO Meta Tags -->
   <meta name="description" content="Create your Muslim rishta profile today and find your perfect Muslim spouse in London, Leicester & UK. Join thousands of verified Muslim profiles for halal marriage, Islamic wedding and blessed Nikkah ceremony.">
   <meta name="keywords" content="create muslim rishta profile, find muslim spouse, muslim marriage UK, muslim matrimonial, online muslim marriage, halal marriage site, muslim rishta London, pakistani marriage Leicester, verified muslim profiles, islamic wedding, nikkah ceremony, muslim couple, best muslim marriage site, muslim matchmaking UK">
-  <link rel="canonical" href="https://damourmuslim.com/register">
+  <link rel="canonical" href="https://shadiamour.com/register">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
@@ -19,17 +19,17 @@
 
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://damourmuslim.com/register">
+  <meta property="og:url" content="https://shadiamour.com/register">
   <meta property="og:title" content="Create Muslim Rishta Profile | Find Your Perfect Muslim Spouse UK">
-  <meta property="og:description" content="Join D'amour Muslim to create your rishta profile and find Muslim spouse for halal marriage. Connect with verified Muslim singles in London, Leicester across UK for Islamic wedding and Nikkah ceremony.">
-  <meta property="og:image" content="https://damourmuslim.com/images/og-image-register.jpg">
+  <meta property="og:description" content="Join shadiamour to create your rishta profile and find Muslim spouse for halal marriage. Connect with verified Muslim singles in London, Leicester across UK for Islamic wedding and Nikkah ceremony.">
+  <meta property="og:image" content="https://shadiamour.com/images/og-image-register.jpg">
 
   <!-- Twitter -->
   <meta property="twitter:card" content="summary_large_image">
-  <meta property="twitter:url" content="https://damourmuslim.com/register">
+  <meta property="twitter:url" content="https://shadiamour.com/register">
   <meta property="twitter:title" content="Create Muslim Rishta Profile | Find Perfect Muslim Spouse">
   <meta property="twitter:description" content="Start your journey to find Muslim spouse through verified rishta profiles. Join UK's trusted Muslim matrimonial platform for halal marriage and blessed Nikkah.">
-  <meta property="twitter:image" content="https://damourmuslim.com/images/og-image-register.jpg">
+  <meta property="twitter:image" content="https://shadiamour.com/images/og-image-register.jpg">
   <link rel="stylesheet" href="/css/output.css">
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
@@ -99,7 +99,7 @@
 }
   </style>
   <%- include('partials/clarity') %>
-  <%- include('partials/thirdparty') %>
+  
   <%- include('partials/analytics') %>
 </head>
 
@@ -108,7 +108,7 @@
     <div class="flex items-center justify-between px-6 h-16">
       <div class="flex items-center">
         <a href="/" class="hover:opacity-80 transition-opacity duration-300 cursor-pointer flex items-center">
-          <img src="/images/websitelogo.svg" alt="D'amour Muslim" class="h-9 w-auto" width="200" height="36">
+          <img src="/images/websitelogo.svg" alt="shadiamour" class="h-9 w-auto" width="200" height="36">
         </a>
       </div>
       <div class="flex items-center gap-4">
@@ -185,7 +185,7 @@
             <div class="bg-white rounded-2xl p-8 material-shadow">
               
               <!-- Parent Notice Section (Initial View) -->
-              <div id="parentNotice" class="text-center">
+              <!-- <div id="parentNotice" class="text-center">
                 <div class="w-20 h-20 bg-gradient-to-r from-primary to-secondary rounded-full flex items-center justify-center mx-auto mb-6">
                   <i class="ri-parent-line text-3xl text-white"></i>
                 </div>
@@ -217,7 +217,7 @@
                     <i class="ri-arrow-right-line"></i>
                   </span>
                 </button>
-              </div>
+              </div> -->
 
               <!-- Registration Options (After clicking Continue) -->
               <div id="registrationOptions" class="hidden">
@@ -351,9 +351,9 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', function() {
-      const parentNotice = document.getElementById('parentNotice');
+      // const parentNotice = document.getElementById('parentNotice');
       const registrationOptions = document.getElementById('registrationOptions');
-      const continueBtn = document.getElementById('continueAsParent');
+      // const continueBtn = document.getElementById('continueAsParent');
       const form = document.getElementById('registrationForm');
       const emailInput = document.getElementById('email');
       const password = document.getElementById('password');
@@ -403,10 +403,10 @@
       }
 
       // Show registration options when parent clicks continue
-      continueBtn.addEventListener('click', function() {
-        parentNotice.classList.add('hidden');
-        registrationOptions.classList.remove('hidden');
-      });
+      // continueBtn.addEventListener('click', function() {
+      //   parentNotice.classList.add('hidden');
+      //   registrationOptions.classList.remove('hidden');
+      // });
 
       // Email input validation - show verification section when valid email entered
       emailInput.addEventListener('input', function() {

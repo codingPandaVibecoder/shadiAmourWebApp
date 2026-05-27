@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <%
-  let pageTitle = "Staff-Verified Muslim Profiles | Hand-Picked Matches | D'amour Muslim";
+  let pageTitle = "Staff-Verified Muslim Profiles | Hand-Picked Matches | shadiamour";
   let metaDescription = "Browse Muslim marriage profiles hand-picked and verified by our matchmaking team. Trusted, staff-added profiles for serious Islamic wedding and Nikkah seekers in the UK.";
   let keywords = "verified Muslim profiles, staff verified matrimony, trusted Muslim marriage, hand-picked Muslim matches, halal marriage UK, Muslim matchmaking team";
 
@@ -13,16 +13,16 @@
   const isDeepPagination = page > 1;
   const shouldNoIndexPage = hasNonGenderFilters || isDeepPagination;
 
-  let canonicalUrl = "https://damourmuslim.com/profiles/addedBy/staff";
+  let canonicalUrl = "https://shadiamour.com/profiles/addedBy/staff";
   if (filters && filters.gender && !hasNonGenderFilters && !isDeepPagination) {
-    canonicalUrl = "https://damourmuslim.com/profiles/addedBy/staff?gender=" + encodeURIComponent(filters.gender);
+    canonicalUrl = "https://shadiamour.com/profiles/addedBy/staff?gender=" + encodeURIComponent(filters.gender);
   }
 
   if (filters && filters.gender === 'male') {
-    pageTitle = "Staff-Verified Muslim Men | Hand-Picked Grooms | D'amour Muslim";
+    pageTitle = "Staff-Verified Muslim Men | Hand-Picked Grooms | shadiamour";
     metaDescription = "Browse staff-verified Muslim men for Islamic wedding and Nikkah ceremony. Hand-picked male profiles added by our matchmaking team.";
   } else if (filters && filters.gender === 'female') {
-    pageTitle = "Staff-Verified Muslim Women | Hand-Picked Brides | D'amour Muslim";
+    pageTitle = "Staff-Verified Muslim Women | Hand-Picked Brides | shadiamour";
     metaDescription = "Browse staff-verified Muslim women for Islamic wedding and Nikkah ceremony. Hand-picked female profiles added by our matchmaking team.";
   }
   %>
@@ -47,14 +47,14 @@
   <meta property="og:url" content="<%= canonicalUrl %>">
   <meta property="og:title" content="<%= pageTitle %>">
   <meta property="og:description" content="<%= metaDescription %>">
-  <meta property="og:image" content="https://damourmuslim.com/images/og-image-profiles.jpg">
+  <meta property="og:image" content="https://shadiamour.com/images/og-image-profiles.jpg">
 
   <!-- Twitter -->
   <meta property="twitter:card" content="summary_large_image">
   <meta property="twitter:url" content="<%= canonicalUrl %>">
   <meta property="twitter:title" content="<%= pageTitle %>">
   <meta property="twitter:description" content="<%= metaDescription %>">
-  <meta property="twitter:image" content="https://damourmuslim.com/images/og-image-profiles.jpg">
+  <meta property="twitter:image" content="https://shadiamour.com/images/og-image-profiles.jpg">
 
   <link rel="stylesheet" href="/css/output.css">
 
@@ -97,26 +97,26 @@
     "mainEntity": {
       "@type": "ItemList",
       "name": "Staff-Verified Muslim Matrimony Profiles",
-      "description": "Hand-picked and verified Muslim marriage profiles added by the D'amour Muslim matchmaking team",
+      "description": "Hand-picked and verified Muslim marriage profiles added by the shadiamour matchmaking team",
       "numberOfItems": "<%= totalProfiles %>"
     },
     "breadcrumb": {
       "@type": "BreadcrumbList",
       "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://damourmuslim.com" },
-        { "@type": "ListItem", "position": 2, "name": "Profiles", "item": "https://damourmuslim.com/profiles" },
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://shadiamour.com" },
+        { "@type": "ListItem", "position": 2, "name": "Profiles", "item": "https://shadiamour.com/profiles" },
         { "@type": "ListItem", "position": 3, "name": "Staff-Verified Profiles", "item": "<%= canonicalUrl %>" }
       ]
     },
     "provider": {
       "@type": "Organization",
-      "name": "D'amour Muslim",
+      "name": "shadiamour",
       "description": "UK's leading Muslim matrimony and Islamic wedding service"
     }
   }
   </script>
   <%- include('partials/clarity') %>
-  <%- include('partials/thirdparty') %>
+  
   <%- include('partials/analytics') %>
 </head>
 

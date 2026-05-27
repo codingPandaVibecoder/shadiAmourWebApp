@@ -34,8 +34,8 @@ function scheduleChatReminderEmail(conversationId, senderUserId, recipientUserId
         const senderUser = await User.findById(senderUserId);
 
         if (recipientUser && recipientUser.email && senderUser) {
-          const subject = "💬 You have a new message - D'amour Muslim";
-          const loginUrl = process.env.BASE_URL || "https://damourmuslim.com";
+          const subject = "💬 You have a new message - shadiamour";
+          const loginUrl = process.env.BASE_URL || "https://shadiamour.com";
 
           const htmlBody = `
             <!DOCTYPE html>
@@ -43,7 +43,7 @@ function scheduleChatReminderEmail(conversationId, senderUserId, recipientUserId
             <head>
               <meta charset="utf-8">
               <meta name="viewport" content="width=device-width, initial-scale=1.0">
-              <title>New Message - D'amour Muslim</title>
+              <title>New Message - shadiamour</title>
               <style>
                 body { font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f9f9f9; }
                 .container { max-width: 600px; margin: 0 auto; background: white; }
@@ -64,7 +64,7 @@ function scheduleChatReminderEmail(conversationId, senderUserId, recipientUserId
             <body>
               <div class="container">
                 <div class="header">
-                  <h1>D'amour Muslim</h1>
+                  <h1>shadiamour</h1>
                   <p>You have a new message!</p>
                 </div>
                 
@@ -77,7 +77,7 @@ function scheduleChatReminderEmail(conversationId, senderUserId, recipientUserId
 
                   <div class="welcome">Hello ${recipientUser.username}!</div>
                   <div class="message">
-                    <p><strong>${senderUser.username}</strong> sent you a message on D'amour Muslim. Don't keep them waiting — log back in to catch up and continue the conversation!</p>
+                    <p><strong>${senderUser.username}</strong> sent you a message on shadiamour. Don't keep them waiting — log back in to catch up and continue the conversation!</p>
                     <p>Building meaningful connections starts with a simple reply.</p>
                   </div>
                   
@@ -91,8 +91,8 @@ function scheduleChatReminderEmail(conversationId, senderUserId, recipientUserId
                 </div>
                 
                 <div class="footer">
-                  <p><strong>© 2025 D'amour Muslim</strong> - Connecting Hearts, Building Futures</p>
-                  <p>Need help? Contact us at <a href="mailto:support@damourmuslim.com">support@damourmuslim.com</a></p>
+                  <p><strong>© 2025 shadiamour</strong> - Connecting Hearts, Building Futures</p>
+                  <p>Need help? Contact us at <a href="mailto:support@shadiamour.com">support@shadiamour.com</a></p>
                   <p>📱 WhatsApp: <a href="https://wa.me/+447899816181">+447454516156</a></p>
                 </div>
               </div>
@@ -100,7 +100,7 @@ function scheduleChatReminderEmail(conversationId, senderUserId, recipientUserId
             </html>
           `;
 
-          const textBody = `Hello ${recipientUser.username}!\n\n${senderUser.username} sent you a message on D'amour Muslim. Don't keep them waiting — log back in to catch up!\n\nView your messages: ${loginUrl}/chats\n\n© 2025 D'amour Muslim`;
+          const textBody = `Hello ${recipientUser.username}!\n\n${senderUser.username} sent you a message on shadiamour. Don't keep them waiting — log back in to catch up!\n\nView your messages: ${loginUrl}/chats\n\n© 2025 shadiamour`;
 
           await sendZeptoMail(recipientUser.email, subject, htmlBody, textBody);
           console.log(`📧 Chat reminder email sent to ${recipientUser.email} for conversation ${conversationId}`);
