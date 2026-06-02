@@ -77,8 +77,8 @@ const islamicFAQSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-// Auto-generate slug from question on first save
-islamicFAQSchema.pre("save", function (next) {
+// Auto-generate slug from question before validation so required check passes
+islamicFAQSchema.pre("validate", function (next) {
   if (this.isNew && !this.slug) {
     this.slug = this.question
       .toLowerCase()

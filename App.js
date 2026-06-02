@@ -6818,7 +6818,7 @@ app.post("/admin/faqs", requireAdminOnly, async (req, res) => {
     const {
       question, answer, excerpt, category, scholar,
       metaTitle, metaDescription, keywords, isPublished,
-      featuredImageUrl, featuredImageAlt, featuredImageCaption,
+      featuredImageUrl, featuredImageAlt, featuredImageCaption, slug,
     } = req.body;
 
     if (!question || !answer) {
@@ -6832,8 +6832,20 @@ app.post("/admin/faqs", requireAdminOnly, async (req, res) => {
       ? { url: featuredImageUrl, alt: featuredImageAlt || "", caption: featuredImageCaption || "" }
       : undefined;
 
+    // If admin supplied a custom slug, sanitise and check uniqueness
+    let customSlug;
+    if (slug && slug.trim()) {
+      customSlug = slug.trim().toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+      if (customSlug) {
+        const existing = await IslamicFAQ.findOne({ slug: customSlug });
+        if (existing) return res.json({ success: false, error: "Slug already in use" });
+      }
+    }
+
     const faq = new IslamicFAQ({
       question: question.trim(),
+      ...(customSlug && { slug: customSlug }),
       answer: answer.trim(),
       excerpt: excerpt ? excerpt.trim() : "",
       category: category || "Spouse Search",
