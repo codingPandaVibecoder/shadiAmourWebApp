@@ -4367,7 +4367,7 @@ app.get("/admin/dashboard", requireAdminOrModerator, async (req, res) => {
     // Calculate stats
     const allTotalUsers = totalCount;
     const byAdmin = await User.countDocuments({ registrationSource: "admin" });
-    const bySelf = await User.countDocuments({ registrationSource: "register" });
+    const bySelf = await User.countDocuments({ registrationSource: { $in: ["register", "google"] } });
     const featuredCount = await User.countDocuments({ isFeatured: true });
     const pendingCount = await User.countDocuments({ approvalStatus: "pending" });
     const approvedCount = await User.countDocuments({ approvalStatus: "approved" });
@@ -4460,7 +4460,7 @@ app.get("/api/admin/users", requireAdminOrModerator, async (req, res) => {
     if (filter === "admin") {
       query.registrationSource = "admin";
     } else if (filter === "register") {
-      query.registrationSource = "register";
+      query.registrationSource = { $ne: "admin" }; 
     } else if (filter === "featured") {
       query.isFeatured = true;
     } else if (filter === "pending") {
