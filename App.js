@@ -4466,7 +4466,7 @@ app.get("/api/admin/users", requireAdminOrModerator, async (req, res) => {
     if (filter === "admin") {
       query.registrationSource = "admin";
     } else if (filter === "register") {
-      query.registrationSource = "register";
+       query.registrationSource = { $ne: "admin" };
     } else if (filter === "featured") {
       query.isFeatured = true;
     } else if (filter === "pending") {
