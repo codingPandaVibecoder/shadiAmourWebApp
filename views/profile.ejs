@@ -97,7 +97,7 @@
   <meta name="twitter:image" content="<%= imageUrl %>">
 
   <!-- ✅ JSON-LD Structured Data (ProfilePage + Person Schema) -->
-  <script type="application/ld+json">
+    <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "ProfilePage",
@@ -120,19 +120,19 @@
         "jobTitle": "<%= profile.work || '' %>",
         "alumniOf": [
           <% if (profile.education && profile.education.length > 0) { %>
-          <% profile.education.forEach((edu, index) => { %> {
-            "@type": "EducationalOrganization",
-            "name": "<%= edu.institute || 'Educational Institution' %>"
-          }
-          <%= index < profile.education.length - 1 ? ',' : '' %>
-          <% }) %>
+            <% profile.education.forEach((edu, index) => { %>
+              {
+                "@type": "EducationalOrganization",
+                "name": "<%= edu.institute || 'Educational Institution' %>"
+              }<%= index < profile.education.length - 1 ? ',' : '' %>
+            <% }) %>
           <% } %>
         ],
         "knowsLanguage": [
           <% if (profile.languagesSpoken && profile.languagesSpoken.length > 0) { %>
-          <% profile.languagesSpoken.forEach((lang, index) => { %> "<%= lang %>"
-          <%= index < profile.languagesSpoken.length - 1 ? ',' : '' %>
-          <% }) %>
+            <% profile.languagesSpoken.forEach((lang, index) => { %>
+              "<%= lang %>"<%= index < profile.languagesSpoken.length - 1 ? ',' : '' %>
+            <% }) %>
           <% } %>
         ],
         "seeks": {
@@ -143,24 +143,6 @@
           "@type": "Country",
           "name": "<%= profile.nationality || profile.country || 'United Kingdom' %>"
         }
-        <%= index < profile.education.length - 1 ? ',' : '' %>
-        <% }) %>
-        <% } %>
-      ],
-      "knowsLanguage": [
-        <% if (profile.languagesSpoken && profile.languagesSpoken.length > 0) { %>
-        <% profile.languagesSpoken.forEach((lang, index) => { %> "<%= lang %>"
-        <%= index < profile.languagesSpoken.length - 1 ? ',' : '' %>
-        <% }) %>
-        <% } %>
-      ],
-      "seeks": {
-        "@type": "Thing",
-        "description": "<%= profile.lookingForASpouseThatIs || 'A compatible marriage partner' %>"
-      },
-      "nationality": {
-        "@type": "Country",
-        "name": "<%= profile.nationality || profile.country || 'United Kingdom' %>"
       }
     }
   </script>
