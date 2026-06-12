@@ -8010,6 +8010,11 @@ app.get("/sitemap.xml", async (req, res) => {
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://damourmuslim.com/islamic-faqs</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://damourmuslim.com/podcasts</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -8279,6 +8284,48 @@ app.get("/sitemap.xml", async (req, res) => {
   }
 });
 
+// SEO: Q&A Sitemap — /qa-sitemap.xml (Islamic FAQs)
+app.get("/qa-sitemap.xml", async (req, res) => {
+  try {
+    const faqs = await IslamicFAQ.find({ isPublished: true })
+      .select("slug updatedAt createdAt")
+      .sort({ updatedAt: -1 });
+
+    let xml = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+          http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+  <url>
+    <loc>https://damourmuslim.com/islamic-faqs</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>`;
+
+    faqs.forEach((faq) => {
+      const lastmod = (faq.updatedAt || faq.createdAt)
+        ? new Date(faq.updatedAt || faq.createdAt).toISOString().split("T")[0]
+        : new Date().toISOString().split("T")[0];
+      xml += `
+  <url>
+    <loc>https://damourmuslim.com/islamic-faqs/${faq.slug}</loc>
+    <lastmod>${lastmod}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>`;
+    });
+
+    xml += `
+</urlset>`;
+
+    res.set("Content-Type", "application/xml");
+    res.send(xml);
+  } catch (err) {
+    console.error("QA sitemap error:", err);
+    res.status(500).send("Error generating QA sitemap");
+  }
+});
+
 // SEO: Video Sitemap — /video-sitemap.xml
 app.get("/video-sitemap.xml", async (req, res) => {
   try {
@@ -8355,7 +8402,8 @@ Disallow: /chats/
 Disallow: /chat/
 
 Sitemap: https://damourmuslim.com/sitemap.xml
-Sitemap: https://damourmuslim.com/video-sitemap.xml`;
+Sitemap: https://damourmuslim.com/video-sitemap.xml
+Sitemap: https://damourmuslim.com/qa-sitemap.xml`;
 
   res.set("Content-Type", "text/plain");
   res.send(robots);
