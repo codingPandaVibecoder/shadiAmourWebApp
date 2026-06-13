@@ -70,6 +70,45 @@
         </div>
       </div>
 
+      <!-- Manage Categories Panel -->
+      <div class="bg-white rounded-xl material-shadow mb-6 overflow-hidden">
+        <button id="toggleCatPanel" class="w-full flex items-center justify-between px-6 py-4 text-left hover:bg-gray-50 transition-colors">
+          <div class="flex items-center gap-2">
+            <i class="ri-price-tag-3-line text-primary"></i>
+            <span class="text-base font-semibold text-gray-900">Manage FAQ Categories</span>
+            <span class="text-xs text-gray-400 font-normal ml-1">(<%= faqCategories.length %> categories)</span>
+          </div>
+          <i id="toggleCatIcon" class="ri-arrow-down-s-line text-gray-400 transition-transform"></i>
+        </button>
+        <div id="catPanel" class="hidden border-t border-gray-100">
+          <div class="p-6">
+            <!-- Add category form -->
+            <form id="addCatForm" class="flex items-center gap-3 mb-5">
+              <input type="text" id="newCatName" placeholder="New category name..." required
+                class="flex-1 px-3 py-2 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-sm">
+              <button type="submit" class="px-4 py-2 bg-primary text-white text-sm rounded-button hover:bg-pink-600 transition-colors flex-shrink-0">
+                <i class="ri-add-line mr-1"></i>Add Category
+              </button>
+            </form>
+            <div id="catMsg" class="hidden text-sm mb-4 px-3 py-2 rounded"></div>
+            <!-- Category list -->
+            <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-2" id="catList">
+              <% faqCategories.forEach(cat => { %>
+              <div class="flex items-center justify-between px-3 py-2 bg-amber-50 rounded-lg border border-amber-100" data-cat-id="<%= cat._id %>">
+                <span class="text-sm font-medium text-amber-900"><%= cat.name %></span>
+                <button onclick="deleteCat('<%= cat._id %>', '<%= cat.name.replace(/'/g, "\\'") %>', this)" class="text-gray-400 hover:text-red-500 transition-colors ml-2 flex-shrink-0" title="Delete category">
+                  <i class="ri-delete-bin-line text-sm"></i>
+                </button>
+              </div>
+              <% }) %>
+              <% if (faqCategories.length === 0) { %>
+              <p class="col-span-full text-sm text-gray-400 italic">No categories yet. Add one above.</p>
+              <% } %>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- Filters -->
       <div class="bg-white rounded-xl p-6 material-shadow mb-6">
         <div class="flex flex-col md:flex-row gap-4">
@@ -85,8 +124,8 @@
             <label class="block text-sm font-medium text-gray-700 mb-2">Category</label>
             <select id="categoryFilter" class="w-full px-3 py-2 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary">
               <option value="all" <%= currentFilter.category === 'all' ? 'selected' : '' %>>All Categories</option>
-              <% ['Destiny','Birth','Divorce','Engagement','Family','Getting Married','Intimacy','Prayer & Purification','Rights & Responsibilities','Spouse Search'].forEach(cat => { %>
-              <option value="<%= cat %>" <%= currentFilter.category === cat ? 'selected' : '' %>><%= cat %></option>
+              <% faqCategories.forEach(cat => { %>
+              <option value="<%= cat.name %>" <%= currentFilter.category === cat.name ? 'selected' : '' %>><%= cat.name %></option>
               <% }) %>
             </select>
           </div>
@@ -181,6 +220,77 @@
   </div>
 
   <script>
+    // Category panel toggle
+    document.getElementById('toggleCatPanel').addEventListener('click', function() {
+      const panel = document.getElementById('catPanel');
+      const icon = document.getElementById('toggleCatIcon');
+      panel.classList.toggle('hidden');
+      icon.style.transform = panel.classList.contains('hidden') ? '' : 'rotate(180deg)';
+    });
+
+    // Add category
+    document.getElementById('addCatForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const name = document.getElementById('newCatName').value.trim();
+      if (!name) return;
+      const msg = document.getElementById('catMsg');
+      try {
+        const res = await fetch('/admin/faqs/categories', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name }),
+        });
+        const data = await res.json();
+        if (data.success) {
+          msg.textContent = data.message;
+          msg.className = 'text-sm mb-4 px-3 py-2 rounded bg-green-50 text-green-700 border border-green-200';
+          msg.classList.remove('hidden');
+          document.getElementById('newCatName').value = '';
+          // Append to DOM
+          const list = document.getElementById('catList');
+          const noItems = list.querySelector('p.col-span-full');
+          if (noItems) noItems.remove();
+          const div = document.createElement('div');
+          div.className = 'flex items-center justify-between px-3 py-2 bg-amber-50 rounded-lg border border-amber-100';
+          div.dataset.catId = data.category._id;
+          div.innerHTML = `<span class="text-sm font-medium text-amber-900">${data.category.name}</span><button onclick="deleteCat('${data.category._id}','${data.category.name.replace(/'/g,"\\'")}',this)" class="text-gray-400 hover:text-red-500 transition-colors ml-2 flex-shrink-0" title="Delete category"><i class="ri-delete-bin-line text-sm"></i></button>`;
+          list.appendChild(div);
+        } else {
+          msg.textContent = data.error;
+          msg.className = 'text-sm mb-4 px-3 py-2 rounded bg-red-50 text-red-700 border border-red-200';
+          msg.classList.remove('hidden');
+        }
+      } catch (err) {
+        msg.textContent = 'Network error';
+        msg.className = 'text-sm mb-4 px-3 py-2 rounded bg-red-50 text-red-700 border border-red-200';
+        msg.classList.remove('hidden');
+      }
+    });
+
+    // Delete category
+    async function deleteCat(id, name, btn) {
+      if (!confirm(`Delete category "${name}"? This cannot be undone.`)) return;
+      const msg = document.getElementById('catMsg');
+      try {
+        const res = await fetch(`/admin/faqs/categories/${id}`, { method: 'DELETE' });
+        const data = await res.json();
+        if (data.success) {
+          btn.closest('[data-cat-id]').remove();
+          msg.textContent = data.message;
+          msg.className = 'text-sm mb-4 px-3 py-2 rounded bg-green-50 text-green-700 border border-green-200';
+          msg.classList.remove('hidden');
+        } else {
+          msg.textContent = data.error;
+          msg.className = 'text-sm mb-4 px-3 py-2 rounded bg-red-50 text-red-700 border border-red-200';
+          msg.classList.remove('hidden');
+        }
+      } catch (err) {
+        msg.textContent = 'Network error';
+        msg.className = 'text-sm mb-4 px-3 py-2 rounded bg-red-50 text-red-700 border border-red-200';
+        msg.classList.remove('hidden');
+      }
+    }
+
     // Filters
     document.getElementById('statusFilter').addEventListener('change', applyFilters);
     document.getElementById('categoryFilter').addEventListener('change', applyFilters);

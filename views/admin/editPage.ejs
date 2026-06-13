@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit Page - D'amour Muslim Admin</title>
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+  <link rel="manifest" href="/images/site.webmanifest">
+  <meta name="theme-color" content="#E91E63">
+  <link rel="stylesheet" href="/css/output.css">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.0.0/fonts/remixicon.css" rel="stylesheet">
+  <script src="https://cdn.tiny.cloud/1/lscgwn0wthuhw98tjk7iyzy5kfh3tcektjf6x3qeeg26pkxd/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+  <style>
+    .material-shadow { box-shadow: 0 2px 8px rgba(0,0,0,.1); }
+  </style>
+</head>
+<body class="bg-gray-50 font-['Roboto']">
+  <%- include('../partials/header') %>
+
+  <main class="pt-24 pb-16 min-h-screen">
+    <div class="max-w-4xl mx-auto px-6">
+
+      <div class="flex items-center justify-between mb-8">
+        <div>
+          <h1 class="text-3xl font-bold text-gray-900 mb-2 font-['Playfair_Display']">Edit Page</h1>
+          <p class="text-gray-600">Update page content and settings</p>
+        </div>
+        <div class="flex items-center gap-3">
+          <% if (page.isPublished) { %>
+          <a href="/<%= page.categorySlug %>/<%= page.pageSlug %>" target="_blank" class="inline-flex items-center gap-2 px-4 py-2 text-blue-600 hover:text-blue-800 transition-colors">
+            <i class="ri-external-link-line"></i> View Live
+          </a>
+          <% } %>
+          <a href="/admin/pages" class="inline-flex items-center gap-2 px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors">
+            <i class="ri-arrow-left-line"></i> Back to Pages
+          </a>
+        </div>
+      </div>
+
+      <div id="statusMsg" class="hidden mb-4 px-4 py-3 rounded-lg text-sm font-medium"></div>
+
+      <form id="editPageForm" class="space-y-6">
+        <input type="hidden" id="pageId" value="<%= page._id %>">
+
+        <!-- Basic Info -->
+        <div class="bg-white rounded-xl p-6 material-shadow">
+          <h2 class="text-xl font-semibold text-gray-900 mb-4 font-['Playfair_Display']">Basic Information</h2>
+          <div class="space-y-5">
+
+            <div>
+              <label for="title" class="block text-sm font-medium text-gray-700 mb-2">Page Title *</label>
+              <input type="text" id="title" name="title" required maxlength="120" value="<%= page.title %>"
+                class="w-full px-3 py-2 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary">
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-5">
+              <div>
+                <label for="categorySlug" class="block text-sm font-medium text-gray-700 mb-2">Category Slug *</label>
+                <input type="text" id="categorySlug" name="categorySlug" required value="<%= page.categorySlug %>"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary font-mono text-sm">
+                <p class="text-xs text-gray-500 mt-1">Lowercase, hyphens only.</p>
+              </div>
+              <div>
+                <label for="pageSlug" class="block text-sm font-medium text-gray-700 mb-2">Page Slug *</label>
+                <input type="text" id="pageSlug" name="pageSlug" required value="<%= page.pageSlug %>"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary font-mono text-sm">
+                <div class="mt-1 flex items-start gap-1 text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded px-2 py-1">
+                  <i class="ri-alert-line mt-0.5 flex-shrink-0"></i>
+                  <span>Changing slugs changes the URL. Existing Google rankings for the old URL will break.</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Live URL preview -->
+            <div class="bg-gray-50 rounded-lg px-4 py-2 text-sm text-gray-600">
+              <span class="text-gray-400">URL: </span>
+              <span class="font-mono font-medium text-primary">https://damourmuslim.com/<span id="previewCat"><%= page.categorySlug %></span>/<span id="previewPage"><%= page.pageSlug %></span></span>
+            </div>
+
+            <div>
+              <label for="excerpt" class="block text-sm font-medium text-gray-700 mb-2">Excerpt</label>
+              <textarea id="excerpt" name="excerpt" rows="2" maxlength="300"
+                class="w-full px-3 py-2 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary"><%= page.excerpt || '' %></textarea>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Content -->
+        <div class="bg-white rounded-xl p-6 material-shadow">
+          <h2 class="text-xl font-semibold text-gray-900 mb-4 font-['Playfair_Display']">Page Content</h2>
+          <textarea id="content" name="content" rows="20"><%- page.content || '' %></textarea>
+        </div>
+
+        <!-- FAQ Categories -->
+        <div class="bg-white rounded-xl p-6 material-shadow">
+          <h2 class="text-xl font-semibold text-gray-900 mb-2 font-['Playfair_Display']">Linked FAQ Categories</h2>
+          <p class="text-sm text-gray-500 mb-4">FAQs from the selected categories will appear below your page content.</p>
+          <% if (faqCategories.length === 0) { %>
+          <p class="text-sm text-gray-400 italic">No FAQ categories exist yet. <a href="/admin/faqs" class="text-primary hover:underline">Create some in Manage FAQs</a>.</p>
+          <% } else { %>
+          <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-3">
+            <% faqCategories.forEach(cat => { %>
+            <label class="flex items-center gap-2 cursor-pointer p-3 border border-gray-200 rounded-lg hover:border-primary hover:bg-pink-50 transition-colors">
+              <input type="checkbox" name="faqCategories" value="<%= cat.name %>"
+                <%= (page.faqCategories && page.faqCategories.includes(cat.name)) ? 'checked' : '' %>
+                class="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary">
+              <span class="text-sm text-gray-700"><%= cat.name %></span>
+            </label>
+            <% }) %>
+          </div>
+          <% } %>
+        </div>
+
+        <!-- SEO Settings -->
+        <div class="bg-white rounded-xl p-6 material-shadow">
+          <h2 class="text-xl font-semibold text-gray-900 mb-4 font-['Playfair_Display']">SEO Settings</h2>
+          <div class="space-y-4">
+            <div>
+              <label for="metaTitle" class="block text-sm font-medium text-gray-700 mb-2">Meta Title <span class="text-gray-400 font-normal">(max 60)</span></label>
+              <input type="text" id="metaTitle" name="metaTitle" maxlength="60" value="<%= page.metaTitle || '' %>"
+                class="w-full px-3 py-2 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary"
+                placeholder="Leave empty to use page title">
+            </div>
+            <div>
+              <label for="metaDescription" class="block text-sm font-medium text-gray-700 mb-2">Meta Description <span class="text-gray-400 font-normal">(max 160)</span></label>
+              <textarea id="metaDescription" name="metaDescription" rows="2" maxlength="160"
+                class="w-full px-3 py-2 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary"
+                placeholder="Leave empty to use excerpt"><%= page.metaDescription || '' %></textarea>
+            </div>
+            <div>
+              <label for="keywords" class="block text-sm font-medium text-gray-700 mb-2">Keywords</label>
+              <input type="text" id="keywords" name="keywords" value="<%= page.keywords ? page.keywords.join(', ') : '' %>"
+                class="w-full px-3 py-2 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary"
+                placeholder="nikah, marriage, halal (comma-separated)">
+            </div>
+            <div>
+              <label for="focusKeyword" class="block text-sm font-medium text-gray-700 mb-2">Focus Keyword</label>
+              <input type="text" id="focusKeyword" name="focusKeyword" value="<%= page.focusKeyword || '' %>"
+                class="w-full px-3 py-2 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary">
+            </div>
+            <div>
+              <label for="canonicalUrl" class="block text-sm font-medium text-gray-700 mb-2">Canonical URL <span class="text-gray-400 font-normal">(optional override)</span></label>
+              <input type="url" id="canonicalUrl" name="canonicalUrl" value="<%= page.canonicalUrl || '' %>"
+                class="w-full px-3 py-2 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary"
+                placeholder="https://damourmuslim.com/...">
+            </div>
+            <div class="flex items-center justify-between pt-2">
+              <div>
+                <p class="text-sm font-medium text-gray-700">No Index</p>
+                <p class="text-xs text-gray-500">Prevent search engines from indexing this page</p>
+              </div>
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" id="noIndex" name="noIndex" <%= page.noIndex ? 'checked' : '' %> class="sr-only peer">
+                <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-red-500"></div>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Publish Settings -->
+        <div class="bg-white rounded-xl p-6 material-shadow">
+          <h2 class="text-xl font-semibold text-gray-900 mb-4 font-['Playfair_Display']">Publish Settings</h2>
+          <div class="flex items-center justify-between">
+            <div>
+              <h3 class="text-base font-medium text-gray-900">Publish Page</h3>
+              <p class="text-sm text-gray-600">Make this page visible to the public</p>
+            </div>
+            <label class="relative inline-flex items-center cursor-pointer">
+              <input type="checkbox" id="isPublished" name="isPublished" <%= page.isPublished ? 'checked' : '' %> class="sr-only peer">
+              <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary/25 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+            </label>
+          </div>
+        </div>
+
+        <div class="flex gap-3 justify-end">
+          <button type="button" id="saveDraftBtn" class="px-6 py-3 border border-gray-300 text-gray-700 rounded-button hover:bg-gray-50 transition-colors">
+            <i class="ri-save-line mr-2"></i>Save as Draft
+          </button>
+          <button type="submit" id="submitBtn" class="px-6 py-3 bg-primary text-white rounded-button hover:bg-pink-600 transition-colors">
+            <i class="ri-refresh-line mr-2"></i><span id="submitBtnText"><%= page.isPublished ? 'Update & Publish' : 'Update Page' %></span>
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </main>
+
+  <script>
+    // URL preview
+    document.getElementById('categorySlug').addEventListener('input', function() {
+      document.getElementById('previewCat').textContent = this.value || 'category';
+    });
+    document.getElementById('pageSlug').addEventListener('input', function() {
+      document.getElementById('previewPage').textContent = this.value || 'page-slug';
+    });
+
+    // TinyMCE
+    tinymce.init({
+      selector: '#content',
+      height: 600,
+      menubar: 'file edit view insert format tools table help',
+      plugins: ['advlist','autolink','lists','link','image','charmap','preview','anchor','searchreplace','visualblocks','code','fullscreen','insertdatetime','media','table','help','wordcount','codesample'],
+      toolbar: 'undo redo | blocks | bold italic underline | alignleft aligncenter alignright | bullist numlist outdent indent | link image media table | removeformat | code preview',
+      content_css: ['/css/output.css', '/css/blog.css'],
+      content_style: 'body { font-family: Roboto, Arial, sans-serif; font-size: 16px; line-height: 1.7; color: #4b5563; max-width: 800px; margin: 20px auto; padding: 20px; }',
+      images_upload_handler: (blobInfo) => new Promise((resolve, reject) => {
+        const formData = new FormData();
+        formData.append('image', blobInfo.blob(), blobInfo.filename());
+        fetch('/api/upload-blog-image', { method: 'POST', body: formData })
+          .then(r => r.json())
+          .then(result => result.url ? resolve(result.url) : reject('Upload failed'))
+          .catch(() => reject('Upload failed'));
+      }),
+    });
+
+    function showStatus(msg, isError) {
+      const el = document.getElementById('statusMsg');
+      el.textContent = msg;
+      el.className = `mb-4 px-4 py-3 rounded-lg text-sm font-medium ${isError ? 'bg-red-50 border border-red-200 text-red-700' : 'bg-green-50 border border-green-200 text-green-700'}`;
+      el.classList.remove('hidden');
+      el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function buildPayload(publishOverride) {
+      const faqCheckboxes = document.querySelectorAll('input[name="faqCategories"]:checked');
+      const faqCats = Array.from(faqCheckboxes).map(cb => cb.value);
+      const isPublished = publishOverride !== undefined ? publishOverride : document.getElementById('isPublished').checked;
+      return {
+        title: document.getElementById('title').value.trim(),
+        categorySlug: document.getElementById('categorySlug').value.trim(),
+        pageSlug: document.getElementById('pageSlug').value.trim(),
+        excerpt: document.getElementById('excerpt').value.trim(),
+        content: tinymce.get('content').getContent(),
+        faqCategories: faqCats,
+        metaTitle: document.getElementById('metaTitle').value.trim(),
+        metaDescription: document.getElementById('metaDescription').value.trim(),
+        keywords: document.getElementById('keywords').value.trim(),
+        focusKeyword: document.getElementById('focusKeyword').value.trim(),
+        canonicalUrl: document.getElementById('canonicalUrl').value.trim(),
+        noIndex: document.getElementById('noIndex').checked,
+        isPublished,
+      };
+    }
+
+    document.getElementById('editPageForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      await submitPage(document.getElementById('isPublished').checked);
+    });
+
+    document.getElementById('saveDraftBtn').addEventListener('click', async function() {
+      await submitPage(false);
+    });
+
+    async function submitPage(publish) {
+      const btn = document.getElementById('submitBtn');
+      btn.disabled = true;
+      document.getElementById('submitBtnText').textContent = 'Saving...';
+      const pageId = document.getElementById('pageId').value;
+      try {
+        const payload = buildPayload(publish);
+        const res = await fetch(`/admin/pages/${pageId}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        const data = await res.json();
+        if (data.success) {
+          showStatus(data.message, false);
+          btn.disabled = false;
+          document.getElementById('submitBtnText').textContent = payload.isPublished ? 'Update & Publish' : 'Update Page';
+        } else {
+          showStatus(data.error || 'Failed to update page.', true);
+          btn.disabled = false;
+          document.getElementById('submitBtnText').textContent = payload.isPublished ? 'Update & Publish' : 'Update Page';
+        }
+      } catch (err) {
+        showStatus('Network error. Please try again.', true);
+        btn.disabled = false;
+        document.getElementById('submitBtnText').textContent = 'Update Page';
+      }
+    }
+  </script>
+</body>
+</html>

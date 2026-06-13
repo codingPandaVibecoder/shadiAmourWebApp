@@ -167,6 +167,16 @@
             <a href="/muslim-marriage-over-30" class="hover:text-pink-200 transition-colors duration-300 py-0.5">Muslim Marriage Over 30</a>
           </div>
         </div>
+        <% if (typeof categoryPages !== 'undefined' && categoryPages && categoryPages.length > 0) { %>
+        <div>
+          <h4 class="text-sm font-semibold mb-3 text-pink-100 uppercase tracking-widest">Category Pages</h4>
+          <div class="grid grid-cols-2 gap-x-4 gap-y-1 text-sm">
+            <% categoryPages.forEach(function(cp) { %>
+            <a href="/<%= cp.categorySlug %>/<%= cp.pageSlug %>" class="hover:text-pink-200 transition-colors duration-300 py-0.5"><%= cp.title %></a>
+            <% }) %>
+          </div>
+        </div>
+        <% } %>
       </div>
     </div>
 

@@ -57,16 +57,9 @@
                 <select id="category" name="category" required
                   class="w-full px-3 py-2 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary">
                   <option value="">Select a category</option>
-                  <option value="Destiny">Destiny</option>
-                  <option value="Birth">Birth</option>
-                  <option value="Divorce">Divorce</option>
-                  <option value="Engagement">Engagement</option>
-                  <option value="Family">Family</option>
-                  <option value="Getting Married">Getting Married</option>
-                  <option value="Intimacy">Intimacy</option>
-                  <option value="Prayer & Purification">Prayer & Purification</option>
-                  <option value="Rights & Responsibilities">Rights & Responsibilities</option>
-                  <option value="Spouse Search">Spouse Search</option>
+                  <% (typeof faqCategories !== 'undefined' ? faqCategories : []).forEach(cat => { %>
+                  <option value="<%= cat.name %>"><%= cat.name %></option>
+                  <% }) %>
                 </select>
               </div>
               <div>

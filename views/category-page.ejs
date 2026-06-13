@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title><%= page.metaTitle || page.title %> | D'amour Muslim</title>
+  <meta name="description" content="<%= page.metaDescription || page.excerpt || page.title %>">
+  <% if (page.keywords && page.keywords.length > 0) { %>
+  <meta name="keywords" content="<%= page.keywords.join(', ') %>">
+  <% } %>
+  <% if (page.noIndex) { %>
+  <meta name="robots" content="noindex, follow">
+  <% } %>
+
+  <link rel="canonical" href="<%= page.canonicalUrl || 'https://damourmuslim.com/' + page.categorySlug + '/' + page.pageSlug %>">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="<%= page.metaTitle || page.title %>">
+  <meta property="og:description" content="<%= page.metaDescription || page.excerpt || page.title %>">
+  <meta property="og:url" content="https://damourmuslim.com/<%= page.categorySlug %>/<%= page.pageSlug %>">
+  <meta property="og:site_name" content="D'amour Muslim">
+  <% if (page.featuredImage && page.featuredImage.url) { %>
+  <meta property="og:image" content="<%= page.featuredImage.url %>">
+  <meta property="og:image:alt" content="<%= page.featuredImage.alt || page.title %>">
+  <% } %>
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="<%= page.metaTitle || page.title %>">
+  <meta name="twitter:description" content="<%= page.metaDescription || page.excerpt || page.title %>">
+
+  <!-- Favicons -->
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+  <link rel="manifest" href="/images/site.webmanifest">
+  <meta name="theme-color" content="#E91E63">
+
+  <link rel="stylesheet" href="/css/output.css">
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css"></noscript>
+
+  <%- include('partials/clarity') %>
+  <%- include('partials/thirdparty') %>
+  <%- include('partials/analytics') %>
+
+  <!-- WebPage structured data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": <%- JSON.stringify(page.metaTitle || page.title) %>,
+    "description": <%- JSON.stringify(page.metaDescription || page.excerpt || page.title) %>,
+    "url": "https://damourmuslim.com/<%= page.categorySlug %>/<%= page.pageSlug %>",
+    "inLanguage": "en",
+    "publisher": {
+      "@type": "Organization",
+      "name": "D\u2019amour Muslim",
+      "url": "https://damourmuslim.com"
+    }
+  }
+  </script>
+
+  <!-- BreadcrumbList -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://damourmuslim.com" },
+      { "@type": "ListItem", "position": 2, "name": <%- JSON.stringify(page.categorySlug.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())) %>, "item": "https://damourmuslim.com/<%= page.categorySlug %>" },
+      { "@type": "ListItem", "position": 3, "name": <%- JSON.stringify(page.title) %>, "item": "https://damourmuslim.com/<%= page.categorySlug %>/<%= page.pageSlug %>" }
+    ]
+  }
+  </script>
+
+  <% if (faqs && faqs.length > 0) { %>
+  <!-- FAQPage structured data for the linked Islamic FAQs -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      <% faqs.forEach(function(faq, i) { %>
+      {
+        "@type": "Question",
+        "name": <%- JSON.stringify(faq.question) %>,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": <%- JSON.stringify((faq.excerpt || faq.answer.replace(/<[^>]*>/g, '')).substring(0, 500)) %>
+        }
+      }<%= i < faqs.length - 1 ? ',' : '' %>
+      <% }) %>
+    ]
+  }
+  </script>
+  <% } %>
+</head>
+
+<body class="bg-gray-50 font-['Roboto']">
+  <%- include('partials/header') %>
+
+  <main class="pt-24 pb-16 min-h-screen">
+    <div class="max-w-3xl mx-auto px-6">
+
+      <!-- Breadcrumb -->
+      <nav class="flex items-center gap-2 text-sm text-gray-500 mb-8 flex-wrap" aria-label="Breadcrumb">
+        <a href="/" class="hover:text-primary transition-colors">Home</a>
+        <i class="ri-arrow-right-s-line"></i>
+        <span class="text-gray-500 capitalize"><%= page.categorySlug.replace(/-/g, ' ') %></span>
+        <i class="ri-arrow-right-s-line"></i>
+        <span class="text-gray-800 font-medium truncate max-w-xs"><%= page.title %></span>
+      </nav>
+
+      <!-- Page content -->
+      <article class="bg-white rounded-2xl p-8 shadow-sm border border-gray-100 mb-10">
+
+        <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4 font-['Playfair_Display'] leading-tight">
+          <%= page.title %>
+        </h1>
+
+        <% if (page.excerpt) { %>
+        <p class="text-lg text-gray-600 mb-6 leading-relaxed border-l-4 border-primary pl-4">
+          <%= page.excerpt %>
+        </p>
+        <% } %>
+
+        <div class="prose prose-gray max-w-none text-gray-700 leading-relaxed
+          [&_h2]:text-2xl [&_h2]:font-bold [&_h2]:text-gray-900 [&_h2]:mt-8 [&_h2]:mb-4 [&_h2]:font-['Playfair_Display']
+          [&_h3]:text-xl [&_h3]:font-semibold [&_h3]:text-gray-800 [&_h3]:mt-6 [&_h3]:mb-3
+          [&_p]:mb-4 [&_ul]:mb-4 [&_ol]:mb-4 [&_li]:mb-1
+          [&_a]:text-primary [&_a]:underline [&_a]:hover:text-pink-700
+          [&_blockquote]:border-l-4 [&_blockquote]:border-primary [&_blockquote]:pl-4 [&_blockquote]:italic [&_blockquote]:text-gray-600 [&_blockquote]:my-4">
+          <%- page.content %>
+        </div>
+
+      </article>
+
+      <!-- Islamic FAQs section -->
+      <% if (faqs && faqs.length > 0) { %>
+      <section aria-labelledby="faqs-heading">
+        <div class="flex items-center gap-3 mb-6">
+          <div class="w-1 h-8 bg-primary rounded-full"></div>
+          <h2 id="faqs-heading" class="text-2xl font-bold text-gray-900 font-['Playfair_Display']">Related Islamic Guidance</h2>
+        </div>
+
+        <div class="space-y-4">
+          <% faqs.forEach(faq => { %>
+          <a href="/islamic-faqs/<%= faq.slug %>" class="block bg-white rounded-xl p-5 border border-gray-200 hover:border-primary hover:shadow-md transition-all duration-200 group">
+            <div class="flex items-start gap-4">
+              <div class="w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center flex-shrink-0 mt-0.5 group-hover:bg-amber-200 transition-colors">
+                <i class="ri-question-line text-amber-700"></i>
+              </div>
+              <div class="flex-1 min-w-0">
+                <p class="font-semibold text-gray-900 group-hover:text-primary transition-colors leading-snug mb-1">
+                  <%= faq.question %>
+                </p>
+                <% if (faq.excerpt) { %>
+                <p class="text-sm text-gray-500 line-clamp-2"><%= faq.excerpt %></p>
+                <% } %>
+                <div class="flex items-center gap-3 mt-2">
+                  <span class="inline-block px-2.5 py-0.5 bg-amber-100 text-amber-800 rounded-full text-xs font-medium"><%= faq.category %></span>
+                  <% if (faq.scholar) { %>
+                  <span class="text-xs text-gray-400">— <%= faq.scholar %></span>
+                  <% } %>
+                </div>
+              </div>
+              <i class="ri-arrow-right-s-line text-gray-300 group-hover:text-primary text-xl flex-shrink-0 mt-1 transition-colors"></i>
+            </div>
+          </a>
+          <% }) %>
+        </div>
+
+        <div class="mt-6 text-center">
+          <a href="/islamic-faqs" class="inline-flex items-center gap-2 px-6 py-3 border-2 border-primary text-primary rounded-full hover:bg-primary hover:text-white transition-all duration-300 font-medium text-sm">
+            <i class="ri-question-answer-line"></i>
+            Browse All Islamic FAQs
+          </a>
+        </div>
+      </section>
+      <% } %>
+
+    </div>
+  </main>
+
+  <%- include('partials/footer') %>
+</body>
+</html>
