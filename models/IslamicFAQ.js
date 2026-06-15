@@ -27,21 +27,6 @@ const islamicFAQSchema = new mongoose.Schema(
     },
     category: {
       type: String,
-<<<<<<< HEAD
-      enum: [
-        "Destiny",
-        "Birth",
-        "Divorce",
-        "Engagement",
-        "Family",
-        "Getting Married",
-        "Intimacy",
-        "Prayer & Purification",
-        "Rights & Responsibilities",
-        "Spouse Search",
-      ],
-=======
->>>>>>> fetchjun-temp
       default: "Spouse Search",
       index: true,
     },

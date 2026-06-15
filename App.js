@@ -3233,14 +3233,6 @@ app.post("/register", async (req, res) => {
     });
   }
 
-  // Validate email format
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!emailRegex.test(email)) {
-    return res.render("register-new", {
-      error: "Please enter a valid email address.",
-    });
-  }
-
   try {
     // Check if email already exists
     const existingUser = await User.findOne({ email: email.toLowerCase() });
@@ -4157,17 +4149,6 @@ app.get("/profiles/:slug", async (req, res) => {
     if (!foundProfile.isApproved && !req.session.isAdmin && !req.session.isModerator && !isOwnProfile) {
       return res.status(404).render("404", {
         title: "Profile Not Found - shadiamour",
-        url: req.originalUrl,
-      });
-    }
-
-    // **NEW**: Hide unapproved profiles from regular users
-    // Only admins and moderators can view unapproved profiles
-    // Also allow the user to see their own profile
-    const isOwnProfile = req.session.userId && foundProfile._id.toString() === req.session.userId.toString();
-    if (!foundProfile.isApproved && !req.session.isAdmin && !req.session.isModerator && !isOwnProfile) {
-      return res.status(404).render("404", {
-        title: "Profile Not Found - D'amour Muslim",
         url: req.originalUrl,
       });
     }
@@ -7939,37 +7920,37 @@ app.get("/privacy", (req, res) => {
 // **NEW**: Company, Policy & Information Pages
 app.get("/company-details", (req, res) => {
   res.render("company-details", {
-    title: "Company Details - D'amour Muslim",
+    title: "Company Details - shadiamour",
   });
 });
 
 app.get("/refund-policy", (req, res) => {
   res.render("refund-policy", {
-    title: "Refund Policy - D'amour Muslim",
+    title: "Refund Policy - shadiamour",
   });
 });
 
 app.get("/account-faqs", (req, res) => {
   res.render("account-faqs", {
-    title: "Account FAQs - D'amour Muslim",
+    title: "Account FAQs - shadiamour",
   });
 });
 
 app.get("/pricing", (req, res) => {
   res.render("pricing", {
-    title: "Pricing & Membership Plans - D'amour Muslim",
+    title: "Pricing & Membership Plans - shadiamour",
   });
 });
 
 app.get("/gdpr-faqs", (req, res) => {
   res.render("gdpr-faqs", {
-    title: "GDPR FAQs - D'amour Muslim",
+    title: "GDPR FAQs - shadiamour",
   });
 });
 
 app.get("/code-of-conduct", (req, res) => {
   res.render("code-of-conduct", {
-    title: "Code of Conduct - D'amour Muslim",
+    title: "Code of Conduct - shadiamour",
   });
 });
 
@@ -8226,202 +8207,202 @@ app.get("/sitemap.xml", async (req, res) => {
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://damourmuslim.com/islamic-faqs</loc>
+    <loc>https://shadiamour.com/islamic-faqs</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://damourmuslim.com/podcasts</loc>
+    <loc>https://shadiamour.com/podcasts</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://damourmuslim.com/pricing</loc>
+    <loc>https://shadiamour.com/pricing</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://damourmuslim.com/our-team</loc>
+    <loc>https://shadiamour.com/our-team</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://damourmuslim.com/our-ads</loc>
+    <loc>https://shadiamour.com/our-ads</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://damourmuslim.com/company-details</loc>
+    <loc>https://shadiamour.com/company-details</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://damourmuslim.com/refund-policy</loc>
+    <loc>https://shadiamour.com/refund-policy</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://damourmuslim.com/account-faqs</loc>
+    <loc>https://shadiamour.com/account-faqs</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://damourmuslim.com/gdpr-faqs</loc>
+    <loc>https://shadiamour.com/gdpr-faqs</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://damourmuslim.com/code-of-conduct</loc>
+    <loc>https://shadiamour.com/code-of-conduct</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://damourmuslim.com/terms</loc>
+    <loc>https://shadiamour.com/terms</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://damourmuslim.com/privacy</loc>
+    <loc>https://shadiamour.com/privacy</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://damourmuslim.com/muslim-marriage</loc>
+    <loc>https://shadiamour.com/muslim-marriage</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://damourmuslim.com/muslim-matrimonial</loc>
+    <loc>https://shadiamour.com/muslim-matrimonial</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://damourmuslim.com/muslim-matchmaking</loc>
+    <loc>https://shadiamour.com/muslim-matchmaking</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://damourmuslim.com/halal-marriage</loc>
+    <loc>https://shadiamour.com/halal-marriage</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://damourmuslim.com/muslim-rishta</loc>
+    <loc>https://shadiamour.com/muslim-rishta</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://damourmuslim.com/find-muslim-spouse</loc>
+    <loc>https://shadiamour.com/find-muslim-spouse</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://damourmuslim.com/best-muslim-marriage-website</loc>
+    <loc>https://shadiamour.com/best-muslim-marriage-website</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://damourmuslim.com/free-muslim-marriage-site</loc>
+    <loc>https://shadiamour.com/free-muslim-marriage-site</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://damourmuslim.com/trusted-muslim-matchmaking</loc>
+    <loc>https://shadiamour.com/trusted-muslim-matchmaking</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://damourmuslim.com/verified-muslim-profiles</loc>
+    <loc>https://shadiamour.com/verified-muslim-profiles</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://damourmuslim.com/online-rishta-pakistan</loc>
+    <loc>https://shadiamour.com/online-rishta-pakistan</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://damourmuslim.com/rishta-lahore</loc>
+    <loc>https://shadiamour.com/rishta-lahore</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://damourmuslim.com/rishta-karachi</loc>
+    <loc>https://shadiamour.com/rishta-karachi</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://damourmuslim.com/muslim-marriage-uk</loc>
+    <loc>https://shadiamour.com/muslim-marriage-uk</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://damourmuslim.com/british-pakistani-marriage</loc>
+    <loc>https://shadiamour.com/british-pakistani-marriage</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://damourmuslim.com/muslim-singles-uk</loc>
+    <loc>https://shadiamour.com/muslim-singles-uk</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://damourmuslim.com/muslim-second-marriage</loc>
+    <loc>https://shadiamour.com/muslim-second-marriage</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://damourmuslim.com/divorced-muslim-marriage</loc>
+    <loc>https://shadiamour.com/divorced-muslim-marriage</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://damourmuslim.com/muslim-marriage-over-30</loc>
+    <loc>https://shadiamour.com/muslim-marriage-over-30</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://damourmuslim.com/profiles?gender=male</loc>
+    <loc>https://shadiamour.com/profiles?gender=male</loc>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://damourmuslim.com/profiles?gender=female</loc>
+    <loc>https://shadiamour.com/profiles?gender=female</loc>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://damourmuslim.com/profiles/addedBy/staff</loc>
+    <loc>https://shadiamour.com/profiles/addedBy/staff</loc>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://damourmuslim.com/muslim-matrimony-london</loc>
+    <loc>https://shadiamour.com/muslim-matrimony-london</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://damourmuslim.com/muslim-matrimony-birmingham</loc>
+    <loc>https://shadiamour.com/muslim-matrimony-birmingham</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://damourmuslim.com/muslim-matrimony-manchester</loc>
+    <loc>https://shadiamour.com/muslim-matrimony-manchester</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://damourmuslim.com/muslim-matrimony-bradford</loc>
+    <loc>https://shadiamour.com/muslim-matrimony-bradford</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://damourmuslim.com/muslim-matrimony-leicester</loc>
+    <loc>https://shadiamour.com/muslim-matrimony-leicester</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://damourmuslim.com/muslim-matrimony-leeds</loc>
+    <loc>https://shadiamour.com/muslim-matrimony-leeds</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>`;
@@ -8430,7 +8411,7 @@ app.get("/sitemap.xml", async (req, res) => {
     cityHubPages.filter(h => !["London","Birmingham","Manchester","Bradford","Leicester","Leeds"].includes(h.city)).forEach((hub) => {
       sitemap += `
   <url>
-    <loc>https://damourmuslim.com/${hub.slug}</loc>
+    <loc>https://shadiamour.com/${hub.slug}</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>`;
@@ -8440,7 +8421,7 @@ app.get("/sitemap.xml", async (req, res) => {
     pakistanCityPages.forEach((pkCity) => {
       sitemap += `
   <url>
-    <loc>https://damourmuslim.com/${pkCity.slug}</loc>
+    <loc>https://shadiamour.com/${pkCity.slug}</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>`;
@@ -8487,7 +8468,7 @@ app.get("/sitemap.xml", async (req, res) => {
           : new Date().toISOString().split("T")[0];
       sitemap += `
   <url>
-    <loc>https://damourmuslim.com/${cp.categorySlug}/${cp.pageSlug}</loc>
+    <loc>https://shadiamour.com/${cp.categorySlug}/${cp.pageSlug}</loc>
     <lastmod>${lastmod}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>

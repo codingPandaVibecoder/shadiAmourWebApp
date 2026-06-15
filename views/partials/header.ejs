@@ -227,14 +227,26 @@
     document.getElementById('mobileNavOverlay').style.pointerEvents = 'none';
     document.body.style.overflow = '';
   }
-  const openBtn = document.getElementById('openMobileNav');
-  const closeBtn = document.getElementById('closeMobileNav');
-  const overlay = document.getElementById('mobileNavOverlay');
-  if (openBtn) openBtn.addEventListener('click', openMobileNav);
-  if (closeBtn) closeBtn.addEventListener('click', closeMobileNav);
-  if (overlay) overlay.addEventListener('click', closeMobileNav);
 
   document.addEventListener('DOMContentLoaded', function() {
+    // Initialize mobile nav to closed state on page load
+    const mobileNavPanel = document.getElementById('mobileNavPanel');
+    const mobileNavOverlay = document.getElementById('mobileNavOverlay');
+    if (mobileNavPanel) {
+      mobileNavPanel.style.transform = 'translateX(-100%)';
+    }
+    if (mobileNavOverlay) {
+      mobileNavOverlay.style.opacity = '0';
+      mobileNavOverlay.style.pointerEvents = 'none';
+    }
+
+    // Set up mobile nav event listeners
+    const openBtn = document.getElementById('openMobileNav');
+    const closeBtn = document.getElementById('closeMobileNav');
+    const overlay = document.getElementById('mobileNavOverlay');
+    if (openBtn) openBtn.addEventListener('click', openMobileNav);
+    if (closeBtn) closeBtn.addEventListener('click', closeMobileNav);
+    if (overlay) overlay.addEventListener('click', closeMobileNav);
     const dropdownButton = document.getElementById('accountDropdown');
     const dropdownMenu = document.getElementById('dropdownMenu');
     const notificationButton = document.getElementById('notificationDropdown');
