@@ -2,6 +2,8 @@ require("dotenv").config(); // MUST be first!
 const { muslimMaleNames, muslimFemaleNames } = require("./config/seoData");
 const Blog = require("./models/Blog");
 const IslamicFAQ = require("./models/IslamicFAQ");
+const FaqCategory = require("./models/FaqCategory");
+const CategoryPage = require("./models/CategoryPage");
 function getRandomSeoName(gender) {
   if (gender === "male") {
     const randomIndex = Math.floor(Math.random() * muslimMaleNames.length);
@@ -341,8 +343,23 @@ app.set("view engine", "ejs");
 
 mongoose
   .connect(process.env.MONGODB_URI, {})
-  .then(() => {
+  .then(async () => {
     console.log(" Mongoose Server Started!");
+    // Seed default FAQ categories (idempotent)
+    const defaultCategories = [
+      "Destiny", "Birth", "Divorce", "Engagement", "Family",
+      "Getting Married", "Intimacy", "Prayer & Purification",
+      "Rights & Responsibilities", "Spouse Search",
+    ];
+    const slugify = require("slugify");
+    for (const name of defaultCategories) {
+      const slug = slugify(name, { lower: true, strict: true });
+      await FaqCategory.findOneAndUpdate(
+        { name },
+        { name, slug },
+        { upsert: true, setDefaultsOnInsert: true }
+      );
+    }
   })
   .catch((err) => {
     console.log(" Err mongoose!", err);
@@ -369,6 +386,15 @@ app.use(async (req, res, next) => {
   } catch (error) {
     console.error("Error loading global SEO settings:", error);
     res.locals.globalSeoSettings = null;
+  }
+  try {
+    res.locals.categoryPages = await CategoryPage.find({ isPublished: true })
+      .select("title categorySlug pageSlug")
+      .sort({ title: 1 })
+      .limit(20)
+      .lean();
+  } catch (e) {
+    res.locals.categoryPages = [];
   }
   next();
 });
@@ -3196,8 +3222,14 @@ app.post("/register", async (req, res) => {
   if (password.length < 5) {
     return res.render("register-new", {
       error: "Password must be at least 5 characters long.",
-      countryOptions,
-      countryPlaceholders,
+    });
+  }
+
+  // Validate email format
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    return res.render("register-new", {
+      error: "Please enter a valid email address.",
     });
   }
 
@@ -3255,8 +3287,6 @@ app.post("/register", async (req, res) => {
     // Clean up verification session data
     delete req.session.emailVerified;
     delete req.session.verifiedEmail;
-    delete req.session.passcodeVerified;
-    delete req.session.verifiedMobile;
 
     // Set up session
     req.session.userId = newUser._id;
@@ -3273,12 +3303,9 @@ app.post("/register", async (req, res) => {
     console.error("Registration error:", error);
     return res.render("register-new", {
       error: "Registration failed. Please try again.",
-      countryOptions,
-      countryPlaceholders,
     });
   }
 });
-// **NEW**: Passcode verification route
 // Keep old passcode verification route for backward compatibility but mark as deprecated
 // **DEPRECATED**: Passcode verification route
 app.post("/api/verify-passcode", async (req, res) => {
@@ -4134,6 +4161,17 @@ app.get("/profiles/:slug", async (req, res) => {
       });
     }
 
+    // **NEW**: Hide unapproved profiles from regular users
+    // Only admins and moderators can view unapproved profiles
+    // Also allow the user to see their own profile
+    const isOwnProfile = req.session.userId && foundProfile._id.toString() === req.session.userId.toString();
+    if (!foundProfile.isApproved && !req.session.isAdmin && !req.session.isModerator && !isOwnProfile) {
+      return res.status(404).render("404", {
+        title: "Profile Not Found - D'amour Muslim",
+        url: req.originalUrl,
+      });
+    }
+
     // **NEW**: If we found the profile by ID, redirect to the slug URL
     if (
       shouldRedirect &&
@@ -4373,7 +4411,7 @@ app.get("/admin/dashboard", requireAdminOrModerator, async (req, res) => {
     // Calculate stats
     const allTotalUsers = totalCount;
     const byAdmin = await User.countDocuments({ registrationSource: "admin" });
-    const bySelf = await User.countDocuments({ registrationSource: { $ne: "admin" } });
+    const bySelf = await User.countDocuments({ registrationSource: { $in: ["register", "google"] } });
     const featuredCount = await User.countDocuments({ isFeatured: true });
     const pendingCount = await User.countDocuments({ approvalStatus: "pending" });
     const approvedCount = await User.countDocuments({ approvalStatus: "approved" });
@@ -4466,7 +4504,7 @@ app.get("/api/admin/users", requireAdminOrModerator, async (req, res) => {
     if (filter === "admin") {
       query.registrationSource = "admin";
     } else if (filter === "register") {
-       query.registrationSource = { $ne: "admin" };
+      query.registrationSource = { $ne: "admin" }; 
     } else if (filter === "featured") {
       query.isFeatured = true;
     } else if (filter === "pending") {
@@ -6795,11 +6833,13 @@ app.get("/admin/faqs", requireAdminOnly, async (req, res) => {
     const total = await IslamicFAQ.countDocuments({});
     const published = await IslamicFAQ.countDocuments({ isPublished: true });
     const drafts = await IslamicFAQ.countDocuments({ isPublished: false });
+    const faqCategories = await FaqCategory.find({}).sort({ name: 1 });
 
     res.render("admin/faqs", {
       faqs,
       stats: { total, published, drafts },
       currentFilter: { status: status || "all", category: category || "all" },
+      faqCategories,
     });
   } catch (error) {
     console.error("FAQ admin listing error:", error);
@@ -6807,14 +6847,16 @@ app.get("/admin/faqs", requireAdminOnly, async (req, res) => {
       faqs: [],
       stats: { total: 0, published: 0, drafts: 0 },
       currentFilter: { status: "all", category: "all" },
+      faqCategories: [],
     });
   }
 });
 
 // Admin: create FAQ form
-app.get("/admin/faqs/create", requireAdminOnly, (req, res) => {
+app.get("/admin/faqs/create", requireAdminOnly, async (req, res) => {
   if (!req.session.isAdmin) return res.redirect("/login");
-  res.render("admin/createFaq");
+  const faqCategories = await FaqCategory.find({}).sort({ name: 1 });
+  res.render("admin/createFaq", { faqCategories });
 });
 
 // Admin: create FAQ API
@@ -6824,7 +6866,7 @@ app.post("/admin/faqs", requireAdminOnly, async (req, res) => {
     const {
       question, answer, excerpt, category, scholar,
       metaTitle, metaDescription, keywords, isPublished,
-      featuredImageUrl, featuredImageAlt, featuredImageCaption,
+      featuredImageUrl, featuredImageAlt, featuredImageCaption, slug,
     } = req.body;
 
     if (!question || !answer) {
@@ -6838,8 +6880,20 @@ app.post("/admin/faqs", requireAdminOnly, async (req, res) => {
       ? { url: featuredImageUrl, alt: featuredImageAlt || "", caption: featuredImageCaption || "" }
       : undefined;
 
+    // If admin supplied a custom slug, sanitise and check uniqueness
+    let customSlug;
+    if (slug && slug.trim()) {
+      customSlug = slug.trim().toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+      if (customSlug) {
+        const existing = await IslamicFAQ.findOne({ slug: customSlug });
+        if (existing) return res.json({ success: false, error: "Slug already in use" });
+      }
+    }
+
     const faq = new IslamicFAQ({
       question: question.trim(),
+      ...(customSlug && { slug: customSlug }),
       answer: answer.trim(),
       excerpt: excerpt ? excerpt.trim() : "",
       category: category || "Spouse Search",
@@ -6876,7 +6930,8 @@ app.get("/admin/faqs/:id/edit", requireAdminOnly, async (req, res) => {
         user: req.session.user || null,
       });
     }
-    res.render("admin/editFaq", { faq });
+    const faqCategories = await FaqCategory.find({}).sort({ name: 1 });
+    res.render("admin/editFaq", { faq, faqCategories });
   } catch (error) {
     console.error("Edit FAQ page error:", error);
     res.redirect("/admin/faqs");
@@ -6954,6 +7009,184 @@ app.delete("/admin/faqs/:id", requireAdminOnly, async (req, res) => {
   } catch (error) {
     console.error("Delete FAQ error:", error);
     res.json({ success: false, error: "Failed to delete FAQ" });
+  }
+});
+
+// ============================================
+// FAQ CATEGORY MANAGEMENT ROUTES
+// ============================================
+
+// Create a new FAQ category
+app.post("/admin/faqs/categories", requireAdminOnly, async (req, res) => {
+  if (!req.session.isAdmin) return res.status(403).json({ success: false, error: "Forbidden" });
+  try {
+    const { name } = req.body;
+    if (!name || !name.trim()) return res.json({ success: false, error: "Category name is required" });
+    const slugify = require("slugify");
+    const slug = slugify(name.trim(), { lower: true, strict: true });
+    const existing = await FaqCategory.findOne({ $or: [{ name: name.trim() }, { slug }] });
+    if (existing) return res.json({ success: false, error: "A category with this name already exists" });
+    const cat = new FaqCategory({ name: name.trim(), slug });
+    await cat.save();
+    res.json({ success: true, message: "Category created", category: cat });
+  } catch (error) {
+    console.error("Create FAQ category error:", error);
+    res.json({ success: false, error: "Failed to create category" });
+  }
+});
+
+// Delete an FAQ category (blocked if in use)
+app.delete("/admin/faqs/categories/:id", requireAdminOnly, async (req, res) => {
+  if (!req.session.isAdmin) return res.status(403).json({ success: false, error: "Forbidden" });
+  try {
+    const cat = await FaqCategory.findById(req.params.id);
+    if (!cat) return res.json({ success: false, error: "Category not found" });
+    const inUseFaq = await IslamicFAQ.countDocuments({ category: cat.name });
+    if (inUseFaq > 0) {
+      return res.json({ success: false, error: `Cannot delete: ${inUseFaq} FAQ(s) use this category` });
+    }
+    const inUsePage = await CategoryPage.countDocuments({ faqCategories: cat.name });
+    if (inUsePage > 0) {
+      return res.json({ success: false, error: `Cannot delete: ${inUsePage} page(s) reference this category` });
+    }
+    await FaqCategory.findByIdAndDelete(req.params.id);
+    res.json({ success: true, message: "Category deleted" });
+  } catch (error) {
+    console.error("Delete FAQ category error:", error);
+    res.json({ success: false, error: "Failed to delete category" });
+  }
+});
+
+// ============================================
+// ADMIN PAGES (CATEGORY PAGES) ROUTES
+// ============================================
+
+// List all pages
+app.get("/admin/pages", requireAdminOnly, async (req, res) => {
+  if (!req.session.isAdmin) return res.redirect("/login");
+  try {
+    const pages = await CategoryPage.find({}).sort({ createdAt: -1 });
+    const total = await CategoryPage.countDocuments({});
+    const published = await CategoryPage.countDocuments({ isPublished: true });
+    const drafts = await CategoryPage.countDocuments({ isPublished: false });
+    res.render("admin/pages", { pages, stats: { total, published, drafts } });
+  } catch (error) {
+    console.error("Pages listing error:", error);
+    res.render("admin/pages", { pages: [], stats: { total: 0, published: 0, drafts: 0 } });
+  }
+});
+
+// Create page form
+app.get("/admin/pages/create", requireAdminOnly, async (req, res) => {
+  if (!req.session.isAdmin) return res.redirect("/login");
+  const faqCategories = await FaqCategory.find({}).sort({ name: 1 });
+  res.render("admin/createPage", { faqCategories });
+});
+
+// Create page handler
+app.post("/admin/pages", requireAdminOnly, async (req, res) => {
+  if (!req.session.isAdmin) return res.status(403).json({ success: false, error: "Forbidden" });
+  try {
+    const slugify = require("slugify");
+    const { title, categorySlug, pageSlug, excerpt, content, faqCategories,
+      metaTitle, metaDescription, keywords, focusKeyword, canonicalUrl, noIndex, isPublished } = req.body;
+    if (!title || !categorySlug || !pageSlug) {
+      return res.json({ success: false, error: "Title, category slug and page slug are required" });
+    }
+    const catSlug = categorySlug.trim().toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+    const pgSlug = pageSlug.trim().toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+    const existing = await CategoryPage.findOne({ categorySlug: catSlug, pageSlug: pgSlug });
+    if (existing) return res.json({ success: false, error: "A page at that URL already exists" });
+    const keywordsArray = keywords ? keywords.split(",").map(k => k.trim()).filter(Boolean) : [];
+    const faqCatsArray = Array.isArray(faqCategories) ? faqCategories : (faqCategories ? [faqCategories] : []);
+    const page = new CategoryPage({
+      title: title.trim(),
+      categorySlug: catSlug,
+      pageSlug: pgSlug,
+      excerpt: excerpt ? excerpt.trim() : "",
+      content: content || "",
+      faqCategories: faqCatsArray,
+      metaTitle: metaTitle ? metaTitle.trim() : "",
+      metaDescription: metaDescription ? metaDescription.trim() : "",
+      keywords: keywordsArray,
+      focusKeyword: focusKeyword ? focusKeyword.trim() : "",
+      canonicalUrl: canonicalUrl ? canonicalUrl.trim() : "",
+      noIndex: Boolean(noIndex),
+      isPublished: Boolean(isPublished),
+      publishedAt: Boolean(isPublished) ? new Date() : null,
+    });
+    await page.save();
+    res.json({ success: true, message: `Page ${Boolean(isPublished) ? "published" : "saved as draft"} successfully` });
+  } catch (error) {
+    console.error("Create page error:", error);
+    res.json({ success: false, error: `Failed to create page: ${error.message}` });
+  }
+});
+
+// Edit page form
+app.get("/admin/pages/:id/edit", requireAdminOnly, async (req, res) => {
+  if (!req.session.isAdmin) return res.redirect("/login");
+  try {
+    const page = await CategoryPage.findById(req.params.id);
+    if (!page) return res.status(404).render("404", { title: "Page Not Found", url: req.originalUrl, user: req.session.user || null });
+    const faqCategories = await FaqCategory.find({}).sort({ name: 1 });
+    res.render("admin/editPage", { page, faqCategories });
+  } catch (error) {
+    console.error("Edit page form error:", error);
+    res.redirect("/admin/pages");
+  }
+});
+
+// Update page handler
+app.post("/admin/pages/:id", requireAdminOnly, async (req, res) => {
+  if (!req.session.isAdmin) return res.status(403).json({ success: false, error: "Forbidden" });
+  try {
+    const { title, categorySlug, pageSlug, excerpt, content, faqCategories,
+      metaTitle, metaDescription, keywords, focusKeyword, canonicalUrl, noIndex, isPublished } = req.body;
+    const page = await CategoryPage.findById(req.params.id);
+    if (!page) return res.json({ success: false, error: "Page not found" });
+    const catSlug = categorySlug.trim().toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+    const pgSlug = pageSlug.trim().toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+    // Check uniqueness (exclude self)
+    const conflict = await CategoryPage.findOne({ categorySlug: catSlug, pageSlug: pgSlug, _id: { $ne: page._id } });
+    if (conflict) return res.json({ success: false, error: "Another page already uses that URL" });
+    const keywordsArray = keywords ? keywords.split(",").map(k => k.trim()).filter(Boolean) : [];
+    const faqCatsArray = Array.isArray(faqCategories) ? faqCategories : (faqCategories ? [faqCategories] : []);
+    const wasPublished = page.isPublished;
+    page.title = title.trim();
+    page.categorySlug = catSlug;
+    page.pageSlug = pgSlug;
+    page.excerpt = excerpt ? excerpt.trim() : "";
+    page.content = content || "";
+    page.faqCategories = faqCatsArray;
+    page.metaTitle = metaTitle ? metaTitle.trim() : "";
+    page.metaDescription = metaDescription ? metaDescription.trim() : "";
+    page.keywords = keywordsArray;
+    page.focusKeyword = focusKeyword ? focusKeyword.trim() : "";
+    page.canonicalUrl = canonicalUrl ? canonicalUrl.trim() : "";
+    page.noIndex = Boolean(noIndex);
+    page.isPublished = Boolean(isPublished);
+    if (!wasPublished && page.isPublished) page.publishedAt = new Date();
+    else if (wasPublished && !page.isPublished) page.publishedAt = null;
+    await page.save();
+    res.json({ success: true, message: `Page ${page.isPublished ? "updated and published" : "updated as draft"} successfully` });
+  } catch (error) {
+    console.error("Update page error:", error);
+    res.json({ success: false, error: `Failed to update page: ${error.message}` });
+  }
+});
+
+// Delete page handler
+app.post("/admin/pages/:id/delete", requireAdminOnly, async (req, res) => {
+  if (!req.session.isAdmin) return res.status(403).json({ success: false, error: "Forbidden" });
+  try {
+    const page = await CategoryPage.findById(req.params.id);
+    if (!page) return res.json({ success: false, error: "Page not found" });
+    await CategoryPage.findByIdAndDelete(req.params.id);
+    res.json({ success: true, message: "Page deleted successfully" });
+  } catch (error) {
+    console.error("Delete page error:", error);
+    res.json({ success: false, error: "Failed to delete page" });
   }
 });
 
@@ -7702,6 +7935,44 @@ app.get("/privacy", (req, res) => {
     title: "Privacy Policy - shadiAmour",
   });
 });
+
+// **NEW**: Company, Policy & Information Pages
+app.get("/company-details", (req, res) => {
+  res.render("company-details", {
+    title: "Company Details - D'amour Muslim",
+  });
+});
+
+app.get("/refund-policy", (req, res) => {
+  res.render("refund-policy", {
+    title: "Refund Policy - D'amour Muslim",
+  });
+});
+
+app.get("/account-faqs", (req, res) => {
+  res.render("account-faqs", {
+    title: "Account FAQs - D'amour Muslim",
+  });
+});
+
+app.get("/pricing", (req, res) => {
+  res.render("pricing", {
+    title: "Pricing & Membership Plans - D'amour Muslim",
+  });
+});
+
+app.get("/gdpr-faqs", (req, res) => {
+  res.render("gdpr-faqs", {
+    title: "GDPR FAQs - D'amour Muslim",
+  });
+});
+
+app.get("/code-of-conduct", (req, res) => {
+  res.render("code-of-conduct", {
+    title: "Code of Conduct - D'amour Muslim",
+  });
+});
+
 // **UPDATED**: Dynamic blog routes
 
 // Public blog listing page
@@ -7827,9 +8098,21 @@ app.get("/blog",requireOnboardingComplete, async (req, res) => {
   }
 });
 
+// 301 Redirects for duplicate "WhatsApp Group" blog posts → canonical URL
+const whatsappBlogRedirects = [
+  "/blog/join-genuine-muslim-marriage-whatsapp-groups-for-nikah",
+  "/blog/join-whatsapp-based-rishta-groups-by-muslim-matrimonial-uk",
+  "/blog/muslim-marriage-whatsapp-groups-find-genuine-halal-rishta-online",
+];
+whatsappBlogRedirects.forEach((oldPath) => {
+  app.get(oldPath, (req, res) => {
+    res.redirect(301, "/blog/uk-rishta-whatsapp-group");
+  });
+});
+
 // Public individual blog page
 
-app.get("/blog/:slug", async (req, res) => {
+app.get("/blog/:slug",requireOnboardingComplete, async (req, res) => {
   try {
     const { slug } = req.params;
 
@@ -7916,6 +8199,7 @@ app.get("/sitemap.xml", async (req, res) => {
       profileSlug: { $exists: true, $ne: null }
     }).select("_id updatedAt createdAt profileSlug");
     const blogs = await Blog.find({ isPublished: true }).select("slug updatedAt publishedAt");
+    const categoryPageDocs = await CategoryPage.find({ isPublished: true, noIndex: { $ne: true } }).select("categorySlug pageSlug updatedAt createdAt");
 
     // **NEW**: Static blog slugs
     const staticBlogs = [
@@ -7940,7 +8224,227 @@ app.get("/sitemap.xml", async (req, res) => {
     <loc>https://www.shadiamour.com/profiles?gender=male</loc>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://damourmuslim.com/islamic-faqs</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://damourmuslim.com/podcasts</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://damourmuslim.com/pricing</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://damourmuslim.com/our-team</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://damourmuslim.com/our-ads</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://damourmuslim.com/company-details</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://damourmuslim.com/refund-policy</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://damourmuslim.com/account-faqs</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://damourmuslim.com/gdpr-faqs</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://damourmuslim.com/code-of-conduct</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://damourmuslim.com/terms</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://damourmuslim.com/privacy</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://damourmuslim.com/muslim-marriage</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://damourmuslim.com/muslim-matrimonial</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://damourmuslim.com/muslim-matchmaking</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://damourmuslim.com/halal-marriage</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://damourmuslim.com/muslim-rishta</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://damourmuslim.com/find-muslim-spouse</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://damourmuslim.com/best-muslim-marriage-website</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://damourmuslim.com/free-muslim-marriage-site</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://damourmuslim.com/trusted-muslim-matchmaking</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://damourmuslim.com/verified-muslim-profiles</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://damourmuslim.com/online-rishta-pakistan</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://damourmuslim.com/rishta-lahore</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://damourmuslim.com/rishta-karachi</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://damourmuslim.com/muslim-marriage-uk</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://damourmuslim.com/british-pakistani-marriage</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://damourmuslim.com/muslim-singles-uk</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://damourmuslim.com/muslim-second-marriage</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://damourmuslim.com/divorced-muslim-marriage</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://damourmuslim.com/muslim-marriage-over-30</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://damourmuslim.com/profiles?gender=male</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://damourmuslim.com/profiles?gender=female</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://damourmuslim.com/profiles/addedBy/staff</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://damourmuslim.com/muslim-matrimony-london</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://damourmuslim.com/muslim-matrimony-birmingham</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://damourmuslim.com/muslim-matrimony-manchester</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://damourmuslim.com/muslim-matrimony-bradford</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://damourmuslim.com/muslim-matrimony-leicester</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://damourmuslim.com/muslim-matrimony-leeds</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
   </url>`;
+
+    // Add new UK city hub pages (Sheffield, Coventry, Luton, Glasgow, Nottingham)
+    cityHubPages.filter(h => !["London","Birmingham","Manchester","Bradford","Leicester","Leeds"].includes(h.city)).forEach((hub) => {
+      sitemap += `
+  <url>
+    <loc>https://damourmuslim.com/${hub.slug}</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>`;
+    });
+
+    // Add Pakistan city pages (Islamabad, Rawalpindi, Faisalabad)
+    pakistanCityPages.forEach((pkCity) => {
+      sitemap += `
+  <url>
+    <loc>https://damourmuslim.com/${pkCity.slug}</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>`;
+    });
 
     // Add database blog posts
     blogs.forEach((blog) => {
@@ -7961,7 +8465,9 @@ app.get("/sitemap.xml", async (req, res) => {
       if (user.profileSlug) {
         const lastmod = user.updatedAt
           ? user.updatedAt.toISOString().split("T")[0]
-          : new Date().toISOString().split("T")[0];
+          : user.createdAt
+            ? user.createdAt.toISOString().split("T")[0]
+            : new Date().toISOString().split("T")[0];
         sitemap += `
   <url>
     <loc>https://www.shadiamour.com/profiles/${user._id}</loc>
@@ -7972,6 +8478,22 @@ app.get("/sitemap.xml", async (req, res) => {
       }
     });
 
+    // Add category pages
+    categoryPageDocs.forEach((cp) => {
+      const lastmod = cp.updatedAt
+        ? cp.updatedAt.toISOString().split("T")[0]
+        : cp.createdAt
+          ? cp.createdAt.toISOString().split("T")[0]
+          : new Date().toISOString().split("T")[0];
+      sitemap += `
+  <url>
+    <loc>https://damourmuslim.com/${cp.categorySlug}/${cp.pageSlug}</loc>
+    <lastmod>${lastmod}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>`;
+    });
+
     sitemap += `
 </urlset>`;
 
@@ -7980,6 +8502,48 @@ app.get("/sitemap.xml", async (req, res) => {
   } catch (error) {
     console.error("Sitemap generation error:", error);
     res.status(500).send("Error generating sitemap");
+  }
+});
+
+// SEO: Q&A Sitemap — /qa-sitemap.xml (Islamic FAQs)
+app.get("/qa-sitemap.xml", async (req, res) => {
+  try {
+    const faqs = await IslamicFAQ.find({ isPublished: true })
+      .select("slug updatedAt createdAt")
+      .sort({ updatedAt: -1 });
+
+    let xml = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+          http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+  <url>
+    <loc>https://shadiamour.com/islamic-faqs</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>`;
+
+    faqs.forEach((faq) => {
+      const lastmod = (faq.updatedAt || faq.createdAt)
+        ? new Date(faq.updatedAt || faq.createdAt).toISOString().split("T")[0]
+        : new Date().toISOString().split("T")[0];
+      xml += `
+  <url>
+    <loc>https://shadiamour.com/islamic-faqs/${faq.slug}</loc>
+    <lastmod>${lastmod}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>`;
+    });
+
+    xml += `
+</urlset>`;
+
+    res.set("Content-Type", "application/xml");
+    res.send(xml);
+  } catch (err) {
+    console.error("QA sitemap error:", err);
+    res.status(500).send("Error generating QA sitemap");
   }
 });
 
@@ -8058,7 +8622,9 @@ Disallow: /logout
 Disallow: /chats/
 Disallow: /chat/
 
-Sitemap: https://www.shadiamour.com/sitemap.xml`;
+Sitemap: https://shadiamour.com/sitemap.xml
+Sitemap: https://shadiamour.com/video-sitemap.xml
+Sitemap: https://shadiamour.com/qa-sitemap.xml`;
 
   res.set("Content-Type", "text/plain");
   res.send(robots);
@@ -8727,6 +9293,30 @@ app.post("/api/chat/start/:profileId", isLoggedIn, findUser, async (req, res) =>
 // ============================================
 // END CHAT ROUTES
 // ============================================
+
+// ============================================
+// PUBLIC CATEGORY PAGES — catch-all /:categorySlug/:pageSlug
+// MUST be registered LAST before the 404 handler
+// ============================================
+app.get("/:categorySlug/:pageSlug", async (req, res, next) => {
+  try {
+    const { categorySlug, pageSlug } = req.params;
+    // Skip internal route prefixes that should never match this handler
+    const reserved = ["admin", "api", "blog", "profiles", "islamic-faqs", "chats", "seoadmin", "auth", "account", "newsletter"];
+    if (reserved.includes(categorySlug)) return next();
+    const page = await CategoryPage.findOne({ categorySlug, pageSlug, isPublished: true });
+    if (!page) return next();
+    const faqs = page.faqCategories && page.faqCategories.length > 0
+      ? await IslamicFAQ.find({ isPublished: true, category: { $in: page.faqCategories } })
+          .sort({ publishedAt: -1 })
+          .select("question slug excerpt category scholar")
+      : [];
+    res.render("category-page", { page, faqs, user: req.session.user || null });
+  } catch (error) {
+    console.error("Category page render error:", error);
+    next();
+  }
+});
 
 app.use((req, res) => {
   res.status(404).render("404", {

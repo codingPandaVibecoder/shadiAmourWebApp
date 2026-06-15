@@ -57,16 +57,9 @@
                 <select id="category" name="category" required
                   class="w-full px-3 py-2 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary">
                   <option value="">Select a category</option>
-                  <option value="Destiny">Destiny</option>
-                  <option value="Birth">Birth</option>
-                  <option value="Divorce">Divorce</option>
-                  <option value="Engagement">Engagement</option>
-                  <option value="Family">Family</option>
-                  <option value="Getting Married">Getting Married</option>
-                  <option value="Intimacy">Intimacy</option>
-                  <option value="Prayer & Purification">Prayer & Purification</option>
-                  <option value="Rights & Responsibilities">Rights & Responsibilities</option>
-                  <option value="Spouse Search">Spouse Search</option>
+                  <% (typeof faqCategories !== 'undefined' ? faqCategories : []).forEach(cat => { %>
+                  <option value="<%= cat.name %>"><%= cat.name %></option>
+                  <% }) %>
                 </select>
               </div>
               <div>
@@ -139,6 +132,13 @@
           <h2 class="text-xl font-semibold text-gray-900 mb-4 font-['Playfair_Display']">SEO Settings</h2>
 
           <div class="space-y-4">
+            <div>
+              <label for="slug" class="block text-sm font-medium text-gray-700 mb-2">Slug <span class="text-gray-400 font-normal">(optional — auto-generated from question)</span></label>
+              <input type="text" id="slug" name="slug"
+                class="w-full px-3 py-2 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary font-mono text-sm"
+                placeholder="e.g. is-it-permissible-to-use-a-marriage-app">
+              <p class="text-xs text-gray-500 mt-1">URL path: /islamic-faqs/<strong id="slugPreview">…</strong></p>
+            </div>
             <div>
               <label for="metaTitle" class="block text-sm font-medium text-gray-700 mb-2">Meta Title</label>
               <input type="text" id="metaTitle" name="metaTitle" maxlength="60"
@@ -287,6 +287,30 @@
       }
     });
 
+    // ── Slug auto-generation & preview ──────────────────────────────────────
+    const slugInput = document.getElementById('slug');
+    const slugPreview = document.getElementById('slugPreview');
+    const questionInput = document.getElementById('question');
+
+    function toSlug(str) {
+      return str.toLowerCase().trim()
+        .replace(/[^a-z0-9\s-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .replace(/^-+|-+$/g, '')
+        .substring(0, 100);
+    }
+
+    questionInput.addEventListener('input', function () {
+      if (!slugInput.value) {
+        slugPreview.textContent = toSlug(this.value) || '…';
+      }
+    });
+
+    slugInput.addEventListener('input', function () {
+      slugPreview.textContent = this.value || (toSlug(questionInput.value) || '…');
+    });
+
     // ── Publish toggle ───────────────────────────────────────────────────────
     document.getElementById('isPublished').addEventListener('change', function () {
       document.getElementById('publishBtnText').textContent = this.checked ? 'Publish Question' : 'Save Question';
@@ -307,6 +331,7 @@
 
       const data = {
         question: document.getElementById('question').value.trim(),
+        slug: document.getElementById('slug').value.trim(),
         category: document.getElementById('category').value,
         scholar: document.getElementById('scholar').value.trim(),
         excerpt: document.getElementById('excerpt').value.trim(),

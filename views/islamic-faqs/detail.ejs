@@ -51,13 +51,24 @@
       "name": <%- JSON.stringify(faq.question) %>,
       "text": <%- JSON.stringify(faq.question) %>,
       "dateCreated": "<%= faq.publishedAt ? faq.publishedAt.toISOString() : faq.createdAt.toISOString() %>",
+      "url": "https://damourmuslim.com/islamic-faqs/<%= faq.slug %>",
+      "answerCount": 1,
+      "author": {
+        "@type": "Organization",
+        "name": "D\u2019amour Muslim",
+        "url": "https://damourmuslim.com"
+      },
       "acceptedAnswer": {
         "@type": "Answer",
         "text": <%- JSON.stringify(faq.answer.replace(/<[^>]*>/g, '').substring(0, 1000)) %>,
-        "dateCreated": "<%= faq.publishedAt ? faq.publishedAt.toISOString() : faq.createdAt.toISOString() %>"
-        <% if (faq.scholar) { %>
-        ,"author": { "@type": "Person", "name": <%- JSON.stringify(faq.scholar) %> }
-        <% } %>
+        "dateCreated": "<%= faq.publishedAt ? faq.publishedAt.toISOString() : faq.createdAt.toISOString() %>",
+        "url": "https://damourmuslim.com/islamic-faqs/<%= faq.slug %>",
+        "upvoteCount": 0,
+        "author": {
+          "@type": "<%= faq.scholar ? 'Person' : 'Organization' %>",
+          "name": <%- JSON.stringify(faq.scholar || "D\u2019amour Muslim Editorial Team") %>,
+          "url": "https://damourmuslim.com"
+        }
       }
     }
   }

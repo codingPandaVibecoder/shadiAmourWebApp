@@ -4,3 +4,4 @@ node_modules/
 copilot-instructions/
 content.txt
 prompts_to_generate_content.txt
+node_modules/
