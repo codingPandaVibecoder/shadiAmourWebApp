@@ -64,6 +64,7 @@ const Request = require("./models/Request");
 const Notification = require("./models/Notification");
 const NotificationService = require("./services/notificationService");
 const QueueService = require("./services/queueService");
+const indexNow = require("./services/indexNowService");
 const isLoggedIn = require("./middlewares/isLoggedIn");
 const findUser = require("./middlewares/findUser");
 const requireApprovedProfile = require("./middlewares/requireApprovedProfile");
@@ -4574,6 +4575,11 @@ app.post("/api/admin/user/:id/approve", requireAdminOrModerator, async (req, res
 
     console.log(`User ${user.username} approved by ${user.approvedBy}`);
 
+    // IndexNow: submit profile URL if approved and has slug
+    if (user.profileSlug && !(user.seoSettings && user.seoSettings.noIndex)) {
+      indexNow.submitUrls([`/profiles/${user.profileSlug}`, "/profiles"]);
+    }
+
     // Send congratulations email if user has email
     if (user.email) {
       try {
@@ -4630,7 +4636,11 @@ app.post("/api/admin/user/:id/reject", requireAdminOrModerator, async (req, res)
     
     await user.save();
 
-    
+    // IndexNow: notify removal if profile was previously approved and had a slug
+    if (user.profileSlug) {
+      indexNow.notifyUrlDeleted(`/profiles/${user.profileSlug}`);
+      indexNow.submitUrls(["/profiles"]);
+    }
 
     res.json({ 
       success: true, 
@@ -4672,7 +4682,14 @@ app.post("/api/admin/user/:id/delete", requireAdminOnly, async (req, res) => {
     console.log(`User ${user.username} data archived successfully`);
 
     // Permanently delete the user (pre-delete middleware will clean up requests & notifications)
+    const deletedUserSlug = user.profileSlug;
     await User.findByIdAndDelete(id);
+
+    // IndexNow: notify removal if profile had a slug
+    if (deletedUserSlug) {
+      indexNow.notifyUrlDeleted(`/profiles/${deletedUserSlug}`);
+      indexNow.submitUrls(["/profiles"]);
+    }
     
     console.log(`User ${user.username} permanently deleted by ${adminUsername}`);
 
@@ -6284,6 +6301,20 @@ app.post(
 );
 // ==================== Export Data Routes ====================
 
+// IndexNow: Bulk submit ALL public URLs (admin-only, one-time trigger)
+app.get("/admin/indexnow/bulk-submit", requireAdminOnly, async (req, res) => {
+  try {
+    res.json({ success: true, message: "Bulk submission started — check server logs for progress." });
+    // Fire-and-forget: don't block the response
+    indexNow.bulkSubmitAllPublicUrls().catch(err =>
+      console.error("[IndexNow] Bulk submit failed:", err)
+    );
+  } catch (error) {
+    console.error("Bulk-submit route error:", error);
+    res.status(500).json({ success: false, error: "Failed to start bulk submission" });
+  }
+});
+
 // Export page
 app.get("/admin/export", requireAdminOnly, async (req, res) => {
   res.render("admin/export", {
@@ -6533,6 +6564,11 @@ app.post("/admin/blogs", requireAdminOnly, async (req, res) => {
 
     console.log(`Blog created: ${blog.title} (${blog.isPublished ? 'Published' : 'Draft'})`);
 
+    // IndexNow: notify if published
+    if (blog.isPublished) {
+      indexNow.submitUrls([`/blog/${blog.slug}`, "/blog"]);
+    }
+
     res.json({
       success: true,
       message: `Blog ${blog.isPublished ? 'published' : 'saved as draft'} successfully`,
@@ -6597,6 +6633,9 @@ app.put("/admin/blogs/:id", requireAdminOnly, async (req, res) => {
       return res.json({ success: false, error: "Blog not found" });
     }
 
+    // Capture old slug before any changes (for IndexNow)
+    const oldSlug = blog.slug;
+
     // Handle slug update
     if (slug && slug.trim()) {
       const sanitizedSlug = slug.trim().toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
@@ -6654,6 +6693,20 @@ app.put("/admin/blogs/:id", requireAdminOnly, async (req, res) => {
 
     console.log(`Blog updated: ${blog.title} (${blog.isPublished ? 'Published' : 'Draft'})`);
 
+    // IndexNow: submit based on status/slug changes
+    if (blog.isPublished) {
+      const urls = [`/blog/${blog.slug}`, "/blog"];
+      // If old slug was different and was also published, notify removal of old URL
+      if (oldSlug !== blog.slug && wasPublished) {
+        indexNow.notifyUrlDeleted(`/blog/${oldSlug}`);
+      }
+      indexNow.submitUrls(urls);
+    } else if (wasPublished && !blog.isPublished) {
+      // Unpublished — notify removal
+      indexNow.notifyUrlDeleted(`/blog/${oldSlug}`);
+      indexNow.submitUrls(["/blog"]);
+    }
+
     res.json({
       success: true,
       message: `Blog ${blog.isPublished ? 'updated and published' : 'updated as draft'} successfully`,
@@ -6682,6 +6735,12 @@ app.delete("/admin/blogs/:id", requireAdminOnly, async (req, res) => {
     await Blog.findByIdAndDelete(req.params.id);
 
     console.log(`Blog deleted: ${blog.title}`);
+
+    // IndexNow: notify removal
+    if (blog.isPublished) {
+      indexNow.notifyUrlDeleted(`/blog/${blog.slug}`);
+      indexNow.submitUrls(["/blog"]);
+    }
 
     res.json({
       success: true,
@@ -6716,6 +6775,14 @@ app.post("/admin/blogs/:id/toggle-publish", requireAdminOnly, async (req, res) =
     await blog.save();
 
     console.log(`Blog ${blog.isPublished ? 'published' : 'unpublished'}: ${blog.title}`);
+
+    // IndexNow: notify based on new status
+    if (blog.isPublished) {
+      indexNow.submitUrls([`/blog/${blog.slug}`, "/blog"]);
+    } else {
+      indexNow.notifyUrlDeleted(`/blog/${blog.slug}`);
+      indexNow.submitUrls(["/blog"]);
+    }
 
     res.json({
       success: true,
@@ -6889,6 +6956,12 @@ app.post("/admin/faqs", requireAdminOnly, async (req, res) => {
     });
 
     await faq.save();
+
+    // IndexNow: notify if published
+    if (faq.isPublished) {
+      indexNow.submitUrls([`/islamic-faqs/${faq.slug}`, "/islamic-faqs"]);
+    }
+
     res.json({
       success: true,
       message: `FAQ ${faq.isPublished ? "published" : "saved as draft"} successfully`,
@@ -6933,6 +7006,9 @@ app.put("/admin/faqs/:id", requireAdminOnly, async (req, res) => {
     const faq = await IslamicFAQ.findById(req.params.id);
     if (!faq) return res.json({ success: false, error: "FAQ not found" });
 
+    // Capture old slug for IndexNow
+    const oldFaqSlug = faq.slug;
+
     if (slug && slug.trim()) {
       const sanitizedSlug = slug.trim().toLowerCase()
         .replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
@@ -6970,6 +7046,19 @@ app.put("/admin/faqs/:id", requireAdminOnly, async (req, res) => {
     else if (wasPublished && !faq.isPublished) faq.publishedAt = null;
 
     await faq.save();
+
+    // IndexNow: submit based on status/slug changes
+    if (faq.isPublished) {
+      const urls = [`/islamic-faqs/${faq.slug}`, "/islamic-faqs"];
+      if (oldFaqSlug !== faq.slug && wasPublished) {
+        indexNow.notifyUrlDeleted(`/islamic-faqs/${oldFaqSlug}`);
+      }
+      indexNow.submitUrls(urls);
+    } else if (wasPublished && !faq.isPublished) {
+      indexNow.notifyUrlDeleted(`/islamic-faqs/${oldFaqSlug}`);
+      indexNow.submitUrls(["/islamic-faqs"]);
+    }
+
     res.json({
       success: true,
       message: `FAQ ${faq.isPublished ? "updated and published" : "updated as draft"} successfully`,
@@ -6986,7 +7075,16 @@ app.delete("/admin/faqs/:id", requireAdminOnly, async (req, res) => {
   try {
     const faq = await IslamicFAQ.findById(req.params.id);
     if (!faq) return res.json({ success: false, error: "FAQ not found" });
+    const faqSlug = faq.slug;
+    const wasFaqPublished = faq.isPublished;
     await IslamicFAQ.findByIdAndDelete(req.params.id);
+
+    // IndexNow: notify removal if it was published
+    if (wasFaqPublished) {
+      indexNow.notifyUrlDeleted(`/islamic-faqs/${faqSlug}`);
+      indexNow.submitUrls(["/islamic-faqs"]);
+    }
+
     res.json({ success: true, message: "FAQ deleted successfully" });
   } catch (error) {
     console.error("Delete FAQ error:", error);
@@ -7098,6 +7196,12 @@ app.post("/admin/pages", requireAdminOnly, async (req, res) => {
       publishedAt: Boolean(isPublished) ? new Date() : null,
     });
     await page.save();
+
+    // IndexNow: notify if published and not noIndex
+    if (page.isPublished && !page.noIndex) {
+      indexNow.submitUrls([`/${page.categorySlug}/${page.pageSlug}`]);
+    }
+
     res.json({ success: true, message: `Page ${Boolean(isPublished) ? "published" : "saved as draft"} successfully` });
   } catch (error) {
     console.error("Create page error:", error);
@@ -7127,6 +7231,13 @@ app.post("/admin/pages/:id", requireAdminOnly, async (req, res) => {
       metaTitle, metaDescription, keywords, focusKeyword, canonicalUrl, noIndex, isPublished } = req.body;
     const page = await CategoryPage.findById(req.params.id);
     if (!page) return res.json({ success: false, error: "Page not found" });
+
+    // Capture old slugs for IndexNow
+    const oldCatSlug = page.categorySlug;
+    const oldPageSlug = page.pageSlug;
+    const oldWasPublished = page.isPublished;
+    const oldNoIndex = page.noIndex;
+
     const catSlug = categorySlug.trim().toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
     const pgSlug = pageSlug.trim().toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
     // Check uniqueness (exclude self)
@@ -7134,7 +7245,6 @@ app.post("/admin/pages/:id", requireAdminOnly, async (req, res) => {
     if (conflict) return res.json({ success: false, error: "Another page already uses that URL" });
     const keywordsArray = keywords ? keywords.split(",").map(k => k.trim()).filter(Boolean) : [];
     const faqCatsArray = Array.isArray(faqCategories) ? faqCategories : (faqCategories ? [faqCategories] : []);
-    const wasPublished = page.isPublished;
     page.title = title.trim();
     page.categorySlug = catSlug;
     page.pageSlug = pgSlug;
@@ -7148,9 +7258,23 @@ app.post("/admin/pages/:id", requireAdminOnly, async (req, res) => {
     page.canonicalUrl = canonicalUrl ? canonicalUrl.trim() : "";
     page.noIndex = Boolean(noIndex);
     page.isPublished = Boolean(isPublished);
-    if (!wasPublished && page.isPublished) page.publishedAt = new Date();
-    else if (wasPublished && !page.isPublished) page.publishedAt = null;
+    if (!oldWasPublished && page.isPublished) page.publishedAt = new Date();
+    else if (oldWasPublished && !page.isPublished) page.publishedAt = null;
     await page.save();
+
+    // IndexNow: submit based on status/slug changes
+    if (page.isPublished && !page.noIndex) {
+      const slugsChanged = (oldCatSlug !== page.categorySlug || oldPageSlug !== page.pageSlug);
+      const url = `/${page.categorySlug}/${page.pageSlug}`;
+      if (slugsChanged && oldWasPublished && !oldNoIndex) {
+        indexNow.notifyUrlDeleted(`/${oldCatSlug}/${oldPageSlug}`);
+      }
+      indexNow.submitUrls([url]);
+    } else if (oldWasPublished && !oldNoIndex && (!page.isPublished || page.noIndex)) {
+      // Was published but now unpublished or noIndexed
+      indexNow.notifyUrlDeleted(`/${oldCatSlug}/${oldPageSlug}`);
+    }
+
     res.json({ success: true, message: `Page ${page.isPublished ? "updated and published" : "updated as draft"} successfully` });
   } catch (error) {
     console.error("Update page error:", error);
@@ -7164,7 +7288,17 @@ app.post("/admin/pages/:id/delete", requireAdminOnly, async (req, res) => {
   try {
     const page = await CategoryPage.findById(req.params.id);
     if (!page) return res.json({ success: false, error: "Page not found" });
+    const cpCatSlug = page.categorySlug;
+    const cpPageSlug = page.pageSlug;
+    const cpWasPublished = page.isPublished;
+    const cpNoIndex = page.noIndex;
     await CategoryPage.findByIdAndDelete(req.params.id);
+
+    // IndexNow: notify removal if it was published
+    if (cpWasPublished && !cpNoIndex) {
+      indexNow.notifyUrlDeleted(`/${cpCatSlug}/${cpPageSlug}`);
+    }
+
     res.json({ success: true, message: "Page deleted successfully" });
   } catch (error) {
     console.error("Delete page error:", error);
@@ -7240,6 +7374,12 @@ app.post("/admin/podcasts", requireAdminOnly, async (req, res) => {
       isPublished: isPublished !== false && isPublished !== "false",
       addedBy: "admin",
     });
+
+    // IndexNow: notify if published
+    if (podcast.isPublished) {
+      indexNow.submitUrls(["/podcasts"]);
+    }
+
     res.status(201).json({ success: true, podcast });
   } catch (err) {
     console.error("Add podcast error:", err);
@@ -7254,6 +7394,10 @@ app.delete("/admin/podcasts/:id", requireAdminOnly, async (req, res) => {
     const podcast = await Podcast.findById(req.params.id);
     if (!podcast) return res.status(404).json({ error: "Podcast not found" });
     await Podcast.findByIdAndDelete(req.params.id);
+
+    // IndexNow: notify listing page update
+    indexNow.submitUrls(["/podcasts"]);
+
     res.json({ success: true });
   } catch (err) {
     console.error("Delete podcast error:", err);
@@ -7269,6 +7413,10 @@ app.patch("/admin/podcasts/:id/toggle", requireAdminOnly, async (req, res) => {
     if (!podcast) return res.status(404).json({ error: "Podcast not found" });
     podcast.isPublished = !podcast.isPublished;
     await podcast.save();
+
+    // IndexNow: notify listing page update
+    indexNow.submitUrls(["/podcasts"]);
+
     res.json({ success: true, podcast });
   } catch (err) {
     console.error("Toggle podcast error:", err);
@@ -7288,6 +7436,10 @@ app.patch("/admin/podcasts/:id", requireAdminOnly, async (req, res) => {
     if (order !== undefined) podcast.order = parseInt(order, 10) || 0;
     if (isPublished !== undefined) podcast.isPublished = isPublished === true || isPublished === "true";
     await podcast.save();
+
+    // IndexNow: notify listing page update
+    indexNow.submitUrls(["/podcasts"]);
+
     res.json({ success: true, podcast });
   } catch (err) {
     console.error("Edit podcast error:", err);
@@ -8788,6 +8940,10 @@ app.post("/seoadmin/profile/:id/update", requireSeoAdmin, async (req, res) => {
       return res.status(404).send("Profile not found");
     }
     
+    // Capture old values for IndexNow
+    const oldProfileSlug = profile.profileSlug;
+    const oldNoIndex = profile.seoSettings && profile.seoSettings.noIndex;
+    
     const {
       profileSlug,
       randomNameForSeo,
@@ -8853,6 +9009,29 @@ app.post("/seoadmin/profile/:id/update", requireSeoAdmin, async (req, res) => {
     profile.seoSettings.lastSeoEditedBy = "SEO Admin";
     
     await profile.save();
+
+    // IndexNow: handle slug/noIndex changes for approved profiles
+    if (profile.isApproved && profile.approvalStatus === "approved") {
+      const newSlug = profile.profileSlug;
+      const newNoIndex = profile.seoSettings && profile.seoSettings.noIndex;
+
+      if (newNoIndex && !oldNoIndex) {
+        // Was indexable, now noIndexed — notify removal
+        if (oldProfileSlug) indexNow.notifyUrlDeleted(`/profiles/${oldProfileSlug}`);
+        indexNow.submitUrls(["/profiles"]);
+      } else if (!newNoIndex && oldNoIndex) {
+        // Was noIndexed, now indexable — submit
+        if (newSlug) indexNow.submitUrls([`/profiles/${newSlug}`, "/profiles"]);
+      } else if (!newNoIndex) {
+        // Still indexable — handle slug changes
+        if (newSlug && oldProfileSlug !== newSlug) {
+          indexNow.submitUrls([`/profiles/${newSlug}`, "/profiles"]);
+          if (oldProfileSlug) indexNow.notifyUrlDeleted(`/profiles/${oldProfileSlug}`);
+        } else if (newSlug) {
+          indexNow.submitUrls([`/profiles/${newSlug}`, "/profiles"]);
+        }
+      }
+    }
     
     res.redirect(`/seoadmin/profile/${req.params.id}?success=SEO settings updated successfully`);
   } catch (error) {
