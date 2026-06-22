@@ -1,3 +1,61 @@
+<!-- ── Announcement Bar ──────────────────────────────────────────────────── -->
+<!-- Adjust --scroll-speed (in seconds) to control how fast text moves across the screen -->
+<style>
+  :root {
+    --announce-speed: 25s; /* ← CHANGE THIS to adjust scrolling speed */
+  }
+  .announcement-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 60;
+    background: #000;
+    color: #fff;
+    height: 28px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+  }
+  .announcement-track {
+    display: flex;
+    gap: 10vw;
+    white-space: nowrap;
+    animation: scrollAnnounce var(--announce-speed) linear infinite;
+    will-change: transform;
+  }
+  .announcement-track span {
+    flex-shrink: 0;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+  }
+  @keyframes scrollAnnounce {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+  /* Push header down to sit below the announcement bar */
+  header.fixed {
+    top: 28px;
+  }
+  /* Push mobile nav and overlays down too */
+  #mobileNavOverlay,
+  #mobileNavPanel {
+    padding-top: 28px;
+  }
+  /* Push main content down on home page */
+  main.pt-24 {
+    padding-top: calc(6rem + 28px);
+  }
+</style>
+<div class="announcement-bar" role="marquee" aria-label="Announcements">
+  <div class="announcement-track">
+    <span>🎉 This website is completely free to use.</span> <span>💯 No fees or charges are required at any time.</span> <span>🤝 You can send up to 5 connection requests.</span> <span>🔒 We will never ask for payment or hidden charges.</span>
+    <!-- Duplicate set for seamless infinite scroll -->
+    <span>🎉 This website is completely free to use.</span> <span>💯 No fees or charges are required at any time.</span> <span>🤝 You can send up to 5 connection requests.</span> <span>🔒 We will never ask for payment or hidden charges.</span>
+  </div>
+</div>
+
 <header class="fixed top-0 left-0 right-0 bg-white material-shadow z-50">
   <div class="flex items-center justify-between px-2 h-16 lg:px-6">
     <div class="flex items-center gap-3">
