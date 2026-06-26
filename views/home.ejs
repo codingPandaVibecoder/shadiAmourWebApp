@@ -910,6 +910,142 @@
       </div>
     </div>
 
+    <!-- ── Free Reservation Section ────────────────────────────────────────── -->
+    <div class="py-20 bg-gradient-to-r from-pink-50 via-white to-purple-50">
+      <div class="max-w-4xl mx-auto px-6">
+        <div class="text-center mb-12">
+          <div class="inline-flex items-center justify-center w-16 h-16 mb-6 bg-primary/10 rounded-full">
+            <i class="ri-calendar-check-line text-3xl text-primary"></i>
+          </div>
+          <h2 class="text-4xl font-bold text-gray-800 mb-4 font-['Playfair_Display']">
+            Book a Free Reservation — Get Expert Guidance
+          </h2>
+          <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+            Not sure where to start? Our marriage consultants are here to help you find the right match — <span class="font-semibold text-primary">completely free.</span>
+          </p>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-10 items-start">
+          <!-- Benefits -->
+          <div class="space-y-6">
+            <div class="flex items-start gap-4">
+              <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                <i class="ri-user-heart-line text-lg text-green-600"></i>
+              </div>
+              <div>
+                <h4 class="font-semibold text-gray-800 mb-1">Personalised Matchmaking Advice</h4>
+                <p class="text-gray-600 text-sm">Get one-on-one guidance from our experienced marriage consultants who understand the UK Muslim community.</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-4">
+              <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                <i class="ri-shield-check-line text-lg text-blue-600"></i>
+              </div>
+              <div>
+                <h4 class="font-semibold text-gray-800 mb-1">Confidential & Halal</h4>
+                <p class="text-gray-600 text-sm">Your information stays private. Every conversation is respectful, purpose-driven, and aligned with Islamic values.</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-4">
+              <div class="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                <i class="ri-star-line text-lg text-purple-600"></i>
+              </div>
+              <div>
+                <h4 class="font-semibold text-gray-800 mb-1">No Cost, No Commitment</h4>
+                <p class="text-gray-600 text-sm">This is a free service to help you get started. There's absolutely no obligation — we're here to help, not to sell.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Form Card -->
+          <div class="bg-white rounded-2xl p-8 material-shadow-elevated">
+            <h3 class="text-xl font-bold text-gray-800 mb-6 font-['Playfair_Display'] text-center">Reserve Your Free Call</h3>
+            <form id="homeSectionReservationForm" class="space-y-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Your Name *</label>
+                <input type="text" name="name" required
+                  class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-colors"
+                  placeholder="Enter your full name">
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Phone or Email *</label>
+                <input type="text" name="phoneOrEmail" required
+                  class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-colors"
+                  placeholder="Your phone number or email">
+              </div>
+              <div class="grid grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1">Preferred Date *</label>
+                  <input type="date" name="date" required
+                    class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-colors"
+                    min="<%= new Date().toISOString().split('T')[0] %>">
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1">Preferred Time *</label>
+                  <input type="time" name="time" required
+                    class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-colors">
+                </div>
+              </div>
+              <button type="submit"
+                class="w-full gradient-bg text-white font-semibold py-3 rounded-xl hover:opacity-90 transition-opacity duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
+                <i class="ri-calendar-check-line mr-2"></i>Book Now — It's Free
+              </button>
+            </form>
+            <div id="homeSectionReservationSuccess" class="hidden text-center py-6">
+              <div class="w-14 h-14 mx-auto mb-4 bg-green-100 rounded-full flex items-center justify-center">
+                <i class="ri-check-line text-2xl text-green-600"></i>
+              </div>
+              <h4 class="text-lg font-bold text-gray-800">Reservation Booked!</h4>
+              <p class="text-sm text-gray-600 mt-1">We'll contact you soon to confirm your free consultation.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      (function () {
+        const form = document.getElementById('homeSectionReservationForm');
+        const success = document.getElementById('homeSectionReservationSuccess');
+        if (!form) return;
+
+        form.addEventListener('submit', async function (e) {
+          e.preventDefault();
+          const formData = new FormData(form);
+          const data = Object.fromEntries(formData.entries());
+          data.source = 'home_section';
+          data.pageUrl = window.location.href;
+
+          const submitBtn = form.querySelector('button[type="submit"]');
+          const originalText = submitBtn.innerHTML;
+          submitBtn.innerHTML = '<i class="ri-loader-4-line animate-spin mr-2"></i>Booking...';
+          submitBtn.disabled = true;
+
+          try {
+            const response = await fetch('/api/reservations/book', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(data)
+            });
+            const result = await response.json();
+            if (result.success) {
+              form.classList.add('hidden');
+              success.classList.remove('hidden');
+            } else {
+              alert(result.error || 'Something went wrong. Please try again.');
+              submitBtn.innerHTML = originalText;
+              submitBtn.disabled = false;
+            }
+          } catch (err) {
+            console.error('Home section reservation error:', err);
+            alert('Network error. Please try again.');
+            submitBtn.innerHTML = originalText;
+            submitBtn.disabled = false;
+          }
+        });
+      })();
+    </script>
+
     <!-- Frequently Asked Questions Section (GEO-optimised) -->
     <div class="py-20 bg-gray-50">
       <div class="max-w-4xl mx-auto px-6">
@@ -1186,6 +1322,138 @@
 
   </main>
 
+  <!-- ── Floating Reservation Button ──────────────────────────────────────── -->
+  <div id="floatingReservation" style="bottom: 100px;" class="fixed right-6 z-[50]">
+    <!-- Collapsed: Pill Button -->
+    <button id="reservationToggle" class="gradient-bg text-white font-semibold px-5 py-3 rounded-full shadow-xl hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 flex items-center gap-2 animate-bounce-slow whitespace-nowrap">
+      <i class="ri-calendar-check-line text-xl"></i>
+      <span class="text-sm">Book Free Reservation Today</span>
+      <i id="reservationArrow" class="ri-arrow-up-s-line text-lg transition-transform duration-300"></i>
+    </button>
+
+    <!-- Expanded: Form Card -->
+    <div id="reservationFormCard" style="bottom:100%" class="hidden absolute right-0 mb-4 w-80 bg-white rounded-2xl p-6 material-shadow-elevated">
+      <div class="flex items-center justify-between mb-4">
+        <h4 class="text-lg font-bold text-gray-800 font-['Playfair_Display']">Book Free Reservation</h4>
+        <button id="reservationClose" class="p-1 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-full transition-colors">
+          <i class="ri-close-line text-lg"></i>
+        </button>
+      </div>
+
+      <form id="floatingReservationForm" class="space-y-3">
+        <div>
+          <label class="block text-xs font-medium text-gray-700 mb-1">Your Name *</label>
+          <input type="text" name="name" required
+            class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary focus:border-primary"
+            placeholder="Full name">
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-gray-700 mb-1">Phone or Email *</label>
+          <input type="text" name="phoneOrEmail" required
+            class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary focus:border-primary"
+            placeholder="Phone number or email">
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-medium text-gray-700 mb-1">Date *</label>
+            <input type="date" name="date" required
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary focus:border-primary"
+              min="<%= new Date().toISOString().split('T')[0] %>">
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-gray-700 mb-1">Time *</label>
+            <input type="time" name="time" required
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary focus:border-primary">
+          </div>
+        </div>
+        <button type="submit"
+          class="w-full gradient-bg text-white font-semibold py-2.5 rounded-xl text-sm hover:opacity-90 transition-opacity">
+          <i class="ri-calendar-check-line mr-1"></i>Book Reservation for Free
+        </button>
+      </form>
+
+      <!-- Success Message -->
+      <div id="floatingReservationSuccess" class="hidden text-center py-4">
+        <div class="w-12 h-12 mx-auto mb-3 bg-green-100 rounded-full flex items-center justify-center">
+          <i class="ri-check-line text-2xl text-green-600"></i>
+        </div>
+        <p class="text-gray-800 font-semibold">Thank You!</p>
+        <p class="text-sm text-gray-600 mt-1">We'll contact you soon.</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const toggle = document.getElementById('reservationToggle');
+      const card = document.getElementById('reservationFormCard');
+      const close = document.getElementById('reservationClose');
+      const arrow = document.getElementById('reservationArrow');
+      const form = document.getElementById('floatingReservationForm');
+      const success = document.getElementById('floatingReservationSuccess');
+      let isOpen = false;
+
+      function openCard() {
+        isOpen = true;
+        card.classList.remove('hidden');
+        arrow.style.transform = 'rotate(180deg)';
+      }
+
+      function closeCard() {
+        isOpen = false;
+        card.classList.add('hidden');
+        arrow.style.transform = 'rotate(0deg)';
+      }
+
+      toggle.addEventListener('click', function () {
+        if (isOpen) { closeCard(); } else { openCard(); }
+      });
+
+      close.addEventListener('click', function (e) {
+        e.stopPropagation();
+        closeCard();
+      });
+
+      if (form) {
+        form.addEventListener('submit', async function (e) {
+          e.preventDefault();
+          const formData = new FormData(form);
+          const data = Object.fromEntries(formData.entries());
+          data.source = 'floating_button';
+          data.pageUrl = window.location.href;
+
+          const submitBtn = form.querySelector('button[type="submit"]');
+          const originalText = submitBtn.innerHTML;
+          submitBtn.innerHTML = '<i class="ri-loader-4-line animate-spin mr-1"></i>Booking...';
+          submitBtn.disabled = true;
+
+          try {
+            const response = await fetch('/api/reservations/book', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(data)
+            });
+            const result = await response.json();
+            if (result.success) {
+              form.classList.add('hidden');
+              success.classList.remove('hidden');
+              setTimeout(function () { closeCard(); }, 3000);
+            } else {
+              alert(result.error || 'Something went wrong. Please try again.');
+              submitBtn.innerHTML = originalText;
+              submitBtn.disabled = false;
+            }
+          } catch (err) {
+            console.error('Floating reservation error:', err);
+            alert('Network error. Please try again.');
+            submitBtn.innerHTML = originalText;
+            submitBtn.disabled = false;
+          }
+        });
+      }
+    })();
+  </script>
+
   <!-- ── Floating WhatsApp Icon ─────────────────────────────────────────────── -->
   <a href="https://chat.whatsapp.com/Kjrn4Lwi54MLhd0NOZLxgl" target="_blank" rel="noopener noreferrer" aria-label="Join our WhatsApp group" class="fixed bottom-6 right-6 z-50 w-14 h-14 bg-green-500 hover:bg-green-600 rounded-full flex items-center justify-center shadow-lg hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 animate-bounce-slow">
     <i class="ri-whatsapp-fill text-white text-2xl"></i>
@@ -1202,6 +1470,8 @@
       animation: none;
     }
   </style>
+
+  <%- include('partials/reservationPopup', { popupId: 'exitPopup', headingText: "Not finding the right matches? Let our expert marriage consultants help you for free before you go", triggerType: 'exit' }) %>
 
   <%- include('partials/footer') %>
 

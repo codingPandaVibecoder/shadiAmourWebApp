@@ -4,6 +4,7 @@ const Blog = require("./models/Blog");
 const IslamicFAQ = require("./models/IslamicFAQ");
 const FaqCategory = require("./models/FaqCategory");
 const CategoryPage = require("./models/CategoryPage");
+const Reservation = require("./models/Reservation");
 function getRandomSeoName(gender) {
   if (gender === "male") {
     const randomIndex = Math.floor(Math.random() * muslimMaleNames.length);
@@ -5888,7 +5889,134 @@ app.post("/api/newsletter/subscribe", async (req, res) => {
   }
 });
 
-// Admin route to view newsletter subscribers
+// ============================================
+// RESERVATION BOOKING API
+// ============================================
+
+app.post("/api/reservations/book", async (req, res) => {
+  try {
+    const { name, phoneOrEmail, date, time, source, pageUrl } = req.body;
+
+    // Validate required fields
+    if (!name || !phoneOrEmail || !date || !time) {
+      return res.status(400).json({
+        success: false,
+        error: "All fields are required (name, phone/email, date, time)",
+      });
+    }
+
+    // Validate name length
+    if (name.trim().length < 2) {
+      return res.status(400).json({
+        success: false,
+        error: "Please provide a valid name",
+      });
+    }
+
+    // Validate date is not in the past
+    const bookingDate = new Date(date);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    if (bookingDate < today) {
+      return res.status(400).json({
+        success: false,
+        error: "Please select a future date",
+      });
+    }
+
+    // Create reservation
+    const reservation = new Reservation({
+      name: name.trim(),
+      phoneOrEmail: phoneOrEmail.trim(),
+      date: bookingDate,
+      time: time.trim(),
+      source: source || "floating_button",
+      pageUrl: pageUrl || "",
+      userAgent: req.get("User-Agent") || "",
+      ipAddress: req.ip || "",
+    });
+
+    await reservation.save();
+
+    console.log("New reservation booked:", reservation.name, reservation.date, reservation.source);
+
+    res.json({
+      success: true,
+      message:
+        "Your free reservation has been booked! We'll contact you soon.",
+    });
+  } catch (error) {
+    console.error("Reservation booking error:", error);
+    res.status(500).json({
+      success: false,
+      error: "Failed to book reservation. Please try again later.",
+    });
+  }
+});
+
+// ============================================
+// ADMIN RESERVATION ROUTES
+// ============================================
+
+app.get("/admin/reservations", requireAdminOnly, async (req, res) => {
+  try {
+    const { status } = req.query;
+
+    const filter = {};
+    if (status && ["pending", "contacted", "closed"].includes(status)) {
+      filter.status = status;
+    }
+
+    const reservations = await Reservation.find(filter).sort({ createdAt: -1 });
+
+    const stats = {
+      total: await Reservation.countDocuments({}),
+      pending: await Reservation.countDocuments({ status: "pending" }),
+      contacted: await Reservation.countDocuments({ status: "contacted" }),
+      closed: await Reservation.countDocuments({ status: "closed" }),
+    };
+
+    res.render("admin/reservations", {
+      reservations,
+      stats,
+      currentFilter: status || "all",
+    });
+  } catch (error) {
+    console.error("Admin reservations error:", error);
+    res.render("admin/reservations", {
+      reservations: [],
+      stats: { total: 0, pending: 0, contacted: 0, closed: 0 },
+      currentFilter: "all",
+    });
+  }
+});
+
+app.post("/admin/reservations/:id/status", requireAdminOnly, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.body;
+
+    if (!["pending", "contacted", "closed"].includes(status)) {
+      return res.status(400).json({ success: false, error: "Invalid status" });
+    }
+
+    const reservation = await Reservation.findByIdAndUpdate(
+      id,
+      { status },
+      { new: true }
+    );
+
+    if (!reservation) {
+      return res.status(404).json({ success: false, error: "Reservation not found" });
+    }
+
+    res.json({ success: true, reservation });
+  } catch (error) {
+    console.error("Update reservation status error:", error);
+    res.status(500).json({ success: false, error: "Failed to update status" });
+  }
+});
+
 // Admin route to view newsletter subscribers
 app.get("/admin/newsletter", requireAdminOnly, async (req, res) => {
   if (!req.session.isAdmin) {
