@@ -653,22 +653,120 @@
             <div class="space-y-4">
               <!-- Preferred Age Range -->
               <div>
-                <label for="preferredAgeRange" class="form-label">
+                <label class="form-label">
                   Preferred Age Range <span class="text-red-500">*</span>
                 </label>
-                <input type="text" id="preferredAgeRange" name="preferredAgeRange" required
-                  class="form-input"
-                  placeholder="e.g., 25-30">
+                <div class="flex items-center gap-3">
+                  <input type="number" id="preferredAgeFrom" name="preferredAgeFrom" required
+                    min="18" max="99"
+                    class="form-input w-20 text-center"
+                    placeholder="From">
+                  <span class="text-gray-400 font-medium">to</span>
+                  <input type="number" id="preferredAgeTo" name="preferredAgeTo" required
+                    min="18" max="99"
+                    class="form-input w-20 text-center"
+                    placeholder="To">
+                </div>
               </div>
 
               <!-- Preferred Height Range -->
               <div>
-                <label for="preferredHeightRange" class="form-label">
+                <label class="form-label">
                   Preferred Height Range <span class="text-red-500">*</span>
                 </label>
-                <input type="text" id="preferredHeightRange" name="preferredHeightRange" required
-                  class="form-input"
-                  placeholder="e.g., 160-180 cm">
+                <div class="flex items-center gap-3">
+                  <select id="preferredHeightFrom" name="preferredHeightFrom" required class="form-select flex-1">
+                    <option value="">From height</option>
+                    <option value="140">4'7" (140 cm)</option>
+                    <option value="142">4'8" (142 cm)</option>
+                    <option value="145">4'9" (145 cm)</option>
+                    <option value="147">4'10" (147 cm)</option>
+                    <option value="150">4'11" (150 cm)</option>
+                    <option value="152">5'0" (152 cm)</option>
+                    <option value="155">5'1" (155 cm)</option>
+                    <option value="157">5'2" (157 cm)</option>
+                    <option value="160">5'3" (160 cm)</option>
+                    <option value="163">5'4" (163 cm)</option>
+                    <option value="165">5'5" (165 cm)</option>
+                    <option value="168">5'6" (168 cm)</option>
+                    <option value="170">5'7" (170 cm)</option>
+                    <option value="173">5'8" (173 cm)</option>
+                    <option value="175">5'9" (175 cm)</option>
+                    <option value="178">5'10" (178 cm)</option>
+                    <option value="180">5'11" (180 cm)</option>
+                    <option value="183">6'0" (183 cm)</option>
+                    <option value="185">6'1" (185 cm)</option>
+                    <option value="188">6'2" (188 cm)</option>
+                    <option value="191">6'3" (191 cm)</option>
+                    <option value="193">6'4" (193 cm)</option>
+                    <option value="196">6'5" (196 cm)</option>
+                    <option value="198">6'6" (198 cm)</option>
+                    <option value="201">6'7" (201 cm)</option>
+                    <option value="203">6'8" (203 cm)</option>
+                    <option value="206">6'9" (206 cm)</option>
+                    <option value="208">6'10" (208 cm)</option>
+                    <option value="211">6'11" (211 cm)</option>
+                    <option value="213">7'0" (213 cm)</option>
+                    <option value="216">7'1" (216 cm)</option>
+                    <option value="218">7'2" (218 cm)</option>
+                    <option value="221">7'3" (221 cm)</option>
+                    <option value="224">7'4" (224 cm)</option>
+                    <option value="226">7'5" (226 cm)</option>
+                    <option value="229">7'6" (229 cm)</option>
+                    <option value="231">7'7" (231 cm)</option>
+                    <option value="234">7'8" (234 cm)</option>
+                    <option value="236">7'9" (236 cm)</option>
+                    <option value="239">7'10" (239 cm)</option>
+                    <option value="241">7'11" (241 cm)</option>
+                    <option value="244">8'0" (244 cm)</option>
+                  </select>
+                  <span class="text-gray-400 font-medium">to</span>
+                  <select id="preferredHeightTo" name="preferredHeightTo" required class="form-select flex-1">
+                    <option value="">To height</option>
+                    <option value="140">4'7" (140 cm)</option>
+                    <option value="142">4'8" (142 cm)</option>
+                    <option value="145">4'9" (145 cm)</option>
+                    <option value="147">4'10" (147 cm)</option>
+                    <option value="150">4'11" (150 cm)</option>
+                    <option value="152">5'0" (152 cm)</option>
+                    <option value="155">5'1" (155 cm)</option>
+                    <option value="157">5'2" (157 cm)</option>
+                    <option value="160">5'3" (160 cm)</option>
+                    <option value="163">5'4" (163 cm)</option>
+                    <option value="165">5'5" (165 cm)</option>
+                    <option value="168">5'6" (168 cm)</option>
+                    <option value="170">5'7" (170 cm)</option>
+                    <option value="173">5'8" (173 cm)</option>
+                    <option value="175">5'9" (175 cm)</option>
+                    <option value="178">5'10" (178 cm)</option>
+                    <option value="180">5'11" (180 cm)</option>
+                    <option value="183">6'0" (183 cm)</option>
+                    <option value="185">6'1" (185 cm)</option>
+                    <option value="188">6'2" (188 cm)</option>
+                    <option value="191">6'3" (191 cm)</option>
+                    <option value="193">6'4" (193 cm)</option>
+                    <option value="196">6'5" (196 cm)</option>
+                    <option value="198">6'6" (198 cm)</option>
+                    <option value="201">6'7" (201 cm)</option>
+                    <option value="203">6'8" (203 cm)</option>
+                    <option value="206">6'9" (206 cm)</option>
+                    <option value="208">6'10" (208 cm)</option>
+                    <option value="211">6'11" (211 cm)</option>
+                    <option value="213">7'0" (213 cm)</option>
+                    <option value="216">7'1" (216 cm)</option>
+                    <option value="218">7'2" (218 cm)</option>
+                    <option value="221">7'3" (221 cm)</option>
+                    <option value="224">7'4" (224 cm)</option>
+                    <option value="226">7'5" (226 cm)</option>
+                    <option value="229">7'6" (229 cm)</option>
+                    <option value="231">7'7" (231 cm)</option>
+                    <option value="234">7'8" (234 cm)</option>
+                    <option value="236">7'9" (236 cm)</option>
+                    <option value="239">7'10" (239 cm)</option>
+                    <option value="241">7'11" (241 cm)</option>
+                    <option value="244">8'0" (244 cm)</option>
+                  </select>
+                </div>
               </div>
 
               <!-- Preferred Islamic Sect -->
@@ -677,7 +775,7 @@
                   Preferred Islamic Sect <span class="text-red-500">*</span>
                 </label>
                 <select id="preferredIslamicSect" name="preferredIslamicSect" required class="form-select">
-                  <option value="">Any Islamic Sect</option>
+                  <option value="Any Islamic Sect" selected>Any Islamic Sect</option>
                   <option value="Sunni">Sunni</option>
                   <option value="Shia">Shia</option>
                   <option value="Ibadi">Ibadi</option>
@@ -718,9 +816,13 @@
                 <label for="willingToConsiderANonUkCitizen" class="form-label">
                   Willing to Consider a Non-UK Citizen <span class="text-red-500">*</span>
                 </label>
-                <input type="text" id="willingToConsiderANonUkCitizen" name="willingToConsiderANonUkCitizen" required
-                  class="form-input"
-                  placeholder="e.g., Yes, No, Depends on location">
+                <select id="willingToConsiderANonUkCitizen" name="willingToConsiderANonUkCitizen" required class="form-select">
+                  <option value="">Select</option>
+                  <option value="Yes">Yes</option>
+                  <option value="No">No</option>
+                  <option value="Depends on location">Depends on location</option>
+                  <option value="N/A">N/A</option>
+                </select>
               </div>
 
               <!-- Accept Someone with Children -->
@@ -1222,6 +1324,19 @@
         if (step === 5 && formData.work === 'Other' && formData.otherWork) {
           formData.work = formData.otherWork;
           delete formData.otherWork; // Remove the otherWork field as we've merged it into work
+        }
+        // Step 7: combine split age and height fields for backend compatibility
+        if (step === 7) {
+          if (formData.preferredAgeFrom && formData.preferredAgeTo) {
+            formData.preferredAgeRange = formData.preferredAgeFrom + '-' + formData.preferredAgeTo;
+            delete formData.preferredAgeFrom;
+            delete formData.preferredAgeTo;
+          }
+          if (formData.preferredHeightFrom && formData.preferredHeightTo) {
+            formData.preferredHeightRange = formData.preferredHeightFrom + '-' + formData.preferredHeightTo;
+            delete formData.preferredHeightFrom;
+            delete formData.preferredHeightTo;
+          }
         }
 
         return formData;
