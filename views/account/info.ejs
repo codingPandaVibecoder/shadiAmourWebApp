@@ -917,6 +917,47 @@
 
               <div class="grid md:grid-cols-2 gap-6">
                 <div class="space-y-2">
+                  <label for="preferredIslamicSect" class="block text-sm font-medium text-gray-700">Preferred Islamic Sect</label>
+                  <select id="preferredIslamicSect" name="preferredIslamicSect" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 bg-white">
+                    <option value="" <%= (!accountInfo.preferredIslamicSect) ? 'selected' : '' %>>-- Select --</option>
+                    <option value="Sunni" <%= (accountInfo.preferredIslamicSect === 'Sunni') ? 'selected' : '' %>>Sunni</option>
+                    <option value="Shia" <%= (accountInfo.preferredIslamicSect === 'Shia') ? 'selected' : '' %>>Shia</option>
+                    <option value="Ibadi" <%= (accountInfo.preferredIslamicSect === 'Ibadi') ? 'selected' : '' %>>Ibadi</option>
+                    <option value="Sufi" <%= (accountInfo.preferredIslamicSect === 'Sufi') ? 'selected' : '' %>>Sufi</option>
+                    <option value="Ahmadiyya" <%= (accountInfo.preferredIslamicSect === 'Ahmadiyya') ? 'selected' : '' %>>Ahmadiyya</option>
+                    <option value="Hanafi" <%= (accountInfo.preferredIslamicSect === 'Hanafi') ? 'selected' : '' %>>Hanafi</option>
+                    <option value="Maliki" <%= (accountInfo.preferredIslamicSect === 'Maliki') ? 'selected' : '' %>>Maliki</option>
+                    <option value="Shafi'i" <%= (accountInfo.preferredIslamicSect === "Shafi'i") ? 'selected' : '' %>>Shafi'i</option>
+                    <option value="Hanbali" <%= (accountInfo.preferredIslamicSect === 'Hanbali') ? 'selected' : '' %>>Hanbali</option>
+                    <option value="Zahiri" <%= (accountInfo.preferredIslamicSect === 'Zahiri') ? 'selected' : '' %>>Zahiri</option>
+                    <option value="Twelver (Jafari)" <%= (accountInfo.preferredIslamicSect === 'Twelver (Jafari)') ? 'selected' : '' %>>Twelver (Jafari)</option>
+                    <option value="Ismaili" <%= (accountInfo.preferredIslamicSect === 'Ismaili') ? 'selected' : '' %>>Ismaili</option>
+                    <option value="Zaydi" <%= (accountInfo.preferredIslamicSect === 'Zaydi') ? 'selected' : '' %>>Zaydi</option>
+                    <option value="Alawite" <%= (accountInfo.preferredIslamicSect === 'Alawite') ? 'selected' : '' %>>Alawite</option>
+                    <option value="Alevi" <%= (accountInfo.preferredIslamicSect === 'Alevi') ? 'selected' : '' %>>Alevi</option>
+                    <option value="Druze" <%= (accountInfo.preferredIslamicSect === 'Druze') ? 'selected' : '' %>>Druze</option>
+                    <option value="Ash'ari" <%= (accountInfo.preferredIslamicSect === "Ash'ari") ? 'selected' : '' %>>Ash'ari</option>
+                    <option value="Maturidi" <%= (accountInfo.preferredIslamicSect === 'Maturidi') ? 'selected' : '' %>>Maturidi</option>
+                    <option value="Athari" <%= (accountInfo.preferredIslamicSect === 'Athari') ? 'selected' : '' %>>Athari</option>
+                    <option value="Mu'tazila" <%= (accountInfo.preferredIslamicSect === "Mu'tazila") ? 'selected' : '' %>>Mu'tazila</option>
+                    <option value="Murji'ah" <%= (accountInfo.preferredIslamicSect === "Murji'ah") ? 'selected' : '' %>>Murji'ah</option>
+                    <option value="Kharijite" <%= (accountInfo.preferredIslamicSect === 'Kharijite') ? 'selected' : '' %>>Kharijite</option>
+                    <option value="Salafi" <%= (accountInfo.preferredIslamicSect === 'Salafi') ? 'selected' : '' %>>Salafi</option>
+                    <option value="Wahhabi" <%= (accountInfo.preferredIslamicSect === 'Wahhabi') ? 'selected' : '' %>>Wahhabi</option>
+                    <option value="Deobandi" <%= (accountInfo.preferredIslamicSect === 'Deobandi') ? 'selected' : '' %>>Deobandi</option>
+                    <option value="Barelvi" <%= (accountInfo.preferredIslamicSect === 'Barelvi') ? 'selected' : '' %>>Barelvi</option>
+                    <option value="Ahle Hadith" <%= (accountInfo.preferredIslamicSect === 'Ahle Hadith') ? 'selected' : '' %>>Ahle Hadith</option>
+                    <option value="Quranist" <%= (accountInfo.preferredIslamicSect === 'Quranist') ? 'selected' : '' %>>Quranist</option>
+                    <option value="Mahdavia" <%= (accountInfo.preferredIslamicSect === 'Mahdavia') ? 'selected' : '' %>>Mahdavia</option>
+                    <option value="Nation of Islam" <%= (accountInfo.preferredIslamicSect === 'Nation of Islam') ? 'selected' : '' %>>Nation of Islam</option>
+                    <option value="Moorish Science Temple" <%= (accountInfo.preferredIslamicSect === 'Moorish Science Temple') ? 'selected' : '' %>>Moorish Science Temple</option>
+                    <option value="Non-denominational" <%= (accountInfo.preferredIslamicSect === 'Non-denominational') ? 'selected' : '' %>>Non-denominational</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="grid md:grid-cols-2 gap-6">
+                <div class="space-y-2">
                   <label for="allowParnterToWork" class="block text-sm font-medium text-gray-700">Allow Partner to Work</label>
                   <select id="allowParnterToWork" name="allowParnterToWork" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 bg-white">
                     <option value="true" <%= (accountInfo.allowParnterToWork === true) ? 'selected' : '' %>>Yes</option>
@@ -1338,7 +1379,7 @@
           // **NEW**: Validate minimum character fields
           const minCharFields = {
             'aboutMe': 5,
-            'islamIsImportantToMeInfo': 5,
+            'islamIsImportantToMeInfo': 30,
             'describeNature': 5,
             'lookingForASpouseThatIs': 5
           };
@@ -1980,9 +2021,14 @@ window.revokeAccess = function(requestId) {
 
     });
     // **NEW**: Character counter for minimum length fields
-    const fieldsWithMinLength = ['aboutMe', 'islamIsImportantToMeInfo', 'describeNature', 'lookingForASpouseThatIs'];
+    const fieldsWithMinLength = {
+      'aboutMe': 5,
+      'islamIsImportantToMeInfo': 30,
+      'describeNature': 5,
+      'lookingForASpouseThatIs': 5
+    };
 
-    fieldsWithMinLength.forEach(fieldId => {
+    Object.entries(fieldsWithMinLength).forEach(([fieldId, minLength]) => {
       const textarea = document.getElementById(fieldId);
       if (textarea) {
         const counter = document.createElement('div');
@@ -1992,7 +2038,6 @@ window.revokeAccess = function(requestId) {
 
         function updateCounter() {
           const length = textarea.value.trim().length;
-          const minLength = 5;
           counter.textContent = `${length}/${minLength} characters minimum`;
 
           if (length < minLength) {

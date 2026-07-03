@@ -170,6 +170,9 @@ const userSchema = new mongoose.Schema({
   islamicSect: {
     type: String,
   },
+  preferredIslamicSect: {
+    type: String,
+  },
   prays: {
     type: Boolean,
   },
@@ -450,6 +453,12 @@ const userSchema = new mongoose.Schema({
   deactivationReason: {
     type: String,
     default: null,
+  },
+  // LLM-generated match narratives cache (keyed by other user's ID)
+  matchNarrativeCache: {
+    type: Map,
+    of: String,
+    default: {},
   },
 });
 

@@ -701,6 +701,10 @@
                   <span class="info-value" data-field="preferredEthnicity"><%= user.preferredEthnicity || '-' %></span>
                 </div>
                 <div class="info-row">
+                  <span class="info-label">Preferred Islamic Sect</span>
+                  <span class="info-value" data-field="preferredIslamicSect"><%= user.preferredIslamicSect || '-' %></span>
+                </div>
+                <div class="info-row">
                   <span class="info-label">Allow Partner to Work</span>
                   <span class="info-value" data-field="allowParnterToWork"><%= user.allowParnterToWork === true ? 'Yes' : user.allowParnterToWork === false ? 'No' : '-' %></span>
                 </div>
@@ -1314,9 +1318,10 @@
                 eyeColor: ['', 'black', 'brown', 'grey', 'other', 'N/A'],
                 hairColor: ['', 'black', 'brown', 'blonde', 'N/A'],
                 complexion: ['', 'fair', 'wheatish', 'dark', 'N/A'],
-                ethnicity: ['', 'bangladeshi', 'pakistani', 'indian', 'british', 'other', 'N/A'],
+                ethnicity: ['', 'bangladeshi', 'pakistani', 'indian', 'british', 'British', 'other', 'N/A'],
                 wearHijab: ['', 'yes', 'no'],
                 beard: ['', 'no', 'short', 'medium', 'long', 'N/A'],
+                preferredIslamicSect: ['', 'Sunni', 'Shia', 'Ibadi', 'Sufi', 'Ahmadiyya', 'Hanafi', 'Maliki', "Shafi'i", 'Hanbali', 'Zahiri', 'Twelver (Jafari)', 'Ismaili', 'Zaydi', 'Alawite', 'Alevi', 'Druze', "Ash'ari", 'Maturidi', 'Athari', "Mu'tazila", "Murji'ah", 'Kharijite', 'Salafi', 'Wahhabi', 'Deobandi', 'Barelvi', 'Ahle Hadith', 'Quranist', 'Mahdavia', 'Nation of Islam', 'Moorish Science Temple', 'Non-denominational'],
                 highestEducation: ['', 'High School', "Bachelor's Degree", "Master's Degree", 'Doctorate / PhD', 'Diploma', 'Professional Degree', 'Islamic Studies', 'Hafiz-e-Quran', 'Other']
               };
               

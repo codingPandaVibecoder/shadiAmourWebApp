@@ -2652,16 +2652,21 @@ pakistanCityPages.forEach(function(pkCity) {
 app.get("/onboarding", isLoggedIn, findUser, (req, res) => {
   const user = req.userData;
 
-  // Check if user has completed onboarding (has all required fields from 5 steps)
+  // Check if user has completed onboarding (has all required fields from 8 steps)
   // Step 1: profileFor, gender, username
-  // Step 2: name, age, height, maritalStatus  
-  // Step 3: city, country
-  // Step 4: highestEducation, work
-  // Step 5: lookingForASpouseThatIs, aboutMe, contact
+  // Step 2: name, age, height, maritalStatus
+  // Step 3: islamicSect, prays, bornMuslim, islamIsImportantToMeInfo
+  // Step 4: city, country, nationality, ethnicity
+  // Step 5: highestEducation, work
+  // Step 6: lookingForASpouseThatIs, aboutMe
+  // Step 7: preferredAgeRange, preferredHeightRange, preferredIslamicSect, willingToConsiderANonUkCitizen, acceptSomeoneWithChildren, acceptADivorcedPerson, acceptAWidow
+  // Step 8: contact
   if (user.profileSlug && user.name && user.age && user.height && 
       user.maritalStatus && user.city && user.country && 
       user.highestEducation && user.work && 
-      user.lookingForASpouseThatIs && user.aboutMe && user.contact) {
+      user.lookingForASpouseThatIs && user.aboutMe && user.contact &&
+      user.islamicSect && user.prays !== undefined && 
+      user.nationality && user.ethnicity) {
     return res.redirect(`/account/info`);
   }
 
@@ -2675,8 +2680,8 @@ app.post("/api/onboarding/save", isLoggedIn, findUser, async (req, res) => {
 
     
 
-    // Server-side validation for step 6 (phone number)
-    if (Number(step) === 6) {
+    // Server-side validation for step 8 (phone number)
+    if (Number(step) === 8) {
       const countryCode = data.countryCode;
       const contactRaw = String(data.contact || "");
       const digits = contactRaw.replace(/\D/g, "");
@@ -2735,7 +2740,7 @@ app.post("/api/onboarding/save", isLoggedIn, findUser, async (req, res) => {
     res.json({
       success: true,
       message: `Step ${step} completed successfully!`,
-      isLastStep: Number(step) === 6,
+      isLastStep: Number(step) === 8,
     });
   } catch (error) {
     console.error("Onboarding save error:", error);
@@ -5319,8 +5324,15 @@ app.post("/admin/user/update", profileUpload, async (req, res) => {
       eyeColor: ["black", "brown", "grey", "other"],
       hairColor: ["black", "brown", "blonde"],
       complexion: ["fair", "wheatish", "dark"],
-      ethnicity: ["bangladeshi", "pakistani", "indian", "british", "other"],
+      ethnicity: ["bangladeshi", "pakistani", "indian", "british", "British", "other", "N/A"],
       gender: ["male", "female", "rather not say"],
+      preferredIslamicSect: [
+        "Sunni", "Shia", "Ibadi", "Sufi", "Ahmadiyya", "Hanafi", "Maliki", "Shafi'i",
+        "Hanbali", "Zahiri", "Twelver (Jafari)", "Ismaili", "Zaydi", "Alawite", "Alevi",
+        "Druze", "Ash'ari", "Maturidi", "Athari", "Mu'tazila", "Murji'ah", "Kharijite",
+        "Salafi", "Wahhabi", "Deobandi", "Barelvi", "Ahle Hadith", "Quranist",
+        "Mahdavia", "Nation of Islam", "Moorish Science Temple", "Non-denominational",
+      ],
     };
 
     // **IMPORTANT FIX**: Clear any existing "N/A" values in boolean fields |first
