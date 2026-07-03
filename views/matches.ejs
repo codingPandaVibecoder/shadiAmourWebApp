@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Matches - D'amour Muslim</title>
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+  <link rel="manifest" href="/images/site.webmanifest">
+  <meta name="theme-color" content="#E91E63">
+  <link rel="stylesheet" href="/css/output.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+  <meta name="robots" content="noindex, follow">
+  <style>
+    :where([class^="ri-"])::before {
+      content: "\f3c2";
+    }
+    .material-shadow {
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+    .score-circle {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+    .score-high { background: #dcfce7; color: #16a34a; border: 2px solid #16a34a; }
+    .score-mid { background: #fef3c7; color: #d97706; border: 2px solid #d97706; }
+    .score-low { background: #f1f5f9; color: #94a3b8; border: 2px solid #94a3b8; }
+  </style>
+  <%- include('partials/clarity') %>
+  <%- include('partials/thirdparty') %>
+  <%- include('partials/analytics') %>
+</head>
+
+<body class="bg-gray-50 font-['Roboto']">
+  <%- include('partials/header') %>
+
+  <main class="pt-24 pb-16 min-h-screen">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6">
+      
+      <% if (!user) { %>
+      <!-- Not logged in -->
+      <div class="text-center py-20">
+        <div class="w-20 h-20 bg-pink-50 rounded-full flex items-center justify-center mx-auto mb-6">
+          <i class="ri-heart-line text-4xl text-pink-500"></i>
+        </div>
+        <h1 class="text-3xl font-bold text-gray-800 font-['Playfair_Display'] mb-4">Your Matches</h1>
+        <p class="text-gray-600 text-lg mb-8">For logged in users only</p>
+        <div class="flex items-center justify-center gap-4">
+          <a href="/login" class="px-6 py-3 border-2 border-primary text-primary hover:bg-primary hover:text-white transition-all duration-300 rounded-xl font-medium">
+            Login
+          </a>
+          <a href="/register" class="px-6 py-3 bg-primary text-white hover:bg-pink-600 transition-all duration-300 rounded-xl font-medium material-shadow">
+            Sign Up Free
+          </a>
+        </div>
+      </div>
+
+      <% } else { %>
+      <!-- Logged in -->
+      <div class="mb-8">
+        <h1 class="text-3xl font-bold text-gray-800 font-['Playfair_Display'] mb-2">Your Matches</h1>
+        <p class="text-gray-600">
+          Profiles sorted by compatibility score. 
+          <% if (currentUser && currentUser.profileCompletenessTier === 'B') { %>
+            <span class="text-amber-600 font-medium">Complete your profile to improve match accuracy.</span>
+          <% } %>
+        </p>
+      </div>
+
+      <% if (currentUser && currentUser.profileCompletenessTier === 'B') { %>
+      <!-- Tier B banner -->
+      <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-6 flex items-start gap-3">
+        <i class="ri-information-line text-2xl text-amber-600 flex-shrink-0 mt-0.5"></i>
+        <div>
+          <h3 class="font-semibold text-amber-800 mb-1">Your match scores are based on a partial profile</h3>
+          <p class="text-amber-700 text-sm">
+            Complete your Islamic identity details, partner preferences, and nationality/ethnicity to get more accurate compatibility scores.
+            <% if (pointsAvailableGap > 0) { %>
+              You're currently scored on up to <%= currentPointsAvailable %> of 100 possible points.
+            <% } %>
+          </p>
+          <a href="/account/info" class="inline-block mt-2 text-amber-700 font-medium hover:text-amber-800 underline text-sm">
+            Complete your profile →
+          </a>
+        </div>
+      </div>
+      <% } %>
+
+      <% if (matches && matches.length > 0) { %>
+      <!-- Match Results -->
+      <div class="space-y-4">
+        <% matches.forEach(match => { %>
+        <% const profile = match.viewee; %>
+        <a href="/profiles/<%= profile.profileSlug || profile._id %>" 
+           class="flex items-center gap-4 bg-white rounded-2xl p-4 material-shadow hover:shadow-lg transition-all duration-300">
+          <!-- Score Circle -->
+          <% 
+            const score = match.finalScore;
+            let scoreClass = 'score-low';
+            if (score >= 70) scoreClass = 'score-high';
+            else if (score >= 50) scoreClass = 'score-mid';
+          %>
+          <div class="score-circle <%= scoreClass %>">
+            <%= score %>%
+          </div>
+
+          <!-- Avatar -->
+          <div class="w-16 h-16 rounded-full overflow-hidden flex-shrink-0 bg-gray-100">
+            <img src="https://ui-avatars.com/api/?name=<%= encodeURIComponent(profile.name || profile.username) %>&background=<%= profile.gender === 'male' ? '0077be' : 'e91e63' %>&color=fff&size=64&format=png" 
+                 alt="<%= profile.name || profile.username %>" class="w-full h-full object-cover" loading="lazy">
+          </div>
+
+          <!-- Info -->
+          <div class="flex-1 min-w-0">
+            <h3 class="text-lg font-semibold text-gray-900 truncate">
+              <%= profile.username %>
+            </h3>
+            <div class="flex items-center text-gray-500 text-sm gap-3 mt-1">
+              <% if (profile.city) { %>
+                <span class="flex items-center gap-1"><i class="ri-map-pin-line"></i> <%= profile.city %></span>
+              <% } %>
+              <% if (profile.age) { %>
+                <span class="flex items-center gap-1"><i class="ri-calendar-line"></i> <%= profile.age %></span>
+              <% } %>
+              <% if (profile.highestEducation) { %>
+                <span class="flex items-center gap-1"><i class="ri-graduation-cap-line"></i> <%= profile.highestEducation %></span>
+              <% } %>
+            </div>
+            <% if (match.pointsAvailable < 90) { %>
+              <p class="text-amber-600 text-xs mt-1">
+                <i class="ri-information-line"></i> Match based on partial profile
+              </p>
+            <% } %>
+          </div>
+
+          <div class="flex-shrink-0 text-gray-400">
+            <i class="ri-arrow-right-s-line text-2xl"></i>
+          </div>
+        </a>
+        <% }) %>
+      </div>
+
+      <!-- Pagination -->
+      <% if (totalPages > 1) { %>
+      <div class="flex justify-center gap-2 mt-8">
+        <% for (let i = 1; i <= totalPages; i++) { %>
+          <% if (i === page) { %>
+            <span class="px-4 py-2 bg-primary text-white rounded-lg font-medium"><%= i %></span>
+          <% } else { %>
+            <a href="/matches?page=<%= i %>" class="px-4 py-2 border border-gray-300 text-gray-700 hover:border-primary hover:text-primary rounded-lg transition-colors"><%= i %></a>
+          <% } %>
+        <% } %>
+      </div>
+      <% } %>
+
+      <% } else { %>
+      <!-- No matches yet -->
+      <div class="text-center py-16">
+        <div class="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
+          <i class="ri-user-search-line text-4xl text-gray-400"></i>
+        </div>
+        <h3 class="text-xl font-semibold text-gray-600 mb-2">No matches yet</h3>
+        <p class="text-gray-500 mb-6">
+          <% if (currentUser && !currentUser.isApproved) { %>
+            Your profile is pending approval. Matches will appear once your profile is approved.
+          <% } else { %>
+            We're computing your matches. Check back soon, or browse profiles to find your match manually.
+          <% } %>
+        </p>
+        <a href="/profiles" class="inline-block px-6 py-3 bg-primary text-white hover:bg-pink-600 rounded-xl font-medium material-shadow transition-all duration-300">
+          Browse All Profiles
+        </a>
+      </div>
+      <% } %>
+
+      <% } %>
+    </div>
+  </main>
+
+  <%- include('partials/footer') %>
+</body>
+
+</html>

@@ -193,6 +193,26 @@
       opacity: 1;
     }
 
+    /* Compatibility score circle overlay on profile cards */
+    .match-score-badge {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 12px;
+      z-index: 10;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    }
+    .match-score-high { background: #dcfce7; color: #16a34a; border: 2px solid #16a34a; }
+    .match-score-mid { background: #fef3c7; color: #d97706; border: 2px solid #d97706; }
+    .match-score-low { background: #f1f5f9; color: #94a3b8; border: 2px solid #94a3b8; }
+
     /* Skeleton loader for images */
     .aspect-\[4\/5\] {
       background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
@@ -581,6 +601,19 @@ html {
                   </div>
                 </div>
 
+                <!-- Compatibility score badge (logged-in only, below featured badge) -->
+                <% if (typeof user !== 'undefined' && user && profile.matchScore != null) { %>
+                  <% 
+                    const fmScore = profile.matchScore;
+                    let fmClass = 'match-score-low';
+                    if (fmScore >= 70) fmClass = 'match-score-high';
+                    else if (fmScore >= 50) fmClass = 'match-score-mid';
+                  %>
+                  <div class="match-score-badge <%= fmClass %>" style="top: 44px; right: 8px;" title="Compatibility Score">
+                    <%= fmScore %>%
+                  </div>
+                <% } %>
+
                 <!-- Profile Image -->
                 <div class="aspect-[4/5] overflow-hidden relative">
                   <% if (profile.profilePic && profile.profilePic.url) { %>
@@ -710,7 +743,19 @@ html {
             
             <% if (profiles && profiles.length > 0) { %>
             <% profiles.forEach(profile => { %>
-            <a href="/profiles/<%= profile.profileSlug || profile._id %>" data-track="true" data-event-name="profile_card_click" data-category="engagement" data-label="<%= profile.username %>" class="bg-white rounded-2xl overflow-hidden material-shadow hover:material-shadow-hover transition-all duration-300 block">
+            <a href="/profiles/<%= profile.profileSlug || profile._id %>" data-track="true" data-event-name="profile_card_click" data-category="engagement" data-label="<%= profile.username %>" class="bg-white rounded-2xl overflow-hidden material-shadow hover:material-shadow-hover transition-all duration-300 block relative">
+              <!-- Compatibility score badge (logged-in users only) -->
+              <% if (typeof user !== 'undefined' && user && profile.matchScore != null) { %>
+                <% 
+                  const mScore = profile.matchScore;
+                  let mClass = 'match-score-low';
+                  if (mScore >= 70) mClass = 'match-score-high';
+                  else if (mScore >= 50) mClass = 'match-score-mid';
+                %>
+                <div class="match-score-badge <%= mClass %>" title="Compatibility Score">
+                  <%= mScore %>%
+                </div>
+              <% } %>
               <div class="aspect-[4/5] overflow-hidden">
                 <!-- Default placeholder based on gender -->
                 <img src="https://ui-avatars.com/api/?name=<%= encodeURIComponent(profile.name || profile.username) %>&background=<%= profile.gender === 'male' ? '0077be' : 'e91e63' %>&color=fff&size=300&format=png" alt="<%= profile.name || profile.username %><%= profile.age ? ', ' + profile.age + ' year old' : '' %><%= profile.work ? ' ' + profile.work : '' %> - Muslim marriage profile<%= profile.city ? ' in ' + profile.city : '' %>" class="w-full h-full object-cover" loading="lazy" width="300" height="300">

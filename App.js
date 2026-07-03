@@ -41,6 +41,7 @@ const {
   calculateProfileCompletion,
   generateProfileSlug,
   generateUniqueSlug,
+  computeProfileTier,
 } = require("./utils/profileHelpers");
 
 function addProfileSlugHistory(profile, oldSlug, newSlug) {
@@ -57,6 +58,7 @@ function addProfileSlugHistory(profile, oldSlug, newSlug) {
   }
 }
 const User = require("./models/user");
+const MatchScore = require("./models/MatchScore");
 const Newsletter = require("./models/Newsletter");
 const { countryOptions, countryPlaceholders } = require("./config/countries");
 const { detectCountry, buildGeoFilter, getFilterUIConfig } = require("./config/geoFilter");
@@ -2732,6 +2734,25 @@ app.post("/api/onboarding/save", isLoggedIn, findUser, async (req, res) => {
       user.profileSlug = await generateUniqueSlug(user);
     }
 
+    // Recompute profile completeness tier
+    const newTier = computeProfileTier(user);
+    if (user.profileCompletenessTier !== newTier) {
+      user.profileCompletenessTier = newTier;
+      user.profileTierCalculatedAt = new Date();
+    }
+
+    // Check if any scored field was updated (trigger match score recalculation)
+    const { SCORED_FIELDS } = require("./config/matching");
+    const hasScoredFieldChange = Object.keys(data).some(key => SCORED_FIELDS.includes(key));
+    if (hasScoredFieldChange) {
+      const QueueService = require("./services/queueService");
+      user.matchScoresStaleSince = new Date();
+      // Enqueue async score recompute (don't await — fire and forget)
+      QueueService.queueRecomputeScores(user._id).catch(err =>
+        console.error("Failed to enqueue match score recompute:", err.message)
+      );
+    }
+
     await user.save();
 
     // Update session
@@ -2761,8 +2782,20 @@ app.post("/api/onboarding/complete", isLoggedIn, findUser, async (req, res) => {
     // Ensure user has profile slug
     if (!user.profileSlug) {
       user.profileSlug = await generateUniqueSlug(user);
-      await user.save();
     }
+
+    // Set onboarding completion and compute tier
+    user.onboardingCompletedAt = new Date();
+    user.profileCompletenessTier = computeProfileTier(user);
+    user.profileTierCalculatedAt = new Date();
+    user.matchScoresStaleSince = new Date();
+    await user.save();
+
+    // Enqueue full score recompute for this user
+    const QueueService = require("./services/queueService");
+    QueueService.queueRecomputeScores(user._id).catch(err =>
+      console.error("Failed to enqueue match score recompute:", err.message)
+    );
 
     // Check if KYC verification feature is enabled
     const siteSettings = await GlobalSeoSettings.getSettings();
@@ -4102,6 +4135,37 @@ app.get("/profiles",requireOnboardingComplete, async (req, res) => {
       currentUserProfile = await User.findById(req.session.userId);
     }
 
+    // Batch-fetch compatibility scores for logged-in users
+    if (req.session.userId) {
+      const allProfileIds = [
+        ...profiles.map(p => p._id),
+        ...(featuredProfiles ? featuredProfiles.map(p => p._id) : []),
+      ];
+      if (allProfileIds.length > 0) {
+        const scores = await MatchScore.find({
+          viewerId: req.session.userId,
+          vieweeId: { $in: allProfileIds },
+        }).select("vieweeId finalScore").lean();
+
+        const scoreMap = {};
+        for (const s of scores) {
+          scoreMap[s.vieweeId.toString()] = s.finalScore;
+        }
+
+        // Attach scores to regular profile objects
+        for (const profile of profiles) {
+          profile.matchScore = scoreMap[profile._id.toString()] ?? null;
+        }
+
+        // Attach scores to featured profile objects
+        if (featuredProfiles) {
+          for (const profile of featuredProfiles) {
+            profile.matchScore = scoreMap[profile._id.toString()] ?? null;
+          }
+        }
+      }
+    }
+
     return res.render("profiles", {
       featuredProfiles, // **NEW**
       profiles,
@@ -4123,6 +4187,184 @@ app.get("/profiles",requireOnboardingComplete, async (req, res) => {
     });
   }
 });
+// ── Matches Page ────────────────────────────────────────────────────────────
+app.get("/matches", async (req, res) => {
+  // Pagination params
+  const page = parseInt(req.query.page) > 0 ? parseInt(req.query.page) : 1;
+  const limit = 12;
+  const skip = (page - 1) * limit;
+
+  const { MIN_SCORE_THRESHOLD } = require("./config/matching");
+
+  try {
+    // Not logged in — show simple page
+    if (!req.session.userId) {
+      return res.render("matches", {
+        user: null,
+        matches: [],
+        page: 1,
+        totalPages: 0,
+      });
+    }
+
+    const user = await User.findById(req.session.userId);
+    if (!user) {
+      return res.render("matches", { user: null, matches: [], page: 1, totalPages: 0 });
+    }
+
+    // Count total matches above threshold
+    const totalMatches = await MatchScore.countDocuments({
+      viewerId: user._id,
+      finalScore: { $gte: MIN_SCORE_THRESHOLD },
+    });
+
+    // Fetch matches sorted by score
+    const scoreDocs = await MatchScore.find({
+      viewerId: user._id,
+      finalScore: { $gte: MIN_SCORE_THRESHOLD },
+    })
+      .sort({ finalScore: -1 })
+      .skip(skip)
+      .limit(limit)
+      .lean();
+
+    // Fetch full profile data for each viewee
+    const vieweeIds = scoreDocs.map(s => s.vieweeId);
+    const viewees = await User.find({ _id: { $in: vieweeIds } })
+      .select("name username age city country highestEducation profileSlug gender profilePic")
+      .lean();
+
+    const vieweeMap = {};
+    for (const v of viewees) {
+      vieweeMap[v._id.toString()] = v;
+    }
+
+    // Combine scores with profile data
+    const matches = scoreDocs.map(s => ({
+      ...s,
+      viewee: vieweeMap[s.vieweeId.toString()] || null,
+    })).filter(m => m.viewee !== null);
+
+    const totalPages = Math.ceil(totalMatches / limit);
+
+    // Compute points gap for partial profile banner
+    let pointsAvailableGap = 0;
+    let currentPointsAvailable = 0;
+    if (user.profileCompletenessTier === "B" && matches.length > 0) {
+      currentPointsAvailable = matches[0].pointsAvailable || 0;
+      pointsAvailableGap = 100 - currentPointsAvailable;
+    }
+
+    return res.render("matches", {
+      user: req.session.user,
+      currentUser: user,
+      matches,
+      page,
+      totalPages,
+      totalMatches,
+      pointsAvailableGap,
+      currentPointsAvailable,
+    });
+  } catch (error) {
+    console.error("Error fetching matches:", error);
+    return res.render("matches", {
+      user: req.session.user || null,
+      matches: [],
+      page: 1,
+      totalPages: 0,
+    });
+  }
+});
+
+// ── Match Score API ─────────────────────────────────────────────────────────
+app.get("/api/matches/score/:userId", isLoggedIn, findUser, async (req, res) => {
+  try {
+    const viewerId = req.userData._id;
+    const vieweeId = req.params.userId;
+
+    let score = await MatchScore.findOne({ viewerId, vieweeId }).lean();
+
+    // If no cached score, compute on-the-fly
+    if (!score) {
+      const viewee = await User.findById(vieweeId).select([
+        "name", "age", "height", "gender", "maritalStatus",
+        "country", "city", "nationality", "ethnicity",
+        "islamicSect", "preferredIslamicSect", "prays", "bornMuslim",
+        "highestEducation", "work",
+        "preferredAgeRange", "preferredHeightRange",
+        "willingToConsiderANonUkCitizen",
+        "acceptSomeoneWithChildren", "acceptADivorcedPerson", "acceptAWidow",
+        "children",
+        "isApproved", "approvalStatus", "isDeactivated",
+        "profileCompletenessTier",
+      ]);
+
+      if (!viewee) {
+        return res.json({ error: "User not found" });
+      }
+
+      const { runHardFilters, computeScore } = require("./services/matchScoringService");
+      const filterResult = runHardFilters(req.userData, viewee);
+
+      if (!filterResult.passed) {
+        return res.json({
+          finalScore: 0,
+          hardFilterPassed: false,
+          failures: filterResult.failures,
+        });
+      }
+
+      const scoreResult = computeScore(req.userData, viewee);
+
+      // Store for future use
+      score = await MatchScore.findOneAndUpdate(
+        { viewerId, vieweeId },
+        {
+          $set: {
+            finalScore: scoreResult.finalScore,
+            pointsEarned: scoreResult.pointsEarned,
+            pointsAvailable: scoreResult.pointsAvailable,
+            subScores: scoreResult.subScores,
+            hardFilterPassed: true,
+            viewerTier: req.userData.profileCompletenessTier || null,
+            vieweeTier: viewee.profileCompletenessTier || null,
+            computedAt: new Date(),
+          },
+        },
+        { upsert: true, new: true }
+      ).lean();
+    }
+
+    return res.json({
+      finalScore: score.finalScore,
+      pointsEarned: score.pointsEarned,
+      pointsAvailable: score.pointsAvailable,
+      subScores: score.subScores,
+      hardFilterPassed: score.hardFilterPassed,
+      computedAt: score.computedAt,
+    });
+  } catch (error) {
+    console.error("Match score API error:", error);
+    return res.json({ error: "Failed to get match score" });
+  }
+});
+
+// ── Match Narrative API ─────────────────────────────────────────────────────
+app.get("/api/matches/narrative/:userId", isLoggedIn, findUser, async (req, res) => {
+  try {
+    const viewerId = req.userData._id;
+    const vieweeId = req.params.userId;
+
+    const { getNarrative } = require("./services/matchNarrativeService");
+    const result = await getNarrative(viewerId, vieweeId);
+
+    return res.json(result);
+  } catch (error) {
+    console.error("Match narrative API error:", error);
+    return res.json({ error: "Failed to get match narrative" });
+  }
+});
+
 app.get("/profiles/:slug", async (req, res) => {
   try {
     const { slug } = req.params;
@@ -4237,6 +4479,70 @@ app.get("/profiles/:slug", async (req, res) => {
     const currentUserId = req.session.userId || null;
     const similarProfiles = await findSimilarProfiles(foundProfile, 3, currentUserId);
 
+    // Fetch match score if logged-in user is viewing someone else's profile
+    let matchScore = null;
+    if (req.session.userId && !isOwnProfile) {
+      const scoreDoc = await MatchScore.findOne({
+        viewerId: req.session.userId,
+        vieweeId: foundProfile._id,
+      }).lean();
+      if (scoreDoc) {
+        matchScore = {
+          finalScore: scoreDoc.finalScore,
+          pointsEarned: scoreDoc.pointsEarned,
+          pointsAvailable: scoreDoc.pointsAvailable,
+          subScores: scoreDoc.subScores,
+        };
+      } else {
+        // Compute on-the-fly if not yet cached
+        const viewer = await User.findById(req.session.userId).select([
+          "name", "age", "height", "gender", "maritalStatus",
+          "country", "city", "nationality", "ethnicity",
+          "islamicSect", "preferredIslamicSect", "prays", "bornMuslim",
+          "highestEducation", "work",
+          "preferredAgeRange", "preferredHeightRange",
+          "willingToConsiderANonUkCitizen",
+          "acceptSomeoneWithChildren", "acceptADivorcedPerson", "acceptAWidow",
+          "children",
+          "isApproved", "approvalStatus", "isDeactivated",
+          "profileCompletenessTier",
+        ]);
+        if (viewer) {
+          const { runHardFilters, computeScore } = require("./services/matchScoringService");
+          const { generateSourceVersion } = require("./services/matchScoringBatchService");
+          const filterResult = runHardFilters(viewer, foundProfile);
+          if (filterResult.passed) {
+            const scoreResult = computeScore(viewer, foundProfile);
+            const sourceVersion = generateSourceVersion(viewer, foundProfile);
+            matchScore = {
+              finalScore: scoreResult.finalScore,
+              pointsEarned: scoreResult.pointsEarned,
+              pointsAvailable: scoreResult.pointsAvailable,
+              subScores: scoreResult.subScores,
+            };
+            // Store for future use
+            await MatchScore.updateOne(
+              { viewerId: req.session.userId, vieweeId: foundProfile._id },
+              {
+                $set: {
+                  finalScore: scoreResult.finalScore,
+                  pointsEarned: scoreResult.pointsEarned,
+                  pointsAvailable: scoreResult.pointsAvailable,
+                  subScores: scoreResult.subScores,
+                  hardFilterPassed: true,
+                  viewerTier: viewer.profileCompletenessTier || null,
+                  vieweeTier: foundProfile.profileCompletenessTier || null,
+                  sourceVersion,
+                  computedAt: new Date(),
+                },
+              },
+              { upsert: true }
+            );
+          }
+        }
+      }
+    }
+
     res.render("profile", {
       profile: foundProfile,
       canAccessFullProfile,
@@ -4249,6 +4555,7 @@ app.get("/profiles/:slug", async (req, res) => {
       filters: null,
       similarProfiles,
       isOwnProfile,         // **NEW**: Pass if viewing own profile
+      matchScore,           // **NEW**: Compatibility score for logged-in viewers
     });
   } catch (err) {
     console.error("Profile route error:", err);
@@ -5462,6 +5769,29 @@ app.post("/admin/user/update", profileUpload, async (req, res) => {
       // console.log("Admin updated profile slug:", user.profileSlug);
     }
     await user.save();
+
+    // Recompute profile tier and trigger match score recalculation if scored fields changed
+    const { SCORED_FIELDS } = require("./config/matching");
+    const updatedKeys = Object.keys(updateData);
+    const hasScoredFieldChange = updatedKeys.some(key => SCORED_FIELDS.includes(key));
+
+    if (hasScoredFieldChange || updatedKeys.includes("profileCompletenessTier")) {
+      const newTier = computeProfileTier(user);
+      if (user.profileCompletenessTier !== newTier) {
+        user.profileCompletenessTier = newTier;
+        user.profileTierCalculatedAt = new Date();
+        await user.save();
+      }
+    }
+
+    if (hasScoredFieldChange) {
+      const QueueService = require("./services/queueService");
+      user.matchScoresStaleSince = new Date();
+      await user.save();
+      QueueService.queueRecomputeScores(user._id).catch(err =>
+        console.error("Failed to enqueue match score recompute:", err.message)
+      );
+    }
 
     // console.log(`User ${user.username} updated successfully by admin`);
     res.json({ success: true, message: "User updated successfully" });
