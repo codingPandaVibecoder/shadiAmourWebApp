@@ -4756,10 +4756,10 @@ app.get("/api/admin/matches/user/:userId", requireAdminOrModerator, async (req, 
       .sort({ finalScore: -1 })
       .lean();
 
-    // Fetch viewee profile data for all matches
-    const vieweeIds = scores.map(s => s.vieweeId);
+    // Fetch viewee profile data for all matches (full fields for score dissection)
+    const matchSelect = "name username age gender email contact city country nationality ethnicity height maritalStatus islamicSect preferredIslamicSect prays bornMuslim highestEducation work profileCompletenessTier isApproved isDeactivated preferredAgeRange preferredHeightRange willingToConsiderANonUkCitizen acceptSomeoneWithChildren acceptADivorcedPerson acceptAWidow aboutMe lookingForASpouseThatIs children";
     const viewees = await User.find({ _id: { $in: vieweeIds } })
-      .select("name username age gender email contact city country nationality ethnicity height maritalStatus islamicSect preferredIslamicSect highestEducation work profileCompletenessTier")
+      .select(matchSelect)
       .lean();
 
     const vieweeMap = {};
@@ -4785,12 +4785,20 @@ app.get("/api/admin/matches/compare", requireAdminOrModerator, async (req, res) 
     const { a, b } = req.query;
     if (!a || !b) return res.json({ success: false, error: "Both user IDs required" });
 
+    const fullSelect = "name username age gender email contact city country nationality ethnicity height maritalStatus islamicSect preferredIslamicSect prays bornMuslim highestEducation work children profileCompletenessTier isApproved isDeactivated preferredAgeRange preferredHeightRange willingToConsiderANonUkCitizen acceptSomeoneWithChildren acceptADivorcedPerson acceptAWidow";
+
     const [userA, userB] = await Promise.all([
       User.findById(a).select("username age city country gender").lean(),
       User.findById(b).select("username age city country gender").lean(),
     ]);
 
     if (!userA || !userB) return res.json({ success: false, error: "User not found" });
+
+    // Fetch full user profiles for cross-check display
+    const [fullUserA, fullUserB] = await Promise.all([
+      User.findById(a).select(fullSelect).lean(),
+      User.findById(b).select(fullSelect).lean(),
+    ]);
 
     // Look for MatchScore in both directions (viewer A→B or viewer B→A)
     let score = await MatchScore.findOne({ viewerId: a, vieweeId: b }).lean();
@@ -4853,15 +4861,60 @@ app.get("/api/admin/matches/compare", requireAdminOrModerator, async (req, res) 
             finalScore: null,
             hardFilterPassed: false,
             failures: filterResult.failures,
+            computedOnTheFly: true,
           };
         }
       }
     }
 
-    res.json({ success: true, userA, userB, score: scoreData });
+    res.json({ success: true, userA, userB, fullUserA, fullUserB, score: scoreData });
   } catch (error) {
     console.error("Admin compare error:", error);
     res.json({ success: false, error: "Comparison failed" });
+  }
+});
+
+// API: Get top matched profile pairs
+app.get("/api/admin/matches/top", requireAdminOrModerator, async (req, res) => {
+  try {
+    const limit = Math.min(parseInt(req.query.limit) || 50, 200);
+    const sort = req.query.sort || "score-desc";
+
+    let sortOpt = {};
+    if (sort === "score-asc") sortOpt = { finalScore: 1 };
+    else if (sort === "recent") sortOpt = { computedAt: -1 };
+    else sortOpt = { finalScore: -1 }; // score-desc (default)
+
+    const scores = await MatchScore.find({ hardFilterPassed: true })
+      .sort(sortOpt)
+      .limit(limit)
+      .lean();
+
+    // Fetch viewer and viewee profiles
+    const userIds = new Set();
+    scores.forEach(s => {
+      userIds.add(s.viewerId.toString());
+      userIds.add(s.vieweeId.toString());
+    });
+
+    const topSelect = "username name age city country gender email contact nationality ethnicity height maritalStatus islamicSect preferredIslamicSect prays bornMuslim highestEducation work profileCompletenessTier isApproved isDeactivated preferredAgeRange preferredHeightRange willingToConsiderANonUkCitizen acceptSomeoneWithChildren acceptADivorcedPerson acceptAWidow aboutMe lookingForASpouseThatIs children";
+    const users = await User.find({ _id: { $in: Array.from(userIds) } })
+      .select(topSelect)
+      .lean();
+
+    const userMap = {};
+    users.forEach(u => { userMap[u._id.toString()] = u; });
+
+    const pairs = scores.map(s => ({
+      ...s,
+      viewer: userMap[s.viewerId.toString()] || null,
+      viewee: userMap[s.vieweeId.toString()] || null,
+    })).filter(p => p.viewer && p.viewee);
+
+    res.json({ success: true, pairs });
+  } catch (error) {
+    console.error("Admin top matches error:", error);
+    res.json({ success: false, error: "Failed to load top matches" });
   }
 });
 
