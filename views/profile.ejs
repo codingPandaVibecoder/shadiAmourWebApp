@@ -414,10 +414,10 @@
                   </h1>
 
                   <!-- Compatibility Score Badge (for logged-in viewers looking at others) -->
-                  <% if (typeof matchScore !== 'undefined' && matchScore && matchScore.finalScore != null) { %>
+                  <% if (typeof matchScore !== 'undefined' && user && !isOwnProfile) { %>
                     <div class="mt-3 flex justify-center">
                       <% 
-                        const ms = matchScore.finalScore;
+                        const ms = (matchScore && matchScore.finalScore != null) ? matchScore.finalScore : 0;
                         let badgeBg = 'bg-gray-100 text-gray-600 border-gray-300';
                         if (ms >= 70) badgeBg = 'bg-green-50 text-green-700 border-green-300';
                         else if (ms >= 50) badgeBg = 'bg-amber-50 text-amber-700 border-amber-300';
@@ -425,7 +425,7 @@
                       <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold border <%= badgeBg %>">
                         <i class="ri-heart-pulse-line"></i>
                         <%= ms %>% Compatible
-                        <% if (matchScore.pointsAvailable < 90) { %>
+                        <% if (matchScore && matchScore.pointsAvailable < 90) { %>
                           <span class="text-xs font-normal opacity-75">(partial profile)</span>
                         <% } %>
                       </span>
@@ -1500,7 +1500,7 @@
                       </div>
 
                       <% if (!hasalreadysentrequest && user && !user.isAdmin) { %>
-                        <% if (!user.isApproved) { %>
+                        <% if (currentUser && !currentUser.isApproved) { %>
                         <!-- User's profile is not approved - show disabled button with message -->
                         <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-4">
                           <div class="flex items-start gap-3">

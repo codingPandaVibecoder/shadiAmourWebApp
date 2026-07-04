@@ -4479,6 +4479,12 @@ app.get("/profiles/:slug", async (req, res) => {
     const currentUserId = req.session.userId || null;
     const similarProfiles = await findSimilarProfiles(foundProfile, 3, currentUserId);
 
+    // Fetch current user's approval status for the EJS template
+    let currentUser = null;
+    if (req.session.userId) {
+      currentUser = await User.findById(req.session.userId).select("isApproved approvalStatus profileCompletenessTier");
+    }
+
     // Fetch match score if logged-in user is viewing someone else's profile
     let matchScore = null;
     if (req.session.userId && !isOwnProfile) {
@@ -4551,6 +4557,7 @@ app.get("/profiles/:slug", async (req, res) => {
       incomingRequest,      // NEW
       outgoingRequest,      // NEW
       user: req.session.user,
+      currentUser,          // Full user doc (isApproved, etc)
       isAdmin: req.session.isAdmin,
       filters: null,
       similarProfiles,
@@ -4688,6 +4695,176 @@ app.get("/admin/addUser", requireAdminOnly, (req, res) => {
 // Replace the existing /admin/dashboard route with this updated version
 
 // ...existing code...
+// ── Admin Matches Management ─────────────────────────────────────────────────
+app.get("/admin/matches", requireAdminOrModerator, async (req, res) => {
+  if (!req.session.isAdmin && !req.session.isModerator) {
+    return res.redirect("/login");
+  }
+  res.render("admin/matches", {
+    isAdmin: req.session.isAdmin || false,
+    isModerator: req.session.isModerator || false,
+  });
+});
+
+// API: Search users for admin matches page
+app.get("/api/admin/matches/search", requireAdminOrModerator, async (req, res) => {
+  try {
+    const term = (req.query.term || "").trim();
+    const by = req.query.by || "name";
+    if (!term) return res.json({ success: true, users: [] });
+
+    const escaped = term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    let query = {};
+
+    if (by === "username") {
+      query.username = { $regex: new RegExp(escaped, "i") };
+    } else if (by === "phone") {
+      query.$or = [
+        { contact: { $regex: new RegExp(escaped, "i") } },
+        { waliMyContactDetails: { $regex: new RegExp(escaped, "i") } },
+      ];
+    } else {
+      // name (default)
+      query.name = { $regex: new RegExp(escaped, "i") };
+    }
+
+    const users = await User.find(query)
+      .select("name username age gender email contact city country isApproved profileCompletenessTier")
+      .sort({ createdAt: -1 })
+      .limit(20)
+      .lean();
+
+    res.json({ success: true, users });
+  } catch (error) {
+    console.error("Admin match search error:", error);
+    res.json({ success: false, error: "Search failed" });
+  }
+});
+
+// API: Get a user's details and their matches
+app.get("/api/admin/matches/user/:userId", requireAdminOrModerator, async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const user = await User.findById(userId)
+      .select("name username age gender email contact city country nationality ethnicity height maritalStatus islamicSect preferredIslamicSect prays bornMuslim highestEducation work profileCompletenessTier isApproved isDeactivated preferredAgeRange preferredHeightRange willingToConsiderANonUkCitizen acceptSomeoneWithChildren acceptADivorcedPerson acceptAWidow")
+      .lean();
+
+    if (!user) return res.json({ success: false, error: "User not found" });
+
+    // Get all match scores for this user as viewer
+    const scores = await MatchScore.find({ viewerId: userId })
+      .sort({ finalScore: -1 })
+      .lean();
+
+    // Fetch viewee profile data for all matches
+    const vieweeIds = scores.map(s => s.vieweeId);
+    const viewees = await User.find({ _id: { $in: vieweeIds } })
+      .select("name username age gender email contact city country nationality ethnicity height maritalStatus islamicSect preferredIslamicSect highestEducation work profileCompletenessTier")
+      .lean();
+
+    const vieweeMap = {};
+    for (const v of viewees) {
+      vieweeMap[v._id.toString()] = v;
+    }
+
+    const matches = scores.map(s => ({
+      ...s,
+      viewee: vieweeMap[s.vieweeId.toString()] || null,
+    })).filter(m => m.viewee !== null);
+
+    res.json({ success: true, user, matches });
+  } catch (error) {
+    console.error("Admin match user error:", error);
+    res.json({ success: false, error: "Failed to load matches" });
+  }
+});
+
+// API: Compare two users
+app.get("/api/admin/matches/compare", requireAdminOrModerator, async (req, res) => {
+  try {
+    const { a, b } = req.query;
+    if (!a || !b) return res.json({ success: false, error: "Both user IDs required" });
+
+    const [userA, userB] = await Promise.all([
+      User.findById(a).select("username age city country gender").lean(),
+      User.findById(b).select("username age city country gender").lean(),
+    ]);
+
+    if (!userA || !userB) return res.json({ success: false, error: "User not found" });
+
+    // Look for MatchScore in both directions (viewer A→B or viewer B→A)
+    let score = await MatchScore.findOne({ viewerId: a, vieweeId: b }).lean();
+    if (!score) {
+      score = await MatchScore.findOne({ viewerId: b, vieweeId: a }).lean();
+    }
+
+    // If no cached score, compute one on-the-fly
+    let scoreData = null;
+    if (score) {
+      scoreData = {
+        finalScore: score.finalScore,
+        pointsEarned: score.pointsEarned,
+        pointsAvailable: score.pointsAvailable,
+        subScores: score.subScores,
+        hardFilterPassed: score.hardFilterPassed,
+        computedAt: score.computedAt,
+      };
+    } else {
+      // Try computing on-the-fly
+      const [viewerFull, vieweeFull] = await Promise.all([
+        User.findById(a).select([
+          "name", "age", "height", "gender", "maritalStatus",
+          "country", "city", "nationality", "ethnicity",
+          "islamicSect", "preferredIslamicSect", "prays", "bornMuslim",
+          "highestEducation", "work",
+          "preferredAgeRange", "preferredHeightRange",
+          "willingToConsiderANonUkCitizen",
+          "acceptSomeoneWithChildren", "acceptADivorcedPerson", "acceptAWidow",
+          "children", "isApproved", "approvalStatus", "isDeactivated",
+        ]),
+        User.findById(b).select([
+          "name", "age", "height", "gender", "maritalStatus",
+          "country", "city", "nationality", "ethnicity",
+          "islamicSect", "preferredIslamicSect", "prays", "bornMuslim",
+          "highestEducation", "work",
+          "preferredAgeRange", "preferredHeightRange",
+          "willingToConsiderANonUkCitizen",
+          "acceptSomeoneWithChildren", "acceptADivorcedPerson", "acceptAWidow",
+          "children", "isApproved", "approvalStatus", "isDeactivated",
+        ]),
+      ]);
+
+      if (viewerFull && vieweeFull) {
+        const { runHardFilters, computeScore } = require("./services/matchScoringService");
+        const filterResult = runHardFilters(viewerFull, vieweeFull);
+        if (filterResult.passed) {
+          const result = computeScore(viewerFull, vieweeFull);
+          scoreData = {
+            finalScore: result.finalScore,
+            pointsEarned: result.pointsEarned,
+            pointsAvailable: result.pointsAvailable,
+            subScores: result.subScores,
+            hardFilterPassed: true,
+            computedAt: new Date(),
+            computedOnTheFly: true,
+          };
+        } else {
+          scoreData = {
+            finalScore: null,
+            hardFilterPassed: false,
+            failures: filterResult.failures,
+          };
+        }
+      }
+    }
+
+    res.json({ success: true, userA, userB, score: scoreData });
+  } catch (error) {
+    console.error("Admin compare error:", error);
+    res.json({ success: false, error: "Comparison failed" });
+  }
+});
+
 app.get("/admin/dashboard", requireAdminOrModerator, async (req, res) => {
   if (!req.session.isAdmin && !req.session.isModerator) {
     return res.redirect("/login");

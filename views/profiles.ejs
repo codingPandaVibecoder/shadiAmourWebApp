@@ -602,9 +602,9 @@ html {
                 </div>
 
                 <!-- Compatibility score badge (logged-in only, below featured badge) -->
-                <% if (typeof user !== 'undefined' && user && profile.matchScore != null) { %>
+                <% if (typeof user !== 'undefined' && user) { %>
                   <% 
-                    const fmScore = profile.matchScore;
+                    const fmScore = profile.matchScore != null ? profile.matchScore : 0;
                     let fmClass = 'match-score-low';
                     if (fmScore >= 70) fmClass = 'match-score-high';
                     else if (fmScore >= 50) fmClass = 'match-score-mid';
@@ -745,9 +745,9 @@ html {
             <% profiles.forEach(profile => { %>
             <a href="/profiles/<%= profile.profileSlug || profile._id %>" data-track="true" data-event-name="profile_card_click" data-category="engagement" data-label="<%= profile.username %>" class="bg-white rounded-2xl overflow-hidden material-shadow hover:material-shadow-hover transition-all duration-300 block relative">
               <!-- Compatibility score badge (logged-in users only) -->
-              <% if (typeof user !== 'undefined' && user && profile.matchScore != null) { %>
+              <% if (typeof user !== 'undefined' && user) { %>
                 <% 
-                  const mScore = profile.matchScore;
+                  const mScore = profile.matchScore != null ? profile.matchScore : 0;
                   let mClass = 'match-score-low';
                   if (mScore >= 70) mClass = 'match-score-high';
                   else if (mScore >= 50) mClass = 'match-score-mid';
