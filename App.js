@@ -4179,28 +4179,69 @@ app.get("/profiles",requireOnboardingComplete, async (req, res) => {
 
     // **NEW**: Handle sorting
     const { sortBy } = req.query;
-    let sortOptions = {};
+    let profiles;
+    const isScoreSort = (sortBy === "top-scores-tier" || sortBy === "top-scores-only") && req.session.userId;
 
-    if (sortBy === "random") {
-      // For random sorting, we'll use MongoDB's $sample aggregation
-      const profiles = await User.aggregate([
+    if (isScoreSort) {
+      // Score-based sorting: use aggregation with $lookup on MatchScore
+      const viewerObjectId = new mongoose.Types.ObjectId(req.session.userId);
+      const tierSort = sortBy === "top-scores-tier" ? { "matchScoreData.tier": 1 } : {};
+
+      const aggPipeline = [
         { $match: filter },
+        {
+          $lookup: {
+            from: "matchscores",
+            let: { profileId: "$_id" },
+            pipeline: [
+              {
+                $match: {
+                  $expr: {
+                    $and: [
+                      { $eq: ["$viewerId", viewerObjectId] },
+                      { $eq: ["$vieweeId", "$$profileId"] },
+                    ],
+                  },
+                },
+              },
+              { $project: { finalScore: 1, vieweeTier: 1 } },
+            ],
+            as: "matchScoreData",
+          },
+        },
+        {
+          $addFields: {
+            matchScore: {
+              $ifNull: [
+                { $arrayElemAt: ["$matchScoreData.finalScore", 0] },
+                0,
+              ],
+            },
+            matchTier: {
+              $ifNull: [
+                { $arrayElemAt: ["$matchScoreData.vieweeTier", 0] },
+                "B",
+              ],
+            },
+          },
+        },
+        { $sort: { matchScore: -1, ...(sortBy === "top-scores-tier" ? { profileCompletenessTier: 1 } : {}) } },
+        { $skip: skip },
+        { $limit: limit },
+      ];
+
+      profiles = await User.aggregate(aggPipeline);
+    } else if (sortBy === "random") {
+      profiles = await User.aggregate([
+        { $match: filter },
+        { $skip: skip },
         { $sample: { size: Math.min(limit, totalProfiles) } },
       ]);
     } else {
       // Default: newly created (most recent first)
-      sortOptions = { createdAt: -1, _id: -1 };
+      const sortOptions = { createdAt: -1, _id: -1 };
+      profiles = await User.find(filter).sort(sortOptions).skip(skip).limit(limit);
     }
-
-    // **UPDATED**: Apply sorting based on sortBy parameter
-    const profiles =
-      sortBy === "random"
-        ? await User.aggregate([
-          { $match: filter },
-          { $skip: skip },
-          { $sample: { size: Math.min(limit, totalProfiles - skip) } },
-        ])
-        : await User.find(filter).sort(sortOptions).skip(skip).limit(limit);
 
     const activeFilters = {
       gender,
@@ -4275,89 +4316,84 @@ app.get("/profiles",requireOnboardingComplete, async (req, res) => {
 });
 // ── Matches Page ────────────────────────────────────────────────────────────
 app.get("/matches", async (req, res) => {
-  // Pagination params
   const page = parseInt(req.query.page) > 0 ? parseInt(req.query.page) : 1;
   const limit = 12;
   const skip = (page - 1) * limit;
-
-  const { MIN_SCORE_THRESHOLD } = require("./config/matching");
+  const sortBy = req.query.sortBy || "top-scores-tier";
 
   try {
-    // Not logged in — show simple page
+    // Not logged in — show signup prompt
     if (!req.session.userId) {
       return res.render("matches", {
-        user: null,
-        matches: [],
-        page: 1,
-        totalPages: 0,
+        user: null, currentUser: null, matches: [], page: 1, totalPages: 0, sortBy,
+        pointsAvailableGap: 0, currentPointsAvailable: 0,
       });
     }
 
     const user = await User.findById(req.session.userId);
     if (!user) {
-      return res.render("matches", { user: null, matches: [], page: 1, totalPages: 0 });
+      return res.render("matches", { user: null, currentUser: null, matches: [], page: 1, totalPages: 0, sortBy, pointsAvailableGap: 0, currentPointsAvailable: 0 });
     }
 
-    // Count total matches above threshold
-    const totalMatches = await MatchScore.countDocuments({
-      viewerId: user._id,
-      finalScore: { $gte: MIN_SCORE_THRESHOLD },
-    });
+    // Fetch ALL match scores (no minimum threshold — show everything)
+    const totalMatches = await MatchScore.countDocuments({ viewerId: user._id });
 
-    // Fetch matches sorted by score
-    const scoreDocs = await MatchScore.find({
-      viewerId: user._id,
-      finalScore: { $gte: MIN_SCORE_THRESHOLD },
-    })
-      .sort({ finalScore: -1 })
-      .skip(skip)
-      .limit(limit)
-      .lean();
-
-    // Fetch full profile data for each viewee
-    const vieweeIds = scoreDocs.map(s => s.vieweeId);
-    const viewees = await User.find({ _id: { $in: vieweeIds } })
-      .select("name username age city country highestEducation profileSlug gender profilePic")
-      .lean();
-
-    const vieweeMap = {};
-    for (const v of viewees) {
-      vieweeMap[v._id.toString()] = v;
+    let scoreDocs;
+    if (sortBy === "random") {
+      const all = await MatchScore.find({ viewerId: user._id }).lean();
+      scoreDocs = all.sort(() => Math.random() - 0.5).slice(skip, skip + limit);
+    } else {
+      const mongoSort = sortBy === "newly-created" ? { computedAt: -1 } : { finalScore: -1 };
+      scoreDocs = await MatchScore.find({ viewerId: user._id })
+        .sort(mongoSort)
+        .skip(skip)
+        .limit(limit)
+        .lean();
     }
 
-    // Combine scores with profile data
-    const matches = scoreDocs.map(s => ({
-      ...s,
-      viewee: vieweeMap[s.vieweeId.toString()] || null,
-    })).filter(m => m.viewee !== null);
+    // For top-scores-tier: re-sort by score desc, then viewee tier (A first)
+    if (sortBy === "top-scores-tier" && scoreDocs.length > 0) {
+      const vieweeIds = scoreDocs.map(s => s.vieweeId);
+      const tierUsers = await User.find({ _id: { $in: vieweeIds } }).select("profileCompletenessTier").lean();
+      const tierMap = {};
+      for (const t of tierUsers) tierMap[t._id.toString()] = t.profileCompletenessTier || "B";
+      scoreDocs.sort((a, b) => {
+        if (b.finalScore !== a.finalScore) return b.finalScore - a.finalScore;
+        return (tierMap[a.vieweeId.toString()] || "B") === "A" ? -1 : (tierMap[b.vieweeId.toString()] || "B") === "A" ? 1 : 0;
+      });
+    }
 
+    // Fetch viewee profiles
     const totalPages = Math.ceil(totalMatches / limit);
+    const matches = [];
+    if (scoreDocs.length > 0) {
+      const vieweeIds = scoreDocs.map(s => s.vieweeId);
+      const viewees = await User.find({ _id: { $in: vieweeIds } })
+        .select("name username age city country highestEducation profileSlug gender profilePic profileCompletenessTier")
+        .lean();
+      const vieweeMap = {};
+      for (const v of viewees) vieweeMap[v._id.toString()] = v;
+      for (const s of scoreDocs) {
+        const v = vieweeMap[s.vieweeId.toString()];
+        if (v) matches.push({ ...s, viewee: v });
+      }
+    }
 
-    // Compute points gap for partial profile banner
-    let pointsAvailableGap = 0;
-    let currentPointsAvailable = 0;
+    let pointsAvailableGap = 0, currentPointsAvailable = 0;
     if (user.profileCompletenessTier === "B" && matches.length > 0) {
       currentPointsAvailable = matches[0].pointsAvailable || 0;
       pointsAvailableGap = 100 - currentPointsAvailable;
     }
 
     return res.render("matches", {
-      user: req.session.user,
-      currentUser: user,
-      matches,
-      page,
-      totalPages,
-      totalMatches,
-      pointsAvailableGap,
-      currentPointsAvailable,
+      user: req.session.user, currentUser: user, matches, page, totalPages, totalMatches, sortBy,
+      pointsAvailableGap, currentPointsAvailable,
     });
   } catch (error) {
     console.error("Error fetching matches:", error);
     return res.render("matches", {
-      user: req.session.user || null,
-      matches: [],
-      page: 1,
-      totalPages: 0,
+      user: req.session.user || null, currentUser: null, matches: [], page: 1, totalPages: 0,
+      sortBy: "top-scores-tier", pointsAvailableGap: 0, currentPointsAvailable: 0,
     });
   }
 });
@@ -4561,9 +4597,38 @@ app.get("/profiles/:slug", async (req, res) => {
         }
       }
     }
-    const { findSimilarProfiles } = require("./utils/profileHelpers");
     const currentUserId = req.session.userId || null;
-    const similarProfiles = await findSimilarProfiles(foundProfile, 3, currentUserId);
+
+    // Get top matched profiles via MatchScore instead of old similar-profiles system
+    let similarProfiles = [];
+    if (req.session.userId) {
+      const topScores = await MatchScore.find({
+        viewerId: req.session.userId,
+        finalScore: { $gte: 1 },
+      })
+        .sort({ finalScore: -1 })
+        .limit(4)
+        .lean();
+
+      const scoredIds = topScores.map(s => s.vieweeId);
+      const allSimilar = await User.find({ _id: { $in: scoredIds } })
+        .select("username name age city country ethnicity gender profileSlug profilePic")
+        .lean();
+
+      // Sort in score order
+      const scoreOrder = {};
+      topScores.forEach(s => { scoreOrder[s.vieweeId.toString()] = s.finalScore; });
+      allSimilar.sort((a, b) => (scoreOrder[b._id.toString()] || 0) - (scoreOrder[a._id.toString()] || 0));
+
+      similarProfiles = allSimilar.map(p => ({ ...p, matchScore: scoreOrder[p._id.toString()] || 0 }));
+    } else {
+      // Non-logged-in: show 3 random approved same-gender profiles as fallback
+      similarProfiles = await User.aggregate([
+        { $match: { gender: foundProfile.gender, isApproved: true, approvalStatus: "approved", _id: { $ne: foundProfile._id } } },
+        { $sample: { size: 3 } },
+        { $project: { username: 1, name: 1, age: 1, city: 1, country: 1, ethnicity: 1, gender: 1, profileSlug: 1, profilePic: 1 } },
+      ]);
+    }
 
     // Fetch current user's approval status for the EJS template
     let currentUser = null;
@@ -9157,6 +9222,11 @@ app.get("/sitemap.xml", async (req, res) => {
     <loc>https://damourmuslim.com/profiles</loc>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://damourmuslim.com/matches</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://damourmuslim.com/blog</loc>

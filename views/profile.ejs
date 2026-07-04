@@ -1654,7 +1654,7 @@
     <div class="bg-white rounded-xl p-6 material-shadow">
       <h2 class="text-xl font-bold text-gray-900 mb-4 font-['Playfair_Display']">
         <i class="ri-user-heart-line mr-2 text-primary"></i>
-        Similar <%= profile.gender === 'male' ? 'Grooms' : 'Brides' %> You Might Like
+        <%= user ? 'Top Matches for You' : 'Similar ' + (profile.gender === 'male' ? 'Grooms' : 'Brides') + ' You Might Like' %>
       </h2>
 
       <!-- SEO-friendly introduction text -->
@@ -1686,6 +1686,14 @@
               <%= similarProfile.age %>
             </div>
             <% } %>
+
+            <!-- Match score badge -->
+            <% if (typeof user !== 'undefined' && user && similarProfile.matchScore != null) { %>
+              <% const simScore = similarProfile.matchScore; %>
+              <div class="absolute bottom-3 left-3 text-white text-xs font-bold px-2 py-1 rounded-full <%= simScore >= 70 ? 'bg-green-500' : simScore >= 50 ? 'bg-amber-500' : 'bg-gray-400' %>">
+                <%= simScore %>% match
+              </div>
+            <% } %>
           </div>
 
           <!-- Profile Info -->
@@ -1712,10 +1720,14 @@
         <!-- No similar profiles found -->
         <div class="col-span-2 sm:col-span-2 md:col-span-3 py-8 text-center">
           <p class="text-gray-500">
+            <% if (typeof user !== 'undefined' && user) { %>
+            No match scores available yet. Scores are computed as you interact with profiles.
+            <% } else { %>
             Currently, there are no similar profiles available. Please check back later or browse all
             <a href="/profiles?gender=<%= profile.gender %>" class="text-primary hover:text-pink-700 font-medium">
               <%= profile.gender === 'male' ? 'grooms' : 'brides' %>
             </a>.
+            <% } %>
           </p>
         </div>
         <% } %>

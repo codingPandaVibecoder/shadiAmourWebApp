@@ -13,7 +13,7 @@
   <meta name="theme-color" content="#E91E63">
   <link rel="stylesheet" href="/css/output.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
-  <meta name="robots" content="noindex, follow">
+  <meta name="robots" content="index, follow">
   <style>
     :where([class^="ri-"])::before {
       content: "\f3c2";
@@ -49,12 +49,13 @@
       
       <% if (!user) { %>
       <!-- Not logged in -->
-      <div class="text-center py-20">
+      <div class="text-center py-16">
         <div class="w-20 h-20 bg-pink-50 rounded-full flex items-center justify-center mx-auto mb-6">
           <i class="ri-heart-line text-4xl text-pink-500"></i>
         </div>
         <h1 class="text-3xl font-bold text-gray-800 font-['Playfair_Display'] mb-4">Your Matches</h1>
-        <p class="text-gray-600 text-lg mb-8">For logged in users only</p>
+        <p class="text-gray-600 text-lg mb-2">Sign up to see your potential matches</p>
+        <p class="text-gray-500 text-sm mb-8">This is completely free. Login and sign up are completely free. We never ask for any charges.</p>
         <div class="flex items-center justify-center gap-4">
           <a href="/login" class="px-6 py-3 border-2 border-primary text-primary hover:bg-primary hover:text-white transition-all duration-300 rounded-xl font-medium">
             Login
@@ -67,14 +68,26 @@
 
       <% } else { %>
       <!-- Logged in -->
-      <div class="mb-8">
-        <h1 class="text-3xl font-bold text-gray-800 font-['Playfair_Display'] mb-2">Your Matches</h1>
-        <p class="text-gray-600">
-          Profiles sorted by compatibility score. 
-          <% if (currentUser && currentUser.profileCompletenessTier === 'B') { %>
-            <span class="text-amber-600 font-medium">Complete your profile to improve match accuracy.</span>
-          <% } %>
-        </p>
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-4">
+        <div>
+          <h1 class="text-3xl font-bold text-gray-800 font-['Playfair_Display'] mb-1">Your Matches</h1>
+          <p class="text-gray-600 text-sm">
+            <% if (currentUser && currentUser.profileCompletenessTier === 'B') { %>
+              <span class="text-amber-600 font-medium">Complete your profile to improve match accuracy.</span>
+            <% } else { %>
+              Profiles sorted by compatibility score
+            <% } %>
+          </p>
+        </div>
+        <div class="flex items-center gap-2">
+          <label class="text-sm text-gray-600 whitespace-nowrap">Sort by:</label>
+          <select id="matchesSortSelect" class="text-sm border border-gray-300 rounded-lg px-3 py-1.5 bg-white" onchange="window.location.href='/matches?sortBy='+this.value">
+            <option value="top-scores-tier" <%= sortBy === 'top-scores-tier' ? 'selected' : '' %>>Top Scores & Completeness</option>
+            <option value="top-scores-only" <%= sortBy === 'top-scores-only' ? 'selected' : '' %>>Top Scores Only</option>
+            <option value="random" <%= sortBy === 'random' ? 'selected' : '' %>>Random</option>
+            <option value="newly-created" <%= sortBy === 'newly-created' ? 'selected' : '' %>>Newly Created</option>
+          </select>
+        </div>
       </div>
 
       <% if (currentUser && currentUser.profileCompletenessTier === 'B') { %>
