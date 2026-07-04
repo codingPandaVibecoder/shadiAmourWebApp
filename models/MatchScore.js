@@ -52,10 +52,14 @@ const matchScoreSchema = new mongoose.Schema({
     age: {
       earned: { type: Number, default: 0 },
       available: { type: Number, default: 0 },
+      viewerIsProxy: { type: Boolean, default: false },
+      vieweeIsProxy: { type: Boolean, default: false },
     },
     height: {
       earned: { type: Number, default: 0 },
       available: { type: Number, default: 0 },
+      viewerIsProxy: { type: Boolean, default: false },
+      vieweeIsProxy: { type: Boolean, default: false },
     },
     maritalFamily: {
       earned: { type: Number, default: 0 },

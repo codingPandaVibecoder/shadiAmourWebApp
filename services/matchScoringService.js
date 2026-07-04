@@ -19,6 +19,8 @@ const {
   EDUCATION,
   AGE_DECAY_PER_YEAR,
   HEIGHT_DECAY_PER_CM,
+  AGE_DELTA,
+  HEIGHT_DELTA,
   parseRange,
   getEducationTier,
   isSpecificSect,
@@ -232,96 +234,107 @@ function computeIslamicScore(viewer, viewee) {
 
 function computeAgeScore(viewer, viewee) {
   let earned = 0;
-  let available = SCORING_WEIGHTS.AGE; // 15
+  const available = SCORING_WEIGHTS.AGE; // 15
 
-  const viewerRange = parseRange(viewer.preferredAgeRange);
-  const vieweeRange = parseRange(viewee.preferredAgeRange);
-
-  // If either range missing → exclude entirely
-  if (!viewerRange || !vieweeRange) {
-    return { earned: 0, available: 0 };
+  if (viewer.age == null || viewee.age == null) {
+    return { earned: 0, available: 0, viewerIsProxy: false, vieweeIsProxy: false };
   }
 
-  // Check bidirectional fit
-  const viewerAge = viewer.age;
-  const vieweeAge = viewee.age;
+  // Resolve ranges: use real preference if set, otherwise proxy from own age
+  let viewerRange, vieweeRange;
+  let viewerIsProxy = false, vieweeIsProxy = false;
 
-  if (viewerAge == null || vieweeAge == null) {
-    return { earned: 0, available: 0 };
+  if (viewer.preferredAgeRange && parseRange(viewer.preferredAgeRange)) {
+    viewerRange = parseRange(viewer.preferredAgeRange);
+  } else {
+    viewerRange = { min: viewer.age - AGE_DELTA, max: viewer.age + AGE_DELTA };
+    viewerIsProxy = true;
+  }
+
+  if (viewee.preferredAgeRange && parseRange(viewee.preferredAgeRange)) {
+    vieweeRange = parseRange(viewee.preferredAgeRange);
+  } else {
+    vieweeRange = { min: viewee.age - AGE_DELTA, max: viewee.age + AGE_DELTA };
+    vieweeIsProxy = true;
   }
 
   let fitScore = 0;
 
-  // Is viewee's age in viewer's preferred range?
-  if (vieweeAge >= viewerRange.min && vieweeAge <= viewerRange.max) {
+  // Is viewee's age in viewer's preferred/proxy range?
+  if (viewee.age >= viewerRange.min && viewee.age <= viewerRange.max) {
     fitScore += SCORING_WEIGHTS.AGE / 2; // 7.5
   } else {
     const yearsOut = Math.min(
-      Math.abs(vieweeAge - viewerRange.min),
-      Math.abs(vieweeAge - viewerRange.max)
+      Math.abs(viewee.age - viewerRange.min),
+      Math.abs(viewee.age - viewerRange.max)
     );
     fitScore += Math.max(0, SCORING_WEIGHTS.AGE / 2 - AGE_DECAY_PER_YEAR * yearsOut);
   }
 
-  // Is viewer's age in viewee's preferred range?
-  if (viewerAge >= vieweeRange.min && viewerAge <= vieweeRange.max) {
+  // Is viewer's age in viewee's preferred/proxy range?
+  if (viewer.age >= vieweeRange.min && viewer.age <= vieweeRange.max) {
     fitScore += SCORING_WEIGHTS.AGE / 2; // 7.5
   } else {
     const yearsOut = Math.min(
-      Math.abs(viewerAge - vieweeRange.min),
-      Math.abs(viewerAge - vieweeRange.max)
+      Math.abs(viewer.age - vieweeRange.min),
+      Math.abs(viewer.age - vieweeRange.max)
     );
     fitScore += Math.max(0, SCORING_WEIGHTS.AGE / 2 - AGE_DECAY_PER_YEAR * yearsOut);
   }
 
   earned = Math.round(Math.min(SCORING_WEIGHTS.AGE, fitScore));
-  return { earned, available };
+  return { earned, available, viewerIsProxy, vieweeIsProxy };
 }
 
 function computeHeightScore(viewer, viewee) {
   let earned = 0;
-  let available = SCORING_WEIGHTS.HEIGHT; // 10
+  const available = SCORING_WEIGHTS.HEIGHT; // 10
 
-  const viewerRange = parseRange(viewer.preferredHeightRange);
-  const vieweeRange = parseRange(viewee.preferredHeightRange);
-
-  if (!viewerRange || !vieweeRange) {
-    return { earned: 0, available: 0 };
+  if (viewer.height == null || viewee.height == null) {
+    return { earned: 0, available: 0, viewerIsProxy: false, vieweeIsProxy: false };
   }
 
-  const viewerHeight = viewer.height;
-  const vieweeHeight = viewee.height;
+  let viewerRange, vieweeRange;
+  let viewerIsProxy = false, vieweeIsProxy = false;
 
-  if (viewerHeight == null || vieweeHeight == null) {
-    return { earned: 0, available: 0 };
+  if (viewer.preferredHeightRange && parseRange(viewer.preferredHeightRange)) {
+    viewerRange = parseRange(viewer.preferredHeightRange);
+  } else {
+    viewerRange = { min: viewer.height - HEIGHT_DELTA, max: viewer.height + HEIGHT_DELTA };
+    viewerIsProxy = true;
+  }
+
+  if (viewee.preferredHeightRange && parseRange(viewee.preferredHeightRange)) {
+    vieweeRange = parseRange(viewee.preferredHeightRange);
+  } else {
+    vieweeRange = { min: viewee.height - HEIGHT_DELTA, max: viewee.height + HEIGHT_DELTA };
+    vieweeIsProxy = true;
   }
 
   let fitScore = 0;
 
-  // Is viewee's height in viewer's preferred range?
-  if (vieweeHeight >= viewerRange.min && vieweeHeight <= viewerRange.max) {
-    fitScore += SCORING_WEIGHTS.HEIGHT / 2; // 5
+  if (viewee.height >= viewerRange.min && viewee.height <= viewerRange.max) {
+    fitScore += SCORING_WEIGHTS.HEIGHT / 2;
   } else {
     const cmOut = Math.min(
-      Math.abs(vieweeHeight - viewerRange.min),
-      Math.abs(vieweeHeight - viewerRange.max)
+      Math.abs(viewee.height - viewerRange.min),
+      Math.abs(viewee.height - viewerRange.max)
     );
     fitScore += Math.max(0, SCORING_WEIGHTS.HEIGHT / 2 - HEIGHT_DECAY_PER_CM * cmOut);
   }
 
-  // Is viewer's height in viewee's preferred range?
-  if (viewerHeight >= vieweeRange.min && viewerHeight <= vieweeRange.max) {
-    fitScore += SCORING_WEIGHTS.HEIGHT / 2; // 5
+  if (viewer.height >= vieweeRange.min && viewer.height <= vieweeRange.max) {
+    fitScore += SCORING_WEIGHTS.HEIGHT / 2;
   } else {
     const cmOut = Math.min(
-      Math.abs(viewerHeight - vieweeRange.min),
-      Math.abs(viewerHeight - vieweeRange.max)
+      Math.abs(viewer.height - vieweeRange.min),
+      Math.abs(viewer.height - vieweeRange.max)
     );
     fitScore += Math.max(0, SCORING_WEIGHTS.HEIGHT / 2 - HEIGHT_DECAY_PER_CM * cmOut);
   }
 
   earned = Math.round(Math.min(SCORING_WEIGHTS.HEIGHT, fitScore));
-  return { earned, available };
+  return { earned, available, viewerIsProxy, vieweeIsProxy };
 }
 
 function computeMaritalScore(viewer, viewee) {

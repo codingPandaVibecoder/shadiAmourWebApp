@@ -282,15 +282,21 @@
         case 'age': {
           const vRange = (viewer.preferredAgeRange || '').split('-').map(Number);
           const cRange = (viewee.preferredAgeRange || '').split('-').map(Number);
-          let txt = `Viewer prefers ${viewer.preferredAgeRange}, viewee age is ${viewee.age}. `;
-          txt += `Viewee prefers ${viewee.preferredAgeRange}, viewer age is ${viewer.age}. `;
+          let txt = `Viewer prefers ${viewer.preferredAgeRange || 'proxy ±' + (AGE_DELTA||7) + ' yrs (implied from own age ' + viewer.age + ')'}, viewee age is ${viewee.age}. `;
+          txt += `Viewee prefers ${viewee.preferredHeightRange || 'proxy ±' + (AGE_DELTA||7) + ' yrs (implied from own age ' + viewee.age + ')'}, viewer age is ${viewer.age}. `;
           txt += `Earned ${e}/${a} pts (${e === a ? 'both in range' : 'one/both outside range with decay'}).`;
+          if (subScore && (subScore.viewerIsProxy || subScore.vieweeIsProxy)) {
+            txt += ` <span class="text-amber-600 font-medium">⚠ Proxy used: ${[subScore.viewerIsProxy ? 'viewer' : '', subScore.vieweeIsProxy ? 'viewee' : ''].filter(Boolean).join(' + ')} preference missing → inferred from own age.</span>`;
+          }
           return `<p class="text-xs text-gray-700">${txt}</p>`;
         }
         case 'height': {
-          let txt = `Viewer prefers ${viewer.preferredHeightRange || '?'} cm, viewee height is ${viewee.height || '?'} cm. `;
-          txt += `Viewee prefers ${viewee.preferredHeightRange || '?'} cm, viewer height is ${viewer.height || '?'} cm. `;
+          let txt = `Viewer prefers ${viewer.preferredHeightRange || 'proxy ±' + (HEIGHT_DELTA||10) + ' cm (implied from own height ' + viewer.height + ' cm)'}, viewee height is ${viewee.height || '?'} cm. `;
+          txt += `Viewee prefers ${viewee.preferredHeightRange || 'proxy ±' + (HEIGHT_DELTA||10) + ' cm (implied from own height ' + viewee.height + ' cm)'}, viewer height is ${viewer.height || '?'} cm. `;
           txt += `Earned ${e}/${a} pts.`;
+          if (subScore && (subScore.viewerIsProxy || subScore.vieweeIsProxy)) {
+            txt += ` <span class="text-amber-600 font-medium">⚠ Proxy used: ${[subScore.viewerIsProxy ? 'viewer' : '', subScore.vieweeIsProxy ? 'viewee' : ''].filter(Boolean).join(' + ')} preference missing → inferred from own height.</span>`;
+          }
           return `<p class="text-xs text-gray-700">${txt}</p>`;
         }
         case 'maritalFamily': {

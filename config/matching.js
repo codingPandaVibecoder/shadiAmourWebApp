@@ -73,6 +73,10 @@ const NON_RANKED_EDUCATION = [
 const AGE_DECAY_PER_YEAR = 1.5;   // Points lost per year outside preferred range
 const HEIGHT_DECAY_PER_CM = 0.5;  // Points lost per cm outside preferred range
 
+// ── Proxy/Fallback Deltas (used when preferredAgeRange/HeightRange missing) ──
+const AGE_DELTA = 7;    // Implied age range = ownAge ± 7 years
+const HEIGHT_DELTA = 10; // Implied height range = ownHeight ± 10 cm
+
 // ── Thresholds & Limits ────────────────────────────────────────────────────
 const MIN_SCORE_THRESHOLD = 50;   // Minimum score for "Your Matches" page
 const TOP_N_CANDIDATES = 50;      // Top-N candidates to precompute per user for periodic refresh
@@ -144,7 +148,8 @@ module.exports = {
   NON_RANKED_EDUCATION,
   AGE_DECAY_PER_YEAR,
   HEIGHT_DECAY_PER_CM,
-  MIN_SCORE_THRESHOLD,
+  AGE_DELTA,
+  HEIGHT_DELTA,
   TOP_N_CANDIDATES,
   BATCH_SIZE,
   SCORE_STALE_AFTER_MS,

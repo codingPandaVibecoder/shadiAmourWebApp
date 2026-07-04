@@ -2815,6 +2815,92 @@ app.post("/api/onboarding/complete", isLoggedIn, findUser, async (req, res) => {
   }
 });
 
+// ── Legacy Profile Completion Form (for users who didn't do new onboarding) ──
+app.get("/complete-missing-fields-for-older-profiles", isLoggedIn, findUser, async (req, res) => {
+  const user = req.userData;
+  // Build a safe data object for pre-populating the form
+  const userData = {
+    islamicSect: user.islamicSect || null,
+    prays: user.prays,
+    bornMuslim: user.bornMuslim,
+    islamIsImportantToMeInfo: user.islamIsImportantToMeInfo || null,
+    nationality: user.nationality || null,
+    ethnicity: user.ethnicity || null,
+    lookingForASpouseThatIs: user.lookingForASpouseThatIs || null,
+    preferredAgeRange: user.preferredAgeRange || null,
+    preferredHeightRange: user.preferredHeightRange || null,
+    preferredIslamicSect: user.preferredIslamicSect || null,
+    willingToConsiderANonUkCitizen: user.willingToConsiderANonUkCitizen || null,
+    acceptSomeoneWithChildren: user.acceptSomeoneWithChildren,
+    acceptADivorcedPerson: user.acceptADivorcedPerson,
+    acceptAWidow: user.acceptAWidow,
+  };
+  res.render("complete-legacy-profile", {
+    user: req.session.user,
+    userData,
+  });
+});
+
+// API: Save legacy profile completion and trigger score recalculation
+app.post("/api/complete-legacy-profile", isLoggedIn, findUser, async (req, res) => {
+  try {
+    const user = req.userData;
+    const data = req.body;
+
+    // Save Islamic identity fields
+    if (data.islamicSect) user.islamicSect = data.islamicSect;
+    if (data.prays !== undefined && data.prays !== "") user.prays = data.prays === "true" || data.prays === true;
+    if (data.bornMuslim !== undefined && data.bornMuslim !== "") user.bornMuslim = data.bornMuslim === "true" || data.bornMuslim === true;
+    if (data.islamIsImportantToMeInfo && data.islamIsImportantToMeInfo.length >= 30) {
+      user.islamIsImportantToMeInfo = data.islamIsImportantToMeInfo;
+    }
+
+    // Location
+    if (data.nationality) user.nationality = data.nationality;
+    if (data.ethnicity) user.ethnicity = data.ethnicity;
+
+    // About
+    if (data.lookingForASpouseThatIs) user.lookingForASpouseThatIs = data.lookingForASpouseThatIs;
+
+    // Partner preferences — age range
+    if (data.preferredAgeFrom && data.preferredAgeTo) {
+      user.preferredAgeRange = `${data.preferredAgeFrom}-${data.preferredAgeTo}`;
+    }
+    // Partner preferences — height range
+    if (data.preferredHeightFrom && data.preferredHeightTo) {
+      user.preferredHeightRange = `${data.preferredHeightFrom}-${data.preferredHeightTo}`;
+    }
+    if (data.preferredIslamicSect) user.preferredIslamicSect = data.preferredIslamicSect;
+    if (data.willingToConsiderANonUkCitizen) user.willingToConsiderANonUkCitizen = data.willingToConsiderANonUkCitizen;
+    if (data.acceptSomeoneWithChildren !== undefined && data.acceptSomeoneWithChildren !== "") {
+      user.acceptSomeoneWithChildren = data.acceptSomeoneWithChildren === "true" || data.acceptSomeoneWithChildren === true;
+    }
+    if (data.acceptADivorcedPerson !== undefined && data.acceptADivorcedPerson !== "") {
+      user.acceptADivorcedPerson = data.acceptADivorcedPerson === "true" || data.acceptADivorcedPerson === true;
+    }
+    if (data.acceptAWidow !== undefined && data.acceptAWidow !== "") {
+      user.acceptAWidow = data.acceptAWidow === "true" || data.acceptAWidow === true;
+    }
+
+    // Recompute profile tier
+    user.profileCompletenessTier = computeProfileTier(user);
+    user.profileTierCalculatedAt = new Date();
+    user.matchScoresStaleSince = new Date();
+    await user.save();
+
+    // Enqueue score recompute
+    const QueueService = require("./services/queueService");
+    QueueService.queueRecomputeScores(user._id).catch(err =>
+      console.error("Failed to enqueue match score recompute:", err.message)
+    );
+
+    res.json({ success: true, message: "Profile updated. Scores will be recalculated shortly." });
+  } catch (error) {
+    console.error("Legacy profile save error:", error);
+    res.json({ success: false, error: "Failed to save profile: " + error.message });
+  }
+});
+
 // ── KYC / Identity Verification ─────────────────────────────────────────────
 
 // Step 1: Show KYC page (redirected here from onboarding completion)
@@ -4757,6 +4843,7 @@ app.get("/api/admin/matches/user/:userId", requireAdminOrModerator, async (req, 
       .lean();
 
     // Fetch viewee profile data for all matches (full fields for score dissection)
+    const vieweeIds = scores.map(s => s.vieweeId);
     const matchSelect = "name username age gender email contact city country nationality ethnicity height maritalStatus islamicSect preferredIslamicSect prays bornMuslim highestEducation work profileCompletenessTier isApproved isDeactivated preferredAgeRange preferredHeightRange willingToConsiderANonUkCitizen acceptSomeoneWithChildren acceptADivorcedPerson acceptAWidow aboutMe lookingForASpouseThatIs children";
     const viewees = await User.find({ _id: { $in: vieweeIds } })
       .select(matchSelect)
