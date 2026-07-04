@@ -5030,6 +5030,7 @@ app.get("/api/admin/matches/compare", requireAdminOrModerator, async (req, res) 
 app.get("/api/admin/matches/top", requireAdminOrModerator, async (req, res) => {
   try {
     const limit = Math.min(parseInt(req.query.limit) || 50, 200);
+    const offset = parseInt(req.query.offset) || 0;
     const sort = req.query.sort || "score-desc";
 
     let sortOpt = {};
@@ -5037,14 +5038,18 @@ app.get("/api/admin/matches/top", requireAdminOrModerator, async (req, res) => {
     else if (sort === "recent") sortOpt = { computedAt: -1 };
     else sortOpt = { finalScore: -1 }; // score-desc (default)
 
+    // Get total count for load-more tracking
+    const totalCount = await MatchScore.countDocuments({ hardFilterPassed: true });
+
     const scores = await MatchScore.find({ hardFilterPassed: true })
       .sort(sortOpt)
+      .skip(offset)
       .limit(limit)
       .lean();
 
     // Guard: no scores computed yet
     if (!scores || scores.length === 0) {
-      return res.json({ success: true, pairs: [] });
+      return res.json({ success: true, pairs: [], totalCount, hasMore: false });
     }
 
     // Fetch viewer and viewee profiles
@@ -5068,7 +5073,9 @@ app.get("/api/admin/matches/top", requireAdminOrModerator, async (req, res) => {
       viewee: userMap[s.vieweeId.toString()] || null,
     })).filter(p => p.viewer && p.viewee);
 
-    res.json({ success: true, pairs });
+    const hasMore = offset + limit < totalCount;
+
+    res.json({ success: true, pairs, totalCount, hasMore });
   } catch (error) {
     console.error("Admin top matches error:", error);
     res.json({ success: false, error: "Failed to load top matches" });

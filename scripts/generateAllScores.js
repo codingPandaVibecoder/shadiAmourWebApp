@@ -148,7 +148,7 @@ async function main() {
   }
 
   // Connect to MongoDB
-  const mongoUri = "mongodb://localhost:27017/test";
+  const mongoUri = process.env.MONGODB_URI;
   console.log(`🔌 Connecting to MongoDB: ${mongoUri.replace(/\/\/.*@/, "//<credentials>@")}`);
   await mongoose.connect(mongoUri);
   console.log("✅ MongoDB connected");

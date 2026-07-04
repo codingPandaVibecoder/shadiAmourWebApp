@@ -569,41 +569,69 @@
       // ═══════════════════════════════════════════════════════════════════════
       //  TAB 3: TOP MATCHED PROFILES
       // ═══════════════════════════════════════════════════════════════════════
-      window.loadTopMatches = async function() {
+      window._topOffset = 0;
+      window._topLoaded = [];
+      window._topHasMore = false;
+
+      window.loadTopMatches = async function(reset = true) {
         const c = document.getElementById('topMatchesContainer');
-        const topN = document.getElementById('topNSelect').value;
+        const topN = parseInt(document.getElementById('topNSelect').value);
         const sort = document.getElementById('topSortSelect').value;
-        c.innerHTML = '<div class="text-center py-8"><i class="ri-loader-4-line animate-spin text-3xl text-gray-400"></i><p class="text-gray-500 mt-2">Loading top matches...</p></div>';
+
+        if (reset) {
+          window._topOffset = 0;
+          window._topLoaded = [];
+          c.innerHTML = '<div class="text-center py-8"><i class="ri-loader-4-line animate-spin text-3xl text-gray-400"></i><p class="text-gray-500 mt-2">Loading top matches...</p></div>';
+        }
+
         try {
-          const resp = await fetch(`/api/admin/matches/top?limit=${topN}&sort=${sort}`);
+          const resp = await fetch(`/api/admin/matches/top?limit=${topN}&sort=${sort}&offset=${window._topOffset}`);
           const data = await resp.json();
           if (!data.success) { c.innerHTML = '<p class="text-red-500 text-center py-4">'+(data.error||'Failed')+'</p>'; return; }
+
           const pairs = data.pairs || [];
-          if (pairs.length === 0) { c.innerHTML = '<p class="text-gray-500 text-center py-8">No matches computed yet.</p>'; return; }
-          c.innerHTML = `<div class="text-xs text-gray-500 mb-3">Showing ${pairs.length} top pairs</div><div class="space-y-3">${pairs.map((p,i) => {
-            const score = p.finalScore||0, vA=p.viewer||{}, vB=p.viewee||{};
-            let cls='score-low'; if(score>=70)cls='score-high'; else if(score>=50)cls='score-mid';
-            const fA = getAllFields(vA), fB = getAllFields(vB);
-            return `<div class="border border-gray-200 rounded-xl overflow-hidden">
-              <div class="flex items-center gap-4 p-4 bg-gray-50 cursor-pointer" onclick="togglePanel('topDet${i}','topCh${i}')">
-                <span class="text-xs text-gray-400 w-6">#${i+1}</span>
-                <span class="w-10 h-10 rounded-full ${cls} flex items-center justify-center font-bold text-sm flex-shrink-0">${score}%</span>
-                <div class="flex-1 min-w-0"><span class="font-semibold">${vA.username||'?'}</span> <span class="text-gray-400"><i class="ri-arrow-left-right-line"></i></span> <span class="font-semibold">${vB.username||'?'}</span></div>
-                <span class="text-xs text-gray-500">${vA.age||'?'}y · ${vA.city||''} ↔ ${vB.age||'?'}y · ${vB.city||''}</span>
-                <i id="topCh${i}" class="ri-arrow-down-s-line text-gray-400 text-lg rotate-icon transition-transform ml-auto"></i>
-              </div>
-              <div id="topDet${i}" class="hidden">
-                <div class="p-4 border-t"><h4 class="text-sm font-semibold text-gray-700 mb-3">Side-by-Side Comparison — All Fields</h4>
-                  ${renderSideBySideTable(fA, fB, vA.username||'User A', vB.username||'User B')}
+          if (reset && pairs.length === 0) {
+            c.innerHTML = '<p class="text-gray-500 text-center py-8">No matches computed yet. Run batch score generation first.</p>';
+            return;
+          }
+
+          window._topLoaded = reset ? pairs : [...window._topLoaded, ...pairs];
+          window._topOffset = window._topLoaded.length;
+          window._topHasMore = data.hasMore;
+
+          const allPairs = window._topLoaded;
+          const totalCount = data.totalCount || allPairs.length;
+
+          c.innerHTML = `<div class="text-xs text-gray-500 mb-3">Showing ${allPairs.length} of ${totalCount} top pairs</div>
+            <div class="space-y-3" id="topPairsList">${allPairs.map((p, i) => {
+              const score = p.finalScore||0, vA=p.viewer||{}, vB=p.viewee||{};
+              let cls='score-low'; if(score>=70)cls='score-high'; else if(score>=50)cls='score-mid';
+              const fA = getAllFields(vA), fB = getAllFields(vB);
+              return `<div class="border border-gray-200 rounded-xl overflow-hidden">
+                <div class="flex items-center gap-4 p-4 bg-gray-50 cursor-pointer" onclick="togglePanel('topDet${i}','topCh${i}')">
+                  <span class="text-xs text-gray-400 w-6">#${i+1}</span>
+                  <span class="w-10 h-10 rounded-full ${cls} flex items-center justify-center font-bold text-sm flex-shrink-0">${score}%</span>
+                  <div class="flex-1 min-w-0"><span class="font-semibold">${vA.username||'?'}</span> <span class="text-gray-400"><i class="ri-arrow-left-right-line"></i></span> <span class="font-semibold">${vB.username||'?'}</span></div>
+                  <span class="text-xs text-gray-500">${vA.age||'?'}y · ${vA.city||''} ↔ ${vB.age||'?'}y · ${vB.city||''}</span>
+                  <i id="topCh${i}" class="ri-arrow-down-s-line text-gray-400 text-lg rotate-icon transition-transform ml-auto"></i>
                 </div>
-                <div class="p-4 border-t bg-gray-50"><h4 class="text-sm font-semibold text-gray-700 mb-3">Score Dissection</h4>
-                  ${renderExpandableScoreDissection(p.subScores, p.pointsEarned||0, p.pointsAvailable||0, score, vA, vB, 'top'+i)}
-                  <div class="mt-2 text-xs text-gray-500">Computed: ${p.computedAt?new Date(p.computedAt).toLocaleString():'N/A'}${p.pointsAvailable<90?' · <span class="text-amber-600">Partial ('+p.pointsAvailable+' pts)</span>':''}</div>
+                <div id="topDet${i}" class="hidden">
+                  <div class="p-4 border-t"><h4 class="text-sm font-semibold text-gray-700 mb-3">Side-by-Side Comparison — All Fields</h4>
+                    ${renderSideBySideTable(fA, fB, vA.username||'User A', vB.username||'User B')}
+                  </div>
+                  <div class="p-4 border-t bg-gray-50"><h4 class="text-sm font-semibold text-gray-700 mb-3">Score Dissection</h4>
+                    ${renderExpandableScoreDissection(p.subScores, p.pointsEarned||0, p.pointsAvailable||0, score, vA, vB, 'top'+i)}
+                    <div class="mt-2 text-xs text-gray-500">Computed: ${p.computedAt?new Date(p.computedAt).toLocaleString():'N/A'}${p.pointsAvailable<90?' · <span class="text-amber-600">Partial ('+p.pointsAvailable+' pts)</span>':''}</div>
+                  </div>
                 </div>
-              </div>
-            </div>`;
-          }).join('')}</div>`;
-        } catch (err) { console.error('loadTopMatches error:', err); c.innerHTML = '<p class="text-red-500 text-center py-4">Failed to load top matches: ' + (err.message || 'unknown error') + '</p>'; }
+              </div>`;
+            }).join('')}</div>
+            ${window._topHasMore ? `<div class="text-center pt-4"><button onclick="loadMoreTopMatches()" class="px-6 py-2.5 border-2 border-primary text-primary hover:bg-primary hover:text-white rounded-lg text-sm font-medium transition-all duration-300"><i class="ri-arrow-down-line mr-1"></i> Load More (${totalCount - allPairs.length} remaining)</button></div>` : ''}`;
+        } catch (err) { console.error('loadTopMatches error:', err); c.innerHTML = '<p class="text-red-500 text-center py-4">Failed: ' + (err.message || 'unknown') + '</p>'; }
+      };
+
+      window.loadMoreTopMatches = function() {
+        loadTopMatches(false);
       };
     });
   </script>
