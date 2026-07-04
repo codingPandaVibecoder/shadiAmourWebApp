@@ -88,21 +88,47 @@ function runHardFilters(viewer, viewee) {
   }
 
   // 6. Cross-border openness (bidirectional)
+//   if (
+//     viewer.willingToConsiderANonUkCitizen &&
+//     viewer.willingToConsiderANonUkCitizen.toLowerCase() === "no" &&
+//     viewer.country &&
+//     viewee.country &&
+//     viewer.country.toLowerCase() !== viewee.country.toLowerCase()
+//   ) {
+//     failures.push("Viewer not willing to consider non-UK citizen (different country)");
+//   }
+//   if (
+//     viewee.willingToConsiderANonUkCitizen &&
+//     viewee.willingToConsiderANonUkCitizen.toLowerCase() === "no" &&
+//     viewer.country &&
+//     viewee.country &&
+//     viewer.country.toLowerCase() !== viewee.country.toLowerCase()
+//   ) {
+//     failures.push("Viewee not willing to consider non-UK citizen (different country)");
+//   }
+// 6. Cross-border openness (bidirectional)
+  
+  // Helper to safely check if the value means "no" or false
+  const isStrictlyNo = (val) => {
+    if (val === undefined || val === null) return false;
+    if (typeof val === "boolean") return val === false; // Handle boolean false
+    return String(val).toLowerCase() === "no"; // Handle string "no"
+  };
+
   if (
-    viewer.willingToConsiderANonUkCitizen &&
-    viewer.willingToConsiderANonUkCitizen.toLowerCase() === "no" &&
+    isStrictlyNo(viewer.willingToConsiderANonUkCitizen) &&
     viewer.country &&
     viewee.country &&
-    viewer.country.toLowerCase() !== viewee.country.toLowerCase()
+    String(viewer.country).toLowerCase() !== String(viewee.country).toLowerCase()
   ) {
     failures.push("Viewer not willing to consider non-UK citizen (different country)");
   }
+  
   if (
-    viewee.willingToConsiderANonUkCitizen &&
-    viewee.willingToConsiderANonUkCitizen.toLowerCase() === "no" &&
+    isStrictlyNo(viewee.willingToConsiderANonUkCitizen) &&
     viewer.country &&
     viewee.country &&
-    viewer.country.toLowerCase() !== viewee.country.toLowerCase()
+    String(viewer.country).toLowerCase() !== String(viewee.country).toLowerCase()
   ) {
     failures.push("Viewee not willing to consider non-UK citizen (different country)");
   }

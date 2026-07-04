@@ -4977,6 +4977,11 @@ app.get("/api/admin/matches/top", requireAdminOrModerator, async (req, res) => {
       .limit(limit)
       .lean();
 
+    // Guard: no scores computed yet
+    if (!scores || scores.length === 0) {
+      return res.json({ success: true, pairs: [] });
+    }
+
     // Fetch viewer and viewee profiles
     const userIds = new Set();
     scores.forEach(s => {
