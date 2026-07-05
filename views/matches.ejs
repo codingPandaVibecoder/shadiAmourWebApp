@@ -98,9 +98,6 @@
           <h3 class="font-semibold text-amber-800 mb-1">Your match scores are based on a partial profile</h3>
           <p class="text-amber-700 text-sm">
             Complete your Islamic identity details, partner preferences, and nationality/ethnicity to get more accurate compatibility scores.
-            <% if (pointsAvailableGap > 0) { %>
-              You're currently scored on up to <%= currentPointsAvailable %> of 100 possible points.
-            <% } %>
           </p>
           <a href="/account/info" class="inline-block mt-2 text-amber-700 font-medium hover:text-amber-800 underline text-sm">
             Complete your profile →
@@ -149,11 +146,6 @@
                 <span class="flex items-center gap-1"><i class="ri-graduation-cap-line"></i> <%= profile.highestEducation %></span>
               <% } %>
             </div>
-            <% if (match.pointsAvailable < 90) { %>
-              <p class="text-amber-600 text-xs mt-1">
-                <i class="ri-information-line"></i> Match based on partial profile
-              </p>
-            <% } %>
           </div>
 
           <div class="flex-shrink-0 text-gray-400">

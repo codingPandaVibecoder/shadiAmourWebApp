@@ -4183,54 +4183,33 @@ app.get("/profiles",requireOnboardingComplete, async (req, res) => {
     const isScoreSort = (sortBy === "top-scores-tier" || sortBy === "top-scores-only") && req.session.userId;
 
     if (isScoreSort) {
-      // Score-based sorting: use aggregation with $lookup on MatchScore
-      const viewerObjectId = new mongoose.Types.ObjectId(req.session.userId);
-      const tierSort = sortBy === "top-scores-tier" ? { "matchScoreData.tier": 1 } : {};
+      // Score-based sorting: fetch all filtered profiles, compute scores in-memory, sort, paginate
+      const allFiltered = await User.find(filter)
+        .select("name username age height gender country city ethnicity highestEducation profileSlug profilePic isFeatured featuredDate maritalStatus islamicSect preferredIslamicSect prays bornMuslim willingToConsiderANonUkCitizen acceptSomeoneWithChildren acceptADivorcedPerson acceptAWidow children profileCompletenessTier")
+        .lean();
 
-      const aggPipeline = [
-        { $match: filter },
-        {
-          $lookup: {
-            from: "matchscores",
-            let: { profileId: "$_id" },
-            pipeline: [
-              {
-                $match: {
-                  $expr: {
-                    $and: [
-                      { $eq: ["$viewerId", viewerObjectId] },
-                      { $eq: ["$vieweeId", "$$profileId"] },
-                    ],
-                  },
-                },
-              },
-              { $project: { finalScore: 1, vieweeTier: 1 } },
-            ],
-            as: "matchScoreData",
-          },
-        },
-        {
-          $addFields: {
-            matchScore: {
-              $ifNull: [
-                { $arrayElemAt: ["$matchScoreData.finalScore", 0] },
-                0,
-              ],
-            },
-            matchTier: {
-              $ifNull: [
-                { $arrayElemAt: ["$matchScoreData.vieweeTier", 0] },
-                "B",
-              ],
-            },
-          },
-        },
-        { $sort: { matchScore: -1, ...(sortBy === "top-scores-tier" ? { profileCompletenessTier: 1 } : {}) } },
-        { $skip: skip },
-        { $limit: limit },
-      ];
+      // Fetch viewer for score computation
+      const viewer = await User.findById(req.session.userId).select("name age height gender country city ethnicity highestEducation maritalStatus islamicSect preferredIslamicSect prays bornMuslim willingToConsiderANonUkCitizen acceptSomeoneWithChildren acceptADivorcedPerson acceptAWidow children isApproved approvalStatus isDeactivated profileCompletenessTier").lean();
 
-      profiles = await User.aggregate(aggPipeline);
+      if (viewer) {
+        const { computeScore } = require("./services/matchScoringService");
+        for (const profile of allFiltered) {
+          const score = computeScore(viewer, profile);
+          profile.matchScore = score.finalScore;
+          profile._matchTier = profile.profileCompletenessTier || "B";
+        }
+        // Sort: by score desc, then tier (A first) for top-scores-tier
+        allFiltered.sort((a, b) => {
+          const diff = (b.matchScore || 0) - (a.matchScore || 0);
+          if (diff !== 0) return diff;
+          if (sortBy === "top-scores-tier") {
+            return (a._matchTier === "A" ? -1 : 1) - (b._matchTier === "A" ? -1 : 1);
+          }
+          return 0;
+        });
+      }
+
+      profiles = allFiltered.slice(skip, skip + limit);
     } else if (sortBy === "random") {
       profiles = await User.aggregate([
         { $match: filter },
@@ -4262,32 +4241,17 @@ app.get("/profiles",requireOnboardingComplete, async (req, res) => {
       currentUserProfile = await User.findById(req.session.userId);
     }
 
-    // Batch-fetch compatibility scores for logged-in users
-    if (req.session.userId) {
-      const allProfileIds = [
-        ...profiles.map(p => p._id),
-        ...(featuredProfiles ? featuredProfiles.map(p => p._id) : []),
-      ];
-      if (allProfileIds.length > 0) {
-        const scores = await MatchScore.find({
-          viewerId: req.session.userId,
-          vieweeId: { $in: allProfileIds },
-        }).select("vieweeId finalScore").lean();
-
-        const scoreMap = {};
-        for (const s of scores) {
-          scoreMap[s.vieweeId.toString()] = s.finalScore;
-        }
-
-        // Attach scores to regular profile objects
+    // Compute scores in-memory for displayed profiles (logged-in only)
+    if (req.session.userId && profiles.length > 0) {
+      const viewer = await User.findById(req.session.userId).select("name age height gender country city ethnicity highestEducation maritalStatus islamicSect preferredIslamicSect prays bornMuslim willingToConsiderANonUkCitizen acceptSomeoneWithChildren acceptADivorcedPerson acceptAWidow children isApproved approvalStatus isDeactivated profileCompletenessTier").lean();
+      if (viewer) {
+        const { computeScore } = require("./services/matchScoringService");
         for (const profile of profiles) {
-          profile.matchScore = scoreMap[profile._id.toString()] ?? null;
+          profile.matchScore = computeScore(viewer, profile).finalScore;
         }
-
-        // Attach scores to featured profile objects
         if (featuredProfiles) {
           for (const profile of featuredProfiles) {
-            profile.matchScore = scoreMap[profile._id.toString()] ?? null;
+            profile.matchScore = computeScore(viewer, profile).finalScore;
           }
         }
       }
@@ -4326,25 +4290,24 @@ app.get("/matches", async (req, res) => {
     if (!req.session.userId) {
       return res.render("matches", {
         user: null, currentUser: null, matches: [], page: 1, totalPages: 0, sortBy,
-        pointsAvailableGap: 0, currentPointsAvailable: 0,
       });
     }
 
     const user = await User.findById(req.session.userId);
     if (!user) {
-      return res.render("matches", { user: null, currentUser: null, matches: [], page: 1, totalPages: 0, sortBy, pointsAvailableGap: 0, currentPointsAvailable: 0 });
+      return res.render("matches", { user: null, currentUser: null, matches: [], page: 1, totalPages: 0, sortBy });
     }
 
     // Fetch ALL match scores (no minimum threshold — show everything)
-    const totalMatches = await MatchScore.countDocuments({ viewerId: user._id });
+    const totalMatches = await MatchScore.countDocuments({ viewerId: user._id, isTopMatch: true });
 
     let scoreDocs;
     if (sortBy === "random") {
-      const all = await MatchScore.find({ viewerId: user._id }).lean();
+      const all = await MatchScore.find({ viewerId: user._id, isTopMatch: true }).lean();
       scoreDocs = all.sort(() => Math.random() - 0.5).slice(skip, skip + limit);
     } else {
       const mongoSort = sortBy === "newly-created" ? { computedAt: -1 } : { finalScore: -1 };
-      scoreDocs = await MatchScore.find({ viewerId: user._id })
+      scoreDocs = await MatchScore.find({ viewerId: user._id, isTopMatch: true })
         .sort(mongoSort)
         .skip(skip)
         .limit(limit)
@@ -4379,21 +4342,14 @@ app.get("/matches", async (req, res) => {
       }
     }
 
-    let pointsAvailableGap = 0, currentPointsAvailable = 0;
-    if (user.profileCompletenessTier === "B" && matches.length > 0) {
-      currentPointsAvailable = matches[0].pointsAvailable || 0;
-      pointsAvailableGap = 100 - currentPointsAvailable;
-    }
-
     return res.render("matches", {
       user: req.session.user, currentUser: user, matches, page, totalPages, totalMatches, sortBy,
-      pointsAvailableGap, currentPointsAvailable,
     });
   } catch (error) {
     console.error("Error fetching matches:", error);
     return res.render("matches", {
       user: req.session.user || null, currentUser: null, matches: [], page: 1, totalPages: 0,
-      sortBy: "top-scores-tier", pointsAvailableGap: 0, currentPointsAvailable: 0,
+      sortBy: "top-scores-tier",
     });
   }
 });
@@ -4404,66 +4360,41 @@ app.get("/api/matches/score/:userId", isLoggedIn, findUser, async (req, res) => 
     const viewerId = req.userData._id;
     const vieweeId = req.params.userId;
 
-    let score = await MatchScore.findOne({ viewerId, vieweeId }).lean();
+    // Compute fresh on-the-fly (v2: direct sum scoring, no normalization)
+    const viewee = await User.findById(vieweeId).select([
+      "name", "age", "height", "gender", "maritalStatus",
+      "country", "city", "nationality", "ethnicity",
+      "islamicSect", "preferredIslamicSect", "prays", "bornMuslim",
+      "highestEducation",
+      "preferredAgeRange", "preferredHeightRange",
+      "willingToConsiderANonUkCitizen",
+      "acceptSomeoneWithChildren", "acceptADivorcedPerson", "acceptAWidow",
+      "children",
+      "isApproved", "approvalStatus", "isDeactivated",
+      "profileCompletenessTier",
+    ]);
 
-    // If no cached score, compute on-the-fly
-    if (!score) {
-      const viewee = await User.findById(vieweeId).select([
-        "name", "age", "height", "gender", "maritalStatus",
-        "country", "city", "nationality", "ethnicity",
-        "islamicSect", "preferredIslamicSect", "prays", "bornMuslim",
-        "highestEducation", "work",
-        "preferredAgeRange", "preferredHeightRange",
-        "willingToConsiderANonUkCitizen",
-        "acceptSomeoneWithChildren", "acceptADivorcedPerson", "acceptAWidow",
-        "children",
-        "isApproved", "approvalStatus", "isDeactivated",
-        "profileCompletenessTier",
-      ]);
-
-      if (!viewee) {
-        return res.json({ error: "User not found" });
-      }
-
-      const { runHardFilters, computeScore } = require("./services/matchScoringService");
-      const filterResult = runHardFilters(req.userData, viewee);
-
-      if (!filterResult.passed) {
-        return res.json({
-          finalScore: 0,
-          hardFilterPassed: false,
-          failures: filterResult.failures,
-        });
-      }
-
-      const scoreResult = computeScore(req.userData, viewee);
-
-      // Store for future use
-      score = await MatchScore.findOneAndUpdate(
-        { viewerId, vieweeId },
-        {
-          $set: {
-            finalScore: scoreResult.finalScore,
-            pointsEarned: scoreResult.pointsEarned,
-            pointsAvailable: scoreResult.pointsAvailable,
-            subScores: scoreResult.subScores,
-            hardFilterPassed: true,
-            viewerTier: req.userData.profileCompletenessTier || null,
-            vieweeTier: viewee.profileCompletenessTier || null,
-            computedAt: new Date(),
-          },
-        },
-        { upsert: true, new: true }
-      ).lean();
+    if (!viewee) {
+      return res.json({ error: "User not found" });
     }
 
+    const { runHardFilters, computeScore } = require("./services/matchScoringService");
+    const filterResult = runHardFilters(req.userData, viewee);
+
+    if (!filterResult.passed) {
+      return res.json({
+        finalScore: 0,
+        hardFilterPassed: false,
+        failures: filterResult.failures,
+      });
+    }
+
+    const scoreResult = computeScore(req.userData, viewee);
+
     return res.json({
-      finalScore: score.finalScore,
-      pointsEarned: score.pointsEarned,
-      pointsAvailable: score.pointsAvailable,
-      subScores: score.subScores,
-      hardFilterPassed: score.hardFilterPassed,
-      computedAt: score.computedAt,
+      finalScore: scoreResult.finalScore,
+      subScores: scoreResult.subScores,
+      hardFilterPassed: true,
     });
   } catch (error) {
     console.error("Match score API error:", error);
@@ -4599,12 +4530,12 @@ app.get("/profiles/:slug", async (req, res) => {
     }
     const currentUserId = req.session.userId || null;
 
-    // Get top matched profiles via MatchScore instead of old similar-profiles system
+    // Get top matched profiles via TopMatch store (v2)
     let similarProfiles = [];
     if (req.session.userId) {
       const topScores = await MatchScore.find({
         viewerId: req.session.userId,
-        finalScore: { $gte: 1 },
+        isTopMatch: true,
       })
         .sort({ finalScore: -1 })
         .limit(4)
@@ -4636,66 +4567,30 @@ app.get("/profiles/:slug", async (req, res) => {
       currentUser = await User.findById(req.session.userId).select("isApproved approvalStatus profileCompletenessTier");
     }
 
-    // Fetch match score if logged-in user is viewing someone else's profile
+    // Compute match score on-the-fly if logged-in user is viewing someone else's profile
     let matchScore = null;
     if (req.session.userId && !isOwnProfile) {
-      const scoreDoc = await MatchScore.findOne({
-        viewerId: req.session.userId,
-        vieweeId: foundProfile._id,
-      }).lean();
-      if (scoreDoc) {
-        matchScore = {
-          finalScore: scoreDoc.finalScore,
-          pointsEarned: scoreDoc.pointsEarned,
-          pointsAvailable: scoreDoc.pointsAvailable,
-          subScores: scoreDoc.subScores,
-        };
-      } else {
-        // Compute on-the-fly if not yet cached
-        const viewer = await User.findById(req.session.userId).select([
-          "name", "age", "height", "gender", "maritalStatus",
-          "country", "city", "nationality", "ethnicity",
-          "islamicSect", "preferredIslamicSect", "prays", "bornMuslim",
-          "highestEducation", "work",
-          "preferredAgeRange", "preferredHeightRange",
-          "willingToConsiderANonUkCitizen",
-          "acceptSomeoneWithChildren", "acceptADivorcedPerson", "acceptAWidow",
-          "children",
-          "isApproved", "approvalStatus", "isDeactivated",
-          "profileCompletenessTier",
-        ]);
-        if (viewer) {
-          const { runHardFilters, computeScore } = require("./services/matchScoringService");
-          const { generateSourceVersion } = require("./services/matchScoringBatchService");
-          const filterResult = runHardFilters(viewer, foundProfile);
-          if (filterResult.passed) {
-            const scoreResult = computeScore(viewer, foundProfile);
-            const sourceVersion = generateSourceVersion(viewer, foundProfile);
-            matchScore = {
-              finalScore: scoreResult.finalScore,
-              pointsEarned: scoreResult.pointsEarned,
-              pointsAvailable: scoreResult.pointsAvailable,
-              subScores: scoreResult.subScores,
-            };
-            // Store for future use
-            await MatchScore.updateOne(
-              { viewerId: req.session.userId, vieweeId: foundProfile._id },
-              {
-                $set: {
-                  finalScore: scoreResult.finalScore,
-                  pointsEarned: scoreResult.pointsEarned,
-                  pointsAvailable: scoreResult.pointsAvailable,
-                  subScores: scoreResult.subScores,
-                  hardFilterPassed: true,
-                  viewerTier: viewer.profileCompletenessTier || null,
-                  vieweeTier: foundProfile.profileCompletenessTier || null,
-                  sourceVersion,
-                  computedAt: new Date(),
-                },
-              },
-              { upsert: true }
-            );
-          }
+      const viewer = await User.findById(req.session.userId).select([
+        "name", "age", "height", "gender", "maritalStatus",
+        "country", "city", "nationality", "ethnicity",
+        "islamicSect", "preferredIslamicSect", "prays", "bornMuslim",
+        "highestEducation",
+        "preferredAgeRange", "preferredHeightRange",
+        "willingToConsiderANonUkCitizen",
+        "acceptSomeoneWithChildren", "acceptADivorcedPerson", "acceptAWidow",
+        "children",
+        "isApproved", "approvalStatus", "isDeactivated",
+        "profileCompletenessTier",
+      ]);
+      if (viewer) {
+        const { runHardFilters, computeScore } = require("./services/matchScoringService");
+        const filterResult = runHardFilters(viewer, foundProfile);
+        if (filterResult.passed) {
+          const scoreResult = computeScore(viewer, foundProfile);
+          matchScore = {
+            finalScore: scoreResult.finalScore,
+            subScores: scoreResult.subScores,
+          };
         }
       }
     }
@@ -4902,12 +4797,13 @@ app.get("/api/admin/matches/user/:userId", requireAdminOrModerator, async (req, 
 
     if (!user) return res.json({ success: false, error: "User not found" });
 
-    // Get all match scores for this user as viewer
-    const scores = await MatchScore.find({ viewerId: userId })
+    // v2: Only TopMatch scores are persisted. Fetch isTopMatch:true for this viewer.
+    const scores = await MatchScore.find({ viewerId: userId, isTopMatch: true })
       .sort({ finalScore: -1 })
+      .limit(15)
       .lean();
 
-    // Fetch viewee profile data for all matches (full fields for score dissection)
+    // Fetch viewee profile data for all matches
     const vieweeIds = scores.map(s => s.vieweeId);
     const matchSelect = "name username age gender email contact city country nationality ethnicity height maritalStatus islamicSect preferredIslamicSect prays bornMuslim highestEducation work profileCompletenessTier isApproved isDeactivated preferredAgeRange preferredHeightRange willingToConsiderANonUkCitizen acceptSomeoneWithChildren acceptADivorcedPerson acceptAWidow aboutMe lookingForASpouseThatIs children";
     const viewees = await User.find({ _id: { $in: vieweeIds } })
@@ -4924,7 +4820,7 @@ app.get("/api/admin/matches/user/:userId", requireAdminOrModerator, async (req, 
       viewee: vieweeMap[s.vieweeId.toString()] || null,
     })).filter(m => m.viewee !== null);
 
-    res.json({ success: true, user, matches });
+    res.json({ success: true, user, matches, isTopMatchQuery: true });
   } catch (error) {
     console.error("Admin match user error:", error);
     res.json({ success: false, error: "Failed to load matches" });
@@ -4952,70 +4848,50 @@ app.get("/api/admin/matches/compare", requireAdminOrModerator, async (req, res) 
       User.findById(b).select(fullSelect).lean(),
     ]);
 
-    // Look for MatchScore in both directions (viewer A→B or viewer B→A)
-    let score = await MatchScore.findOne({ viewerId: a, vieweeId: b }).lean();
-    if (!score) {
-      score = await MatchScore.findOne({ viewerId: b, vieweeId: a }).lean();
-    }
+    // v2: Compute on-the-fly always (direct sum, no normalization)
+    const [viewerFull, vieweeFull] = await Promise.all([
+      User.findById(a).select([
+        "name", "age", "height", "gender", "maritalStatus",
+        "country", "city", "nationality", "ethnicity",
+        "islamicSect", "preferredIslamicSect", "prays", "bornMuslim",
+        "highestEducation",
+        "preferredAgeRange", "preferredHeightRange",
+        "willingToConsiderANonUkCitizen",
+        "acceptSomeoneWithChildren", "acceptADivorcedPerson", "acceptAWidow",
+        "children", "isApproved", "approvalStatus", "isDeactivated",
+      ]),
+      User.findById(b).select([
+        "name", "age", "height", "gender", "maritalStatus",
+        "country", "city", "nationality", "ethnicity",
+        "islamicSect", "preferredIslamicSect", "prays", "bornMuslim",
+        "highestEducation",
+        "preferredAgeRange", "preferredHeightRange",
+        "willingToConsiderANonUkCitizen",
+        "acceptSomeoneWithChildren", "acceptADivorcedPerson", "acceptAWidow",
+        "children", "isApproved", "approvalStatus", "isDeactivated",
+      ]),
+    ]);
 
-    // If no cached score, compute one on-the-fly
     let scoreData = null;
-    if (score) {
-      scoreData = {
-        finalScore: score.finalScore,
-        pointsEarned: score.pointsEarned,
-        pointsAvailable: score.pointsAvailable,
-        subScores: score.subScores,
-        hardFilterPassed: score.hardFilterPassed,
-        computedAt: score.computedAt,
-      };
-    } else {
-      // Try computing on-the-fly
-      const [viewerFull, vieweeFull] = await Promise.all([
-        User.findById(a).select([
-          "name", "age", "height", "gender", "maritalStatus",
-          "country", "city", "nationality", "ethnicity",
-          "islamicSect", "preferredIslamicSect", "prays", "bornMuslim",
-          "highestEducation", "work",
-          "preferredAgeRange", "preferredHeightRange",
-          "willingToConsiderANonUkCitizen",
-          "acceptSomeoneWithChildren", "acceptADivorcedPerson", "acceptAWidow",
-          "children", "isApproved", "approvalStatus", "isDeactivated",
-        ]),
-        User.findById(b).select([
-          "name", "age", "height", "gender", "maritalStatus",
-          "country", "city", "nationality", "ethnicity",
-          "islamicSect", "preferredIslamicSect", "prays", "bornMuslim",
-          "highestEducation", "work",
-          "preferredAgeRange", "preferredHeightRange",
-          "willingToConsiderANonUkCitizen",
-          "acceptSomeoneWithChildren", "acceptADivorcedPerson", "acceptAWidow",
-          "children", "isApproved", "approvalStatus", "isDeactivated",
-        ]),
-      ]);
 
-      if (viewerFull && vieweeFull) {
-        const { runHardFilters, computeScore } = require("./services/matchScoringService");
-        const filterResult = runHardFilters(viewerFull, vieweeFull);
-        if (filterResult.passed) {
-          const result = computeScore(viewerFull, vieweeFull);
-          scoreData = {
-            finalScore: result.finalScore,
-            pointsEarned: result.pointsEarned,
-            pointsAvailable: result.pointsAvailable,
-            subScores: result.subScores,
-            hardFilterPassed: true,
-            computedAt: new Date(),
-            computedOnTheFly: true,
-          };
-        } else {
-          scoreData = {
-            finalScore: null,
-            hardFilterPassed: false,
-            failures: filterResult.failures,
-            computedOnTheFly: true,
-          };
-        }
+    if (viewerFull && vieweeFull) {
+      const { runHardFilters, computeScore } = require("./services/matchScoringService");
+      const filterResult = runHardFilters(viewerFull, vieweeFull);
+      if (filterResult.passed) {
+        const result = computeScore(viewerFull, vieweeFull);
+        scoreData = {
+          finalScore: result.finalScore,
+          subScores: result.subScores,
+          hardFilterPassed: true,
+          computedOnTheFly: true,
+        };
+      } else {
+        scoreData = {
+          finalScore: null,
+          hardFilterPassed: false,
+          failures: filterResult.failures,
+          computedOnTheFly: true,
+        };
       }
     }
 
@@ -5039,9 +4915,9 @@ app.get("/api/admin/matches/top", requireAdminOrModerator, async (req, res) => {
     else sortOpt = { finalScore: -1 }; // score-desc (default)
 
     // Get total count for load-more tracking
-    const totalCount = await MatchScore.countDocuments({ hardFilterPassed: true });
+    const totalCount = await MatchScore.countDocuments({ isTopMatch: true });
 
-    const scores = await MatchScore.find({ hardFilterPassed: true })
+    const scores = await MatchScore.find({ isTopMatch: true })
       .sort(sortOpt)
       .skip(offset)
       .limit(limit)

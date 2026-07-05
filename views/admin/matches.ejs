@@ -259,10 +259,9 @@
     // ═══════════════════════════════════════════════════════════════════════════
     //  EXPANDABLE SCORE DISSECTION — each category expands to textual explanation
     // ═══════════════════════════════════════════════════════════════════════════
-    function buildCategoryExplanation(catKey, subScore, viewer, viewee) {
+    function buildCategoryExplanation(catKey, subScore, viewer, viewee, catMax) {
       const e = subScore ? subScore.earned : 0;
-      const a = subScore ? subScore.available : 0;
-      if (a === 0) return '<p class="text-gray-400 italic text-xs">Excluded — required field(s) missing on one or both profiles.</p>';
+      if (e === 0) return '<p class="text-gray-400 italic text-xs">0 pts — required field(s) missing on one or both profiles.</p>';
 
       switch (catKey) {
         case 'islamic': {
@@ -270,12 +269,15 @@
           const vSpec = (viewer.preferredIslamicSect && viewer.preferredIslamicSect.toLowerCase() !== 'any islamic sect');
           const cSpec = (viewee.preferredIslamicSect && viewee.preferredIslamicSect.toLowerCase() !== 'any islamic sect');
           if (vSpec && cSpec) {
-            parts.push(`Both specified a specific sect: "${viewer.preferredIslamicSect}" ↔ "${viewee.preferredIslamicSect}". Sect match was confirmed by the hard filter gate. Full certainty bonus applied (${e}/${a} pts).`);
+            parts.push(`Both specified a specific sect: "${viewer.preferredIslamicSect}" ↔ "${viewee.preferredIslamicSect}". Full sect compatibility (${e}/${catMax} pts).`);
           } else {
-            parts.push(`One or both selected "Any Islamic Sect" — compatible but less specific. Partial certainty bonus (${e}/${a} pts).`);
+            parts.push(`One or both selected "Any Islamic Sect" — compatible but less specific. Partial score (${e}/${catMax} pts).`);
           }
           if (viewer.prays != null && viewee.prays != null) {
-            parts.push(`Prayer practice: viewer ${viewer.prays ? 'prays' : 'does not pray'} · viewee ${viewee.prays ? 'prays' : 'does not pray'} → ${viewer.prays === viewee.prays ? 'aligned (full points)' : 'mismatched (partial points)'}.`);
+            parts.push(`Prayer practice: viewer ${viewer.prays ? 'prays' : 'does not pray'} · viewee ${viewee.prays ? 'prays' : 'does not pray'} → ${viewer.prays === viewee.prays ? 'aligned (full points)' : 'mismatched (no points)'}.`);
+          }
+          if (subScore) {
+            parts.push(`Sect source: viewer=${subScore.viewerSectSource || 'N/A'}, viewee=${subScore.vieweeSectSource || 'N/A'}. Sect earned=${subScore.sectEarned || 0}, Prayer earned=${subScore.prayerEarned || 0}.`);
           }
           return `<p class="text-xs text-gray-700">${parts.join(' ')}</p>`;
         }
@@ -284,59 +286,57 @@
           const cRange = (viewee.preferredAgeRange || '').split('-').map(Number);
           let txt = `Viewer prefers ${viewer.preferredAgeRange || 'proxy ±7 yrs (implied from own age ' + viewer.age + ')'}, viewee age is ${viewee.age}. `;
           txt += `Viewee prefers ${viewee.preferredAgeRange || 'proxy ±7 yrs (implied from own age ' + viewee.age + ')'}, viewer age is ${viewer.age}. `;
-          txt += `Earned ${e}/${a} pts (${e === a ? 'both in range' : 'one/both outside range with decay'}).`;
+          txt += `Earned ${e}/${catMax} pts.`;
           if (subScore && (subScore.viewerIsProxy || subScore.vieweeIsProxy)) {
-            txt += ` <span class="text-amber-600 font-medium">⚠ Proxy used: ${[subScore.viewerIsProxy ? 'viewer' : '', subScore.vieweeIsProxy ? 'viewee' : ''].filter(Boolean).join(' + ')} preference missing → inferred from own age.</span>`;
+            txt += ` <span class="text-amber-600 font-medium">⚠ Proxy used (capped at 50% of max): ${[subScore.viewerIsProxy ? 'viewer' : '', subScore.vieweeIsProxy ? 'viewee' : ''].filter(Boolean).join(' + ')}.</span>`;
           }
           return `<p class="text-xs text-gray-700">${txt}</p>`;
         }
         case 'height': {
           let txt = `Viewer prefers ${viewer.preferredHeightRange || 'proxy ±10 cm (implied from own height ' + viewer.height + ' cm)'}, viewee height is ${viewee.height || '?'} cm. `;
           txt += `Viewee prefers ${viewee.preferredHeightRange || 'proxy ±10 cm (implied from own height ' + viewee.height + ' cm)'}, viewer height is ${viewer.height || '?'} cm. `;
-          txt += `Earned ${e}/${a} pts.`;
+          txt += `Earned ${e}/${catMax} pts.`;
           if (subScore && (subScore.viewerIsProxy || subScore.vieweeIsProxy)) {
-            txt += ` <span class="text-amber-600 font-medium">⚠ Proxy used: ${[subScore.viewerIsProxy ? 'viewer' : '', subScore.vieweeIsProxy ? 'viewee' : ''].filter(Boolean).join(' + ')} preference missing → inferred from own height.</span>`;
+            txt += ` <span class="text-amber-600 font-medium">⚠ Proxy used (capped at 50% of max): ${[subScore.viewerIsProxy ? 'viewer' : '', subScore.vieweeIsProxy ? 'viewee' : ''].filter(Boolean).join(' + ')}.</span>`;
           }
           return `<p class="text-xs text-gray-700">${txt}</p>`;
         }
         case 'maritalFamily': {
           const bothNM = viewer.maritalStatus === 'nevermarried' && viewee.maritalStatus === 'nevermarried';
-          return `<p class="text-xs text-gray-700">Viewer: ${viewer.maritalStatus || '?'} · Viewee: ${viewee.maritalStatus || '?'}. ${bothNM ? 'Both never married → full 10 points.' : 'One or both previously married → partial score (acceptance was confirmed by hard filter).'} Earned ${e}/${a} pts.</p>`;
+          return `<p class="text-xs text-gray-700">Viewer: ${viewer.maritalStatus || '?'} · Viewee: ${viewee.maritalStatus || '?'}. ${bothNM ? 'Both never married → full 10 points.' : 'Acceptance confirmed by filters.'} Earned ${e}/${catMax} pts.</p>`;
         }
         case 'location': {
           const sameCity = viewer.city && viewee.city && viewer.city.toLowerCase() === viewee.city.toLowerCase() && viewer.country && viewee.country && viewer.country.toLowerCase() === viewee.country.toLowerCase();
           const sameCountry = viewer.country && viewee.country && viewer.country.toLowerCase() === viewee.country.toLowerCase();
           let desc = `Viewer: ${viewer.city || '?'}, ${viewer.country || '?'}. Viewee: ${viewee.city || '?'}, ${viewee.country || '?'}. `;
           desc += sameCity ? 'Same city → full 15 pts.' : sameCountry ? 'Same country → 10 pts.' : 'Different countries → 5 pts (passed cross-border filter).';
-          return `<p class="text-xs text-gray-700">${desc} Earned ${e}/${a} pts.</p>`;
+          return `<p class="text-xs text-gray-700">${desc} Earned ${e}/${catMax} pts.</p>`;
         }
         case 'nationalityEthnicity': {
           const vEth = (viewer.ethnicity || '').toLowerCase();
           const cEth = (viewee.ethnicity || '').toLowerCase();
           let desc = `Viewer: ${viewer.ethnicity || '?'}. Viewee: ${viewee.ethnicity || '?'}. `;
           if (vEth === cEth) desc += 'Same ethnicity → 10 pts.';
-          else if (vEth === 'other' || vEth === 'n/a' || cEth === 'other' || cEth === 'n/a') desc += 'One side is Other/N/A → neutral 5 pts.';
           else desc += 'Different ethnicities → 0 pts.';
-          return `<p class="text-xs text-gray-700">${desc} Earned ${e}/${a} pts.</p>`;
+          return `<p class="text-xs text-gray-700">${desc} Earned ${e}/${catMax} pts.</p>`;
         }
         case 'education': {
           let desc = `Viewer: ${viewer.highestEducation || '?'}. Viewee: ${viewee.highestEducation || '?'}. `;
           if (e === 10) desc += 'Same education tier → 10 pts.';
           else if (e === 6) desc += 'One tier apart → 6 pts.';
           else desc += 'Two+ tiers apart or non-ranked → 2 pts.';
-          return `<p class="text-xs text-gray-700">${desc} Earned ${e}/${a} pts.</p>`;
+          return `<p class="text-xs text-gray-700">${desc} Earned ${e}/${catMax} pts.</p>`;
         }
         default:
-          return `<p class="text-xs text-gray-700">Earned ${e}/${a} pts.</p>`;
+          return `<p class="text-xs text-gray-700">Earned ${e}/${catMax} pts.</p>`;
       }
     }
 
     // Render ONE expandable category row (used in top matches + user matches)
     function renderExpandableCategory(catKey, catLabel, catMax, subScore, viewer, viewee, collapseId) {
-      const s = subScore || { earned: 0, available: 0 };
-      const pct = s.available > 0 ? Math.round((s.earned / catMax) * 100) : 0;
+      const s = subScore || { earned: 0 };
+      const pct = catMax > 0 ? Math.round((s.earned / catMax) * 100) : 0;
       const barColor = pct >= 80 ? '#16a34a' : pct >= 40 ? '#d97706' : '#94a3b8';
-      const excluded = s.available === 0;
       return `
         <div class="border border-gray-200 rounded-lg overflow-hidden mb-1">
           <div class="flex items-center gap-3 p-2 bg-gray-50 cursor-pointer" onclick="toggleCatExpand('${collapseId}')">
@@ -344,19 +344,19 @@
             <span class="text-xs text-gray-600 w-48 flex-shrink-0">${catLabel}</span>
             <div class="flex-1">
               <div class="flex items-center gap-2">
-                <div class="subscore-bar flex-1"><div class="subscore-bar-fill" style="width:${excluded ? 0 : pct}%; background:${barColor};"></div></div>
-                <span class="text-xs ${excluded ? 'text-gray-400 italic' : 'text-gray-700'} w-16 text-right">${excluded ? 'excluded' : s.earned + '/' + catMax}</span>
+                <div class="subscore-bar flex-1"><div class="subscore-bar-fill" style="width:${pct}%; background:${barColor};"></div></div>
+                <span class="text-xs text-gray-700 w-16 text-right">${s.earned}/${catMax}</span>
               </div>
             </div>
           </div>
           <div id="${collapseId}" class="hidden p-3 bg-white border-t border-gray-100">
-            ${buildCategoryExplanation(catKey, s, viewer, viewee)}
+            ${buildCategoryExplanation(catKey, s, viewer, viewee, catMax)}
           </div>
         </div>`;
     }
 
     // Render all expandable categories
-    function renderExpandableScoreDissection(subScores, pointsEarned, pointsAvailable, finalScore, viewer, viewee, idPrefix) {
+    function renderExpandableScoreDissection(subScores, finalScore, viewer, viewee, idPrefix) {
       const categories = [
         { key: 'islamic', label: 'Islamic Compatibility', max: 30 },
         { key: 'age', label: 'Age Compatibility', max: 15 },
@@ -369,16 +369,16 @@
       let html = '<div class="space-y-1">';
       categories.forEach((cat, idx) => {
         html += renderExpandableCategory(cat.key, cat.label, cat.max,
-          (subScores && subScores[cat.key]) || { earned: 0, available: 0 },
+          (subScores && subScores[cat.key]) || { earned: 0 },
           viewer, viewee, idPrefix + '-cat-' + idx);
       });
       html += `
         <div class="flex items-center gap-3 pt-2 mt-2">
           <span class="text-xs font-bold text-gray-700 w-48">Total</span>
-          <span class="text-sm font-bold text-primary">${pointsEarned}/${pointsAvailable} = ${finalScore}%</span>
+          <span class="text-sm font-bold text-primary">${finalScore}/100</span>
         </div>
         <div class="mt-2 text-xs text-gray-400 italic">
-          <i class="ri-information-line mr-1"></i> "excluded" = field(s) missing — category removed from both numerator & denominator.
+          <i class="ri-information-line mr-1"></i> v2 direct-sum scoring. Missing fields → 0 pts (no normalization).
         </div>`;
       html += '</div>';
       return html;
@@ -473,8 +473,8 @@
               </div>
               <div class="p-4 border-t border-gray-200 bg-gray-50">
                 <h4 class="text-sm font-semibold text-gray-700 mb-3">Score Dissection</h4>
-                ${renderExpandableScoreDissection(m.subScores, m.pointsEarned || 0, m.pointsAvailable || 0, score, viewer, v, 'um'+i)}
-                <div class="mt-3 text-xs text-gray-500">Computed: ${m.computedAt ? new Date(m.computedAt).toLocaleString() : 'N/A'}${m.pointsAvailable < 90 ? ' · <span class="text-amber-600">Partial (scored on ' + m.pointsAvailable + ' pts)</span>' : ''}</div>
+                ${renderExpandableScoreDissection(m.subScores, score, viewer, v, 'um'+i)}
+                <div class="mt-3 text-xs text-gray-500">Computed: ${m.computedAt ? new Date(m.computedAt).toLocaleString() : 'N/A'}</div>
               </div>
             </div>
           </div>`;
@@ -555,7 +555,7 @@
             <div class="p-4 border-t"><h4 class="text-sm font-semibold text-gray-700 mb-3">Profile Details — Cross-Check (all fields)</h4>
               ${renderSideBySideTable(fieldsA, fieldsB, uA.username||'User A', uB.username||'User B')}
             </div>
-            ${score.subScores ? `<div class="p-4 border-t"><h4 class="text-sm font-semibold text-gray-700 mb-3">Score Dissection</h4>${renderExpandableScoreDissection(score.subScores, score.pointsEarned||0, score.pointsAvailable||0, score.finalScore||0, fullA, fullB, 'cmp')}</div>` : ''}
+            ${score.subScores ? `<div class="p-4 border-t"><h4 class="text-sm font-semibold text-gray-700 mb-3">Score Dissection</h4>${renderExpandableScoreDissection(score.subScores, score.finalScore||0, fullA, fullB, 'cmp')}</div>` : ''}
             ${hardFilterHtml}
           </div>`;
         } catch (err) { c.innerHTML = '<p class="text-red-500 text-center py-4">Comparison failed.</p>'; }
@@ -620,8 +620,8 @@
                     ${renderSideBySideTable(fA, fB, vA.username||'User A', vB.username||'User B')}
                   </div>
                   <div class="p-4 border-t bg-gray-50"><h4 class="text-sm font-semibold text-gray-700 mb-3">Score Dissection</h4>
-                    ${renderExpandableScoreDissection(p.subScores, p.pointsEarned||0, p.pointsAvailable||0, score, vA, vB, 'top'+i)}
-                    <div class="mt-2 text-xs text-gray-500">Computed: ${p.computedAt?new Date(p.computedAt).toLocaleString():'N/A'}${p.pointsAvailable<90?' · <span class="text-amber-600">Partial ('+p.pointsAvailable+' pts)</span>':''}</div>
+                    ${renderExpandableScoreDissection(p.subScores, score, vA, vB, 'top'+i)}
+                    <div class="mt-2 text-xs text-gray-500">Computed: ${p.computedAt?new Date(p.computedAt).toLocaleString():'N/A'}</div>
                   </div>
                 </div>
               </div>`;

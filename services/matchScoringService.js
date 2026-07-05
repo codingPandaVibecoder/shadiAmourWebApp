@@ -6,7 +6,7 @@
  * 
  * Exports:
  *   runHardFilters(viewer, viewee) → { passed, failures[] }
- *   computeScore(viewer, viewee)   → { finalScore, pointsEarned, pointsAvailable, subScores, ... }
+ *   computeScore(viewer, viewee)   → { finalScore, subScores, hardFilterPassed }
  *   hasChildren(user)              → boolean
  */
 
@@ -21,6 +21,7 @@ const {
   HEIGHT_DECAY_PER_CM,
   AGE_DELTA,
   HEIGHT_DELTA,
+  PROXY_POINT_CAP_PERCENT,
   parseRange,
   getEducationTier,
   isSpecificSect,
@@ -165,52 +166,23 @@ function runHardFilters(viewer, viewee) {
  */
 function computeScore(viewer, viewee) {
   const subScores = {};
+
+  subScores.islamic = computeIslamicScore(viewer, viewee);
+  subScores.age = computeAgeScore(viewer, viewee);
+  subScores.height = computeHeightScore(viewer, viewee);
+  subScores.maritalFamily = computeMaritalScore(viewer, viewee);
+  subScores.location = computeLocationScore(viewer, viewee);
+  subScores.nationalityEthnicity = computeEthnicityScore(viewer, viewee);
+  subScores.education = computeEducationScore(viewer, viewee);
+
+  // Strict zero-for-missing: direct sum, no normalization
   let totalEarned = 0;
-  let totalAvailable = 0;
-
-  // 4.1 Islamic Compatibility (30 pts)
-  const islamic = computeIslamicScore(viewer, viewee);
-  subScores.islamic = islamic;
-
-  // 4.2 Age Compatibility (15 pts)
-  const age = computeAgeScore(viewer, viewee);
-  subScores.age = age;
-
-  // 4.3 Height Compatibility (10 pts)
-  const height = computeHeightScore(viewer, viewee);
-  subScores.height = height;
-
-  // 4.4 Marital/Family Alignment (10 pts)
-  const marital = computeMaritalScore(viewer, viewee);
-  subScores.maritalFamily = marital;
-
-  // 4.5 Location & Openness (15 pts)
-  const location = computeLocationScore(viewer, viewee);
-  subScores.location = location;
-
-  // 4.6 Nationality/Ethnicity Affinity (10 pts)
-  const ethnicity = computeEthnicityScore(viewer, viewee);
-  subScores.nationalityEthnicity = ethnicity;
-
-  // 4.7 Education & Work (10 pts, education only)
-  const education = computeEducationScore(viewer, viewee);
-  subScores.education = education;
-
-  // Sum up earned and available
   for (const cat of Object.values(subScores)) {
-    totalEarned += cat.earned;
-    totalAvailable += cat.available;
+    totalEarned += (cat.earned || 0);
   }
 
-  // Missing-data normalization
-  const finalScore = totalAvailable > 0
-    ? Math.round((totalEarned / totalAvailable) * 100)
-    : 0;
-
   return {
-    finalScore: Math.min(100, Math.max(0, finalScore)),
-    pointsEarned: totalEarned,
-    pointsAvailable: totalAvailable,
+    finalScore: Math.min(100, Math.max(0, totalEarned)),
     subScores,
     hardFilterPassed: true,
   };
@@ -220,53 +192,62 @@ function computeScore(viewer, viewee) {
 
 function computeIslamicScore(viewer, viewee) {
   let earned = 0;
-  let available = 0;
+  const sub = {};
 
-  // Sect Fit (15 pts available)
-  const viewerHasSect = viewer.preferredIslamicSect != null;
-  const vieweeHasSect = viewee.preferredIslamicSect != null;
-
-  if (viewerHasSect && vieweeHasSect) {
-    available += ISLAMIC.SECT_CERTAINTY_FULL; // 15
-    const viewerSpecific = isSpecificSect(viewer.preferredIslamicSect);
-    const vieweeSpecific = isSpecificSect(viewee.preferredIslamicSect);
-
-    if (viewerSpecific && vieweeSpecific) {
-      // Both specified a specific sect — award full since hard filter already ensured match
-      earned += ISLAMIC.SECT_CERTAINTY_FULL;
-    } else {
-      // At least one selected "Any Islamic sect"
-      earned += ISLAMIC.SECT_CERTAINTY_PARTIAL; // 8
+  // ── Sect Fit: resolve effective signals ──
+  function resolveSectSignal(user) {
+    if (isSpecificSect(user.preferredIslamicSect)) {
+      return { signal: user.preferredIslamicSect.toLowerCase().trim(), source: "preferred" };
     }
+    if (user.preferredIslamicSect &&
+        user.preferredIslamicSect.toLowerCase().trim() === "any islamic sect") {
+      return { signal: null, source: "any" };
+    }
+    if (user.islamicSect && user.islamicSect.trim()) {
+      return { signal: user.islamicSect.toLowerCase().trim(), source: "fallback" };
+    }
+    return { signal: null, source: "none" };
   }
-  // If either field missing → exclude entirely (0 available, 0 earned)
 
-  // Prayer Practice (15 pts available)
-  const viewerHasPrays = viewer.prays != null;
-  const vieweeHasPrays = viewee.prays != null;
+  const vSig = resolveSectSignal(viewer);
+  const cSig = resolveSectSignal(viewee);
+  sub.viewerSectSource = vSig.source;
+  sub.vieweeSectSource = cSig.source;
 
-  if (viewerHasPrays && vieweeHasPrays) {
-    available += ISLAMIC.PRAYER_ALIGNED; // 15
+  if (vSig.source === "any" || cSig.source === "any") {
+    earned += ISLAMIC.SECT_CERTAINTY_PARTIAL; // 8
+    sub.sectEarned = ISLAMIC.SECT_CERTAINTY_PARTIAL;
+  } else if (vSig.signal && cSig.signal && vSig.signal === cSig.signal) {
+    earned += ISLAMIC.SECT_CERTAINTY_FULL; // 15
+    sub.sectEarned = ISLAMIC.SECT_CERTAINTY_FULL;
+  } else {
+    sub.sectEarned = 0;
+  }
+
+  // ── Prayer Practice (15 pts) ──
+  if (viewer.prays != null && viewee.prays != null) {
     if (viewer.prays === viewee.prays) {
-      earned += ISLAMIC.PRAYER_ALIGNED; // Both same → full 15
+      earned += ISLAMIC.PRAYER_ALIGNED; // 15
+      sub.prayerEarned = ISLAMIC.PRAYER_ALIGNED;
     } else {
-      earned += ISLAMIC.PRAYER_MISMATCHED; // Different → 5
+      earned += ISLAMIC.PRAYER_MISMATCHED; // 5
+      sub.prayerEarned = ISLAMIC.PRAYER_MISMATCHED;
     }
+  } else {
+    sub.prayerEarned = 0;
   }
-  // Missing on either side → exclude
 
-  return { earned, available };
+  return { earned, ...sub };
 }
 
 function computeAgeScore(viewer, viewee) {
-  let earned = 0;
-  const available = SCORING_WEIGHTS.AGE; // 15
+  const maxPts = SCORING_WEIGHTS.AGE; // 15
+  const capPts = Math.round(maxPts * PROXY_POINT_CAP_PERCENT / 100); // 7
 
   if (viewer.age == null || viewee.age == null) {
-    return { earned: 0, available: 0, viewerIsProxy: false, vieweeIsProxy: false };
+    return { earned: 0, viewerIsProxy: false, vieweeIsProxy: false };
   }
 
-  // Resolve ranges: use real preference if set, otherwise proxy from own age
   let viewerRange, vieweeRange;
   let viewerIsProxy = false, vieweeIsProxy = false;
 
@@ -276,7 +257,6 @@ function computeAgeScore(viewer, viewee) {
     viewerRange = { min: viewer.age - AGE_DELTA, max: viewer.age + AGE_DELTA };
     viewerIsProxy = true;
   }
-
   if (viewee.preferredAgeRange && parseRange(viewee.preferredAgeRange)) {
     vieweeRange = parseRange(viewee.preferredAgeRange);
   } else {
@@ -285,39 +265,36 @@ function computeAgeScore(viewer, viewee) {
   }
 
   let fitScore = 0;
+  const half = maxPts / 2;
 
-  // Is viewee's age in viewer's preferred/proxy range?
   if (viewee.age >= viewerRange.min && viewee.age <= viewerRange.max) {
-    fitScore += SCORING_WEIGHTS.AGE / 2; // 7.5
+    fitScore += half;
   } else {
-    const yearsOut = Math.min(
-      Math.abs(viewee.age - viewerRange.min),
-      Math.abs(viewee.age - viewerRange.max)
-    );
-    fitScore += Math.max(0, SCORING_WEIGHTS.AGE / 2 - AGE_DECAY_PER_YEAR * yearsOut);
+    const yearsOut = Math.min(Math.abs(viewee.age - viewerRange.min), Math.abs(viewee.age - viewerRange.max));
+    fitScore += Math.max(0, half - AGE_DECAY_PER_YEAR * yearsOut);
   }
-
-  // Is viewer's age in viewee's preferred/proxy range?
   if (viewer.age >= vieweeRange.min && viewer.age <= vieweeRange.max) {
-    fitScore += SCORING_WEIGHTS.AGE / 2; // 7.5
+    fitScore += half;
   } else {
-    const yearsOut = Math.min(
-      Math.abs(viewer.age - vieweeRange.min),
-      Math.abs(viewer.age - vieweeRange.max)
-    );
-    fitScore += Math.max(0, SCORING_WEIGHTS.AGE / 2 - AGE_DECAY_PER_YEAR * yearsOut);
+    const yearsOut = Math.min(Math.abs(viewer.age - vieweeRange.min), Math.abs(viewer.age - vieweeRange.max));
+    fitScore += Math.max(0, half - AGE_DECAY_PER_YEAR * yearsOut);
   }
 
-  earned = Math.round(Math.min(SCORING_WEIGHTS.AGE, fitScore));
-  return { earned, available, viewerIsProxy, vieweeIsProxy };
+  let earned = Math.round(Math.min(maxPts, fitScore));
+  // CAP if proxy was used by either side
+  if (viewerIsProxy || vieweeIsProxy) {
+    earned = Math.min(earned, capPts);
+  }
+
+  return { earned, viewerIsProxy, vieweeIsProxy };
 }
 
 function computeHeightScore(viewer, viewee) {
-  let earned = 0;
-  const available = SCORING_WEIGHTS.HEIGHT; // 10
+  const maxPts = SCORING_WEIGHTS.HEIGHT; // 10
+  const capPts = Math.round(maxPts * PROXY_POINT_CAP_PERCENT / 100); // 5
 
   if (viewer.height == null || viewee.height == null) {
-    return { earned: 0, available: 0, viewerIsProxy: false, vieweeIsProxy: false };
+    return { earned: 0, viewerIsProxy: false, vieweeIsProxy: false };
   }
 
   let viewerRange, vieweeRange;
@@ -329,7 +306,6 @@ function computeHeightScore(viewer, viewee) {
     viewerRange = { min: viewer.height - HEIGHT_DELTA, max: viewer.height + HEIGHT_DELTA };
     viewerIsProxy = true;
   }
-
   if (viewee.preferredHeightRange && parseRange(viewee.preferredHeightRange)) {
     vieweeRange = parseRange(viewee.preferredHeightRange);
   } else {
@@ -338,54 +314,55 @@ function computeHeightScore(viewer, viewee) {
   }
 
   let fitScore = 0;
+  const half = maxPts / 2;
 
   if (viewee.height >= viewerRange.min && viewee.height <= viewerRange.max) {
-    fitScore += SCORING_WEIGHTS.HEIGHT / 2;
+    fitScore += half;
   } else {
-    const cmOut = Math.min(
-      Math.abs(viewee.height - viewerRange.min),
-      Math.abs(viewee.height - viewerRange.max)
-    );
-    fitScore += Math.max(0, SCORING_WEIGHTS.HEIGHT / 2 - HEIGHT_DECAY_PER_CM * cmOut);
+    const cmOut = Math.min(Math.abs(viewee.height - viewerRange.min), Math.abs(viewee.height - viewerRange.max));
+    fitScore += Math.max(0, half - HEIGHT_DECAY_PER_CM * cmOut);
   }
-
   if (viewer.height >= vieweeRange.min && viewer.height <= vieweeRange.max) {
-    fitScore += SCORING_WEIGHTS.HEIGHT / 2;
+    fitScore += half;
   } else {
-    const cmOut = Math.min(
-      Math.abs(viewer.height - vieweeRange.min),
-      Math.abs(viewer.height - vieweeRange.max)
-    );
-    fitScore += Math.max(0, SCORING_WEIGHTS.HEIGHT / 2 - HEIGHT_DECAY_PER_CM * cmOut);
+    const cmOut = Math.min(Math.abs(viewer.height - vieweeRange.min), Math.abs(viewer.height - vieweeRange.max));
+    fitScore += Math.max(0, half - HEIGHT_DECAY_PER_CM * cmOut);
   }
 
-  earned = Math.round(Math.min(SCORING_WEIGHTS.HEIGHT, fitScore));
-  return { earned, available, viewerIsProxy, vieweeIsProxy };
+  let earned = Math.round(Math.min(maxPts, fitScore));
+  if (viewerIsProxy || vieweeIsProxy) {
+    earned = Math.min(earned, capPts);
+  }
+
+  return { earned, viewerIsProxy, vieweeIsProxy };
 }
 
 function computeMaritalScore(viewer, viewee) {
-  const available = SCORING_WEIGHTS.MARITAL_FAMILY; // 10, always available
-  let earned;
+  let earned = 0;
 
   if (viewer.maritalStatus === "nevermarried" && viewee.maritalStatus === "nevermarried") {
     earned = MARITAL_FAMILY.IDEAL; // 10
-  } else {
-    // One or both married before — they passed the hard filter, so acceptance exists
-    earned = MARITAL_FAMILY.ACCEPTED; // 5
+  } else if (viewer.maritalStatus && viewee.maritalStatus) {
+    // One or both previously married — check that relevant acceptance fields were populated
+    let acceptanceOk = true;
+    if (viewer.maritalStatus === "divorced" && viewee.acceptADivorcedPerson == null) acceptanceOk = false;
+    if (viewer.maritalStatus === "widowed" && viewee.acceptAWidow == null) acceptanceOk = false;
+    if (viewee.maritalStatus === "divorced" && viewer.acceptADivorcedPerson == null) acceptanceOk = false;
+    if (viewee.maritalStatus === "widowed" && viewer.acceptAWidow == null) acceptanceOk = false;
+    if (hasChildren(viewer) && viewee.acceptSomeoneWithChildren == null) acceptanceOk = false;
+    if (hasChildren(viewee) && viewer.acceptSomeoneWithChildren == null) acceptanceOk = false;
+    earned = acceptanceOk ? MARITAL_FAMILY.ACCEPTED : 0; // 5 or 0
   }
 
-  return { earned, available };
+  return { earned };
 }
 
 function computeLocationScore(viewer, viewee) {
-  const available = SCORING_WEIGHTS.LOCATION; // 15
-
   if (!viewer.city || !viewer.country || !viewee.city || !viewee.country) {
-    return { earned: 0, available: 0 };
+    return { earned: 0 };
   }
 
   let earned;
-
   if (viewer.city.toLowerCase() === viewee.city.toLowerCase() &&
       viewer.country.toLowerCase() === viewee.country.toLowerCase()) {
     earned = LOCATION.SAME_CITY; // 15
@@ -395,68 +372,42 @@ function computeLocationScore(viewer, viewee) {
     earned = LOCATION.DIFFERENT_COUNTRY; // 5
   }
 
-  return { earned, available };
+  return { earned };
 }
 
 function computeEthnicityScore(viewer, viewee) {
-  const available = SCORING_WEIGHTS.NATIONALITY_ETHNICITY; // 10
-
   if (!viewer.ethnicity || !viewee.ethnicity) {
-    return { earned: 0, available: 0 };
+    return { earned: 0 };
   }
 
-  let earned;
+  const earned = viewer.ethnicity.toLowerCase() === viewee.ethnicity.toLowerCase()
+    ? ETHNICITY.SAME   // 10
+    : ETHNICITY.DIFFERENT; // 0
 
-  const vEth = viewer.ethnicity.toLowerCase();
-  const cEth = viewee.ethnicity.toLowerCase();
-
-  if (vEth === cEth) {
-    earned = ETHNICITY.SAME; // 10
-  } else if (vEth === "other" || vEth === "n/a" || cEth === "other" || cEth === "n/a") {
-    earned = ETHNICITY.AMBIGUOUS; // 5
-  } else {
-    earned = ETHNICITY.DIFFERENT; // 0
-  }
-
-  return { earned, available };
+  return { earned };
 }
 
 function computeEducationScore(viewer, viewee) {
-  const available = SCORING_WEIGHTS.EDUCATION; // 10
-
   if (!viewer.highestEducation || !viewee.highestEducation) {
-    return { earned: 0, available: 0 };
+    return { earned: 0 };
   }
 
   const viewerTier = getEducationTier(viewer.highestEducation);
   const vieweeTier = getEducationTier(viewee.highestEducation);
 
-  // If either is non-ranked (-2), treat as equivalent to "other" → same tier
   if (viewerTier === -2 || vieweeTier === -2) {
-    if (viewerTier === vieweeTier) {
-      return { earned: EDUCATION.SAME_TIER, available }; // 10
-    }
-    // Non-ranked vs ranked → treat as two+ tiers apart
-    return { earned: EDUCATION.TWO_APART, available }; // 2
+    if (viewerTier === vieweeTier) return { earned: EDUCATION.SAME_TIER }; // 10
+    return { earned: EDUCATION.TWO_APART }; // 2
   }
-
-  // If either not found (-1), exclude
-  if (viewerTier === -1 || vieweeTier === -1) {
-    return { earned: 0, available: 0 };
-  }
+  if (viewerTier === -1 || vieweeTier === -1) return { earned: 0 };
 
   const diff = Math.abs(viewerTier - vieweeTier);
-
   let earned;
-  if (diff === 0) {
-    earned = EDUCATION.SAME_TIER; // 10
-  } else if (diff === 1) {
-    earned = EDUCATION.ONE_APART; // 6
-  } else {
-    earned = EDUCATION.TWO_APART; // 2
-  }
+  if (diff === 0) earned = EDUCATION.SAME_TIER;
+  else if (diff === 1) earned = EDUCATION.ONE_APART;
+  else earned = EDUCATION.TWO_APART;
 
-  return { earned, available };
+  return { earned };
 }
 
 // ── Utility ─────────────────────────────────────────────────────────────────

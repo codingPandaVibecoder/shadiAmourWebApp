@@ -78,9 +78,10 @@ const AGE_DELTA = 7;    // Implied age range = ownAge ± 7 years
 const HEIGHT_DELTA = 10; // Implied height range = ownHeight ± 10 cm
 
 // ── Thresholds & Limits ────────────────────────────────────────────────────
-const MIN_SCORE_THRESHOLD = 50;   // Minimum score for "Your Matches" page
-const TOP_N_CANDIDATES = 50;      // Top-N candidates to precompute per user for periodic refresh
-const BATCH_SIZE = 100;           // Cursor batch size for recompute operations
+const MIN_SCORE_THRESHOLD = 50;         // Minimum score to persist in TopMatch store
+const TOP_MATCHES_LIST_SIZE = 15;       // Max persisted TopMatch entries per user
+const BATCH_SIZE = 100;                 // Cursor batch size for recompute operations
+const PROXY_POINT_CAP_PERCENT = 50;     // Age/height max at 50% of category when proxy used
 
 // ── Match Score Staleness ──────────────────────────────────────────────────
 const SCORE_STALE_AFTER_MS = 24 * 60 * 60 * 1000; // 24 hours — scores older than this are stale
@@ -150,8 +151,10 @@ module.exports = {
   HEIGHT_DECAY_PER_CM,
   AGE_DELTA,
   HEIGHT_DELTA,
-  TOP_N_CANDIDATES,
+  MIN_SCORE_THRESHOLD,
+  TOP_MATCHES_LIST_SIZE,
   BATCH_SIZE,
+  PROXY_POINT_CAP_PERCENT,
   SCORE_STALE_AFTER_MS,
   SCORED_FIELDS,
   parseRange,

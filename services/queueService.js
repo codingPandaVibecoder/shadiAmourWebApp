@@ -551,7 +551,7 @@ notificationWorker.on("error", (err) => {
 });
 
 // ── Match Scoring Worker ────────────────────────────────────────────────────
-const { recomputeScoresForUser, recomputeTopMatches } = require("./matchScoringBatchService");
+const { recomputeTopMatchesList } = require("./matchScoringBatchService");
 
 const matchScoringWorker = new Worker(
   "match-scoring",
@@ -560,12 +560,12 @@ const matchScoringWorker = new Worker(
 
     switch (type) {
       case "recompute-user":
-        console.log(`🔄 Recomputing all match scores for user ${userId}...`);
-        return await recomputeScoresForUser(userId);
+        console.log(`🔄 Recomputing TopMatches list for user ${userId}...`);
+        return await recomputeTopMatchesList(userId);
 
       case "recompute-top-matches":
-        console.log(`🔄 Recomputing top matches for user ${userId}...`);
-        return await recomputeTopMatches(userId, topN);
+        console.log(`🔄 Recomputing TopMatches list for user ${userId}...`);
+        return await recomputeTopMatchesList(userId);
 
       default:
         console.warn(`⚠️  Unknown match-scoring job type: ${type}`);

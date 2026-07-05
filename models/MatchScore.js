@@ -28,13 +28,11 @@ const matchScoreSchema = new mongoose.Schema({
     max: 100,
     required: true,
   },
-  pointsEarned: {
-    type: Number,
-    required: true,
-  },
-  pointsAvailable: {
-    type: Number,
-    required: true,
+
+  // Whether this is a persisted TopMatch entry (bounded per-user store)
+  isTopMatch: {
+    type: Boolean,
+    default: false,
   },
 
   // ── Hard Filter Gate ─────────────────────────────────────────────────────
@@ -47,35 +45,32 @@ const matchScoreSchema = new mongoose.Schema({
   subScores: {
     islamic: {
       earned: { type: Number, default: 0 },
-      available: { type: Number, default: 0 },
+      sectEarned: { type: Number, default: 0 },
+      prayerEarned: { type: Number, default: 0 },
+      viewerSectSource: { type: String },
+      vieweeSectSource: { type: String },
     },
     age: {
       earned: { type: Number, default: 0 },
-      available: { type: Number, default: 0 },
       viewerIsProxy: { type: Boolean, default: false },
       vieweeIsProxy: { type: Boolean, default: false },
     },
     height: {
       earned: { type: Number, default: 0 },
-      available: { type: Number, default: 0 },
       viewerIsProxy: { type: Boolean, default: false },
       vieweeIsProxy: { type: Boolean, default: false },
     },
     maritalFamily: {
       earned: { type: Number, default: 0 },
-      available: { type: Number, default: 0 },
     },
     location: {
       earned: { type: Number, default: 0 },
-      available: { type: Number, default: 0 },
     },
     nationalityEthnicity: {
       earned: { type: Number, default: 0 },
-      available: { type: Number, default: 0 },
     },
     education: {
       earned: { type: Number, default: 0 },
-      available: { type: Number, default: 0 },
     },
   },
 
@@ -109,8 +104,11 @@ const matchScoreSchema = new mongoose.Schema({
 // Unique: one score per viewer→viewee pair
 matchScoreSchema.index({ viewerId: 1, vieweeId: 1 }, { unique: true });
 
-// For "Your Matches" page: get viewer's top scores
-matchScoreSchema.index({ viewerId: 1, finalScore: -1 });
+// For "Your Matches" page and TopMatch queries
+matchScoreSchema.index({ viewerId: 1, isTopMatch: 1, finalScore: -1 });
+
+// For admin top matches union query
+matchScoreSchema.index({ isTopMatch: 1, finalScore: -1 });
 
 // For stale detection
 matchScoreSchema.index({ computedAt: 1 });

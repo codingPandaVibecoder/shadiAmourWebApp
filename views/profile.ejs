@@ -425,7 +425,7 @@
                       <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold border <%= badgeBg %>">
                         <i class="ri-heart-pulse-line"></i>
                         <%= ms %>% Compatible
-                        <% if (matchScore && matchScore.pointsAvailable < 90) { %>
+                        <% if (foundProfile && foundProfile.profileCompletenessTier === 'B') { %>
                           <span class="text-xs font-normal opacity-75">(partial profile)</span>
                         <% } %>
                       </span>
