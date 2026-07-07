@@ -4097,177 +4097,322 @@ app.get("/profiles/addedBy/staff", requireOnboardingComplete, async (req, res) =
   }
 });
 
-app.get("/profiles",requireOnboardingComplete, async (req, res) => {
-  // Pagination params
+// app.get("/profiles",requireOnboardingComplete, async (req, res) => {
+//   // Pagination params
+//   const page = parseInt(req.query.page) > 0 ? parseInt(req.query.page) : 1;
+//   const limit = 12;
+//   const skip = (page - 1) * limit;
+
+//   // Detect visitor country via Cloudflare header or MOCK_COUNTRY env
+//   const detectedCountryCode = detectCountry(req);
+//   const geoFilter = buildGeoFilter(detectedCountryCode);
+//   const geoFilterUI = getFilterUIConfig(detectedCountryCode);
+
+//   // Extract filter parameters
+//   const { gender, minAge, maxAge, minHeight, maxHeight, city, country, nationality } =
+//     req.query;
+
+//   // Build filter object
+//   const filter = {};
+
+//   // Apply geo-based location filter (e.g. PK visitors only see Pakistan profiles)
+//   if (geoFilter.$or) {
+//     filter.$and = filter.$and || [];
+//     filter.$and.push({ $or: geoFilter.$or });
+//   }
+
+//   // **NEW**: Only show approved profiles to regular users
+//   // Admins and moderators can see all profiles
+//   if (!req.session.isAdmin && !req.session.isModerator) {
+//     filter.isApproved = true;
+//     filter.approvalStatus = "approved";
+//   }
+
+//   if (gender) filter.gender = gender;
+//   if (city) filter.city = { $regex: new RegExp(city, "i") };
+//   if (country) filter.country = { $regex: new RegExp(country, "i") };
+//   if (nationality) filter.nationality = nationality; // kept for backward compatibility
+
+//   // Age range filter
+//   if (minAge || maxAge) {
+//     filter.age = {};
+//     if (minAge) filter.age.$gte = parseInt(minAge);
+//     if (maxAge) filter.age.$lte = parseInt(maxAge);
+//   }
+
+//   // Height range filter - FIXED VERSION
+//   if (minHeight || maxHeight) {
+//     filter.height = {};
+//     if (minHeight) {
+//       const minHeightNum = parseFloat(minHeight);
+//       if (!isNaN(minHeightNum)) {
+//         filter.height.$gte = minHeightNum;
+//       }
+//     }
+//     if (maxHeight) {
+//       const maxHeightNum = parseFloat(maxHeight);
+//       if (!isNaN(maxHeightNum)) {
+//         filter.height.$lte = maxHeightNum;
+//       }
+//     }
+//   }
+
+//   try {
+//     // **NEW**: Get featured profiles (max 4, exclude current user)
+//     const featuredFilter = { isFeatured: true };
+
+//     const featuredProfiles = await User.find(featuredFilter)
+//       .limit(4)
+//       .sort({ featuredDate: -1 }); // Show most recently featured first
+
+//     // **UPDATED**: Exclude featured profiles from regular profiles to avoid duplicates
+//     // const excludeIds = [
+//     //   ...(req.session.userId ? [req.session.userId] : []),
+//     //   ...featuredProfiles.map((profile) => profile._id),
+//     // ];
+//     // filter._id = { $nin: excludeIds };
+//     const excludeIds = featuredProfiles.map((profile) => profile._id);
+//     if (excludeIds.length > 0) {
+//       filter._id = { $nin: excludeIds };
+//     }
+//     const totalProfiles = await User.countDocuments(filter);
+
+//     // **NEW**: Handle sorting
+//     const { sortBy } = req.query;
+//     let profiles;
+//     const effectiveSort = sortBy || "top-matches";
+//     const isScoreSort = effectiveSort === "top-matches" && req.session.userId;
+
+//     if (isScoreSort) {
+//       // Score-based sorting: fetch all filtered profiles, compute scores in-memory, exclude 0%, sort, paginate
+//       const allFiltered = await User.find(filter)
+//         .select("name username age height gender country city ethnicity highestEducation profileSlug profilePic isFeatured featuredDate maritalStatus islamicSect preferredIslamicSect prays bornMuslim willingToConsiderANonUkCitizen acceptSomeoneWithChildren acceptADivorcedPerson acceptAWidow children profileCompletenessTier isApproved approvalStatus isDeactivated")
+//         .lean();
+
+//       // Fetch viewer for score computation
+//       const viewer = await User.findById(req.session.userId).select("name age height gender country city ethnicity highestEducation maritalStatus islamicSect preferredIslamicSect prays bornMuslim willingToConsiderANonUkCitizen acceptSomeoneWithChildren acceptADivorcedPerson acceptAWidow children isApproved approvalStatus isDeactivated profileCompletenessTier").lean();
+
+//       if (viewer) {
+//         const { runHardFilters, computeScore } = require("./services/matchScoringService");
+//         for (const profile of allFiltered) {
+//           const hf = runHardFilters(viewer, profile);
+//           profile.matchScore = hf.passed ? computeScore(viewer, profile).finalScore : 0;
+//         }
+//         // Exclude incompatible (0%) profiles, then sort by score desc
+//         const compatible = allFiltered.filter(p => (p.matchScore || 0) > 0);
+//         compatible.sort((a, b) => (b.matchScore || 0) - (a.matchScore || 0));
+//         profiles = compatible.slice(skip, skip + limit);
+//       } else {
+//         profiles = allFiltered.slice(skip, skip + limit);
+//       }
+//     } else if (effectiveSort === "random") {
+//       profiles = await User.aggregate([
+//         { $match: filter },
+//         { $skip: skip },
+//         { $sample: { size: Math.min(limit, totalProfiles) } },
+//       ]);
+//     } else {
+//       // Default: newly created (most recent first)
+//       const sortOptions = { createdAt: -1, _id: -1 };
+//       profiles = await User.find(filter).sort(sortOptions).skip(skip).limit(limit);
+//     }
+
+//     const activeFilters = {
+//       gender,
+//       minAge,
+//       maxAge,
+//       minHeight,
+//       maxHeight,
+//       city,
+//       country,
+//       nationality,
+//     };
+
+//     const totalPages = Math.ceil(totalProfiles / limit);
+
+//     // Get current user's profile if logged in
+//     let currentUserProfile = null;
+//     if (req.session.userId) {
+//       currentUserProfile = await User.findById(req.session.userId);
+//     }
+
+//     // Compute scores in-memory for displayed profiles (logged-in only)
+//     if (req.session.userId && profiles.length > 0) {
+//       const viewer = await User.findById(req.session.userId).select("name age height gender country city ethnicity highestEducation maritalStatus islamicSect preferredIslamicSect prays bornMuslim willingToConsiderANonUkCitizen acceptSomeoneWithChildren acceptADivorcedPerson acceptAWidow children isApproved approvalStatus isDeactivated profileCompletenessTier").lean();
+//       if (viewer) {
+//         const { runHardFilters, computeScore } = require("./services/matchScoringService");
+//         for (const profile of profiles) {
+//           const filter = runHardFilters(viewer, profile);
+//           profile.matchScore = filter.passed ? computeScore(viewer, profile).finalScore : 0;
+//         }
+//         if (featuredProfiles) {
+//           for (const profile of featuredProfiles) {
+//             const filter = runHardFilters(viewer, profile);
+//             profile.matchScore = filter.passed ? computeScore(viewer, profile).finalScore : 0;
+//           }
+//         }
+//       }
+//     }
+
+//     return res.render("profiles", {
+//       featuredProfiles, // **NEW**
+//       profiles,
+//       filters: Object.keys(req.query).length > 0 ? activeFilters : null,
+//       sortBy: effectiveSort, // **NEW**
+//       page,
+//       totalPages,
+//       totalProfiles,
+//       currentUserProfile, // **NEW**: Pass current user's profile for pending notice
+//       geoFilterUI, // Geo-based filter UI config (null if no restriction)
+//       detectedCountryCode: detectedCountryCode || null,
+//     });
+//   } catch (error) {
+//     console.error("Error fetching profiles:", error);
+//     return res.status(500).render("error", {
+//       title: "Error",
+//       message: "Failed to fetch profiles",
+//       error: process.env.NODE_ENV === "development" ? error : {},
+//     });
+//   }
+// });
+
+app.get("/profiles", requireOnboardingComplete, async (req, res) => {
   const page = parseInt(req.query.page) > 0 ? parseInt(req.query.page) : 1;
   const limit = 12;
   const skip = (page - 1) * limit;
 
-  // Detect visitor country via Cloudflare header or MOCK_COUNTRY env
   const detectedCountryCode = detectCountry(req);
   const geoFilter = buildGeoFilter(detectedCountryCode);
   const geoFilterUI = getFilterUIConfig(detectedCountryCode);
 
-  // Extract filter parameters
-  const { gender, minAge, maxAge, minHeight, maxHeight, city, country, nationality } =
-    req.query;
+  const { gender, minAge, maxAge, minHeight, maxHeight, city, country, nationality } = req.query;
 
-  // Build filter object
   const filter = {};
-
-  // Apply geo-based location filter (e.g. PK visitors only see Pakistan profiles)
   if (geoFilter.$or) {
     filter.$and = filter.$and || [];
     filter.$and.push({ $or: geoFilter.$or });
   }
-
-  // **NEW**: Only show approved profiles to regular users
-  // Admins and moderators can see all profiles
   if (!req.session.isAdmin && !req.session.isModerator) {
     filter.isApproved = true;
     filter.approvalStatus = "approved";
   }
-
   if (gender) filter.gender = gender;
   if (city) filter.city = { $regex: new RegExp(city, "i") };
   if (country) filter.country = { $regex: new RegExp(country, "i") };
-  if (nationality) filter.nationality = nationality; // kept for backward compatibility
+  if (nationality) filter.nationality = nationality;
 
-  // Age range filter
   if (minAge || maxAge) {
     filter.age = {};
     if (minAge) filter.age.$gte = parseInt(minAge);
     if (maxAge) filter.age.$lte = parseInt(maxAge);
   }
-
-  // Height range filter - FIXED VERSION
   if (minHeight || maxHeight) {
     filter.height = {};
     if (minHeight) {
       const minHeightNum = parseFloat(minHeight);
-      if (!isNaN(minHeightNum)) {
-        filter.height.$gte = minHeightNum;
-      }
+      if (!isNaN(minHeightNum)) filter.height.$gte = minHeightNum;
     }
     if (maxHeight) {
       const maxHeightNum = parseFloat(maxHeight);
-      if (!isNaN(maxHeightNum)) {
-        filter.height.$lte = maxHeightNum;
-      }
+      if (!isNaN(maxHeightNum)) filter.height.$lte = maxHeightNum;
     }
   }
 
   try {
-    // **NEW**: Get featured profiles (max 4, exclude current user)
-    const featuredFilter = { isFeatured: true };
+    // --- NEW: fetch viewer once, up front, and reuse everywhere below ---
+    const viewerSelect =
+      "name age height gender country city nationality ethnicity highestEducation maritalStatus islamicSect preferredIslamicSect prays bornMuslim preferredAgeRange preferredHeightRange willingToConsiderANonUkCitizen acceptSomeoneWithChildren acceptADivorcedPerson acceptAWidow children isApproved approvalStatus isDeactivated profileCompletenessTier";
 
+    const viewer = req.session.userId
+      ? await User.findById(req.session.userId).select(viewerSelect).lean()
+      : null;
+
+    // --- NEW: same-gender browse detection ---
+    // True only when the visitor has explicitly filtered to their OWN gender.
+    const isSameGenderBrowse = !!(viewer && gender && viewer.gender === gender);
+
+    const featuredFilter = { isFeatured: true };
     const featuredProfiles = await User.find(featuredFilter)
       .limit(4)
-      .sort({ featuredDate: -1 }); // Show most recently featured first
+      .sort({ featuredDate: -1 });
 
-    // **UPDATED**: Exclude featured profiles from regular profiles to avoid duplicates
-    // const excludeIds = [
-    //   ...(req.session.userId ? [req.session.userId] : []),
-    //   ...featuredProfiles.map((profile) => profile._id),
-    // ];
-    // filter._id = { $nin: excludeIds };
     const excludeIds = featuredProfiles.map((profile) => profile._id);
     if (excludeIds.length > 0) {
       filter._id = { $nin: excludeIds };
     }
     const totalProfiles = await User.countDocuments(filter);
 
-    // **NEW**: Handle sorting
     const { sortBy } = req.query;
-    let profiles;
-    const isScoreSort = (sortBy === "top-scores-tier" || sortBy === "top-scores-only") && req.session.userId;
 
+    // --- CHANGED: default depends on same-gender browse, and top-matches
+    // is never allowed to win when same-gender ---
+    let effectiveSort = sortBy || (isSameGenderBrowse ? "newly-created" : "top-matches");
+    if (isSameGenderBrowse && effectiveSort === "top-matches") {
+      effectiveSort = "newly-created";
+    }
+
+    const isScoreSort = effectiveSort === "top-matches" && !!viewer;
+
+    let profiles;
     if (isScoreSort) {
-      // Score-based sorting: fetch all filtered profiles, compute scores in-memory, sort, paginate
       const allFiltered = await User.find(filter)
-        .select("name username age height gender country city ethnicity highestEducation profileSlug profilePic isFeatured featuredDate maritalStatus islamicSect preferredIslamicSect prays bornMuslim willingToConsiderANonUkCitizen acceptSomeoneWithChildren acceptADivorcedPerson acceptAWidow children profileCompletenessTier")
+        .select("name username age height gender country city nationality ethnicity highestEducation profileSlug profilePic isFeatured featuredDate maritalStatus islamicSect preferredIslamicSect prays bornMuslim preferredAgeRange preferredHeightRange willingToConsiderANonUkCitizen acceptSomeoneWithChildren acceptADivorcedPerson acceptAWidow children profileCompletenessTier isApproved approvalStatus isDeactivated")
         .lean();
 
-      // Fetch viewer for score computation
-      const viewer = await User.findById(req.session.userId).select("name age height gender country city ethnicity highestEducation maritalStatus islamicSect preferredIslamicSect prays bornMuslim willingToConsiderANonUkCitizen acceptSomeoneWithChildren acceptADivorcedPerson acceptAWidow children isApproved approvalStatus isDeactivated profileCompletenessTier").lean();
-
-      if (viewer) {
-        const { computeScore } = require("./services/matchScoringService");
-        for (const profile of allFiltered) {
-          const score = computeScore(viewer, profile);
-          profile.matchScore = score.finalScore;
-          profile._matchTier = profile.profileCompletenessTier || "B";
-        }
-        // Sort: by score desc, then tier (A first) for top-scores-tier
-        allFiltered.sort((a, b) => {
-          const diff = (b.matchScore || 0) - (a.matchScore || 0);
-          if (diff !== 0) return diff;
-          if (sortBy === "top-scores-tier") {
-            return (a._matchTier === "A" ? -1 : 1) - (b._matchTier === "A" ? -1 : 1);
-          }
-          return 0;
-        });
+      const { runHardFilters, computeScore } = require("./services/matchScoringService");
+      for (const profile of allFiltered) {
+        const hf = runHardFilters(viewer, profile);
+        profile.matchScore = hf.passed ? computeScore(viewer, profile).finalScore : 0;
       }
-
-      profiles = allFiltered.slice(skip, skip + limit);
-    } else if (sortBy === "random") {
+      const compatible = allFiltered.filter((p) => (p.matchScore || 0) > 0);
+      compatible.sort((a, b) => (b.matchScore || 0) - (a.matchScore || 0));
+      profiles = compatible.slice(skip, skip + limit);
+    } else if (effectiveSort === "random") {
       profiles = await User.aggregate([
         { $match: filter },
         { $skip: skip },
         { $sample: { size: Math.min(limit, totalProfiles) } },
       ]);
     } else {
-      // Default: newly created (most recent first)
       const sortOptions = { createdAt: -1, _id: -1 };
       profiles = await User.find(filter).sort(sortOptions).skip(skip).limit(limit);
     }
 
-    const activeFilters = {
-      gender,
-      minAge,
-      maxAge,
-      minHeight,
-      maxHeight,
-      city,
-      country,
-      nationality,
-    };
-
+    const activeFilters = { gender, minAge, maxAge, minHeight, maxHeight, city, country, nationality };
     const totalPages = Math.ceil(totalProfiles / limit);
 
-    // Get current user's profile if logged in
     let currentUserProfile = null;
     if (req.session.userId) {
       currentUserProfile = await User.findById(req.session.userId);
     }
 
-    // Compute scores in-memory for displayed profiles (logged-in only)
-    if (req.session.userId && profiles.length > 0) {
-      const viewer = await User.findById(req.session.userId).select("name age height gender country city ethnicity highestEducation maritalStatus islamicSect preferredIslamicSect prays bornMuslim willingToConsiderANonUkCitizen acceptSomeoneWithChildren acceptADivorcedPerson acceptAWidow children isApproved approvalStatus isDeactivated profileCompletenessTier").lean();
-      if (viewer) {
-        const { computeScore } = require("./services/matchScoringService");
-        for (const profile of profiles) {
-          profile.matchScore = computeScore(viewer, profile).finalScore;
-        }
-        if (featuredProfiles) {
-          for (const profile of featuredProfiles) {
-            profile.matchScore = computeScore(viewer, profile).finalScore;
-          }
+    // --- CHANGED: reuse `viewer` instead of re-fetching ---
+    if (viewer && profiles.length > 0) {
+      const { runHardFilters, computeScore } = require("./services/matchScoringService");
+      for (const profile of profiles) {
+        const hf = runHardFilters(viewer, profile);
+        profile.matchScore = hf.passed ? computeScore(viewer, profile).finalScore : 0;
+      }
+      if (featuredProfiles) {
+        for (const profile of featuredProfiles) {
+          const hf = runHardFilters(viewer, profile);
+          profile.matchScore = hf.passed ? computeScore(viewer, profile).finalScore : 0;
         }
       }
     }
 
     return res.render("profiles", {
-      featuredProfiles, // **NEW**
+      featuredProfiles,
       profiles,
       filters: Object.keys(req.query).length > 0 ? activeFilters : null,
-      sortBy: sortBy || "newly-created", // **NEW**
+      sortBy: effectiveSort,
       page,
       totalPages,
       totalProfiles,
-      currentUserProfile, // **NEW**: Pass current user's profile for pending notice
-      geoFilterUI, // Geo-based filter UI config (null if no restriction)
+      currentUserProfile,
+      geoFilterUI,
       detectedCountryCode: detectedCountryCode || null,
+      isSameGenderBrowse, // **NEW** — pass to template
     });
   } catch (error) {
     console.error("Error fetching profiles:", error);
@@ -4279,66 +4424,125 @@ app.get("/profiles",requireOnboardingComplete, async (req, res) => {
   }
 });
 // ── Matches Page ────────────────────────────────────────────────────────────
+// app.get("/matches", async (req, res) => {
+//   const page = parseInt(req.query.page) > 0 ? parseInt(req.query.page) : 1;
+//   const limit = 12;
+//   const skip = (page - 1) * limit;
+//   const sortBy = req.query.sortBy || "top-matches";
+
+//   try {
+//     // Not logged in — show signup prompt
+//     if (!req.session.userId) {
+//       return res.render("matches", {
+//         user: null, currentUser: null, matches: [], page: 1, totalPages: 0, sortBy,
+//       });
+//     }
+
+//     const user = await User.findById(req.session.userId);
+//     if (!user) {
+//       return res.render("matches", { user: null, currentUser: null, matches: [], page: 1, totalPages: 0, sortBy });
+//     }
+
+//     // Fetch ALL match scores (no minimum threshold — show everything)
+//     const totalMatches = await MatchScore.countDocuments({ viewerId: user._id, isTopMatch: true });
+
+//     let scoreDocs;
+//     if (sortBy === "random") {
+//       const all = await MatchScore.find({ viewerId: user._id, isTopMatch: true }).lean();
+//       scoreDocs = all.sort(() => Math.random() - 0.5).slice(skip, skip + limit);
+//     } else {
+//       const mongoSort = sortBy === "newly-created" ? { computedAt: -1 } : { finalScore: -1 };
+//       scoreDocs = await MatchScore.find({ viewerId: user._id, isTopMatch: true })
+//         .sort(mongoSort)
+//         .skip(skip)
+//         .limit(limit)
+//         .lean();
+//     }
+
+//     // Fetch viewee profiles
+//     const totalPages = Math.ceil(totalMatches / limit);
+//     const matches = [];
+//     if (scoreDocs.length > 0) {
+//       const vieweeIds = scoreDocs.map(s => s.vieweeId);
+//       const viewees = await User.find({ _id: { $in: vieweeIds } })
+//         .select("name username age city country highestEducation profileSlug gender profilePic profileCompletenessTier")
+//         .lean();
+//       const vieweeMap = {};
+//       for (const v of viewees) vieweeMap[v._id.toString()] = v;
+//       for (const s of scoreDocs) {
+//         const v = vieweeMap[s.vieweeId.toString()];
+//         if (v) matches.push({ ...s, viewee: v });
+//       }
+//     }
+
+//     return res.render("matches", {
+//       user: req.session.user, currentUser: user, matches, page, totalPages, totalMatches, sortBy,
+//     });
+//   } catch (error) {
+//     console.error("Error fetching matches:", error);
+//     return res.render("matches", {
+//       user: req.session.user || null, currentUser: null, matches: [], page: 1, totalPages: 0,
+//       sortBy: "top-matches",
+//     });
+//   }
+// });
 app.get("/matches", async (req, res) => {
   const page = parseInt(req.query.page) > 0 ? parseInt(req.query.page) : 1;
   const limit = 12;
   const skip = (page - 1) * limit;
-  const sortBy = req.query.sortBy || "top-scores-tier";
-
+  const sortBy = req.query.sortBy || "top-matches";
   try {
-    // Not logged in — show signup prompt
     if (!req.session.userId) {
-      return res.render("matches", {
-        user: null, currentUser: null, matches: [], page: 1, totalPages: 0, sortBy,
-      });
+      return res.render("matches", { user: null, currentUser: null, matches: [], page: 1, totalPages: 0, sortBy });
     }
-
     const user = await User.findById(req.session.userId);
     if (!user) {
       return res.render("matches", { user: null, currentUser: null, matches: [], page: 1, totalPages: 0, sortBy });
     }
 
-    // Fetch ALL match scores (no minimum threshold — show everything)
-    const totalMatches = await MatchScore.countDocuments({ viewerId: user._id, isTopMatch: true });
+    // Union of both directions: docs where user is viewer OR viewee, isTopMatch true either way
+    const baseFilter = {
+      isTopMatch: true,
+      $or: [{ viewerId: user._id }, { vieweeId: user._id }],
+    };
+
+    const totalMatches = await MatchScore.countDocuments(baseFilter);
 
     let scoreDocs;
     if (sortBy === "random") {
-      const all = await MatchScore.find({ viewerId: user._id, isTopMatch: true }).lean();
+      const all = await MatchScore.find(baseFilter).lean();
       scoreDocs = all.sort(() => Math.random() - 0.5).slice(skip, skip + limit);
     } else {
       const mongoSort = sortBy === "newly-created" ? { computedAt: -1 } : { finalScore: -1 };
-      scoreDocs = await MatchScore.find({ viewerId: user._id, isTopMatch: true })
-        .sort(mongoSort)
-        .skip(skip)
-        .limit(limit)
-        .lean();
+      scoreDocs = await MatchScore.find(baseFilter).sort(mongoSort).skip(skip).limit(limit).lean();
     }
-
-    // For top-scores-tier: re-sort by score desc, then viewee tier (A first)
-    if (sortBy === "top-scores-tier" && scoreDocs.length > 0) {
-      const vieweeIds = scoreDocs.map(s => s.vieweeId);
-      const tierUsers = await User.find({ _id: { $in: vieweeIds } }).select("profileCompletenessTier").lean();
-      const tierMap = {};
-      for (const t of tierUsers) tierMap[t._id.toString()] = t.profileCompletenessTier || "B";
-      scoreDocs.sort((a, b) => {
-        if (b.finalScore !== a.finalScore) return b.finalScore - a.finalScore;
-        return (tierMap[a.vieweeId.toString()] || "B") === "A" ? -1 : (tierMap[b.vieweeId.toString()] || "B") === "A" ? 1 : 0;
-      });
-    }
-
-    // Fetch viewee profiles
+//can be deleted if not worked.
+const seen = new Map(); // otherUserId -> doc (keep most recent computedAt)
+for (const s of scoreDocs) {
+  const otherId = (s.viewerId.toString() === user._id.toString() ? s.vieweeId : s.viewerId).toString();
+  const existing = seen.get(otherId);
+  if (!existing || new Date(s.computedAt) > new Date(existing.computedAt)) {
+    seen.set(otherId, s);
+  }
+}
+const dedupedDocs = Array.from(seen.values());
     const totalPages = Math.ceil(totalMatches / limit);
     const matches = [];
     if (scoreDocs.length > 0) {
-      const vieweeIds = scoreDocs.map(s => s.vieweeId);
-      const viewees = await User.find({ _id: { $in: vieweeIds } })
+      // Normalize: "viewee" from the user's perspective is whichever side isn't `user`
+      const otherIds = scoreDocs.map(s =>
+        s.viewerId.toString() === user._id.toString() ? s.vieweeId : s.viewerId
+      );
+      const viewees = await User.find({ _id: { $in: otherIds } })
         .select("name username age city country highestEducation profileSlug gender profilePic profileCompletenessTier")
         .lean();
       const vieweeMap = {};
       for (const v of viewees) vieweeMap[v._id.toString()] = v;
+
       for (const s of scoreDocs) {
-        const v = vieweeMap[s.vieweeId.toString()];
-        if (v) matches.push({ ...s, viewee: v });
+        const otherId = (s.viewerId.toString() === user._id.toString() ? s.vieweeId : s.viewerId).toString();
+        const v = vieweeMap[otherId];
+        if (v) matches.push({ ...s, viewee: v }); // finalScore is symmetric, safe to reuse directly
       }
     }
 
@@ -4348,12 +4552,10 @@ app.get("/matches", async (req, res) => {
   } catch (error) {
     console.error("Error fetching matches:", error);
     return res.render("matches", {
-      user: req.session.user || null, currentUser: null, matches: [], page: 1, totalPages: 0,
-      sortBy: "top-scores-tier",
+      user: req.session.user || null, currentUser: null, matches: [], page: 1, totalPages: 0, sortBy: "top-matches",
     });
   }
 });
-
 // ── Match Score API ─────────────────────────────────────────────────────────
 app.get("/api/matches/score/:userId", isLoggedIn, findUser, async (req, res) => {
   try {

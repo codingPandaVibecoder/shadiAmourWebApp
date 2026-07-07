@@ -681,14 +681,20 @@ html {
               <!-- Sort By Dropdown -->
               <div class="flex items-center gap-2">
                 <label class="text-sm font-medium text-gray-700 whitespace-nowrap">Sort by:</label>
-                <select id="sortBySelect" class="px-3 py-2 border border-gray-300 rounded-button focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary text-sm bg-white">
-                  <option value="newly-created" <%= (sortBy === 'newly-created' || !sortBy) ? 'selected' : '' %>>Newly Created</option>
+                <!-- <select id="sortBySelect" class="px-3 py-2 border border-gray-300 rounded-button focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary text-sm bg-white">
                   <% if (typeof user !== 'undefined' && user) { %>
-                  <option value="top-scores-tier" <%= sortBy === 'top-scores-tier' ? 'selected' : '' %>>Top Scores & Completeness</option>
-                  <option value="top-scores-only" <%= sortBy === 'top-scores-only' ? 'selected' : '' %>>Top Scores Only</option>
+                  <option value="top-matches" <%= (!sortBy || sortBy === 'top-matches') ? 'selected' : '' %>>Top Matches</option>
                   <% } %>
+                  <option value="newly-created" <%= sortBy === 'newly-created' ? 'selected' : '' %>>Newly Created</option>
                   <option value="random" <%= sortBy === 'random' ? 'selected' : '' %>>Random</option>
-                </select>
+                </select> -->
+                <select id="sortBySelect" ...>
+  <% if (typeof user !== 'undefined' && user && !isSameGenderBrowse) { %>
+  <option value="top-matches" <%= (!sortBy || sortBy === 'top-matches') ? 'selected' : '' %>>Top Matches</option>
+  <% } %>
+  <option value="newly-created" <%= (sortBy === 'newly-created' || isSameGenderBrowse) ? 'selected' : '' %>>Newly Created</option>
+  <option value="random" <%= sortBy === 'random' ? 'selected' : '' %>>Random</option>
+</select>
               </div>
 
               <!-- Results Count -->
@@ -1354,7 +1360,7 @@ html {
           const urlParams = new URLSearchParams(window.location.search);
 
           // Update or add sortBy parameter
-          if (selectedSort === 'newly-created') {
+          if (selectedSort === 'top-matches') {
             urlParams.delete('sortBy'); // Default, so remove parameter
           } else {
             urlParams.set('sortBy', selectedSort);

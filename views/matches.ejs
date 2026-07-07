@@ -82,10 +82,9 @@
         <div class="flex items-center gap-2">
           <label class="text-sm text-gray-600 whitespace-nowrap">Sort by:</label>
           <select id="matchesSortSelect" class="text-sm border border-gray-300 rounded-lg px-3 py-1.5 bg-white" onchange="window.location.href='/matches?sortBy='+this.value">
-            <option value="top-scores-tier" <%= sortBy === 'top-scores-tier' ? 'selected' : '' %>>Top Scores & Completeness</option>
-            <option value="top-scores-only" <%= sortBy === 'top-scores-only' ? 'selected' : '' %>>Top Scores Only</option>
-            <option value="random" <%= sortBy === 'random' ? 'selected' : '' %>>Random</option>
+            <option value="top-matches" <%= (!sortBy || sortBy === 'top-matches') ? 'selected' : '' %>>Top Matches</option>
             <option value="newly-created" <%= sortBy === 'newly-created' ? 'selected' : '' %>>Newly Created</option>
+            <option value="random" <%= sortBy === 'random' ? 'selected' : '' %>>Random</option>
           </select>
         </div>
       </div>
