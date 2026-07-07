@@ -4340,7 +4340,7 @@ app.get("/profiles", requireOnboardingComplete, async (req, res) => {
     if (excludeIds.length > 0) {
       filter._id = { $nin: excludeIds };
     }
-    const totalProfiles = await User.countDocuments(filter);
+    let totalProfiles = await User.countDocuments(filter);
 
     const { sortBy } = req.query;
 
@@ -4365,7 +4365,12 @@ app.get("/profiles", requireOnboardingComplete, async (req, res) => {
         profile.matchScore = hf.passed ? computeScore(viewer, profile).finalScore : 0;
       }
       const compatible = allFiltered.filter((p) => (p.matchScore || 0) > 0);
-      compatible.sort((a, b) => (b.matchScore || 0) - (a.matchScore || 0));
+      compatible.sort((a, b) =>
+        (b.matchScore || 0) - (a.matchScore || 0) ||
+        a._id.toString().localeCompare(b._id.toString()) // deterministic tiebreak — prevents
+        // the same profile shifting between page 1 and page 2 on equal scores
+      );
+      totalProfiles = compatible.length; // hard filters exclude people the base count includes
       profiles = compatible.slice(skip, skip + limit);
     } else if (effectiveSort === "random") {
       profiles = await User.aggregate([
@@ -4506,30 +4511,40 @@ app.get("/matches", async (req, res) => {
       $or: [{ viewerId: user._id }, { vieweeId: user._id }],
     };
 
-    const totalMatches = await MatchScore.countDocuments(baseFilter);
+    // Fetch ALL matching docs first — dedup must happen BEFORE pagination,
+    // otherwise a page can silently shrink below `limit` after collapsing duplicates.
+    const allScoreDocs = await MatchScore.find(baseFilter).lean();
 
-    let scoreDocs;
-    if (sortBy === "random") {
-      const all = await MatchScore.find(baseFilter).lean();
-      scoreDocs = all.sort(() => Math.random() - 0.5).slice(skip, skip + limit);
-    } else {
-      const mongoSort = sortBy === "newly-created" ? { computedAt: -1 } : { finalScore: -1 };
-      scoreDocs = await MatchScore.find(baseFilter).sort(mongoSort).skip(skip).limit(limit).lean();
+    // Dedup: a mutual top-match produces two directional docs for the same pair
+    // (viewer:A→viewee:B AND viewer:B→viewee:A). Keep the most recently computed one.
+    const seen = new Map(); // otherUserId -> doc
+    for (const s of allScoreDocs) {
+      const otherId = (s.viewerId.toString() === user._id.toString() ? s.vieweeId : s.viewerId).toString();
+      const existing = seen.get(otherId);
+      if (!existing || new Date(s.computedAt) > new Date(existing.computedAt)) {
+        seen.set(otherId, s);
+      }
     }
-//can be deleted if not worked.
-const seen = new Map(); // otherUserId -> doc (keep most recent computedAt)
-for (const s of scoreDocs) {
-  const otherId = (s.viewerId.toString() === user._id.toString() ? s.vieweeId : s.viewerId).toString();
-  const existing = seen.get(otherId);
-  if (!existing || new Date(s.computedAt) > new Date(existing.computedAt)) {
-    seen.set(otherId, s);
-  }
-}
-const dedupedDocs = Array.from(seen.values());
+    let dedupedDocs = Array.from(seen.values());
+
+    // Sort the deduped set (was previously done in Mongo before dedup — now done after, in JS)
+    if (sortBy === "random") {
+      dedupedDocs = dedupedDocs.sort(() => Math.random() - 0.5);
+    } else if (sortBy === "newly-created") {
+      dedupedDocs.sort((a, b) => new Date(b.computedAt) - new Date(a.computedAt));
+    } else {
+      dedupedDocs.sort((a, b) =>
+        (b.finalScore - a.finalScore) ||
+        a.vieweeId.toString().localeCompare(b.vieweeId.toString()) // deterministic tiebreak
+      );
+    }
+
+    const totalMatches = dedupedDocs.length; // was countDocuments(baseFilter) — inflated by mutual matches
     const totalPages = Math.ceil(totalMatches / limit);
+    const scoreDocs = dedupedDocs.slice(skip, skip + limit);
+
     const matches = [];
     if (scoreDocs.length > 0) {
-      // Normalize: "viewee" from the user's perspective is whichever side isn't `user`
       const otherIds = scoreDocs.map(s =>
         s.viewerId.toString() === user._id.toString() ? s.vieweeId : s.viewerId
       );
@@ -4542,7 +4557,7 @@ const dedupedDocs = Array.from(seen.values());
       for (const s of scoreDocs) {
         const otherId = (s.viewerId.toString() === user._id.toString() ? s.vieweeId : s.viewerId).toString();
         const v = vieweeMap[otherId];
-        if (v) matches.push({ ...s, viewee: v }); // finalScore is symmetric, safe to reuse directly
+        if (v) matches.push({ ...s, viewee: v });
       }
     }
 
@@ -5000,13 +5015,29 @@ app.get("/api/admin/matches/user/:userId", requireAdminOrModerator, async (req, 
     if (!user) return res.json({ success: false, error: "User not found" });
 
     // v2: Only TopMatch scores are persisted. Fetch isTopMatch:true for this viewer.
-    const scores = await MatchScore.find({ viewerId: userId, isTopMatch: true })
-      .sort({ finalScore: -1 })
-      .limit(15)
-      .lean();
+   // v2: Only TopMatch scores are persisted. Union both directions, same as /matches.
+    const baseFilter = {
+      isTopMatch: true,
+      $or: [{ viewerId: userId }, { vieweeId: userId }],
+    };
+    const allScores = await MatchScore.find(baseFilter).lean();
+
+    const seen = new Map();
+    for (const s of allScores) {
+      const otherId = (s.viewerId.toString() === userId ? s.vieweeId : s.viewerId).toString();
+      const existing = seen.get(otherId);
+      if (!existing || new Date(s.computedAt) > new Date(existing.computedAt)) {
+        seen.set(otherId, s);
+      }
+    }
+    const scores = Array.from(seen.values())
+      .sort((a, b) => b.finalScore - a.finalScore)
+      .slice(0, 15);
 
     // Fetch viewee profile data for all matches
-    const vieweeIds = scores.map(s => s.vieweeId);
+    const vieweeIds = scores.map(s =>
+      s.viewerId.toString() === userId ? s.vieweeId : s.viewerId
+    );
     const matchSelect = "name username age gender email contact city country nationality ethnicity height maritalStatus islamicSect preferredIslamicSect prays bornMuslim highestEducation work profileCompletenessTier isApproved isDeactivated preferredAgeRange preferredHeightRange willingToConsiderANonUkCitizen acceptSomeoneWithChildren acceptADivorcedPerson acceptAWidow aboutMe lookingForASpouseThatIs children";
     const viewees = await User.find({ _id: { $in: vieweeIds } })
       .select(matchSelect)
@@ -5017,10 +5048,10 @@ app.get("/api/admin/matches/user/:userId", requireAdminOrModerator, async (req, 
       vieweeMap[v._id.toString()] = v;
     }
 
-    const matches = scores.map(s => ({
-      ...s,
-      viewee: vieweeMap[s.vieweeId.toString()] || null,
-    })).filter(m => m.viewee !== null);
+    const matches = scores.map(s => {
+      const otherId = (s.viewerId.toString() === userId ? s.vieweeId : s.viewerId).toString();
+      return { ...s, viewee: vieweeMap[otherId] || null };
+    }).filter(m => m.viewee !== null);
 
     res.json({ success: true, user, matches, isTopMatchQuery: true });
   } catch (error) {
@@ -5117,14 +5148,37 @@ app.get("/api/admin/matches/top", requireAdminOrModerator, async (req, res) => {
     else sortOpt = { finalScore: -1 }; // score-desc (default)
 
     // Get total count for load-more tracking
-    const totalCount = await MatchScore.countDocuments({ isTopMatch: true });
+   const pairKeyStage = {
+      $addFields: {
+        pairKey: {
+          $cond: [
+            { $lt: ["$viewerId", "$vieweeId"] },
+            { $concat: [{ $toString: "$viewerId" }, "_", { $toString: "$vieweeId" }] },
+            { $concat: [{ $toString: "$vieweeId" }, "_", { $toString: "$viewerId" }] },
+          ],
+        },
+      },
+    };
 
-    const scores = await MatchScore.find({ isTopMatch: true })
-      .sort(sortOpt)
-      .skip(offset)
-      .limit(limit)
-      .lean();
+    // Get deduped total count for load-more tracking
+    const totalCountAgg = await MatchScore.aggregate([
+      { $match: { isTopMatch: true } },
+      pairKeyStage,
+      { $group: { _id: "$pairKey" } },
+      { $count: "total" },
+    ]);
+    const totalCount = totalCountAgg[0]?.total || 0;
 
+    const scores = await MatchScore.aggregate([
+      { $match: { isTopMatch: true } },
+      pairKeyStage,
+      { $sort: { computedAt: -1 } },       // pick a deterministic "keep" doc per pair
+      { $group: { _id: "$pairKey", doc: { $first: "$$ROOT" } } },
+      { $replaceRoot: { newRoot: "$doc" } },
+      { $sort: sortOpt },
+      { $skip: offset },
+      { $limit: limit },
+    ]);
     // Guard: no scores computed yet
     if (!scores || scores.length === 0) {
       return res.json({ success: true, pairs: [], totalCount, hasMore: false });

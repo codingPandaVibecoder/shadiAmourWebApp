@@ -23,8 +23,8 @@ async function main() {
   console.log("╚══════════════════════════════════════════╝");
   console.log("");
 
-  // const mongoUri = process.env.MONGODB_URI || "mongodb://localhost:27017/damour-muslim";
-  const mongoUri = "mongodb://localhost:27017/test";
+  const mongoUri = process.env.MONGODB_URI;
+  // const mongoUri = "mongodb://localhost:27017/test";
   console.log(`🔌 Connecting to MongoDB...`);
   await mongoose.connect(mongoUri);
   console.log("✅ MongoDB connected");
