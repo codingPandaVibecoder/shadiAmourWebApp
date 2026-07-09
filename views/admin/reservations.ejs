@@ -175,7 +175,7 @@
                   </div>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                  <%= reservation.phoneOrEmail %>
+                  <%= reservation.countryCode ? reservation.countryCode + ' ' : '' %><%= reservation.phoneOrEmail %>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                   <%= new Date(reservation.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) %>

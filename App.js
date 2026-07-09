@@ -338,6 +338,7 @@ const {
   sendPasswordResetEmail,
   sendProfileApprovalEmail,
   sendMarriageGuide,
+  sendReservationNotification,
 } = require("./services/emailService");
 const requireProfileComplete = require("./middlewares/requireProfileComplete");
 const requireOnboardingComplete = require("./middlewares/requireOnboardingComplete");
@@ -6763,13 +6764,13 @@ app.post("/api/newsletter/subscribe", async (req, res) => {
 
 app.post("/api/reservations/book", async (req, res) => {
   try {
-    const { name, phoneOrEmail, date, time, source, pageUrl } = req.body;
+    const { name, phone, countryCode, date, time, source, pageUrl } = req.body;
 
     // Validate required fields
-    if (!name || !phoneOrEmail || !date || !time) {
+    if (!name || !phone || !date || !time) {
       return res.status(400).json({
         success: false,
-        error: "All fields are required (name, phone/email, date, time)",
+        error: "All fields are required (name, phone, date, time)",
       });
     }
 
@@ -6795,7 +6796,8 @@ app.post("/api/reservations/book", async (req, res) => {
     // Create reservation
     const reservation = new Reservation({
       name: name.trim(),
-      phoneOrEmail: phoneOrEmail.trim(),
+      phoneOrEmail: phone.trim(),
+      countryCode: (countryCode || "").trim(),
       date: bookingDate,
       time: time.trim(),
       source: source || "floating_button",
@@ -6805,6 +6807,11 @@ app.post("/api/reservations/book", async (req, res) => {
     });
 
     await reservation.save();
+
+    // Send email notification (fire-and-forget — don't block response)
+    sendReservationNotification(reservation).catch(err =>
+      console.error("Reservation notification email failed:", err)
+    );
 
     console.log("New reservation booked:", reservation.name, reservation.date, reservation.source);
 
