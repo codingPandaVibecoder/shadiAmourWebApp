@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Complete Your Profile - D'amour Muslim</title>
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+  <link rel="manifest" href="/images/site.webmanifest">
+  <meta name="theme-color" content="#E91E63">
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="stylesheet" href="/css/output.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+  <style>
+    :where([class^="ri-"])::before { content: "\f3c2"; }
+    .material-shadow { box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); }
+    .gradient-bg { background: linear-gradient(135deg, #E91E63 0%, #673AB7 100%); }
+    .form-input {
+      width: 100%; padding: 0.75rem 1rem; border: 1px solid #d1d5db;
+      border-radius: 0.75rem; font-size: 1rem; color: #111827; background-color: white; transition: all 0.2s;
+    }
+    .form-input:focus { outline: none; border-color: #E91E63; box-shadow: 0 0 0 2px rgba(233,30,99,0.2); }
+    .form-select {
+      width: 100%; padding: 0.75rem 2.5rem 0.75rem 1rem; border: 1px solid #d1d5db;
+      border-radius: 0.75rem; font-size: 1rem; color: #111827; background-color: white;
+      appearance: none; background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+      background-position: right 0.75rem center; background-repeat: no-repeat; background-size: 1.5em 1.5em; transition: all 0.2s;
+    }
+    .form-select:focus { outline: none; border-color: #E91E63; box-shadow: 0 0 0 2px rgba(233,30,99,0.2); }
+    .form-label { display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 0.5rem; }
+    .section-card { background: white; border-radius: 1rem; padding: 1.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+  </style>
+  <%- include('partials/clarity') %>
+  <%- include('partials/thirdparty') %>
+  <%- include('partials/analytics') %>
+</head>
+
+<body class="bg-gray-50 font-['Roboto']">
+  <%- include('partials/header') %>
+
+  <main class="pt-24 pb-16 min-h-screen">
+    <div class="max-w-2xl mx-auto px-4 sm:px-6">
+
+      <div class="text-center mb-8">
+        <div class="w-16 h-16 bg-pink-50 rounded-full flex items-center justify-center mx-auto mb-4">
+          <i class="ri-profile-line text-3xl text-pink-500"></i>
+        </div>
+        <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 mb-2 font-['Playfair_Display']">Complete Your Profile</h2>
+        <p class="text-gray-600 text-sm">Fill in the missing details to get more accurate match scores</p>
+      </div>
+
+      <form id="legacyProfileForm" class="space-y-6">
+
+        <!-- Islamic Identity -->
+        <div class="section-card">
+          <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
+            <i class="ri-star-smile-line text-emerald-600"></i> Islamic Identity
+          </h3>
+          <div class="space-y-4">
+            <div>
+              <label for="islamicSect" class="form-label">Islamic Sect <span class="text-red-500">*</span></label>
+              <select id="islamicSect" name="islamicSect" class="form-select">
+                <option value="">Select Islamic sect</option>
+                <option value="Sunni">Sunni</option><option value="Shia">Shia</option><option value="Ibadi">Ibadi</option>
+                <option value="Sufi">Sufi</option><option value="Ahmadiyya">Ahmadiyya</option>
+                <option value="Hanafi">Hanafi</option><option value="Maliki">Maliki</option>
+                <option value="Shafi'i">Shafi'i</option><option value="Hanbali">Hanbali</option>
+                <option value="Salafi">Salafi</option><option value="Deobandi">Deobandi</option>
+                <option value="Barelvi">Barelvi</option><option value="Ahle Hadith">Ahle Hadith</option>
+                <option value="Non-denominational">Non-denominational</option>
+              </select>
+            </div>
+            <div>
+              <label for="prays" class="form-label">Do they pray regularly? <span class="text-red-500">*</span></label>
+              <select id="prays" name="prays" class="form-select">
+                <option value="">Select</option>
+                <option value="true">Yes</option>
+                <option value="false">No</option>
+              </select>
+            </div>
+            <div>
+              <label for="bornMuslim" class="form-label">Were they born Muslim? <span class="text-red-500">*</span></label>
+              <select id="bornMuslim" name="bornMuslim" class="form-select">
+                <option value="">Select</option>
+                <option value="true">Yes</option>
+                <option value="false">No</option>
+              </select>
+            </div>
+            <div>
+              <label for="islamIsImportantToMeInfo" class="form-label">How important is Islam to them? <span class="text-red-500">*</span></label>
+              <textarea id="islamIsImportantToMeInfo" name="islamIsImportantToMeInfo" class="form-input" style="min-height:120px;resize:none;" placeholder="Describe the importance of Islam in their life..." minlength="30"></textarea>
+              <p class="text-xs text-gray-500 mt-1"><span id="islamCharCount">0</span>/30 characters minimum</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Location -->
+        <div class="section-card">
+          <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
+            <i class="ri-map-pin-line text-green-600"></i> Location
+          </h3>
+          <div class="space-y-4">
+            <div>
+              <label for="nationality" class="form-label">Nationality <span class="text-red-500">*</span></label>
+              <input type="text" id="nationality" name="nationality" class="form-input" placeholder="e.g., British, Pakistani, Indian">
+            </div>
+            <div>
+              <label for="ethnicity" class="form-label">Ethnicity <span class="text-red-500">*</span></label>
+              <select id="ethnicity" name="ethnicity" class="form-select">
+                <option value="">Select ethnicity</option>
+                <option value="British">British</option><option value="Pakistani">Pakistani</option>
+                <option value="Indian">Indian</option><option value="Bangladeshi">Bangladeshi</option>
+                <option value="Other">Other</option><option value="N/A">N/A</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- About -->
+        <div class="section-card">
+          <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
+            <i class="ri-heart-2-line text-amber-600"></i> About
+          </h3>
+          <div>
+            <label for="lookingForASpouseThatIs" class="form-label">What kind of spouse are they looking for? <span class="text-red-500">*</span></label>
+            <textarea id="lookingForASpouseThatIs" name="lookingForASpouseThatIs" class="form-input" style="min-height:100px;resize:none;" placeholder="Describe the type of spouse they are looking for..." minlength="5"></textarea>
+            <p class="text-xs text-gray-500 mt-1"><span id="lookingCharCount">0</span>/5 characters minimum</p>
+          </div>
+        </div>
+
+        <!-- Partner Preferences -->
+        <div class="section-card">
+          <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
+            <i class="ri-heart-line text-rose-600"></i> Partner Preferences
+          </h3>
+          <div class="space-y-4">
+            <div>
+              <label class="form-label">Preferred Age Range <span class="text-red-500">*</span></label>
+              <div class="flex items-center gap-3">
+                <input type="number" id="preferredAgeFrom" name="preferredAgeFrom" min="18" max="99" class="form-input w-24 text-center" placeholder="From">
+                <span class="text-gray-400">to</span>
+                <input type="number" id="preferredAgeTo" name="preferredAgeTo" min="18" max="99" class="form-input w-24 text-center" placeholder="To">
+              </div>
+            </div>
+            <div>
+              <label class="form-label">Preferred Height Range <span class="text-red-500">*</span></label>
+              <div class="flex items-center gap-3">
+                <input type="number" id="preferredHeightFrom" name="preferredHeightFrom" min="140" max="250" class="form-input w-24 text-center" placeholder="cm">
+                <span class="text-gray-400">to</span>
+                <input type="number" id="preferredHeightTo" name="preferredHeightTo" min="140" max="250" class="form-input w-24 text-center" placeholder="cm">
+              </div>
+            </div>
+            <div>
+              <label for="preferredIslamicSect" class="form-label">Preferred Islamic Sect <span class="text-red-500">*</span></label>
+              <select id="preferredIslamicSect" name="preferredIslamicSect" class="form-select">
+                <option value="Any Islamic Sect">Any Islamic Sect</option>
+                <option value="Sunni">Sunni</option><option value="Shia">Shia</option><option value="Hanafi">Hanafi</option>
+                <option value="Maliki">Maliki</option><option value="Shafi'i">Shafi'i</option><option value="Hanbali">Hanbali</option>
+                <option value="Salafi">Salafi</option><option value="Deobandi">Deobandi</option><option value="Barelvi">Barelvi</option>
+                <option value="Non-denominational">Non-denominational</option>
+              </select>
+            </div>
+            <div>
+              <label for="willingToConsiderANonUkCitizen" class="form-label">Willing to Consider a Non-UK Citizen <span class="text-red-500">*</span></label>
+              <select id="willingToConsiderANonUkCitizen" name="willingToConsiderANonUkCitizen" class="form-select">
+                <option value="">Select</option>
+                <option value="Yes">Yes</option><option value="No">No</option>
+                <option value="Depends on location">Depends on location</option><option value="N/A">N/A</option>
+              </select>
+            </div>
+            <div>
+              <label for="acceptSomeoneWithChildren" class="form-label">Accept Someone with Children <span class="text-red-500">*</span></label>
+              <select id="acceptSomeoneWithChildren" name="acceptSomeoneWithChildren" class="form-select">
+                <option value="">Select</option>
+                <option value="true">Yes</option><option value="false">No</option>
+              </select>
+            </div>
+            <div>
+              <label for="acceptADivorcedPerson" class="form-label">Accept a Divorced Person <span class="text-red-500">*</span></label>
+              <select id="acceptADivorcedPerson" name="acceptADivorcedPerson" class="form-select">
+                <option value="">Select</option>
+                <option value="true">Yes</option><option value="false">No</option>
+              </select>
+            </div>
+            <div>
+              <label for="acceptAWidow" class="form-label">Accept a Widow <span class="text-red-500">*</span></label>
+              <select id="acceptAWidow" name="acceptAWidow" class="form-select">
+                <option value="">Select</option>
+                <option value="true">Yes</option><option value="false">No</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Submit -->
+        <button type="submit" id="submitBtn" class="w-full py-3.5 bg-primary text-white hover:bg-pink-600 transition-all duration-300 rounded-xl material-shadow font-medium text-lg">
+          <i class="ri-save-line mr-2"></i> Save & Update Profile
+        </button>
+      </form>
+
+      <div class="mt-4 bg-blue-50 border border-blue-200 rounded-xl p-4 text-center">
+        <p class="text-sm text-blue-700"><i class="ri-information-line mr-1"></i> After saving, your match scores will be recalculated to reflect your updated profile.</p>
+      </div>
+
+    </div>
+  </main>
+
+  <%- include('partials/footer') %>
+
+  <script>
+    // Pre-populate form with existing user data
+    const userData = <%- JSON.stringify(userData || {}) %>;
+
+    function setVal(id, value) {
+      const el = document.getElementById(id);
+      if (!el || value === null || value === undefined || value === '') return;
+      if (el.tagName === 'SELECT') {
+        // Normalize boolean strings
+        const norm = value === true ? 'true' : value === false ? 'false' : String(value);
+        for (const opt of el.options) {
+          if (opt.value === norm || opt.value === value) { el.value = opt.value; break; }
+        }
+      } else {
+        el.value = value;
+      }
+    }
+
+    // Map DB fields to form fields
+    setVal('islamicSect', userData.islamicSect);
+    setVal('prays', userData.prays);
+    setVal('bornMuslim', userData.bornMuslim);
+    setVal('islamIsImportantToMeInfo', userData.islamIsImportantToMeInfo);
+    setVal('nationality', userData.nationality);
+    setVal('ethnicity', userData.ethnicity);
+    setVal('lookingForASpouseThatIs', userData.lookingForASpouseThatIs);
+    setVal('preferredIslamicSect', userData.preferredIslamicSect);
+    setVal('willingToConsiderANonUkCitizen', userData.willingToConsiderANonUkCitizen);
+    setVal('acceptSomeoneWithChildren', userData.acceptSomeoneWithChildren);
+    setVal('acceptADivorcedPerson', userData.acceptADivorcedPerson);
+    setVal('acceptAWidow', userData.acceptAWidow);
+
+    // Parse preferredAgeRange "25-30" → from/to fields
+    if (userData.preferredAgeRange) {
+      const parts = userData.preferredAgeRange.split('-');
+      if (parts.length === 2) {
+        document.getElementById('preferredAgeFrom').value = parts[0].trim();
+        document.getElementById('preferredAgeTo').value = parts[1].trim();
+      }
+    }
+    // Parse preferredHeightRange "150-180" → from/to fields
+    if (userData.preferredHeightRange) {
+      const parts = userData.preferredHeightRange.split('-');
+      if (parts.length === 2) {
+        document.getElementById('preferredHeightFrom').value = parts[0].trim();
+        document.getElementById('preferredHeightTo').value = parts[1].trim();
+      }
+    }
+
+    // Char counters
+    const islamField = document.getElementById('islamIsImportantToMeInfo');
+    const islamCounter = document.getElementById('islamCharCount');
+    if (islamField && islamCounter) {
+      islamField.addEventListener('input', function() {
+        islamCounter.textContent = this.value.length;
+        islamCounter.style.color = this.value.length < 30 ? '#ef4444' : '#10b981';
+      });
+      islamCounter.textContent = islamField.value.length;
+      islamCounter.style.color = islamField.value.length < 30 ? '#ef4444' : '#10b981';
+    }
+
+    const lookingField = document.getElementById('lookingForASpouseThatIs');
+    const lookingCounter = document.getElementById('lookingCharCount');
+    if (lookingField && lookingCounter) {
+      lookingField.addEventListener('input', function() {
+        lookingCounter.textContent = this.value.length;
+        lookingCounter.style.color = this.value.length < 5 ? '#ef4444' : '#10b981';
+      });
+      lookingCounter.textContent = lookingField.value.length;
+      lookingCounter.style.color = lookingField.value.length < 5 ? '#ef4444' : '#10b981';
+    }
+
+    // Form submission
+    document.getElementById('legacyProfileForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const btn = document.getElementById('submitBtn');
+      btn.disabled = true;
+      btn.innerHTML = '<i class="ri-loader-4-line animate-spin mr-2"></i>Saving...';
+
+      const data = {
+        islamicSect: document.getElementById('islamicSect').value,
+        prays: document.getElementById('prays').value,
+        bornMuslim: document.getElementById('bornMuslim').value,
+        islamIsImportantToMeInfo: document.getElementById('islamIsImportantToMeInfo').value,
+        nationality: document.getElementById('nationality').value,
+        ethnicity: document.getElementById('ethnicity').value,
+        lookingForASpouseThatIs: document.getElementById('lookingForASpouseThatIs').value,
+        preferredAgeFrom: document.getElementById('preferredAgeFrom').value,
+        preferredAgeTo: document.getElementById('preferredAgeTo').value,
+        preferredHeightFrom: document.getElementById('preferredHeightFrom').value,
+        preferredHeightTo: document.getElementById('preferredHeightTo').value,
+        preferredIslamicSect: document.getElementById('preferredIslamicSect').value,
+        willingToConsiderANonUkCitizen: document.getElementById('willingToConsiderANonUkCitizen').value,
+        acceptSomeoneWithChildren: document.getElementById('acceptSomeoneWithChildren').value,
+        acceptADivorcedPerson: document.getElementById('acceptADivorcedPerson').value,
+        acceptAWidow: document.getElementById('acceptAWidow').value,
+      };
+
+      try {
+        const resp = await fetch('/api/complete-legacy-profile', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data),
+        });
+        const result = await resp.json();
+        if (result.success) {
+          window.location.href = '/account/info?from=legacy-profile';
+        } else {
+          alert(result.error || 'Failed to save. Please try again.');
+          btn.disabled = false;
+          btn.innerHTML = '<i class="ri-save-line mr-2"></i>Save & Update Profile';
+        }
+      } catch (err) {
+        console.error(err);
+        alert('An error occurred. Please try again.');
+        btn.disabled = false;
+        btn.innerHTML = '<i class="ri-save-line mr-2"></i>Save & Update Profile';
+      }
+    });
+  </script>
+</body>
+
+</html>

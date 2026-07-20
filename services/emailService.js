@@ -375,6 +375,7 @@ module.exports = {
   sendProfileApprovalEmail,
   sendZeptoMail,
   sendMarriageGuide,
+  sendReservationNotification,
 };
 
 async function sendMarriageGuide(email) {
@@ -435,4 +436,86 @@ async function sendMarriageGuide(email) {
   const textBody = `Your Free Halal Marriage Guide — shadiamour\n\nAssalamu Alaikum,\n\nThank you for requesting our Free Halal Marriage Guide (UK). Download it here:\n${pdfUrl}\n\nReady to find your Muslim spouse? Visit https://shadiamour.com/register\n\nshadiamour — London, UK`;
 
   return sendZeptoMail(email, subject, htmlBody, textBody);
+}
+
+// Send reservation notification email to admin
+async function sendReservationNotification(reservation) {
+  const adminEmail = "ayesha.tanveer879@gmail.com";
+  const subject = `📅 New Reservation: ${reservation.name} — ${reservation.date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })} at ${reservation.time}`;
+
+  const phoneDisplay = reservation.countryCode
+    ? `${reservation.countryCode} ${reservation.phoneOrEmail}`
+    : reservation.phoneOrEmail;
+
+  const sourceLabel = (reservation.source || "website").replace(/_/g, " ");
+
+  const htmlBody = `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>New Reservation</title>
+    </head>
+    <body style="margin:0;padding:0;background:#f9fafb;font-family:'Roboto',Arial,sans-serif;">
+      <table width="100%" cellpadding="0" cellspacing="0" style="background:#f9fafb;padding:32px 16px;">
+        <tr><td align="center">
+          <table width="560" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.08);">
+            <!-- Header -->
+            <tr>
+              <td style="background:linear-gradient(135deg,#E91E63 0%,#673AB7 100%);padding:30px 40px;text-align:center;">
+                <h1 style="margin:0;color:#ffffff;font-size:26px;font-weight:700;font-family:'Playfair Display',Georgia,serif;">New Reservation Booked</h1>
+                <p style="margin:8px 0 0;color:rgba(255,255,255,0.85);font-size:14px;">D'amour Muslim — Free Consultation</p>
+              </td>
+            </tr>
+            <!-- Body -->
+            <tr>
+              <td style="padding:40px;">
+                <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:24px;">
+                  <tr>
+                    <td style="padding:12px 16px;background:#f9fafb;border-radius:8px;font-size:14px;color:#6b7280;width:120px;">👤 Name</td>
+                    <td style="padding:12px 16px;font-size:15px;color:#1f2937;font-weight:600;">${reservation.name}</td>
+                  </tr>
+                  <tr>
+                    <td style="padding:12px 16px;font-size:14px;color:#6b7280;">📞 Phone</td>
+                    <td style="padding:12px 16px;font-size:15px;color:#1f2937;font-weight:600;">${phoneDisplay}</td>
+                  </tr>
+                  <tr>
+                    <td style="padding:12px 16px;background:#f9fafb;border-radius:8px;font-size:14px;color:#6b7280;">📅 Date</td>
+                    <td style="padding:12px 16px;background:#f9fafb;border-radius:8px;font-size:15px;color:#1f2937;font-weight:600;">${reservation.date.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}</td>
+                  </tr>
+                  <tr>
+                    <td style="padding:12px 16px;font-size:14px;color:#6b7280;">⏰ Time</td>
+                    <td style="padding:12px 16px;font-size:15px;color:#1f2937;font-weight:600;">${reservation.time}</td>
+                  </tr>
+                  <tr>
+                    <td style="padding:12px 16px;background:#f9fafb;border-radius:8px;font-size:14px;color:#6b7280;">📍 Source</td>
+                    <td style="padding:12px 16px;background:#f9fafb;border-radius:8px;font-size:15px;color:#1f2937;">${sourceLabel}</td>
+                  </tr>
+                  ${reservation.pageUrl ? `
+                  <tr>
+                    <td style="padding:12px 16px;font-size:14px;color:#6b7280;">🌐 Page</td>
+                    <td style="padding:12px 16px;font-size:13px;color:#6b7280;"><a href="${reservation.pageUrl}" style="color:#E91E63;">${reservation.pageUrl}</a></td>
+                  </tr>` : ''}
+                </table>
+                <a href="https://damourmuslim.com/admin/reservations" style="display:inline-block;background:linear-gradient(135deg,#E91E63 0%,#673AB7 100%);color:#ffffff;text-decoration:none;font-size:15px;font-weight:700;padding:12px 28px;border-radius:50px;box-shadow:0 4px 12px rgba(233,30,99,0.3);">🔗 View in Admin Panel</a>
+              </td>
+            </tr>
+            <!-- Footer -->
+            <tr>
+              <td style="background:#f9fafb;padding:24px 40px;text-align:center;border-top:1px solid #f3f4f6;">
+                <p style="margin:0 0 6px;color:#9ca3af;font-size:12px;">D'amour Muslim &bull; London, UK</p>
+                <p style="margin:0;color:#d1d5db;font-size:11px;">This is an automated reservation notification.</p>
+              </td>
+            </tr>
+          </table>
+        </td></tr>
+      </table>
+    </body>
+    </html>
+  `;
+
+  const textBody = `NEW RESERVATION — D'amour Muslim\n\nName: ${reservation.name}\nPhone: ${phoneDisplay}\nDate: ${reservation.date.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}\nTime: ${reservation.time}\nSource: ${sourceLabel}\n${reservation.pageUrl ? `Page: ${reservation.pageUrl}\n` : ''}\nView in admin: https://damourmuslim.com/admin/reservations`;
+
+  return sendZeptoMail(adminEmail, subject, htmlBody, textBody);
 }

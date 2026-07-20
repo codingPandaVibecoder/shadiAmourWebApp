@@ -170,6 +170,9 @@ const userSchema = new mongoose.Schema({
   islamicSect: {
     type: String,
   },
+  preferredIslamicSect: {
+    type: String,
+  },
   prays: {
     type: Boolean,
   },
@@ -449,6 +452,39 @@ const userSchema = new mongoose.Schema({
   },
   deactivationReason: {
     type: String,
+    default: null,
+  },
+  // LLM-generated match narratives cache (keyed by other user's ID)
+  matchNarrativeCache: {
+    type: Map,
+    of: String,
+    default: {},
+  },
+
+  // Profile completeness tier for matching system
+  // Tier A: all new-onboarding fields populated
+  // Tier B: missing some or all new fields (legacy users)
+  profileCompletenessTier: {
+    type: String,
+    enum: ["A", "B"],
+    default: null,
+  },
+
+  // When the tier was last calculated
+  profileTierCalculatedAt: {
+    type: Date,
+    default: null,
+  },
+
+  // When set, this user's match scores are stale and need recomputation
+  matchScoresStaleSince: {
+    type: Date,
+    default: null,
+  },
+
+  // Whether onboarding was completed (for legacy vs new user detection)
+  onboardingCompletedAt: {
+    type: Date,
     default: null,
   },
 });

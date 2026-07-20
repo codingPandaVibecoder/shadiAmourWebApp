@@ -1,5 +1,43 @@
 const slugify = require("slugify");
 const User = require("../models/user");
+
+/**
+ * Compute the profile completeness tier for matching system.
+ * Tier A: all 11 new-onboarding fields are populated
+ * Tier B: any field is missing (legacy or incomplete)
+ * 
+ * Returns "A" or "B".
+ */
+function computeProfileTier(user) {
+  const requiredFields = [
+    "islamIsImportantToMeInfo",
+    "nationality",
+    "ethnicity",
+    "lookingForASpouseThatIs",
+    "preferredAgeRange",
+    "preferredHeightRange",
+    "preferredIslamicSect",
+    "willingToConsiderANonUkCitizen",
+    "acceptSomeoneWithChildren",
+    "acceptADivorcedPerson",
+    "acceptAWidow",
+  ];
+
+  for (const field of requiredFields) {
+    const value = user[field];
+    if (value === null || value === undefined || value === "" || value === "N/A") {
+      return "B";
+    }
+  }
+
+  // Additional check: islamIsImportantToMeInfo must be at least 30 chars
+  if (user.islamIsImportantToMeInfo && user.islamIsImportantToMeInfo.length < 30) {
+    return "B";
+  }
+
+  return "A";
+}
+
 function calculateProfileCompletion(user) {
   const totalFields = 64; // Total possible fields
 
@@ -238,16 +276,9 @@ async function findSimilarProfiles(profile, limit = 3, userId = null) {
 }
 
 module.exports = {
-  // ...existing exports...
   calculateProfileCompletion,
   generateProfileSlug,
   generateUniqueSlug,
-  findSimilarProfiles // Add the new function to exports
-};
-
-module.exports = {
-  calculateProfileCompletion,
-  generateProfileSlug,
-  generateUniqueSlug,
-  findSimilarProfiles
+  findSimilarProfiles,
+  computeProfileTier,
 };

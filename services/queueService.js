@@ -31,6 +31,20 @@ const notificationQueue = new Queue("notifications", {
   },
 });
 
+// ── Match Scoring Queue ─────────────────────────────────────────────────────
+const matchScoringQueue = new Queue("match-scoring", {
+  connection: queueConnection,
+  defaultJobOptions: {
+    attempts: 2,
+    backoff: {
+      type: "exponential",
+      delay: 5000,
+    },
+    removeOnComplete: 50,
+    removeOnFail: 20,
+  },
+});
+
 // Email templates for different request types
 const emailTemplates = {
   // When someone sends a request
@@ -536,6 +550,46 @@ notificationWorker.on("error", (err) => {
   console.error("❌ Worker error:", err);
 });
 
+// ── Match Scoring Worker ────────────────────────────────────────────────────
+const { recomputeTopMatchesList } = require("./matchScoringBatchService");
+
+const matchScoringWorker = new Worker(
+  "match-scoring",
+  async (job) => {
+    const { type, userId, topN } = job.data;
+
+    switch (type) {
+      case "recompute-user":
+        console.log(`🔄 Recomputing TopMatches list for user ${userId}...`);
+        return await recomputeTopMatchesList(userId);
+
+      case "recompute-top-matches":
+        console.log(`🔄 Recomputing TopMatches list for user ${userId}...`);
+        return await recomputeTopMatchesList(userId);
+
+      default:
+        console.warn(`⚠️  Unknown match-scoring job type: ${type}`);
+        return null;
+    }
+  },
+  {
+    connection: workerConnection,
+    concurrency: 3,
+  }
+);
+
+matchScoringWorker.on("completed", (job) => {
+  console.log(`✅ Match scoring job ${job.id} completed`);
+});
+
+matchScoringWorker.on("failed", (job, err) => {
+  console.error(`❌ Match scoring job ${job?.id} failed:`, err.message);
+});
+
+matchScoringWorker.on("error", (err) => {
+  console.error("❌ Match scoring worker error:", err);
+});
+
 // Queue helper functions
 const QueueService = {
   // Add a job to send request notifications
@@ -647,10 +701,56 @@ const QueueService = {
   // Close connections gracefully
   async close() {
     await notificationWorker.close();
+    await matchScoringWorker.close();
     await notificationQueue.close();
+    await matchScoringQueue.close();
     await queueConnection.quit();
     await workerConnection.quit();
     console.log("🔌 Queue service closed");
+  },
+
+  // ── Match Scoring Queue Methods ─────────────────────────────────────────
+
+  // Enqueue full score recomputation for a user's entire candidate pool
+  async queueRecomputeScores(userId) {
+    try {
+      const job = await matchScoringQueue.add(
+        "recompute-user",
+        { type: "recompute-user", userId: userId.toString() },
+        { priority: 10 }
+      );
+      console.log(`🔄 Queued match score recompute for user ${userId}: job ${job.id}`);
+      return job;
+    } catch (error) {
+      console.error(`❌ Failed to queue score recompute for ${userId}:`, error.message);
+      return null;
+    }
+  },
+
+  // Enqueue top-N match refresh for a user (lighter periodic refresh)
+  async queueRecomputeTopMatches(userId, topN = 50) {
+    try {
+      const job = await matchScoringQueue.add(
+        "recompute-top-matches",
+        { type: "recompute-top-matches", userId: userId.toString(), topN },
+        { priority: 20 }
+      );
+      return job;
+    } catch (error) {
+      console.error(`❌ Failed to queue top-matches for ${userId}:`, error.message);
+      return null;
+    }
+  },
+
+  // Get match scoring queue stats
+  async getMatchScoringStats() {
+    const [waiting, active, completed, failed] = await Promise.all([
+      matchScoringQueue.getWaitingCount(),
+      matchScoringQueue.getActiveCount(),
+      matchScoringQueue.getCompletedCount(),
+      matchScoringQueue.getFailedCount(),
+    ]);
+    return { waiting, active, completed, failed };
   },
 };
 

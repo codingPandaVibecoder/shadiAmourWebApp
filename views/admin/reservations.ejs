@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reservations Management - D'amour Muslim Admin</title>
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+  <link rel="manifest" href="/images/site.webmanifest">
+  <meta name="theme-color" content="#E91E63">
+  <link rel="stylesheet" href="/css/output.css">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+  <style>
+    .material-shadow {
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+    .material-shadow-hover {
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    }
+    .gradient-bg {
+      background: linear-gradient(135deg, #E91E63 0%, #673AB7 100%);
+    }
+    .stats-filter-card {
+      transition: all 0.3s ease;
+    }
+    .stats-filter-card.active {
+      border: 2px solid #E91E63;
+      box-shadow: 0 4px 16px rgba(233, 30, 99, 0.15);
+    }
+    .stats-filter-card:hover {
+      transform: translateY(-1px);
+    }
+    .reservation-row {
+      transition: background-color 0.2s ease;
+    }
+    .reservation-row:hover {
+      background-color: #f9fafb;
+    }
+    .status-badge {
+      transition: all 0.2s ease;
+    }
+  </style>
+</head>
+
+<body class="bg-gray-50 font-['Roboto']">
+  <header class="fixed top-0 left-0 right-0 bg-white material-shadow z-50">
+    <div class="flex items-center justify-between px-6 h-16">
+      <div class="flex items-center">
+        <h1 class="text-2xl font-bold text-primary font-['Playfair_Display']">
+          <a href="/admin/dashboard" class="hover:text-pink-600 transition-colors duration-300 cursor-pointer">
+            D'amour Muslim
+          </a>
+        </h1>
+        <span class="ml-4 px-3 py-1 bg-secondary/10 text-secondary text-sm rounded-full font-medium">Reservations</span>
+      </div>
+      <div class="flex items-center gap-4">
+        <a href="/admin/dashboard" class="px-4 py-2 text-gray-600 hover:text-primary transition-colors duration-300">
+          <i class="ri-arrow-left-line mr-2"></i>Back to Dashboard
+        </a>
+        <button id="logoutBtn" class="px-6 py-2 border-2 border-red-500 text-red-500 hover:bg-red-500 hover:text-white transition-all duration-300 !rounded-button whitespace-nowrap">
+          <i class="ri-logout-box-line mr-2"></i>Logout
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="pt-24 pb-16 min-h-screen">
+    <div class="max-w-7xl mx-auto px-6">
+      <!-- Page Header -->
+      <div class="bg-white rounded-2xl p-6 material-shadow mb-8">
+        <div class="flex flex-col lg:flex-row gap-4 items-center justify-between">
+          <div>
+            <h2 class="text-2xl font-bold text-gray-900 mb-2">Reservations Management</h2>
+            <p class="text-gray-600">Manage all free consultation reservations</p>
+          </div>
+          <div class="flex items-center gap-4">
+            <div class="relative">
+              <select id="statusFilter" class="px-4 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary bg-white text-gray-900">
+                <option value="all" <%= currentFilter === 'all' ? 'selected' : '' %>>All Reservations</option>
+                <option value="pending" <%= currentFilter === 'pending' ? 'selected' : '' %>>Pending</option>
+                <option value="contacted" <%= currentFilter === 'contacted' ? 'selected' : '' %>>Contacted</option>
+                <option value="closed" <%= currentFilter === 'closed' ? 'selected' : '' %>>Closed</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stats Cards -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
+        <div class="bg-white rounded-xl p-6 material-shadow stats-filter-card cursor-pointer <%= currentFilter === 'all' ? 'active' : '' %>" data-filter="all">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-2xl font-bold text-gray-900"><%= stats.total %></p>
+              <p class="text-sm text-gray-600 mt-1">Total</p>
+            </div>
+            <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+              <i class="ri-calendar-check-line text-xl text-blue-600"></i>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-xl p-6 material-shadow stats-filter-card cursor-pointer <%= currentFilter === 'pending' ? 'active' : '' %>" data-filter="pending">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-2xl font-bold text-gray-900"><%= stats.pending %></p>
+              <p class="text-sm text-gray-600 mt-1">Pending</p>
+            </div>
+            <div class="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center">
+              <i class="ri-time-line text-xl text-yellow-600"></i>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-xl p-6 material-shadow stats-filter-card cursor-pointer <%= currentFilter === 'contacted' ? 'active' : '' %>" data-filter="contacted">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-2xl font-bold text-gray-900"><%= stats.contacted %></p>
+              <p class="text-sm text-gray-600 mt-1">Contacted</p>
+            </div>
+            <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+              <i class="ri-phone-line text-xl text-green-600"></i>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-xl p-6 material-shadow stats-filter-card cursor-pointer <%= currentFilter === 'closed' ? 'active' : '' %>" data-filter="closed">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-2xl font-bold text-gray-900"><%= stats.closed %></p>
+              <p class="text-sm text-gray-600 mt-1">Closed</p>
+            </div>
+            <div class="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center">
+              <i class="ri-check-double-line text-xl text-gray-600"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Reservations Table -->
+      <div class="bg-white rounded-xl material-shadow overflow-hidden">
+        <div class="px-6 py-4 border-b border-gray-200">
+          <h2 class="text-lg font-semibold text-gray-900">Booked Reservations</h2>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+              <tr>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Phone / Email</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Time</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Source</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Booked At</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+              </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+              <% if (reservations && reservations.length > 0) { %>
+              <% reservations.forEach(reservation => { %>
+              <tr class="reservation-row">
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <div class="flex items-center">
+                    <div class="w-10 h-10 bg-pink-100 rounded-full flex items-center justify-center">
+                      <i class="ri-user-line text-pink-600"></i>
+                    </div>
+                    <div class="ml-4">
+                      <div class="text-sm font-medium text-gray-900"><%= reservation.name %></div>
+                    </div>
+                  </div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  <%= reservation.countryCode ? reservation.countryCode + ' ' : '' %><%= reservation.phoneOrEmail %>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  <%= new Date(reservation.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) %>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  <%= reservation.time %>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-700">
+                    <%= reservation.source.replace(/_/g, ' ') %>
+                  </span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium status-badge
+                    <% if (reservation.status === 'pending') { %>bg-yellow-100 text-yellow-800<% } %>
+                    <% if (reservation.status === 'contacted') { %>bg-green-100 text-green-800<% } %>
+                    <% if (reservation.status === 'closed') { %>bg-gray-100 text-gray-700<% } %>">
+                    <%= reservation.status.charAt(0).toUpperCase() + reservation.status.slice(1) %>
+                  </span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  <%= new Date(reservation.createdAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) %>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                  <select
+                    class="status-update px-3 py-1.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary focus:border-primary bg-white"
+                    data-id="<%= reservation._id %>"
+                  >
+                    <option value="pending" <%= reservation.status === 'pending' ? 'selected' : '' %>>Pending</option>
+                    <option value="contacted" <%= reservation.status === 'contacted' ? 'selected' : '' %>>Contacted</option>
+                    <option value="closed" <%= reservation.status === 'closed' ? 'selected' : '' %>>Closed</option>
+                  </select>
+                </td>
+              </tr>
+              <% }) %>
+              <% } else { %>
+              <tr>
+                <td colspan="8" class="px-6 py-12 text-center">
+                  <div class="text-gray-500">
+                    <i class="ri-calendar-todo-line text-4xl mb-2"></i>
+                    <p>No reservations found</p>
+                  </div>
+                </td>
+              </tr>
+              <% } %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const statusFilter = document.getElementById('statusFilter');
+      const statsCards = document.querySelectorAll('.stats-filter-card');
+      const logoutBtn = document.getElementById('logoutBtn');
+
+      // Status filter dropdown
+      statusFilter.addEventListener('change', function () {
+        const value = this.value;
+        if (value === 'all') {
+          window.location.href = '/admin/reservations';
+        } else {
+          window.location.href = '/admin/reservations?status=' + value;
+        }
+      });
+
+      // Stats cards click to filter
+      statsCards.forEach(card => {
+        card.addEventListener('click', function () {
+          const filter = this.getAttribute('data-filter');
+          if (filter === 'all') {
+            window.location.href = '/admin/reservations';
+          } else {
+            window.location.href = '/admin/reservations?status=' + filter;
+          }
+        });
+      });
+
+      // Inline status update via select dropdown
+      document.querySelectorAll('.status-update').forEach(select => {
+        select.addEventListener('change', async function () {
+          const id = this.getAttribute('data-id');
+          const newStatus = this.value;
+
+          try {
+            const response = await fetch('/admin/reservations/' + id + '/status', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ status: newStatus })
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+              // Update the badge color inline
+              const row = this.closest('tr');
+              const badge = row.querySelector('.status-badge');
+
+              badge.textContent = newStatus.charAt(0).toUpperCase() + newStatus.slice(1);
+              badge.className = 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium status-badge';
+
+              if (newStatus === 'pending') {
+                badge.classList.add('bg-yellow-100', 'text-yellow-800');
+              } else if (newStatus === 'contacted') {
+                badge.classList.add('bg-green-100', 'text-green-800');
+              } else if (newStatus === 'closed') {
+                badge.classList.add('bg-gray-100', 'text-gray-700');
+              }
+
+              // Reload to update stats
+              setTimeout(() => location.reload(), 800);
+            } else {
+              alert('Failed to update: ' + (data.error || 'Unknown error'));
+              // Reset select to previous value
+              this.value = this.getAttribute('data-prev') || 'pending';
+            }
+          } catch (err) {
+            console.error('Status update error:', err);
+            alert('Network error. Please try again.');
+          }
+        });
+
+        // Store original value for rollback
+        select.setAttribute('data-prev', select.value);
+      });
+
+      // Logout
+      logoutBtn.addEventListener('click', async function () {
+        if (confirm('Are you sure you want to log out?')) {
+          try {
+            await fetch('/logout', { method: 'POST' });
+            window.location.href = '/login';
+          } catch (err) {
+            window.location.href = '/login';
+          }
+        }
+      });
+    });
+  </script>
+</body>
+
+</html>

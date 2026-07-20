@@ -193,6 +193,26 @@
       opacity: 1;
     }
 
+    /* Compatibility score circle overlay on profile cards */
+    .match-score-badge {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 12px;
+      z-index: 10;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    }
+    .match-score-high { background: #dcfce7; color: #16a34a; border: 2px solid #16a34a; }
+    .match-score-mid { background: #fef3c7; color: #d97706; border: 2px solid #d97706; }
+    .match-score-low { background: #f1f5f9; color: #94a3b8; border: 2px solid #94a3b8; }
+
     /* Skeleton loader for images */
     .aspect-\[4\/5\] {
       background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
@@ -611,6 +631,19 @@ html {
                   </div>
                 </div>
 
+                <!-- Compatibility score badge (logged-in only, below featured badge) -->
+                <% if (typeof user !== 'undefined' && user) { %>
+                  <% 
+                    const fmScore = profile.matchScore != null ? profile.matchScore : 0;
+                    let fmClass = 'match-score-low';
+                    if (fmScore >= 70) fmClass = 'match-score-high';
+                    else if (fmScore >= 50) fmClass = 'match-score-mid';
+                  %>
+                  <div class="match-score-badge <%= fmClass %>" style="top: 44px; right: 8px;" title="Compatibility Score">
+                    <%= fmScore %>%
+                  </div>
+                <% } %>
+
                 <!-- Profile Image -->
                 <div class="aspect-[4/5] overflow-hidden relative">
                   <% if (profile.profilePic && profile.profilePic.url) { %>
@@ -678,10 +711,20 @@ html {
               <!-- Sort By Dropdown -->
               <div class="flex items-center gap-2">
                 <label class="text-sm font-medium text-gray-700 whitespace-nowrap">Sort by:</label>
-                <select id="sortBySelect" class="px-3 py-2 border border-gray-300 rounded-button focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary text-sm bg-white">
-                  <option value="newly-created" <%= (sortBy === 'newly-created' || !sortBy) ? 'selected' : '' %>>Newly Created</option>
+                <!-- <select id="sortBySelect" class="px-3 py-2 border border-gray-300 rounded-button focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary text-sm bg-white">
+                  <% if (typeof user !== 'undefined' && user) { %>
+                  <option value="top-matches" <%= (!sortBy || sortBy === 'top-matches') ? 'selected' : '' %>>Top Matches</option>
+                  <% } %>
+                  <option value="newly-created" <%= sortBy === 'newly-created' ? 'selected' : '' %>>Newly Created</option>
                   <option value="random" <%= sortBy === 'random' ? 'selected' : '' %>>Random</option>
-                </select>
+                </select> -->
+                <select id="sortBySelect" ...>
+  <% if (typeof user !== 'undefined' && user && !isSameGenderBrowse) { %>
+  <option value="top-matches" <%= (!sortBy || sortBy === 'top-matches') ? 'selected' : '' %>>Top Matches</option>
+  <% } %>
+  <option value="newly-created" <%= (sortBy === 'newly-created' || isSameGenderBrowse) ? 'selected' : '' %>>Newly Created</option>
+  <option value="random" <%= sortBy === 'random' ? 'selected' : '' %>>Random</option>
+</select>
               </div>
 
               <!-- Results Count -->
@@ -740,7 +783,19 @@ html {
             
             <% if (profiles && profiles.length > 0) { %>
             <% profiles.forEach(profile => { %>
-            <a href="/profiles/<%= profile.profileSlug || profile._id %>" data-track="true" data-event-name="profile_card_click" data-category="engagement" data-label="<%= profile.username %>" class="bg-white rounded-2xl overflow-hidden material-shadow hover:material-shadow-hover transition-all duration-300 block">
+            <a href="/profiles/<%= profile.profileSlug || profile._id %>" data-track="true" data-event-name="profile_card_click" data-category="engagement" data-label="<%= profile.username %>" class="bg-white rounded-2xl overflow-hidden material-shadow hover:material-shadow-hover transition-all duration-300 block relative">
+              <!-- Compatibility score badge (logged-in users only) -->
+              <% if (typeof user !== 'undefined' && user) { %>
+                <% 
+                  const mScore = profile.matchScore != null ? profile.matchScore : 0;
+                  let mClass = 'match-score-low';
+                  if (mScore >= 70) mClass = 'match-score-high';
+                  else if (mScore >= 50) mClass = 'match-score-mid';
+                %>
+                <div class="match-score-badge <%= mClass %>" title="Compatibility Score">
+                  <%= mScore %>%
+                </div>
+              <% } %>
               <div class="aspect-[4/5] overflow-hidden">
                 <!-- Default placeholder based on gender -->
                 <img src="https://ui-avatars.com/api/?name=<%= encodeURIComponent(profile.name || profile.username) %>&background=<%= profile.gender === 'male' ? '0077be' : 'e91e63' %>&color=fff&size=300&format=png" alt="<%= profile.name || profile.username %><%= profile.age ? ', ' + profile.age + ' year old' : '' %><%= profile.work ? ' ' + profile.work : '' %> - Muslim marriage profile<%= profile.city ? ' in ' + profile.city : '' %>" class="w-full h-full object-cover" loading="lazy" width="300" height="300">
@@ -1004,6 +1059,8 @@ html {
       </div>
     </div>
   </div>
+
+<%- include('partials/reservationPopup', { popupId: 'exitPopup', headingText: "Not finding the right matches? Let our expert marriage consultants help you for free before you go", triggerType: 'exit' }) %>
 
   <%- include('partials/footer') %>
   <script id="ripple-effects">
@@ -1333,7 +1390,7 @@ html {
           const urlParams = new URLSearchParams(window.location.search);
 
           // Update or add sortBy parameter
-          if (selectedSort === 'newly-created') {
+          if (selectedSort === 'top-matches') {
             urlParams.delete('sortBy'); // Default, so remove parameter
           } else {
             urlParams.set('sortBy', selectedSort);

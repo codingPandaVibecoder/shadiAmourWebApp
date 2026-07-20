@@ -4,6 +4,7 @@ const Blog = require("./models/Blog");
 const IslamicFAQ = require("./models/IslamicFAQ");
 const FaqCategory = require("./models/FaqCategory");
 const CategoryPage = require("./models/CategoryPage");
+const Reservation = require("./models/Reservation");
 function getRandomSeoName(gender) {
   if (gender === "male") {
     const randomIndex = Math.floor(Math.random() * muslimMaleNames.length);
@@ -40,6 +41,7 @@ const {
   calculateProfileCompletion,
   generateProfileSlug,
   generateUniqueSlug,
+  computeProfileTier,
 } = require("./utils/profileHelpers");
 
 function addProfileSlugHistory(profile, oldSlug, newSlug) {
@@ -56,6 +58,7 @@ function addProfileSlugHistory(profile, oldSlug, newSlug) {
   }
 }
 const User = require("./models/user");
+const MatchScore = require("./models/MatchScore");
 const Newsletter = require("./models/Newsletter");
 const { countryOptions, countryPlaceholders } = require("./config/countries");
 const { detectCountry, buildGeoFilter, getFilterUIConfig } = require("./config/geoFilter");
@@ -64,6 +67,7 @@ const Request = require("./models/Request");
 const Notification = require("./models/Notification");
 const NotificationService = require("./services/notificationService");
 const QueueService = require("./services/queueService");
+const indexNow = require("./services/indexNowService");
 const isLoggedIn = require("./middlewares/isLoggedIn");
 const findUser = require("./middlewares/findUser");
 const requireApprovedProfile = require("./middlewares/requireApprovedProfile");
@@ -334,6 +338,7 @@ const {
   sendPasswordResetEmail,
   sendProfileApprovalEmail,
   sendMarriageGuide,
+  sendReservationNotification,
 } = require("./services/emailService");
 const requireProfileComplete = require("./middlewares/requireProfileComplete");
 const requireOnboardingComplete = require("./middlewares/requireOnboardingComplete");
@@ -2124,16 +2129,21 @@ require("./views/citylandingpages")(app);
 app.get("/onboarding", isLoggedIn, findUser, (req, res) => {
   const user = req.userData;
 
-  // Check if user has completed onboarding (has all required fields from 5 steps)
+  // Check if user has completed onboarding (has all required fields from 8 steps)
   // Step 1: profileFor, gender, username
-  // Step 2: name, age, height, maritalStatus  
-  // Step 3: city, country
-  // Step 4: highestEducation, work
-  // Step 5: lookingForASpouseThatIs, aboutMe, contact
+  // Step 2: name, age, height, maritalStatus
+  // Step 3: islamicSect, prays, bornMuslim, islamIsImportantToMeInfo
+  // Step 4: city, country, nationality, ethnicity
+  // Step 5: highestEducation, work
+  // Step 6: lookingForASpouseThatIs, aboutMe
+  // Step 7: preferredAgeRange, preferredHeightRange, preferredIslamicSect, willingToConsiderANonUkCitizen, acceptSomeoneWithChildren, acceptADivorcedPerson, acceptAWidow
+  // Step 8: contact
   if (user.profileSlug && user.name && user.age && user.height && 
       user.maritalStatus && user.city && user.country && 
       user.highestEducation && user.work && 
-      user.lookingForASpouseThatIs && user.aboutMe && user.contact) {
+      user.lookingForASpouseThatIs && user.aboutMe && user.contact &&
+      user.islamicSect && user.prays !== undefined && 
+      user.nationality && user.ethnicity) {
     return res.redirect(`/account/info`);
   }
 
@@ -2147,8 +2157,8 @@ app.post("/api/onboarding/save", isLoggedIn, findUser, async (req, res) => {
 
     
 
-    // Server-side validation for step 6 (phone number)
-    if (Number(step) === 6) {
+    // Server-side validation for step 8 (phone number)
+    if (Number(step) === 8) {
       const countryCode = data.countryCode;
       const contactRaw = String(data.contact || "");
       const digits = contactRaw.replace(/\D/g, "");
@@ -2199,6 +2209,25 @@ app.post("/api/onboarding/save", isLoggedIn, findUser, async (req, res) => {
       user.profileSlug = await generateUniqueSlug(user);
     }
 
+    // Recompute profile completeness tier
+    const newTier = computeProfileTier(user);
+    if (user.profileCompletenessTier !== newTier) {
+      user.profileCompletenessTier = newTier;
+      user.profileTierCalculatedAt = new Date();
+    }
+
+    // Check if any scored field was updated (trigger match score recalculation)
+    const { SCORED_FIELDS } = require("./config/matching");
+    const hasScoredFieldChange = Object.keys(data).some(key => SCORED_FIELDS.includes(key));
+    if (hasScoredFieldChange) {
+      const QueueService = require("./services/queueService");
+      user.matchScoresStaleSince = new Date();
+      // Enqueue async score recompute (don't await — fire and forget)
+      QueueService.queueRecomputeScores(user._id).catch(err =>
+        console.error("Failed to enqueue match score recompute:", err.message)
+      );
+    }
+
     await user.save();
 
     // Update session
@@ -2207,7 +2236,7 @@ app.post("/api/onboarding/save", isLoggedIn, findUser, async (req, res) => {
     res.json({
       success: true,
       message: `Step ${step} completed successfully!`,
-      isLastStep: Number(step) === 6,
+      isLastStep: Number(step) === 8,
     });
   } catch (error) {
     console.error("Onboarding save error:", error);
@@ -2228,8 +2257,20 @@ app.post("/api/onboarding/complete", isLoggedIn, findUser, async (req, res) => {
     // Ensure user has profile slug
     if (!user.profileSlug) {
       user.profileSlug = await generateUniqueSlug(user);
-      await user.save();
     }
+
+    // Set onboarding completion and compute tier
+    user.onboardingCompletedAt = new Date();
+    user.profileCompletenessTier = computeProfileTier(user);
+    user.profileTierCalculatedAt = new Date();
+    user.matchScoresStaleSince = new Date();
+    await user.save();
+
+    // Enqueue full score recompute for this user
+    const QueueService = require("./services/queueService");
+    QueueService.queueRecomputeScores(user._id).catch(err =>
+      console.error("Failed to enqueue match score recompute:", err.message)
+    );
 
     // Check if KYC verification feature is enabled
     const siteSettings = await GlobalSeoSettings.getSettings();
@@ -2246,6 +2287,92 @@ app.post("/api/onboarding/complete", isLoggedIn, findUser, async (req, res) => {
       success: false,
       error: "Failed to complete onboarding",
     });
+  }
+});
+
+// ── Legacy Profile Completion Form (for users who didn't do new onboarding) ──
+app.get("/complete-missing-fields-for-older-profiles", isLoggedIn, findUser, async (req, res) => {
+  const user = req.userData;
+  // Build a safe data object for pre-populating the form
+  const userData = {
+    islamicSect: user.islamicSect || null,
+    prays: user.prays,
+    bornMuslim: user.bornMuslim,
+    islamIsImportantToMeInfo: user.islamIsImportantToMeInfo || null,
+    nationality: user.nationality || null,
+    ethnicity: user.ethnicity || null,
+    lookingForASpouseThatIs: user.lookingForASpouseThatIs || null,
+    preferredAgeRange: user.preferredAgeRange || null,
+    preferredHeightRange: user.preferredHeightRange || null,
+    preferredIslamicSect: user.preferredIslamicSect || null,
+    willingToConsiderANonUkCitizen: user.willingToConsiderANonUkCitizen || null,
+    acceptSomeoneWithChildren: user.acceptSomeoneWithChildren,
+    acceptADivorcedPerson: user.acceptADivorcedPerson,
+    acceptAWidow: user.acceptAWidow,
+  };
+  res.render("complete-legacy-profile", {
+    user: req.session.user,
+    userData,
+  });
+});
+
+// API: Save legacy profile completion and trigger score recalculation
+app.post("/api/complete-legacy-profile", isLoggedIn, findUser, async (req, res) => {
+  try {
+    const user = req.userData;
+    const data = req.body;
+
+    // Save Islamic identity fields
+    if (data.islamicSect) user.islamicSect = data.islamicSect;
+    if (data.prays !== undefined && data.prays !== "") user.prays = data.prays === "true" || data.prays === true;
+    if (data.bornMuslim !== undefined && data.bornMuslim !== "") user.bornMuslim = data.bornMuslim === "true" || data.bornMuslim === true;
+    if (data.islamIsImportantToMeInfo && data.islamIsImportantToMeInfo.length >= 30) {
+      user.islamIsImportantToMeInfo = data.islamIsImportantToMeInfo;
+    }
+
+    // Location
+    if (data.nationality) user.nationality = data.nationality;
+    if (data.ethnicity) user.ethnicity = data.ethnicity;
+
+    // About
+    if (data.lookingForASpouseThatIs) user.lookingForASpouseThatIs = data.lookingForASpouseThatIs;
+
+    // Partner preferences — age range
+    if (data.preferredAgeFrom && data.preferredAgeTo) {
+      user.preferredAgeRange = `${data.preferredAgeFrom}-${data.preferredAgeTo}`;
+    }
+    // Partner preferences — height range
+    if (data.preferredHeightFrom && data.preferredHeightTo) {
+      user.preferredHeightRange = `${data.preferredHeightFrom}-${data.preferredHeightTo}`;
+    }
+    if (data.preferredIslamicSect) user.preferredIslamicSect = data.preferredIslamicSect;
+    if (data.willingToConsiderANonUkCitizen) user.willingToConsiderANonUkCitizen = data.willingToConsiderANonUkCitizen;
+    if (data.acceptSomeoneWithChildren !== undefined && data.acceptSomeoneWithChildren !== "") {
+      user.acceptSomeoneWithChildren = data.acceptSomeoneWithChildren === "true" || data.acceptSomeoneWithChildren === true;
+    }
+    if (data.acceptADivorcedPerson !== undefined && data.acceptADivorcedPerson !== "") {
+      user.acceptADivorcedPerson = data.acceptADivorcedPerson === "true" || data.acceptADivorcedPerson === true;
+    }
+    if (data.acceptAWidow !== undefined && data.acceptAWidow !== "") {
+      user.acceptAWidow = data.acceptAWidow === "true" || data.acceptAWidow === true;
+    }
+
+    // Recompute profile tier
+    user.profileCompletenessTier = computeProfileTier(user);
+    user.profileTierCalculatedAt = new Date();
+    user.matchScoresStaleSince = new Date();
+    await user.save();
+
+    // Enqueue score recompute
+    const QueueService = require("./services/queueService");
+    QueueService.queueRecomputeScores(user._id).catch(err =>
+      console.error("Failed to enqueue match score recompute:", err.message)
+    );
+
+    res.json({ success: true, message: "Profile updated. Scores will be recalculated shortly." });
+  } catch (error) {
+    console.error("Legacy profile save error:", error);
+    res.json({ success: false, error: "Failed to save profile: " + error.message });
   }
 });
 
@@ -3444,141 +3571,327 @@ app.get("/profiles/addedBy/staff", requireOnboardingComplete, async (req, res) =
   }
 });
 
-app.get("/profiles",requireOnboardingComplete, async (req, res) => {
-  // Pagination params
+// app.get("/profiles",requireOnboardingComplete, async (req, res) => {
+//   // Pagination params
+//   const page = parseInt(req.query.page) > 0 ? parseInt(req.query.page) : 1;
+//   const limit = 12;
+//   const skip = (page - 1) * limit;
+
+//   // Detect visitor country via Cloudflare header or MOCK_COUNTRY env
+//   const detectedCountryCode = detectCountry(req);
+//   const geoFilter = buildGeoFilter(detectedCountryCode);
+//   const geoFilterUI = getFilterUIConfig(detectedCountryCode);
+
+//   // Extract filter parameters
+//   const { gender, minAge, maxAge, minHeight, maxHeight, city, country, nationality } =
+//     req.query;
+
+//   // Build filter object
+//   const filter = {};
+
+//   // Apply geo-based location filter (e.g. PK visitors only see Pakistan profiles)
+//   if (geoFilter.$or) {
+//     filter.$and = filter.$and || [];
+//     filter.$and.push({ $or: geoFilter.$or });
+//   }
+
+//   // **NEW**: Only show approved profiles to regular users
+//   // Admins and moderators can see all profiles
+//   if (!req.session.isAdmin && !req.session.isModerator) {
+//     filter.isApproved = true;
+//     filter.approvalStatus = "approved";
+//   }
+
+//   if (gender) filter.gender = gender;
+//   if (city) filter.city = { $regex: new RegExp(city, "i") };
+//   if (country) filter.country = { $regex: new RegExp(country, "i") };
+//   if (nationality) filter.nationality = nationality; // kept for backward compatibility
+
+//   // Age range filter
+//   if (minAge || maxAge) {
+//     filter.age = {};
+//     if (minAge) filter.age.$gte = parseInt(minAge);
+//     if (maxAge) filter.age.$lte = parseInt(maxAge);
+//   }
+
+//   // Height range filter - FIXED VERSION
+//   if (minHeight || maxHeight) {
+//     filter.height = {};
+//     if (minHeight) {
+//       const minHeightNum = parseFloat(minHeight);
+//       if (!isNaN(minHeightNum)) {
+//         filter.height.$gte = minHeightNum;
+//       }
+//     }
+//     if (maxHeight) {
+//       const maxHeightNum = parseFloat(maxHeight);
+//       if (!isNaN(maxHeightNum)) {
+//         filter.height.$lte = maxHeightNum;
+//       }
+//     }
+//   }
+
+//   try {
+//     // **NEW**: Get featured profiles (max 4, exclude current user)
+//     const featuredFilter = { isFeatured: true };
+
+//     const featuredProfiles = await User.find(featuredFilter)
+//       .limit(4)
+//       .sort({ featuredDate: -1 }); // Show most recently featured first
+
+//     // **UPDATED**: Exclude featured profiles from regular profiles to avoid duplicates
+//     // const excludeIds = [
+//     //   ...(req.session.userId ? [req.session.userId] : []),
+//     //   ...featuredProfiles.map((profile) => profile._id),
+//     // ];
+//     // filter._id = { $nin: excludeIds };
+//     const excludeIds = featuredProfiles.map((profile) => profile._id);
+//     if (excludeIds.length > 0) {
+//       filter._id = { $nin: excludeIds };
+//     }
+//     const totalProfiles = await User.countDocuments(filter);
+
+//     // **NEW**: Handle sorting
+//     const { sortBy } = req.query;
+//     let profiles;
+//     const effectiveSort = sortBy || "top-matches";
+//     const isScoreSort = effectiveSort === "top-matches" && req.session.userId;
+
+//     if (isScoreSort) {
+//       // Score-based sorting: fetch all filtered profiles, compute scores in-memory, exclude 0%, sort, paginate
+//       const allFiltered = await User.find(filter)
+//         .select("name username age height gender country city ethnicity highestEducation profileSlug profilePic isFeatured featuredDate maritalStatus islamicSect preferredIslamicSect prays bornMuslim willingToConsiderANonUkCitizen acceptSomeoneWithChildren acceptADivorcedPerson acceptAWidow children profileCompletenessTier isApproved approvalStatus isDeactivated")
+//         .lean();
+
+//       // Fetch viewer for score computation
+//       const viewer = await User.findById(req.session.userId).select("name age height gender country city ethnicity highestEducation maritalStatus islamicSect preferredIslamicSect prays bornMuslim willingToConsiderANonUkCitizen acceptSomeoneWithChildren acceptADivorcedPerson acceptAWidow children isApproved approvalStatus isDeactivated profileCompletenessTier").lean();
+
+//       if (viewer) {
+//         const { runHardFilters, computeScore } = require("./services/matchScoringService");
+//         for (const profile of allFiltered) {
+//           const hf = runHardFilters(viewer, profile);
+//           profile.matchScore = hf.passed ? computeScore(viewer, profile).finalScore : 0;
+//         }
+//         // Exclude incompatible (0%) profiles, then sort by score desc
+//         const compatible = allFiltered.filter(p => (p.matchScore || 0) > 0);
+//         compatible.sort((a, b) => (b.matchScore || 0) - (a.matchScore || 0));
+//         profiles = compatible.slice(skip, skip + limit);
+//       } else {
+//         profiles = allFiltered.slice(skip, skip + limit);
+//       }
+//     } else if (effectiveSort === "random") {
+//       profiles = await User.aggregate([
+//         { $match: filter },
+//         { $skip: skip },
+//         { $sample: { size: Math.min(limit, totalProfiles) } },
+//       ]);
+//     } else {
+//       // Default: newly created (most recent first)
+//       const sortOptions = { createdAt: -1, _id: -1 };
+//       profiles = await User.find(filter).sort(sortOptions).skip(skip).limit(limit);
+//     }
+
+//     const activeFilters = {
+//       gender,
+//       minAge,
+//       maxAge,
+//       minHeight,
+//       maxHeight,
+//       city,
+//       country,
+//       nationality,
+//     };
+
+//     const totalPages = Math.ceil(totalProfiles / limit);
+
+//     // Get current user's profile if logged in
+//     let currentUserProfile = null;
+//     if (req.session.userId) {
+//       currentUserProfile = await User.findById(req.session.userId);
+//     }
+
+//     // Compute scores in-memory for displayed profiles (logged-in only)
+//     if (req.session.userId && profiles.length > 0) {
+//       const viewer = await User.findById(req.session.userId).select("name age height gender country city ethnicity highestEducation maritalStatus islamicSect preferredIslamicSect prays bornMuslim willingToConsiderANonUkCitizen acceptSomeoneWithChildren acceptADivorcedPerson acceptAWidow children isApproved approvalStatus isDeactivated profileCompletenessTier").lean();
+//       if (viewer) {
+//         const { runHardFilters, computeScore } = require("./services/matchScoringService");
+//         for (const profile of profiles) {
+//           const filter = runHardFilters(viewer, profile);
+//           profile.matchScore = filter.passed ? computeScore(viewer, profile).finalScore : 0;
+//         }
+//         if (featuredProfiles) {
+//           for (const profile of featuredProfiles) {
+//             const filter = runHardFilters(viewer, profile);
+//             profile.matchScore = filter.passed ? computeScore(viewer, profile).finalScore : 0;
+//           }
+//         }
+//       }
+//     }
+
+//     return res.render("profiles", {
+//       featuredProfiles, // **NEW**
+//       profiles,
+//       filters: Object.keys(req.query).length > 0 ? activeFilters : null,
+//       sortBy: effectiveSort, // **NEW**
+//       page,
+//       totalPages,
+//       totalProfiles,
+//       currentUserProfile, // **NEW**: Pass current user's profile for pending notice
+//       geoFilterUI, // Geo-based filter UI config (null if no restriction)
+//       detectedCountryCode: detectedCountryCode || null,
+//     });
+//   } catch (error) {
+//     console.error("Error fetching profiles:", error);
+//     return res.status(500).render("error", {
+//       title: "Error",
+//       message: "Failed to fetch profiles",
+//       error: process.env.NODE_ENV === "development" ? error : {},
+//     });
+//   }
+// });
+
+app.get("/profiles", requireOnboardingComplete, async (req, res) => {
   const page = parseInt(req.query.page) > 0 ? parseInt(req.query.page) : 1;
   const limit = 12;
   const skip = (page - 1) * limit;
 
-  // Detect visitor country via Cloudflare header or MOCK_COUNTRY env
   const detectedCountryCode = detectCountry(req);
   const geoFilter = buildGeoFilter(detectedCountryCode);
   const geoFilterUI = getFilterUIConfig(detectedCountryCode);
 
-  // Extract filter parameters
-  const { gender, minAge, maxAge, minHeight, maxHeight, city, country, nationality } =
-    req.query;
+  const { gender, minAge, maxAge, minHeight, maxHeight, city, country, nationality } = req.query;
 
-  // Build filter object
   const filter = {};
-
-  // Apply geo-based location filter (e.g. PK visitors only see Pakistan profiles)
   if (geoFilter.$or) {
     filter.$and = filter.$and || [];
     filter.$and.push({ $or: geoFilter.$or });
   }
-
-  // **NEW**: Only show approved profiles to regular users
-  // Admins and moderators can see all profiles
   if (!req.session.isAdmin && !req.session.isModerator) {
     filter.isApproved = true;
     filter.approvalStatus = "approved";
   }
-
   if (gender) filter.gender = gender;
   if (city) filter.city = { $regex: new RegExp(city, "i") };
   if (country) filter.country = { $regex: new RegExp(country, "i") };
-  if (nationality) filter.nationality = nationality; // kept for backward compatibility
+  if (nationality) filter.nationality = nationality;
 
-  // Age range filter
   if (minAge || maxAge) {
     filter.age = {};
     if (minAge) filter.age.$gte = parseInt(minAge);
     if (maxAge) filter.age.$lte = parseInt(maxAge);
   }
-
-  // Height range filter - FIXED VERSION
   if (minHeight || maxHeight) {
     filter.height = {};
     if (minHeight) {
       const minHeightNum = parseFloat(minHeight);
-      if (!isNaN(minHeightNum)) {
-        filter.height.$gte = minHeightNum;
-      }
+      if (!isNaN(minHeightNum)) filter.height.$gte = minHeightNum;
     }
     if (maxHeight) {
       const maxHeightNum = parseFloat(maxHeight);
-      if (!isNaN(maxHeightNum)) {
-        filter.height.$lte = maxHeightNum;
-      }
+      if (!isNaN(maxHeightNum)) filter.height.$lte = maxHeightNum;
     }
   }
 
   try {
-    // **NEW**: Get featured profiles (max 4, exclude current user)
-    const featuredFilter = { isFeatured: true };
+    // --- NEW: fetch viewer once, up front, and reuse everywhere below ---
+    const viewerSelect =
+      "name age height gender country city nationality ethnicity highestEducation maritalStatus islamicSect preferredIslamicSect prays bornMuslim preferredAgeRange preferredHeightRange willingToConsiderANonUkCitizen acceptSomeoneWithChildren acceptADivorcedPerson acceptAWidow children isApproved approvalStatus isDeactivated profileCompletenessTier";
 
+    const viewer = req.session.userId
+      ? await User.findById(req.session.userId).select(viewerSelect).lean()
+      : null;
+
+    // --- NEW: same-gender browse detection ---
+    // True only when the visitor has explicitly filtered to their OWN gender.
+    const isSameGenderBrowse = !!(viewer && gender && viewer.gender === gender);
+
+    const featuredFilter = { isFeatured: true };
     const featuredProfiles = await User.find(featuredFilter)
       .limit(4)
-      .sort({ featuredDate: -1 }); // Show most recently featured first
+      .sort({ featuredDate: -1 });
 
-    // **UPDATED**: Exclude featured profiles from regular profiles to avoid duplicates
-    // const excludeIds = [
-    //   ...(req.session.userId ? [req.session.userId] : []),
-    //   ...featuredProfiles.map((profile) => profile._id),
-    // ];
-    // filter._id = { $nin: excludeIds };
     const excludeIds = featuredProfiles.map((profile) => profile._id);
     if (excludeIds.length > 0) {
       filter._id = { $nin: excludeIds };
     }
-    const totalProfiles = await User.countDocuments(filter);
+    let totalProfiles = await User.countDocuments(filter);
 
-    // **NEW**: Handle sorting
     const { sortBy } = req.query;
-    let sortOptions = {};
 
-    if (sortBy === "random") {
-      // For random sorting, we'll use MongoDB's $sample aggregation
-      const profiles = await User.aggregate([
+    // --- CHANGED: default depends on same-gender browse, and top-matches
+    // is never allowed to win when same-gender ---
+    let effectiveSort = sortBy || (isSameGenderBrowse ? "newly-created" : "top-matches");
+    if (isSameGenderBrowse && effectiveSort === "top-matches") {
+      effectiveSort = "newly-created";
+    }
+
+    const isScoreSort = effectiveSort === "top-matches" && !!viewer;
+
+    let profiles;
+    if (isScoreSort) {
+      const allFiltered = await User.find(filter)
+        .select("name username age height gender country city nationality ethnicity highestEducation profileSlug profilePic isFeatured featuredDate maritalStatus islamicSect preferredIslamicSect prays bornMuslim preferredAgeRange preferredHeightRange willingToConsiderANonUkCitizen acceptSomeoneWithChildren acceptADivorcedPerson acceptAWidow children profileCompletenessTier isApproved approvalStatus isDeactivated")
+        .lean();
+
+      const { runHardFilters, computeScore } = require("./services/matchScoringService");
+      for (const profile of allFiltered) {
+        const hf = runHardFilters(viewer, profile);
+        profile.matchScore = hf.passed ? computeScore(viewer, profile).finalScore : 0;
+      }
+      const compatible = allFiltered.filter((p) => (p.matchScore || 0) > 0);
+      compatible.sort((a, b) =>
+        (b.matchScore || 0) - (a.matchScore || 0) ||
+        a._id.toString().localeCompare(b._id.toString()) // deterministic tiebreak — prevents
+        // the same profile shifting between page 1 and page 2 on equal scores
+      );
+      totalProfiles = compatible.length; // hard filters exclude people the base count includes
+      profiles = compatible.slice(skip, skip + limit);
+    } else if (effectiveSort === "random") {
+      profiles = await User.aggregate([
         { $match: filter },
+        { $skip: skip },
         { $sample: { size: Math.min(limit, totalProfiles) } },
       ]);
     } else {
-      // Default: newly created (most recent first)
-      sortOptions = { createdAt: -1, _id: -1 };
+      const sortOptions = { createdAt: -1, _id: -1 };
+      profiles = await User.find(filter).sort(sortOptions).skip(skip).limit(limit);
     }
 
-    // **UPDATED**: Apply sorting based on sortBy parameter
-    const profiles =
-      sortBy === "random"
-        ? await User.aggregate([
-          { $match: filter },
-          { $skip: skip },
-          { $sample: { size: Math.min(limit, totalProfiles - skip) } },
-        ])
-        : await User.find(filter).sort(sortOptions).skip(skip).limit(limit);
-
-    const activeFilters = {
-      gender,
-      minAge,
-      maxAge,
-      minHeight,
-      maxHeight,
-      city,
-      country,
-      nationality,
-    };
-
+    const activeFilters = { gender, minAge, maxAge, minHeight, maxHeight, city, country, nationality };
     const totalPages = Math.ceil(totalProfiles / limit);
 
-    // Get current user's profile if logged in
     let currentUserProfile = null;
     if (req.session.userId) {
       currentUserProfile = await User.findById(req.session.userId);
     }
 
+    // --- CHANGED: reuse `viewer` instead of re-fetching ---
+    if (viewer && profiles.length > 0) {
+      const { runHardFilters, computeScore } = require("./services/matchScoringService");
+      for (const profile of profiles) {
+        const hf = runHardFilters(viewer, profile);
+        profile.matchScore = hf.passed ? computeScore(viewer, profile).finalScore : 0;
+      }
+      if (featuredProfiles) {
+        for (const profile of featuredProfiles) {
+          const hf = runHardFilters(viewer, profile);
+          profile.matchScore = hf.passed ? computeScore(viewer, profile).finalScore : 0;
+        }
+      }
+    }
+
     return res.render("profiles", {
-      featuredProfiles, // **NEW**
+      featuredProfiles,
       profiles,
       filters: Object.keys(req.query).length > 0 ? activeFilters : null,
-      sortBy: sortBy || "newly-created", // **NEW**
+      sortBy: effectiveSort,
       page,
       totalPages,
       totalProfiles,
-      currentUserProfile, // **NEW**: Pass current user's profile for pending notice
-      geoFilterUI, // Geo-based filter UI config (null if no restriction)
+      currentUserProfile,
+      geoFilterUI,
       detectedCountryCode: detectedCountryCode || null,
+      isSameGenderBrowse, // **NEW** — pass to template
     });
   } catch (error) {
     console.error("Error fetching profiles:", error);
@@ -3589,6 +3902,213 @@ app.get("/profiles",requireOnboardingComplete, async (req, res) => {
     });
   }
 });
+// ── Matches Page ────────────────────────────────────────────────────────────
+// app.get("/matches", async (req, res) => {
+//   const page = parseInt(req.query.page) > 0 ? parseInt(req.query.page) : 1;
+//   const limit = 12;
+//   const skip = (page - 1) * limit;
+//   const sortBy = req.query.sortBy || "top-matches";
+
+//   try {
+//     // Not logged in — show signup prompt
+//     if (!req.session.userId) {
+//       return res.render("matches", {
+//         user: null, currentUser: null, matches: [], page: 1, totalPages: 0, sortBy,
+//       });
+//     }
+
+//     const user = await User.findById(req.session.userId);
+//     if (!user) {
+//       return res.render("matches", { user: null, currentUser: null, matches: [], page: 1, totalPages: 0, sortBy });
+//     }
+
+//     // Fetch ALL match scores (no minimum threshold — show everything)
+//     const totalMatches = await MatchScore.countDocuments({ viewerId: user._id, isTopMatch: true });
+
+//     let scoreDocs;
+//     if (sortBy === "random") {
+//       const all = await MatchScore.find({ viewerId: user._id, isTopMatch: true }).lean();
+//       scoreDocs = all.sort(() => Math.random() - 0.5).slice(skip, skip + limit);
+//     } else {
+//       const mongoSort = sortBy === "newly-created" ? { computedAt: -1 } : { finalScore: -1 };
+//       scoreDocs = await MatchScore.find({ viewerId: user._id, isTopMatch: true })
+//         .sort(mongoSort)
+//         .skip(skip)
+//         .limit(limit)
+//         .lean();
+//     }
+
+//     // Fetch viewee profiles
+//     const totalPages = Math.ceil(totalMatches / limit);
+//     const matches = [];
+//     if (scoreDocs.length > 0) {
+//       const vieweeIds = scoreDocs.map(s => s.vieweeId);
+//       const viewees = await User.find({ _id: { $in: vieweeIds } })
+//         .select("name username age city country highestEducation profileSlug gender profilePic profileCompletenessTier")
+//         .lean();
+//       const vieweeMap = {};
+//       for (const v of viewees) vieweeMap[v._id.toString()] = v;
+//       for (const s of scoreDocs) {
+//         const v = vieweeMap[s.vieweeId.toString()];
+//         if (v) matches.push({ ...s, viewee: v });
+//       }
+//     }
+
+//     return res.render("matches", {
+//       user: req.session.user, currentUser: user, matches, page, totalPages, totalMatches, sortBy,
+//     });
+//   } catch (error) {
+//     console.error("Error fetching matches:", error);
+//     return res.render("matches", {
+//       user: req.session.user || null, currentUser: null, matches: [], page: 1, totalPages: 0,
+//       sortBy: "top-matches",
+//     });
+//   }
+// });
+app.get("/matches", async (req, res) => {
+  const page = parseInt(req.query.page) > 0 ? parseInt(req.query.page) : 1;
+  const limit = 12;
+  const skip = (page - 1) * limit;
+  const sortBy = req.query.sortBy || "top-matches";
+  try {
+    if (!req.session.userId) {
+      return res.render("matches", { user: null, currentUser: null, matches: [], page: 1, totalPages: 0, sortBy });
+    }
+    const user = await User.findById(req.session.userId);
+    if (!user) {
+      return res.render("matches", { user: null, currentUser: null, matches: [], page: 1, totalPages: 0, sortBy });
+    }
+
+    // Union of both directions: docs where user is viewer OR viewee, isTopMatch true either way
+    const baseFilter = {
+      isTopMatch: true,
+      $or: [{ viewerId: user._id }, { vieweeId: user._id }],
+    };
+
+    // Fetch ALL matching docs first — dedup must happen BEFORE pagination,
+    // otherwise a page can silently shrink below `limit` after collapsing duplicates.
+    const allScoreDocs = await MatchScore.find(baseFilter).lean();
+
+    // Dedup: a mutual top-match produces two directional docs for the same pair
+    // (viewer:A→viewee:B AND viewer:B→viewee:A). Keep the most recently computed one.
+    const seen = new Map(); // otherUserId -> doc
+    for (const s of allScoreDocs) {
+      const otherId = (s.viewerId.toString() === user._id.toString() ? s.vieweeId : s.viewerId).toString();
+      const existing = seen.get(otherId);
+      if (!existing || new Date(s.computedAt) > new Date(existing.computedAt)) {
+        seen.set(otherId, s);
+      }
+    }
+    let dedupedDocs = Array.from(seen.values());
+
+    // Sort the deduped set (was previously done in Mongo before dedup — now done after, in JS)
+    if (sortBy === "random") {
+      dedupedDocs = dedupedDocs.sort(() => Math.random() - 0.5);
+    } else if (sortBy === "newly-created") {
+      dedupedDocs.sort((a, b) => new Date(b.computedAt) - new Date(a.computedAt));
+    } else {
+      dedupedDocs.sort((a, b) =>
+        (b.finalScore - a.finalScore) ||
+        a.vieweeId.toString().localeCompare(b.vieweeId.toString()) // deterministic tiebreak
+      );
+    }
+
+    const totalMatches = dedupedDocs.length; // was countDocuments(baseFilter) — inflated by mutual matches
+    const totalPages = Math.ceil(totalMatches / limit);
+    const scoreDocs = dedupedDocs.slice(skip, skip + limit);
+
+    const matches = [];
+    if (scoreDocs.length > 0) {
+      const otherIds = scoreDocs.map(s =>
+        s.viewerId.toString() === user._id.toString() ? s.vieweeId : s.viewerId
+      );
+      const viewees = await User.find({ _id: { $in: otherIds } })
+        .select("name username age city country highestEducation profileSlug gender profilePic profileCompletenessTier")
+        .lean();
+      const vieweeMap = {};
+      for (const v of viewees) vieweeMap[v._id.toString()] = v;
+
+      for (const s of scoreDocs) {
+        const otherId = (s.viewerId.toString() === user._id.toString() ? s.vieweeId : s.viewerId).toString();
+        const v = vieweeMap[otherId];
+        if (v) matches.push({ ...s, viewee: v });
+      }
+    }
+
+    return res.render("matches", {
+      user: req.session.user, currentUser: user, matches, page, totalPages, totalMatches, sortBy,
+    });
+  } catch (error) {
+    console.error("Error fetching matches:", error);
+    return res.render("matches", {
+      user: req.session.user || null, currentUser: null, matches: [], page: 1, totalPages: 0, sortBy: "top-matches",
+    });
+  }
+});
+// ── Match Score API ─────────────────────────────────────────────────────────
+app.get("/api/matches/score/:userId", isLoggedIn, findUser, async (req, res) => {
+  try {
+    const viewerId = req.userData._id;
+    const vieweeId = req.params.userId;
+
+    // Compute fresh on-the-fly (v2: direct sum scoring, no normalization)
+    const viewee = await User.findById(vieweeId).select([
+      "name", "age", "height", "gender", "maritalStatus",
+      "country", "city", "nationality", "ethnicity",
+      "islamicSect", "preferredIslamicSect", "prays", "bornMuslim",
+      "highestEducation",
+      "preferredAgeRange", "preferredHeightRange",
+      "willingToConsiderANonUkCitizen",
+      "acceptSomeoneWithChildren", "acceptADivorcedPerson", "acceptAWidow",
+      "children",
+      "isApproved", "approvalStatus", "isDeactivated",
+      "profileCompletenessTier",
+    ]);
+
+    if (!viewee) {
+      return res.json({ error: "User not found" });
+    }
+
+    const { runHardFilters, computeScore } = require("./services/matchScoringService");
+    const filterResult = runHardFilters(req.userData, viewee);
+
+    if (!filterResult.passed) {
+      return res.json({
+        finalScore: 0,
+        hardFilterPassed: false,
+        failures: filterResult.failures,
+      });
+    }
+
+    const scoreResult = computeScore(req.userData, viewee);
+
+    return res.json({
+      finalScore: scoreResult.finalScore,
+      subScores: scoreResult.subScores,
+      hardFilterPassed: true,
+    });
+  } catch (error) {
+    console.error("Match score API error:", error);
+    return res.json({ error: "Failed to get match score" });
+  }
+});
+
+// ── Match Narrative API ─────────────────────────────────────────────────────
+app.get("/api/matches/narrative/:userId", isLoggedIn, findUser, async (req, res) => {
+  try {
+    const viewerId = req.userData._id;
+    const vieweeId = req.params.userId;
+
+    const { getNarrative } = require("./services/matchNarrativeService");
+    const result = await getNarrative(viewerId, vieweeId);
+
+    return res.json(result);
+  } catch (error) {
+    console.error("Match narrative API error:", error);
+    return res.json({ error: "Failed to get match narrative" });
+  }
+});
+
 app.get("/profiles/:slug", async (req, res) => {
   try {
     const { slug } = req.params;
@@ -3699,9 +4219,72 @@ app.get("/profiles/:slug", async (req, res) => {
         }
       }
     }
-    const { findSimilarProfiles } = require("./utils/profileHelpers");
     const currentUserId = req.session.userId || null;
-    const similarProfiles = await findSimilarProfiles(foundProfile, 3, currentUserId);
+
+    // Get top matched profiles via TopMatch store (v2)
+    let similarProfiles = [];
+    if (req.session.userId) {
+      const topScores = await MatchScore.find({
+        viewerId: req.session.userId,
+        isTopMatch: true,
+      })
+        .sort({ finalScore: -1 })
+        .limit(4)
+        .lean();
+
+      const scoredIds = topScores.map(s => s.vieweeId);
+      const allSimilar = await User.find({ _id: { $in: scoredIds } })
+        .select("username name age city country ethnicity gender profileSlug profilePic")
+        .lean();
+
+      // Sort in score order
+      const scoreOrder = {};
+      topScores.forEach(s => { scoreOrder[s.vieweeId.toString()] = s.finalScore; });
+      allSimilar.sort((a, b) => (scoreOrder[b._id.toString()] || 0) - (scoreOrder[a._id.toString()] || 0));
+
+      similarProfiles = allSimilar.map(p => ({ ...p, matchScore: scoreOrder[p._id.toString()] || 0 }));
+    } else {
+      // Non-logged-in: show 3 random approved same-gender profiles as fallback
+      similarProfiles = await User.aggregate([
+        { $match: { gender: foundProfile.gender, isApproved: true, approvalStatus: "approved", _id: { $ne: foundProfile._id } } },
+        { $sample: { size: 3 } },
+        { $project: { username: 1, name: 1, age: 1, city: 1, country: 1, ethnicity: 1, gender: 1, profileSlug: 1, profilePic: 1 } },
+      ]);
+    }
+
+    // Fetch current user's approval status for the EJS template
+    let currentUser = null;
+    if (req.session.userId) {
+      currentUser = await User.findById(req.session.userId).select("isApproved approvalStatus profileCompletenessTier");
+    }
+
+    // Compute match score on-the-fly if logged-in user is viewing someone else's profile
+    let matchScore = null;
+    if (req.session.userId && !isOwnProfile) {
+      const viewer = await User.findById(req.session.userId).select([
+        "name", "age", "height", "gender", "maritalStatus",
+        "country", "city", "nationality", "ethnicity",
+        "islamicSect", "preferredIslamicSect", "prays", "bornMuslim",
+        "highestEducation",
+        "preferredAgeRange", "preferredHeightRange",
+        "willingToConsiderANonUkCitizen",
+        "acceptSomeoneWithChildren", "acceptADivorcedPerson", "acceptAWidow",
+        "children",
+        "isApproved", "approvalStatus", "isDeactivated",
+        "profileCompletenessTier",
+      ]);
+      if (viewer) {
+        const { runHardFilters, computeScore } = require("./services/matchScoringService");
+        const filterResult = runHardFilters(viewer, foundProfile);
+        if (filterResult.passed) {
+          const scoreResult = computeScore(viewer, foundProfile);
+          matchScore = {
+            finalScore: scoreResult.finalScore,
+            subScores: scoreResult.subScores,
+          };
+        }
+      }
+    }
 
     res.render("profile", {
       profile: foundProfile,
@@ -3711,10 +4294,12 @@ app.get("/profiles/:slug", async (req, res) => {
       incomingRequest,      // NEW
       outgoingRequest,      // NEW
       user: req.session.user,
+      currentUser,          // Full user doc (isApproved, etc)
       isAdmin: req.session.isAdmin,
       filters: null,
       similarProfiles,
       isOwnProfile,         // **NEW**: Pass if viewing own profile
+      matchScore,           // **NEW**: Compatibility score for logged-in viewers
     });
   } catch (err) {
     console.error("Profile route error:", err);
@@ -3847,6 +4432,262 @@ app.get("/admin/addUser", requireAdminOnly, (req, res) => {
 // Replace the existing /admin/dashboard route with this updated version
 
 // ...existing code...
+// ── Admin Matches Management ─────────────────────────────────────────────────
+app.get("/admin/matches", requireAdminOrModerator, async (req, res) => {
+  if (!req.session.isAdmin && !req.session.isModerator) {
+    return res.redirect("/login");
+  }
+  res.render("admin/matches", {
+    isAdmin: req.session.isAdmin || false,
+    isModerator: req.session.isModerator || false,
+  });
+});
+
+// API: Search users for admin matches page
+app.get("/api/admin/matches/search", requireAdminOrModerator, async (req, res) => {
+  try {
+    const term = (req.query.term || "").trim();
+    const by = req.query.by || "name";
+    if (!term) return res.json({ success: true, users: [] });
+
+    const escaped = term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    let query = {};
+
+    if (by === "username") {
+      query.username = { $regex: new RegExp(escaped, "i") };
+    } else if (by === "phone") {
+      query.$or = [
+        { contact: { $regex: new RegExp(escaped, "i") } },
+        { waliMyContactDetails: { $regex: new RegExp(escaped, "i") } },
+      ];
+    } else {
+      // name (default)
+      query.name = { $regex: new RegExp(escaped, "i") };
+    }
+
+    const users = await User.find(query)
+      .select("name username age gender email contact city country isApproved profileCompletenessTier")
+      .sort({ createdAt: -1 })
+      .limit(20)
+      .lean();
+
+    res.json({ success: true, users });
+  } catch (error) {
+    console.error("Admin match search error:", error);
+    res.json({ success: false, error: "Search failed" });
+  }
+});
+
+// API: Get a user's details and their matches
+app.get("/api/admin/matches/user/:userId", requireAdminOrModerator, async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const user = await User.findById(userId)
+      .select("name username age gender email contact city country nationality ethnicity height maritalStatus islamicSect preferredIslamicSect prays bornMuslim highestEducation work profileCompletenessTier isApproved isDeactivated preferredAgeRange preferredHeightRange willingToConsiderANonUkCitizen acceptSomeoneWithChildren acceptADivorcedPerson acceptAWidow")
+      .lean();
+
+    if (!user) return res.json({ success: false, error: "User not found" });
+
+    // v2: Only TopMatch scores are persisted. Fetch isTopMatch:true for this viewer.
+   // v2: Only TopMatch scores are persisted. Union both directions, same as /matches.
+    const baseFilter = {
+      isTopMatch: true,
+      $or: [{ viewerId: userId }, { vieweeId: userId }],
+    };
+    const allScores = await MatchScore.find(baseFilter).lean();
+
+    const seen = new Map();
+    for (const s of allScores) {
+      const otherId = (s.viewerId.toString() === userId ? s.vieweeId : s.viewerId).toString();
+      const existing = seen.get(otherId);
+      if (!existing || new Date(s.computedAt) > new Date(existing.computedAt)) {
+        seen.set(otherId, s);
+      }
+    }
+    const scores = Array.from(seen.values())
+      .sort((a, b) => b.finalScore - a.finalScore)
+      .slice(0, 15);
+
+    // Fetch viewee profile data for all matches
+    const vieweeIds = scores.map(s =>
+      s.viewerId.toString() === userId ? s.vieweeId : s.viewerId
+    );
+    const matchSelect = "name username age gender email contact city country nationality ethnicity height maritalStatus islamicSect preferredIslamicSect prays bornMuslim highestEducation work profileCompletenessTier isApproved isDeactivated preferredAgeRange preferredHeightRange willingToConsiderANonUkCitizen acceptSomeoneWithChildren acceptADivorcedPerson acceptAWidow aboutMe lookingForASpouseThatIs children";
+    const viewees = await User.find({ _id: { $in: vieweeIds } })
+      .select(matchSelect)
+      .lean();
+
+    const vieweeMap = {};
+    for (const v of viewees) {
+      vieweeMap[v._id.toString()] = v;
+    }
+
+    const matches = scores.map(s => {
+      const otherId = (s.viewerId.toString() === userId ? s.vieweeId : s.viewerId).toString();
+      return { ...s, viewee: vieweeMap[otherId] || null };
+    }).filter(m => m.viewee !== null);
+
+    res.json({ success: true, user, matches, isTopMatchQuery: true });
+  } catch (error) {
+    console.error("Admin match user error:", error);
+    res.json({ success: false, error: "Failed to load matches" });
+  }
+});
+
+// API: Compare two users
+app.get("/api/admin/matches/compare", requireAdminOrModerator, async (req, res) => {
+  try {
+    const { a, b } = req.query;
+    if (!a || !b) return res.json({ success: false, error: "Both user IDs required" });
+
+    const fullSelect = "name username age gender email contact city country nationality ethnicity height maritalStatus islamicSect preferredIslamicSect prays bornMuslim highestEducation work children profileCompletenessTier isApproved isDeactivated preferredAgeRange preferredHeightRange willingToConsiderANonUkCitizen acceptSomeoneWithChildren acceptADivorcedPerson acceptAWidow";
+
+    const [userA, userB] = await Promise.all([
+      User.findById(a).select("username age city country gender").lean(),
+      User.findById(b).select("username age city country gender").lean(),
+    ]);
+
+    if (!userA || !userB) return res.json({ success: false, error: "User not found" });
+
+    // Fetch full user profiles for cross-check display
+    const [fullUserA, fullUserB] = await Promise.all([
+      User.findById(a).select(fullSelect).lean(),
+      User.findById(b).select(fullSelect).lean(),
+    ]);
+
+    // v2: Compute on-the-fly always (direct sum, no normalization)
+    const [viewerFull, vieweeFull] = await Promise.all([
+      User.findById(a).select([
+        "name", "age", "height", "gender", "maritalStatus",
+        "country", "city", "nationality", "ethnicity",
+        "islamicSect", "preferredIslamicSect", "prays", "bornMuslim",
+        "highestEducation",
+        "preferredAgeRange", "preferredHeightRange",
+        "willingToConsiderANonUkCitizen",
+        "acceptSomeoneWithChildren", "acceptADivorcedPerson", "acceptAWidow",
+        "children", "isApproved", "approvalStatus", "isDeactivated",
+      ]),
+      User.findById(b).select([
+        "name", "age", "height", "gender", "maritalStatus",
+        "country", "city", "nationality", "ethnicity",
+        "islamicSect", "preferredIslamicSect", "prays", "bornMuslim",
+        "highestEducation",
+        "preferredAgeRange", "preferredHeightRange",
+        "willingToConsiderANonUkCitizen",
+        "acceptSomeoneWithChildren", "acceptADivorcedPerson", "acceptAWidow",
+        "children", "isApproved", "approvalStatus", "isDeactivated",
+      ]),
+    ]);
+
+    let scoreData = null;
+
+    if (viewerFull && vieweeFull) {
+      const { runHardFilters, computeScore } = require("./services/matchScoringService");
+      const filterResult = runHardFilters(viewerFull, vieweeFull);
+      if (filterResult.passed) {
+        const result = computeScore(viewerFull, vieweeFull);
+        scoreData = {
+          finalScore: result.finalScore,
+          subScores: result.subScores,
+          hardFilterPassed: true,
+          computedOnTheFly: true,
+        };
+      } else {
+        scoreData = {
+          finalScore: null,
+          hardFilterPassed: false,
+          failures: filterResult.failures,
+          computedOnTheFly: true,
+        };
+      }
+    }
+
+    res.json({ success: true, userA, userB, fullUserA, fullUserB, score: scoreData });
+  } catch (error) {
+    console.error("Admin compare error:", error);
+    res.json({ success: false, error: "Comparison failed" });
+  }
+});
+
+// API: Get top matched profile pairs
+app.get("/api/admin/matches/top", requireAdminOrModerator, async (req, res) => {
+  try {
+    const limit = Math.min(parseInt(req.query.limit) || 50, 200);
+    const offset = parseInt(req.query.offset) || 0;
+    const sort = req.query.sort || "score-desc";
+
+    let sortOpt = {};
+    if (sort === "score-asc") sortOpt = { finalScore: 1 };
+    else if (sort === "recent") sortOpt = { computedAt: -1 };
+    else sortOpt = { finalScore: -1 }; // score-desc (default)
+
+    // Get total count for load-more tracking
+   const pairKeyStage = {
+      $addFields: {
+        pairKey: {
+          $cond: [
+            { $lt: ["$viewerId", "$vieweeId"] },
+            { $concat: [{ $toString: "$viewerId" }, "_", { $toString: "$vieweeId" }] },
+            { $concat: [{ $toString: "$vieweeId" }, "_", { $toString: "$viewerId" }] },
+          ],
+        },
+      },
+    };
+
+    // Get deduped total count for load-more tracking
+    const totalCountAgg = await MatchScore.aggregate([
+      { $match: { isTopMatch: true } },
+      pairKeyStage,
+      { $group: { _id: "$pairKey" } },
+      { $count: "total" },
+    ]);
+    const totalCount = totalCountAgg[0]?.total || 0;
+
+    const scores = await MatchScore.aggregate([
+      { $match: { isTopMatch: true } },
+      pairKeyStage,
+      { $sort: { computedAt: -1 } },       // pick a deterministic "keep" doc per pair
+      { $group: { _id: "$pairKey", doc: { $first: "$$ROOT" } } },
+      { $replaceRoot: { newRoot: "$doc" } },
+      { $sort: sortOpt },
+      { $skip: offset },
+      { $limit: limit },
+    ]);
+    // Guard: no scores computed yet
+    if (!scores || scores.length === 0) {
+      return res.json({ success: true, pairs: [], totalCount, hasMore: false });
+    }
+
+    // Fetch viewer and viewee profiles
+    const userIds = new Set();
+    scores.forEach(s => {
+      userIds.add(s.viewerId.toString());
+      userIds.add(s.vieweeId.toString());
+    });
+
+    const topSelect = "username name age city country gender email contact nationality ethnicity height maritalStatus islamicSect preferredIslamicSect prays bornMuslim highestEducation work profileCompletenessTier isApproved isDeactivated preferredAgeRange preferredHeightRange willingToConsiderANonUkCitizen acceptSomeoneWithChildren acceptADivorcedPerson acceptAWidow aboutMe lookingForASpouseThatIs children";
+    const users = await User.find({ _id: { $in: Array.from(userIds) } })
+      .select(topSelect)
+      .lean();
+
+    const userMap = {};
+    users.forEach(u => { userMap[u._id.toString()] = u; });
+
+    const pairs = scores.map(s => ({
+      ...s,
+      viewer: userMap[s.viewerId.toString()] || null,
+      viewee: userMap[s.vieweeId.toString()] || null,
+    })).filter(p => p.viewer && p.viewee);
+
+    const hasMore = offset + limit < totalCount;
+
+    res.json({ success: true, pairs, totalCount, hasMore });
+  } catch (error) {
+    console.error("Admin top matches error:", error);
+    res.json({ success: false, error: "Failed to load top matches" });
+  }
+});
+
 app.get("/admin/dashboard", requireAdminOrModerator, async (req, res) => {
   if (!req.session.isAdmin && !req.session.isModerator) {
     return res.redirect("/login");
@@ -4047,6 +4888,11 @@ app.post("/api/admin/user/:id/approve", requireAdminOrModerator, async (req, res
 
     console.log(`User ${user.username} approved by ${user.approvedBy}`);
 
+    // IndexNow: submit profile URL if approved and has slug
+    if (user.profileSlug && !(user.seoSettings && user.seoSettings.noIndex)) {
+      indexNow.submitUrls([`/profiles/${user.profileSlug}`, "/profiles"]);
+    }
+
     // Send congratulations email if user has email
     if (user.email) {
       try {
@@ -4103,7 +4949,11 @@ app.post("/api/admin/user/:id/reject", requireAdminOrModerator, async (req, res)
     
     await user.save();
 
-    
+    // IndexNow: notify removal if profile was previously approved and had a slug
+    if (user.profileSlug) {
+      indexNow.notifyUrlDeleted(`/profiles/${user.profileSlug}`);
+      indexNow.submitUrls(["/profiles"]);
+    }
 
     res.json({ 
       success: true, 
@@ -4145,7 +4995,14 @@ app.post("/api/admin/user/:id/delete", requireAdminOnly, async (req, res) => {
     console.log(`User ${user.username} data archived successfully`);
 
     // Permanently delete the user (pre-delete middleware will clean up requests & notifications)
+    const deletedUserSlug = user.profileSlug;
     await User.findByIdAndDelete(id);
+
+    // IndexNow: notify removal if profile had a slug
+    if (deletedUserSlug) {
+      indexNow.notifyUrlDeleted(`/profiles/${deletedUserSlug}`);
+      indexNow.submitUrls(["/profiles"]);
+    }
     
     console.log(`User ${user.username} permanently deleted by ${adminUsername}`);
 
@@ -4774,8 +5631,15 @@ app.post("/admin/user/update", profileUpload, async (req, res) => {
       eyeColor: ["black", "brown", "grey", "other"],
       hairColor: ["black", "brown", "blonde"],
       complexion: ["fair", "wheatish", "dark"],
-      ethnicity: ["bangladeshi", "pakistani", "indian", "british", "other"],
+      ethnicity: ["bangladeshi", "pakistani", "indian", "british", "British", "other", "N/A"],
       gender: ["male", "female", "rather not say"],
+      preferredIslamicSect: [
+        "Sunni", "Shia", "Ibadi", "Sufi", "Ahmadiyya", "Hanafi", "Maliki", "Shafi'i",
+        "Hanbali", "Zahiri", "Twelver (Jafari)", "Ismaili", "Zaydi", "Alawite", "Alevi",
+        "Druze", "Ash'ari", "Maturidi", "Athari", "Mu'tazila", "Murji'ah", "Kharijite",
+        "Salafi", "Wahhabi", "Deobandi", "Barelvi", "Ahle Hadith", "Quranist",
+        "Mahdavia", "Nation of Islam", "Moorish Science Temple", "Non-denominational",
+      ],
     };
 
     // **IMPORTANT FIX**: Clear any existing "N/A" values in boolean fields |first
@@ -4905,6 +5769,29 @@ app.post("/admin/user/update", profileUpload, async (req, res) => {
       // console.log("Admin updated profile slug:", user.profileSlug);
     }
     await user.save();
+
+    // Recompute profile tier and trigger match score recalculation if scored fields changed
+    const { SCORED_FIELDS } = require("./config/matching");
+    const updatedKeys = Object.keys(updateData);
+    const hasScoredFieldChange = updatedKeys.some(key => SCORED_FIELDS.includes(key));
+
+    if (hasScoredFieldChange || updatedKeys.includes("profileCompletenessTier")) {
+      const newTier = computeProfileTier(user);
+      if (user.profileCompletenessTier !== newTier) {
+        user.profileCompletenessTier = newTier;
+        user.profileTierCalculatedAt = new Date();
+        await user.save();
+      }
+    }
+
+    if (hasScoredFieldChange) {
+      const QueueService = require("./services/queueService");
+      user.matchScoresStaleSince = new Date();
+      await user.save();
+      QueueService.queueRecomputeScores(user._id).catch(err =>
+        console.error("Failed to enqueue match score recompute:", err.message)
+      );
+    }
 
     // console.log(`User ${user.username} updated successfully by admin`);
     res.json({ success: true, message: "User updated successfully" });
@@ -5344,7 +6231,140 @@ app.post("/api/newsletter/subscribe", async (req, res) => {
   }
 });
 
-// Admin route to view newsletter subscribers
+// ============================================
+// RESERVATION BOOKING API
+// ============================================
+
+app.post("/api/reservations/book", async (req, res) => {
+  try {
+    const { name, phone, countryCode, date, time, source, pageUrl } = req.body;
+
+    // Validate required fields
+    if (!name || !phone || !date || !time) {
+      return res.status(400).json({
+        success: false,
+        error: "All fields are required (name, phone, date, time)",
+      });
+    }
+
+    // Validate name length
+    if (name.trim().length < 2) {
+      return res.status(400).json({
+        success: false,
+        error: "Please provide a valid name",
+      });
+    }
+
+    // Validate date is not in the past
+    const bookingDate = new Date(date);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    if (bookingDate < today) {
+      return res.status(400).json({
+        success: false,
+        error: "Please select a future date",
+      });
+    }
+
+    // Create reservation
+    const reservation = new Reservation({
+      name: name.trim(),
+      phoneOrEmail: phone.trim(),
+      countryCode: (countryCode || "").trim(),
+      date: bookingDate,
+      time: time.trim(),
+      source: source || "floating_button",
+      pageUrl: pageUrl || "",
+      userAgent: req.get("User-Agent") || "",
+      ipAddress: req.ip || "",
+    });
+
+    await reservation.save();
+
+    // Send email notification (fire-and-forget — don't block response)
+    sendReservationNotification(reservation).catch(err =>
+      console.error("Reservation notification email failed:", err)
+    );
+
+    console.log("New reservation booked:", reservation.name, reservation.date, reservation.source);
+
+    res.json({
+      success: true,
+      message:
+        "Your free reservation has been booked! We'll contact you soon.",
+    });
+  } catch (error) {
+    console.error("Reservation booking error:", error);
+    res.status(500).json({
+      success: false,
+      error: "Failed to book reservation. Please try again later.",
+    });
+  }
+});
+
+// ============================================
+// ADMIN RESERVATION ROUTES
+// ============================================
+
+app.get("/admin/reservations", requireAdminOnly, async (req, res) => {
+  try {
+    const { status } = req.query;
+
+    const filter = {};
+    if (status && ["pending", "contacted", "closed"].includes(status)) {
+      filter.status = status;
+    }
+
+    const reservations = await Reservation.find(filter).sort({ createdAt: -1 });
+
+    const stats = {
+      total: await Reservation.countDocuments({}),
+      pending: await Reservation.countDocuments({ status: "pending" }),
+      contacted: await Reservation.countDocuments({ status: "contacted" }),
+      closed: await Reservation.countDocuments({ status: "closed" }),
+    };
+
+    res.render("admin/reservations", {
+      reservations,
+      stats,
+      currentFilter: status || "all",
+    });
+  } catch (error) {
+    console.error("Admin reservations error:", error);
+    res.render("admin/reservations", {
+      reservations: [],
+      stats: { total: 0, pending: 0, contacted: 0, closed: 0 },
+      currentFilter: "all",
+    });
+  }
+});
+
+app.post("/admin/reservations/:id/status", requireAdminOnly, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.body;
+
+    if (!["pending", "contacted", "closed"].includes(status)) {
+      return res.status(400).json({ success: false, error: "Invalid status" });
+    }
+
+    const reservation = await Reservation.findByIdAndUpdate(
+      id,
+      { status },
+      { new: true }
+    );
+
+    if (!reservation) {
+      return res.status(404).json({ success: false, error: "Reservation not found" });
+    }
+
+    res.json({ success: true, reservation });
+  } catch (error) {
+    console.error("Update reservation status error:", error);
+    res.status(500).json({ success: false, error: "Failed to update status" });
+  }
+});
+
 // Admin route to view newsletter subscribers
 app.get("/admin/newsletter", requireAdminOnly, async (req, res) => {
   if (!req.session.isAdmin) {
@@ -5757,6 +6777,20 @@ app.post(
 );
 // ==================== Export Data Routes ====================
 
+// IndexNow: Bulk submit ALL public URLs (admin-only, one-time trigger)
+app.get("/admin/indexnow/bulk-submit", requireAdminOnly, async (req, res) => {
+  try {
+    res.json({ success: true, message: "Bulk submission started — check server logs for progress." });
+    // Fire-and-forget: don't block the response
+    indexNow.bulkSubmitAllPublicUrls().catch(err =>
+      console.error("[IndexNow] Bulk submit failed:", err)
+    );
+  } catch (error) {
+    console.error("Bulk-submit route error:", error);
+    res.status(500).json({ success: false, error: "Failed to start bulk submission" });
+  }
+});
+
 // Export page
 app.get("/admin/export", requireAdminOnly, async (req, res) => {
   res.render("admin/export", {
@@ -6006,6 +7040,11 @@ app.post("/admin/blogs", requireAdminOnly, async (req, res) => {
 
     console.log(`Blog created: ${blog.title} (${blog.isPublished ? 'Published' : 'Draft'})`);
 
+    // IndexNow: notify if published
+    if (blog.isPublished) {
+      indexNow.submitUrls([`/blog/${blog.slug}`, "/blog"]);
+    }
+
     res.json({
       success: true,
       message: `Blog ${blog.isPublished ? 'published' : 'saved as draft'} successfully`,
@@ -6070,6 +7109,9 @@ app.put("/admin/blogs/:id", requireAdminOnly, async (req, res) => {
       return res.json({ success: false, error: "Blog not found" });
     }
 
+    // Capture old slug before any changes (for IndexNow)
+    const oldSlug = blog.slug;
+
     // Handle slug update
     if (slug && slug.trim()) {
       const sanitizedSlug = slug.trim().toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
@@ -6127,6 +7169,20 @@ app.put("/admin/blogs/:id", requireAdminOnly, async (req, res) => {
 
     console.log(`Blog updated: ${blog.title} (${blog.isPublished ? 'Published' : 'Draft'})`);
 
+    // IndexNow: submit based on status/slug changes
+    if (blog.isPublished) {
+      const urls = [`/blog/${blog.slug}`, "/blog"];
+      // If old slug was different and was also published, notify removal of old URL
+      if (oldSlug !== blog.slug && wasPublished) {
+        indexNow.notifyUrlDeleted(`/blog/${oldSlug}`);
+      }
+      indexNow.submitUrls(urls);
+    } else if (wasPublished && !blog.isPublished) {
+      // Unpublished — notify removal
+      indexNow.notifyUrlDeleted(`/blog/${oldSlug}`);
+      indexNow.submitUrls(["/blog"]);
+    }
+
     res.json({
       success: true,
       message: `Blog ${blog.isPublished ? 'updated and published' : 'updated as draft'} successfully`,
@@ -6155,6 +7211,12 @@ app.delete("/admin/blogs/:id", requireAdminOnly, async (req, res) => {
     await Blog.findByIdAndDelete(req.params.id);
 
     console.log(`Blog deleted: ${blog.title}`);
+
+    // IndexNow: notify removal
+    if (blog.isPublished) {
+      indexNow.notifyUrlDeleted(`/blog/${blog.slug}`);
+      indexNow.submitUrls(["/blog"]);
+    }
 
     res.json({
       success: true,
@@ -6189,6 +7251,14 @@ app.post("/admin/blogs/:id/toggle-publish", requireAdminOnly, async (req, res) =
     await blog.save();
 
     console.log(`Blog ${blog.isPublished ? 'published' : 'unpublished'}: ${blog.title}`);
+
+    // IndexNow: notify based on new status
+    if (blog.isPublished) {
+      indexNow.submitUrls([`/blog/${blog.slug}`, "/blog"]);
+    } else {
+      indexNow.notifyUrlDeleted(`/blog/${blog.slug}`);
+      indexNow.submitUrls(["/blog"]);
+    }
 
     res.json({
       success: true,
@@ -6362,6 +7432,12 @@ app.post("/admin/faqs", requireAdminOnly, async (req, res) => {
     });
 
     await faq.save();
+
+    // IndexNow: notify if published
+    if (faq.isPublished) {
+      indexNow.submitUrls([`/islamic-faqs/${faq.slug}`, "/islamic-faqs"]);
+    }
+
     res.json({
       success: true,
       message: `FAQ ${faq.isPublished ? "published" : "saved as draft"} successfully`,
@@ -6406,6 +7482,9 @@ app.put("/admin/faqs/:id", requireAdminOnly, async (req, res) => {
     const faq = await IslamicFAQ.findById(req.params.id);
     if (!faq) return res.json({ success: false, error: "FAQ not found" });
 
+    // Capture old slug for IndexNow
+    const oldFaqSlug = faq.slug;
+
     if (slug && slug.trim()) {
       const sanitizedSlug = slug.trim().toLowerCase()
         .replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
@@ -6443,6 +7522,19 @@ app.put("/admin/faqs/:id", requireAdminOnly, async (req, res) => {
     else if (wasPublished && !faq.isPublished) faq.publishedAt = null;
 
     await faq.save();
+
+    // IndexNow: submit based on status/slug changes
+    if (faq.isPublished) {
+      const urls = [`/islamic-faqs/${faq.slug}`, "/islamic-faqs"];
+      if (oldFaqSlug !== faq.slug && wasPublished) {
+        indexNow.notifyUrlDeleted(`/islamic-faqs/${oldFaqSlug}`);
+      }
+      indexNow.submitUrls(urls);
+    } else if (wasPublished && !faq.isPublished) {
+      indexNow.notifyUrlDeleted(`/islamic-faqs/${oldFaqSlug}`);
+      indexNow.submitUrls(["/islamic-faqs"]);
+    }
+
     res.json({
       success: true,
       message: `FAQ ${faq.isPublished ? "updated and published" : "updated as draft"} successfully`,
@@ -6459,7 +7551,16 @@ app.delete("/admin/faqs/:id", requireAdminOnly, async (req, res) => {
   try {
     const faq = await IslamicFAQ.findById(req.params.id);
     if (!faq) return res.json({ success: false, error: "FAQ not found" });
+    const faqSlug = faq.slug;
+    const wasFaqPublished = faq.isPublished;
     await IslamicFAQ.findByIdAndDelete(req.params.id);
+
+    // IndexNow: notify removal if it was published
+    if (wasFaqPublished) {
+      indexNow.notifyUrlDeleted(`/islamic-faqs/${faqSlug}`);
+      indexNow.submitUrls(["/islamic-faqs"]);
+    }
+
     res.json({ success: true, message: "FAQ deleted successfully" });
   } catch (error) {
     console.error("Delete FAQ error:", error);
@@ -6571,6 +7672,12 @@ app.post("/admin/pages", requireAdminOnly, async (req, res) => {
       publishedAt: Boolean(isPublished) ? new Date() : null,
     });
     await page.save();
+
+    // IndexNow: notify if published and not noIndex
+    if (page.isPublished && !page.noIndex) {
+      indexNow.submitUrls([`/${page.categorySlug}/${page.pageSlug}`]);
+    }
+
     res.json({ success: true, message: `Page ${Boolean(isPublished) ? "published" : "saved as draft"} successfully` });
   } catch (error) {
     console.error("Create page error:", error);
@@ -6600,6 +7707,13 @@ app.post("/admin/pages/:id", requireAdminOnly, async (req, res) => {
       metaTitle, metaDescription, keywords, focusKeyword, canonicalUrl, noIndex, isPublished } = req.body;
     const page = await CategoryPage.findById(req.params.id);
     if (!page) return res.json({ success: false, error: "Page not found" });
+
+    // Capture old slugs for IndexNow
+    const oldCatSlug = page.categorySlug;
+    const oldPageSlug = page.pageSlug;
+    const oldWasPublished = page.isPublished;
+    const oldNoIndex = page.noIndex;
+
     const catSlug = categorySlug.trim().toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
     const pgSlug = pageSlug.trim().toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
     // Check uniqueness (exclude self)
@@ -6607,7 +7721,6 @@ app.post("/admin/pages/:id", requireAdminOnly, async (req, res) => {
     if (conflict) return res.json({ success: false, error: "Another page already uses that URL" });
     const keywordsArray = keywords ? keywords.split(",").map(k => k.trim()).filter(Boolean) : [];
     const faqCatsArray = Array.isArray(faqCategories) ? faqCategories : (faqCategories ? [faqCategories] : []);
-    const wasPublished = page.isPublished;
     page.title = title.trim();
     page.categorySlug = catSlug;
     page.pageSlug = pgSlug;
@@ -6621,9 +7734,23 @@ app.post("/admin/pages/:id", requireAdminOnly, async (req, res) => {
     page.canonicalUrl = canonicalUrl ? canonicalUrl.trim() : "";
     page.noIndex = Boolean(noIndex);
     page.isPublished = Boolean(isPublished);
-    if (!wasPublished && page.isPublished) page.publishedAt = new Date();
-    else if (wasPublished && !page.isPublished) page.publishedAt = null;
+    if (!oldWasPublished && page.isPublished) page.publishedAt = new Date();
+    else if (oldWasPublished && !page.isPublished) page.publishedAt = null;
     await page.save();
+
+    // IndexNow: submit based on status/slug changes
+    if (page.isPublished && !page.noIndex) {
+      const slugsChanged = (oldCatSlug !== page.categorySlug || oldPageSlug !== page.pageSlug);
+      const url = `/${page.categorySlug}/${page.pageSlug}`;
+      if (slugsChanged && oldWasPublished && !oldNoIndex) {
+        indexNow.notifyUrlDeleted(`/${oldCatSlug}/${oldPageSlug}`);
+      }
+      indexNow.submitUrls([url]);
+    } else if (oldWasPublished && !oldNoIndex && (!page.isPublished || page.noIndex)) {
+      // Was published but now unpublished or noIndexed
+      indexNow.notifyUrlDeleted(`/${oldCatSlug}/${oldPageSlug}`);
+    }
+
     res.json({ success: true, message: `Page ${page.isPublished ? "updated and published" : "updated as draft"} successfully` });
   } catch (error) {
     console.error("Update page error:", error);
@@ -6637,7 +7764,17 @@ app.post("/admin/pages/:id/delete", requireAdminOnly, async (req, res) => {
   try {
     const page = await CategoryPage.findById(req.params.id);
     if (!page) return res.json({ success: false, error: "Page not found" });
+    const cpCatSlug = page.categorySlug;
+    const cpPageSlug = page.pageSlug;
+    const cpWasPublished = page.isPublished;
+    const cpNoIndex = page.noIndex;
     await CategoryPage.findByIdAndDelete(req.params.id);
+
+    // IndexNow: notify removal if it was published
+    if (cpWasPublished && !cpNoIndex) {
+      indexNow.notifyUrlDeleted(`/${cpCatSlug}/${cpPageSlug}`);
+    }
+
     res.json({ success: true, message: "Page deleted successfully" });
   } catch (error) {
     console.error("Delete page error:", error);
@@ -6713,6 +7850,12 @@ app.post("/admin/podcasts", requireAdminOnly, async (req, res) => {
       isPublished: isPublished !== false && isPublished !== "false",
       addedBy: "admin",
     });
+
+    // IndexNow: notify if published
+    if (podcast.isPublished) {
+      indexNow.submitUrls(["/podcasts"]);
+    }
+
     res.status(201).json({ success: true, podcast });
   } catch (err) {
     console.error("Add podcast error:", err);
@@ -6727,6 +7870,10 @@ app.delete("/admin/podcasts/:id", requireAdminOnly, async (req, res) => {
     const podcast = await Podcast.findById(req.params.id);
     if (!podcast) return res.status(404).json({ error: "Podcast not found" });
     await Podcast.findByIdAndDelete(req.params.id);
+
+    // IndexNow: notify listing page update
+    indexNow.submitUrls(["/podcasts"]);
+
     res.json({ success: true });
   } catch (err) {
     console.error("Delete podcast error:", err);
@@ -6742,6 +7889,10 @@ app.patch("/admin/podcasts/:id/toggle", requireAdminOnly, async (req, res) => {
     if (!podcast) return res.status(404).json({ error: "Podcast not found" });
     podcast.isPublished = !podcast.isPublished;
     await podcast.save();
+
+    // IndexNow: notify listing page update
+    indexNow.submitUrls(["/podcasts"]);
+
     res.json({ success: true, podcast });
   } catch (err) {
     console.error("Toggle podcast error:", err);
@@ -6761,6 +7912,10 @@ app.patch("/admin/podcasts/:id", requireAdminOnly, async (req, res) => {
     if (order !== undefined) podcast.order = parseInt(order, 10) || 0;
     if (isPublished !== undefined) podcast.isPublished = isPublished === true || isPublished === "true";
     await podcast.save();
+
+    // IndexNow: notify listing page update
+    indexNow.submitUrls(["/podcasts"]);
+
     res.json({ success: true, podcast });
   } catch (err) {
     console.error("Edit podcast error:", err);
@@ -7677,10 +8832,18 @@ app.get("/sitemap.xml", async (req, res) => {
   </url>
   <url>
     <loc>https://www.shadiamour.com/profiles?gender=male</loc>
+    <loc>https://shadiamour.com/matches</loc>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://shadiamour.com/islamic-faqs</loc>
+    <loc>https://shadiamour.com/blog</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://shadiamour.com/podcasts</loc>
     <loc>https://shadiamour.com/islamic-faqs</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -8238,6 +9401,10 @@ app.post("/seoadmin/profile/:id/update", requireSeoAdmin, async (req, res) => {
       return res.status(404).send("Profile not found");
     }
     
+    // Capture old values for IndexNow
+    const oldProfileSlug = profile.profileSlug;
+    const oldNoIndex = profile.seoSettings && profile.seoSettings.noIndex;
+    
     const {
       profileSlug,
       randomNameForSeo,
@@ -8303,6 +9470,29 @@ app.post("/seoadmin/profile/:id/update", requireSeoAdmin, async (req, res) => {
     profile.seoSettings.lastSeoEditedBy = "SEO Admin";
     
     await profile.save();
+
+    // IndexNow: handle slug/noIndex changes for approved profiles
+    if (profile.isApproved && profile.approvalStatus === "approved") {
+      const newSlug = profile.profileSlug;
+      const newNoIndex = profile.seoSettings && profile.seoSettings.noIndex;
+
+      if (newNoIndex && !oldNoIndex) {
+        // Was indexable, now noIndexed — notify removal
+        if (oldProfileSlug) indexNow.notifyUrlDeleted(`/profiles/${oldProfileSlug}`);
+        indexNow.submitUrls(["/profiles"]);
+      } else if (!newNoIndex && oldNoIndex) {
+        // Was noIndexed, now indexable — submit
+        if (newSlug) indexNow.submitUrls([`/profiles/${newSlug}`, "/profiles"]);
+      } else if (!newNoIndex) {
+        // Still indexable — handle slug changes
+        if (newSlug && oldProfileSlug !== newSlug) {
+          indexNow.submitUrls([`/profiles/${newSlug}`, "/profiles"]);
+          if (oldProfileSlug) indexNow.notifyUrlDeleted(`/profiles/${oldProfileSlug}`);
+        } else if (newSlug) {
+          indexNow.submitUrls([`/profiles/${newSlug}`, "/profiles"]);
+        }
+      }
+    }
     
     res.redirect(`/seoadmin/profile/${req.params.id}?success=SEO settings updated successfully`);
   } catch (error) {

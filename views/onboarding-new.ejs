@@ -195,13 +195,17 @@
           <div class="step-pill pending" data-step="5">5</div>
           <div class="w-3 sm:w-6 h-0.5 bg-gray-200 step-line" data-line="5"></div>
           <div class="step-pill pending" data-step="6">6</div>
+          <div class="w-3 sm:w-6 h-0.5 bg-gray-200 step-line" data-line="6"></div>
+          <div class="step-pill pending" data-step="7">7</div>
+          <div class="w-3 sm:w-6 h-0.5 bg-gray-200 step-line" data-line="7"></div>
+          <div class="step-pill pending" data-step="8">8</div>
         </div>
 
         <!-- Progress Bar -->
         <div class="bg-gray-200 rounded-full h-1.5 mb-2">
-          <div class="progress-bar bg-gradient-to-r from-pink-500 to-purple-500 h-1.5 rounded-full" style="width: 20%"></div>
+          <div class="progress-bar bg-gradient-to-r from-pink-500 to-purple-500 h-1.5 rounded-full" style="width: 12.5%"></div>
         </div>
-        <p class="text-xs text-gray-500">Step <span id="currentStep">1</span> of 5 · <span id="progressPercent">20%</span></p>
+        <p class="text-xs text-gray-500">Step <span id="currentStep">1</span> of 8 · <span id="progressPercent">12.5%</span></p>
       </div>
 
       <!-- Form Container -->
@@ -356,14 +360,118 @@
             </div>
           </div>
 
-          <!-- Step 3: Location -->
+          <!-- Step 3: Islamic Identity -->
           <div id="step-3" class="step-content">
+            <div class="text-center mb-6">
+              <div class="w-16 h-16 bg-emerald-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i class="ri-star-smile-line text-3xl text-emerald-600"></i>
+              </div>
+              <h3 class="text-xl sm:text-2xl font-semibold text-gray-800 mb-2">Islamic Identity</h3>
+              <p class="text-gray-600 text-sm" id="step3Subtitle">Tell us about their faith</p>
+            </div>
+
+            <div class="space-y-4">
+              <!-- Religion (preset to Islam) -->
+              <div>
+                <label for="religion" class="form-label">
+                  Religion <span class="text-red-500">*</span>
+                </label>
+                <select id="religion" name="religion" required class="form-select bg-gray-50 cursor-not-allowed" disabled>
+                  <option value="islam" selected>Islam</option>
+                </select>
+                <p class="text-xs text-gray-500 mt-1">
+                  <i class="ri-information-line"></i> This website is only for Muslims
+                </p>
+              </div>
+
+              <!-- Islamic Sect -->
+              <div>
+                <label for="islamicSect" class="form-label">
+                  <span>What is their Islamic sect?</span> <span class="text-red-500">*</span>
+                </label>
+                <select id="islamicSect" name="islamicSect" required class="form-select">
+                  <option value="">Select Islamic sect</option>
+                  <option value="Sunni">Sunni</option>
+                  <option value="Shia">Shia</option>
+                  <option value="Ibadi">Ibadi</option>
+                  <option value="Sufi">Sufi</option>
+                  <option value="Ahmadiyya">Ahmadiyya</option>
+                  <option value="Hanafi">Hanafi</option>
+                  <option value="Maliki">Maliki</option>
+                  <option value="Shafi'i">Shafi'i</option>
+                  <option value="Hanbali">Hanbali</option>
+                  <option value="Zahiri">Zahiri</option>
+                  <option value="Twelver (Jafari)">Twelver (Jafari)</option>
+                  <option value="Ismaili">Ismaili</option>
+                  <option value="Zaydi">Zaydi</option>
+                  <option value="Alawite">Alawite</option>
+                  <option value="Alevi">Alevi</option>
+                  <option value="Druze">Druze</option>
+                  <option value="Ash'ari">Ash'ari</option>
+                  <option value="Maturidi">Maturidi</option>
+                  <option value="Athari">Athari</option>
+                  <option value="Mu'tazila">Mu'tazila</option>
+                  <option value="Murji'ah">Murji'ah</option>
+                  <option value="Kharijite">Kharijite</option>
+                  <option value="Salafi">Salafi</option>
+                  <option value="Wahhabi">Wahhabi</option>
+                  <option value="Deobandi">Deobandi</option>
+                  <option value="Barelvi">Barelvi</option>
+                  <option value="Ahle Hadith">Ahle Hadith</option>
+                  <option value="Quranist">Quranist</option>
+                  <option value="Mahdavia">Mahdavia</option>
+                  <option value="Nation of Islam">Nation of Islam</option>
+                  <option value="Moorish Science Temple">Moorish Science Temple</option>
+                  <option value="Non-denominational">Non-denominational</option>
+                </select>
+              </div>
+
+              <!-- Prays -->
+              <div>
+                <label for="prays" class="form-label">
+                  <span>Do they pray regularly?</span> <span class="text-red-500">*</span>
+                </label>
+                <select id="prays" name="prays" required class="form-select">
+                  <option value="">Select</option>
+                  <option value="true">Yes</option>
+                  <option value="false">No</option>
+                </select>
+              </div>
+
+              <!-- Born Muslim -->
+              <div>
+                <label for="bornMuslim" class="form-label">
+                  <span>Were they born Muslim?</span> <span class="text-red-500">*</span>
+                </label>
+                <select id="bornMuslim" name="bornMuslim" required class="form-select">
+                  <option value="">Select</option>
+                  <option value="true">Yes</option>
+                  <option value="false">No</option>
+                </select>
+              </div>
+
+              <!-- Islam Importance -->
+              <div>
+                <label for="islamIsImportantToMeInfo" class="form-label">
+                  <span>How important is Islam to them?</span> <span class="text-red-500">*</span>
+                </label>
+                <textarea id="islamIsImportantToMeInfo" name="islamIsImportantToMeInfo" required
+                  class="form-input" style="min-height: 120px; resize: none;"
+                  placeholder="Describe the importance of Islam in their life, their religious practices, and what role faith plays in their daily routine..."
+                  minlength="30"></textarea>
+                <p class="text-xs text-gray-500 mt-1 char-counter" id="islamImportanceCounter">0/30 characters minimum</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 4: Location -->
+          <div id="step-4" class="step-content">
             <div class="text-center mb-6">
               <div class="w-16 h-16 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-4">
                 <i class="ri-map-pin-line text-3xl text-green-600"></i>
               </div>
               <h3 class="text-xl sm:text-2xl font-semibold text-gray-800 mb-2">Location</h3>
-              <p class="text-gray-600 text-sm" id="step3Subtitle">Where does your son/daughter live?</p>
+              <p class="text-gray-600 text-sm" id="step4Subtitle">Where does your son/daughter live?</p>
             </div>
 
             <div class="space-y-4">
@@ -400,17 +508,43 @@
                   <option value="">Select country first</option>
                 </select>
               </div>
+
+              <!-- Nationality -->
+              <div>
+                <label for="nationality" class="form-label">
+                  <span id="nationalityLabel">What is their nationality?</span> <span class="text-red-500">*</span>
+                </label>
+                <input type="text" id="nationality" name="nationality" required
+                  class="form-input"
+                  placeholder="e.g., British, Pakistani, Indian, Bangladeshi">
+              </div>
+
+              <!-- Ethnicity -->
+              <div>
+                <label for="ethnicity" class="form-label">
+                  <span id="ethnicityLabel">What is their ethnicity?</span> <span class="text-red-500">*</span>
+                </label>
+                <select id="ethnicity" name="ethnicity" required class="form-select">
+                  <option value="">Select ethnicity</option>
+                  <option value="British">British</option>
+                  <option value="Pakistani">Pakistani</option>
+                  <option value="Indian">Indian</option>
+                  <option value="Bangladeshi">Bangladeshi</option>
+                  <option value="Other">Other</option>
+                  <option value="N/A">N/A</option>
+                </select>
+              </div>
             </div>
           </div>
 
-          <!-- Step 4: Education & Work -->
-          <div id="step-4" class="step-content">
+          <!-- Step 5: Education & Work -->
+          <div id="step-5" class="step-content">
             <div class="text-center mb-6">
               <div class="w-16 h-16 bg-purple-50 rounded-full flex items-center justify-center mx-auto mb-4">
                 <i class="ri-graduation-cap-line text-3xl text-purple-600"></i>
               </div>
               <h3 class="text-xl sm:text-2xl font-semibold text-gray-800 mb-2">Education & Work</h3>
-              <p class="text-gray-600 text-sm" id="step4Subtitle">Tell us about your son's/daughter's background</p>
+              <p class="text-gray-600 text-sm" id="step5Subtitle">Tell us about your son's/daughter's background</p>
             </div>
 
             <div class="space-y-4">
@@ -469,14 +603,14 @@
             </div>
           </div>
 
-          <!-- Step 5: About & Contact -->
-          <div id="step-5" class="step-content">
+          <!-- Step 6: About & Contact -->
+          <div id="step-6" class="step-content">
             <div class="text-center mb-6">
               <div class="w-16 h-16 bg-amber-50 rounded-full flex items-center justify-center mx-auto mb-4">
                 <i class="ri-heart-2-line text-3xl text-amber-600"></i>
               </div>
               <h3 class="text-xl sm:text-2xl font-semibold text-gray-800 mb-2">About Them</h3>
-              <p class="text-gray-600 text-sm" id="step5Subtitle">Tell us more about your son/daughter</p>
+              <p class="text-gray-600 text-sm" id="step6Subtitle">Tell us more about your son/daughter</p>
             </div>
 
             <div class="space-y-4">
@@ -491,11 +625,246 @@
                   minlength="20"></textarea>
                 <p class="text-xs text-gray-500 mt-1">Minimum 20 characters</p>
               </div>
+
+              <!-- Looking for a spouse -->
+              <div>
+                <label for="lookingForASpouseThatIs" class="form-label">
+                  <span id="lookingForLabel">What kind of spouse are they looking for?</span> <span class="text-red-500">*</span>
+                </label>
+                <textarea id="lookingForASpouseThatIs" name="lookingForASpouseThatIs" required
+                  class="form-input" style="min-height: 120px; resize: none;"
+                  placeholder="Describe the type of spouse they are looking for (e.g., educated, religious, career-oriented)..."
+                  minlength="5"></textarea>
+                <p class="text-xs text-gray-500 mt-1 char-counter" id="lookingForCounter">0/5 characters minimum</p>
+              </div>
             </div>
           </div>
 
-          <!-- Step 6: Contact Information -->
-          <div id="step-6" class="step-content">
+          <!-- Step 7: Partner Preferences -->
+          <div id="step-7" class="step-content">
+            <div class="text-center mb-6">
+              <div class="w-16 h-16 bg-rose-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i class="ri-heart-line text-3xl text-rose-600"></i>
+              </div>
+              <h3 class="text-xl sm:text-2xl font-semibold text-gray-800 mb-2">Partner Preferences</h3>
+              <p class="text-gray-600 text-sm" id="step7Subtitle">What are they looking for in a partner?</p>
+            </div>
+
+            <div class="space-y-4">
+              <!-- Preferred Age Range -->
+              <div>
+                <label class="form-label">
+                  Preferred Age Range <span class="text-red-500">*</span>
+                </label>
+                <div class="flex items-center gap-3">
+                  <input type="number" id="preferredAgeFrom" name="preferredAgeFrom" required
+                    min="18" max="99"
+                    class="form-input w-20 text-center"
+                    placeholder="From">
+                  <span class="text-gray-400 font-medium">to</span>
+                  <input type="number" id="preferredAgeTo" name="preferredAgeTo" required
+                    min="18" max="99"
+                    class="form-input w-20 text-center"
+                    placeholder="To">
+                </div>
+              </div>
+
+              <!-- Preferred Height Range -->
+              <div>
+                <label class="form-label">
+                  Preferred Height Range <span class="text-red-500">*</span>
+                </label>
+                <div class="flex items-center gap-3">
+                  <select id="preferredHeightFrom" name="preferredHeightFrom" required class="form-select flex-1">
+                    <option value="">From height</option>
+                    <option value="140">4'7" (140 cm)</option>
+                    <option value="142">4'8" (142 cm)</option>
+                    <option value="145">4'9" (145 cm)</option>
+                    <option value="147">4'10" (147 cm)</option>
+                    <option value="150">4'11" (150 cm)</option>
+                    <option value="152">5'0" (152 cm)</option>
+                    <option value="155">5'1" (155 cm)</option>
+                    <option value="157">5'2" (157 cm)</option>
+                    <option value="160">5'3" (160 cm)</option>
+                    <option value="163">5'4" (163 cm)</option>
+                    <option value="165">5'5" (165 cm)</option>
+                    <option value="168">5'6" (168 cm)</option>
+                    <option value="170">5'7" (170 cm)</option>
+                    <option value="173">5'8" (173 cm)</option>
+                    <option value="175">5'9" (175 cm)</option>
+                    <option value="178">5'10" (178 cm)</option>
+                    <option value="180">5'11" (180 cm)</option>
+                    <option value="183">6'0" (183 cm)</option>
+                    <option value="185">6'1" (185 cm)</option>
+                    <option value="188">6'2" (188 cm)</option>
+                    <option value="191">6'3" (191 cm)</option>
+                    <option value="193">6'4" (193 cm)</option>
+                    <option value="196">6'5" (196 cm)</option>
+                    <option value="198">6'6" (198 cm)</option>
+                    <option value="201">6'7" (201 cm)</option>
+                    <option value="203">6'8" (203 cm)</option>
+                    <option value="206">6'9" (206 cm)</option>
+                    <option value="208">6'10" (208 cm)</option>
+                    <option value="211">6'11" (211 cm)</option>
+                    <option value="213">7'0" (213 cm)</option>
+                    <option value="216">7'1" (216 cm)</option>
+                    <option value="218">7'2" (218 cm)</option>
+                    <option value="221">7'3" (221 cm)</option>
+                    <option value="224">7'4" (224 cm)</option>
+                    <option value="226">7'5" (226 cm)</option>
+                    <option value="229">7'6" (229 cm)</option>
+                    <option value="231">7'7" (231 cm)</option>
+                    <option value="234">7'8" (234 cm)</option>
+                    <option value="236">7'9" (236 cm)</option>
+                    <option value="239">7'10" (239 cm)</option>
+                    <option value="241">7'11" (241 cm)</option>
+                    <option value="244">8'0" (244 cm)</option>
+                  </select>
+                  <span class="text-gray-400 font-medium">to</span>
+                  <select id="preferredHeightTo" name="preferredHeightTo" required class="form-select flex-1">
+                    <option value="">To height</option>
+                    <option value="140">4'7" (140 cm)</option>
+                    <option value="142">4'8" (142 cm)</option>
+                    <option value="145">4'9" (145 cm)</option>
+                    <option value="147">4'10" (147 cm)</option>
+                    <option value="150">4'11" (150 cm)</option>
+                    <option value="152">5'0" (152 cm)</option>
+                    <option value="155">5'1" (155 cm)</option>
+                    <option value="157">5'2" (157 cm)</option>
+                    <option value="160">5'3" (160 cm)</option>
+                    <option value="163">5'4" (163 cm)</option>
+                    <option value="165">5'5" (165 cm)</option>
+                    <option value="168">5'6" (168 cm)</option>
+                    <option value="170">5'7" (170 cm)</option>
+                    <option value="173">5'8" (173 cm)</option>
+                    <option value="175">5'9" (175 cm)</option>
+                    <option value="178">5'10" (178 cm)</option>
+                    <option value="180">5'11" (180 cm)</option>
+                    <option value="183">6'0" (183 cm)</option>
+                    <option value="185">6'1" (185 cm)</option>
+                    <option value="188">6'2" (188 cm)</option>
+                    <option value="191">6'3" (191 cm)</option>
+                    <option value="193">6'4" (193 cm)</option>
+                    <option value="196">6'5" (196 cm)</option>
+                    <option value="198">6'6" (198 cm)</option>
+                    <option value="201">6'7" (201 cm)</option>
+                    <option value="203">6'8" (203 cm)</option>
+                    <option value="206">6'9" (206 cm)</option>
+                    <option value="208">6'10" (208 cm)</option>
+                    <option value="211">6'11" (211 cm)</option>
+                    <option value="213">7'0" (213 cm)</option>
+                    <option value="216">7'1" (216 cm)</option>
+                    <option value="218">7'2" (218 cm)</option>
+                    <option value="221">7'3" (221 cm)</option>
+                    <option value="224">7'4" (224 cm)</option>
+                    <option value="226">7'5" (226 cm)</option>
+                    <option value="229">7'6" (229 cm)</option>
+                    <option value="231">7'7" (231 cm)</option>
+                    <option value="234">7'8" (234 cm)</option>
+                    <option value="236">7'9" (236 cm)</option>
+                    <option value="239">7'10" (239 cm)</option>
+                    <option value="241">7'11" (241 cm)</option>
+                    <option value="244">8'0" (244 cm)</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Preferred Islamic Sect -->
+              <div>
+                <label for="preferredIslamicSect" class="form-label">
+                  Preferred Islamic Sect <span class="text-red-500">*</span>
+                </label>
+                <select id="preferredIslamicSect" name="preferredIslamicSect" required class="form-select">
+                  <option value="Any Islamic Sect" selected>Any Islamic Sect</option>
+                  <option value="Sunni">Sunni</option>
+                  <option value="Shia">Shia</option>
+                  <option value="Ibadi">Ibadi</option>
+                  <option value="Sufi">Sufi</option>
+                  <option value="Ahmadiyya">Ahmadiyya</option>
+                  <option value="Hanafi">Hanafi</option>
+                  <option value="Maliki">Maliki</option>
+                  <option value="Shafi'i">Shafi'i</option>
+                  <option value="Hanbali">Hanbali</option>
+                  <option value="Zahiri">Zahiri</option>
+                  <option value="Twelver (Jafari)">Twelver (Jafari)</option>
+                  <option value="Ismaili">Ismaili</option>
+                  <option value="Zaydi">Zaydi</option>
+                  <option value="Alawite">Alawite</option>
+                  <option value="Alevi">Alevi</option>
+                  <option value="Druze">Druze</option>
+                  <option value="Ash'ari">Ash'ari</option>
+                  <option value="Maturidi">Maturidi</option>
+                  <option value="Athari">Athari</option>
+                  <option value="Mu'tazila">Mu'tazila</option>
+                  <option value="Murji'ah">Murji'ah</option>
+                  <option value="Kharijite">Kharijite</option>
+                  <option value="Salafi">Salafi</option>
+                  <option value="Wahhabi">Wahhabi</option>
+                  <option value="Deobandi">Deobandi</option>
+                  <option value="Barelvi">Barelvi</option>
+                  <option value="Ahle Hadith">Ahle Hadith</option>
+                  <option value="Quranist">Quranist</option>
+                  <option value="Mahdavia">Mahdavia</option>
+                  <option value="Nation of Islam">Nation of Islam</option>
+                  <option value="Moorish Science Temple">Moorish Science Temple</option>
+                  <option value="Non-denominational">Non-denominational</option>
+                </select>
+              </div>
+
+              <!-- Willing to Consider Non-UK Citizen -->
+              <div>
+                <label for="willingToConsiderANonUkCitizen" class="form-label">
+                  Willing to Consider a Non-UK Citizen <span class="text-red-500">*</span>
+                </label>
+                <select id="willingToConsiderANonUkCitizen" name="willingToConsiderANonUkCitizen" required class="form-select">
+                  <option value="">Select</option>
+                  <option value="Yes">Yes</option>
+                  <option value="No">No</option>
+                  <option value="Depends on location">Depends on location</option>
+                  <option value="N/A">N/A</option>
+                </select>
+              </div>
+
+              <!-- Accept Someone with Children -->
+              <div>
+                <label for="acceptSomeoneWithChildren" class="form-label">
+                  Accept Someone with Children <span class="text-red-500">*</span>
+                </label>
+                <select id="acceptSomeoneWithChildren" name="acceptSomeoneWithChildren" required class="form-select">
+                  <option value="">Select</option>
+                  <option value="true">Yes</option>
+                  <option value="false">No</option>
+                </select>
+              </div>
+
+              <!-- Accept a Divorced Person -->
+              <div>
+                <label for="acceptADivorcedPerson" class="form-label">
+                  Accept a Divorced Person <span class="text-red-500">*</span>
+                </label>
+                <select id="acceptADivorcedPerson" name="acceptADivorcedPerson" required class="form-select">
+                  <option value="">Select</option>
+                  <option value="true">Yes</option>
+                  <option value="false">No</option>
+                </select>
+              </div>
+
+              <!-- Accept a Widow -->
+              <div>
+                <label for="acceptAWidow" class="form-label">
+                  Accept a Widow <span class="text-red-500">*</span>
+                </label>
+                <select id="acceptAWidow" name="acceptAWidow" required class="form-select">
+                  <option value="">Select</option>
+                  <option value="true">Yes</option>
+                  <option value="false">No</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 8: Contact Information -->
+          <div id="step-8" class="step-content">
             <div class="text-center mb-6">
               <div class="w-16 h-16 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-4">
                 <i class="ri-whatsapp-line text-3xl text-green-600"></i>
@@ -762,7 +1131,7 @@
   <script>
     document.addEventListener('DOMContentLoaded', function() {
       let currentStep = 1;
-      const totalSteps = 6;
+      const totalSteps = 8;
       
       // Gender context for dynamic labels
       let selectedGender = null; // 'son' or 'daughter'
@@ -823,19 +1192,28 @@
         document.getElementById('heightLabel').textContent = `What is ${their} height?`;
         document.getElementById('maritalLabel').textContent = `What is ${their} marital status?`;
 
-        // Step 3 labels
-        document.getElementById('step3Subtitle').textContent = `Where does your ${relationship} live?`;
+        // Step 3 labels (Islamic Identity)
+        document.getElementById('step3Subtitle').textContent = `Tell us about ${their} faith`;
+
+        // Step 4 labels (Location)
+        document.getElementById('step4Subtitle').textContent = `Where does your ${relationship} live?`;
         document.getElementById('cityLabel').textContent = `What city does ${they} live in?`;
         document.getElementById('countryLabel').textContent = `What country does ${they} live in?`;
+        document.getElementById('nationalityLabel').textContent = `What is ${their} nationality?`;
+        document.getElementById('ethnicityLabel').textContent = `What is ${their} ethnicity?`;
 
-        // Step 4 labels
-        document.getElementById('step4Subtitle').textContent = `Tell us about ${possessive} background`;
+        // Step 5 labels (Education & Work)
+        document.getElementById('step5Subtitle').textContent = `Tell us about ${possessive} background`;
         document.getElementById('educationLabel').textContent = `What is ${their} highest education?`;
         document.getElementById('workLabel').textContent = `What does ${they} do for work?`;
 
-        // Step 5 labels
-        document.getElementById('step5Subtitle').textContent = `Tell us more about your ${relationship}`;
+        // Step 6 labels (About Them)
+        document.getElementById('step6Subtitle').textContent = `Tell us more about your ${relationship}`;
         document.getElementById('aboutLabel').textContent = `Tell us about ${them}`;
+        document.getElementById('lookingForLabel').textContent = `What kind of spouse is ${they} looking for?`;
+
+        // Step 7 labels (Partner Preferences)
+        document.getElementById('step7Subtitle').textContent = `What is ${they} looking for in a partner?`;
       }
 
       // Copy username functionality
@@ -913,8 +1291,8 @@
           const selectedProfileFor = document.querySelector('input[name="profileFor"]:checked');
           const hasUsername = generatedUsername.value && generatedUsername.value !== 'Generating...' && generatedUsername.value !== 'Error - Please refresh';
           nextBtn.disabled = !selectedProfileFor || !hasUsername;
-        } else if (currentStep === 6) {
-          // For step 6, check if phone validation passes
+        } else if (currentStep === 8) {
+          // For step 8, check if phone validation passes
           const phoneValid = window.validatePhoneNumber ? window.validatePhoneNumber() : false;
           nextBtn.disabled = !phoneValid;
         } else {
@@ -943,9 +1321,22 @@
         if (step === 1 && formData.profileFor) {
           formData.gender = formData.profileFor === 'son' ? 'male' : 'female';
         }
-        if (step === 4 && formData.work === 'Other' && formData.otherWork) {
+        if (step === 5 && formData.work === 'Other' && formData.otherWork) {
           formData.work = formData.otherWork;
           delete formData.otherWork; // Remove the otherWork field as we've merged it into work
+        }
+        // Step 7: combine split age and height fields for backend compatibility
+        if (step === 7) {
+          if (formData.preferredAgeFrom && formData.preferredAgeTo) {
+            formData.preferredAgeRange = formData.preferredAgeFrom + '-' + formData.preferredAgeTo;
+            delete formData.preferredAgeFrom;
+            delete formData.preferredAgeTo;
+          }
+          if (formData.preferredHeightFrom && formData.preferredHeightTo) {
+            formData.preferredHeightRange = formData.preferredHeightFrom + '-' + formData.preferredHeightTo;
+            delete formData.preferredHeightFrom;
+            delete formData.preferredHeightTo;
+          }
         }
 
         return formData;
@@ -1037,8 +1428,8 @@
           firstInvalidField.focus();
         }
 
-        // Additional validation for step 6: phone number must be valid
-        if (step === 6) {
+        // Additional validation for step 8: phone number must be valid
+        if (step === 8) {
           const phoneValid = window.validatePhoneNumber ? window.validatePhoneNumber() : false;
           if (!phoneValid) {
             isValid = false;
@@ -1379,6 +1770,30 @@
         validatePhoneNumber();
         checkStepValidity();
       });
+
+      // Character counter for islamIsImportantToMeInfo (30 chars)
+      const islamImportanceField = document.getElementById('islamIsImportantToMeInfo');
+      const islamImportanceCounter = document.getElementById('islamImportanceCounter');
+      if (islamImportanceField && islamImportanceCounter) {
+        islamImportanceField.addEventListener('input', function() {
+          const len = this.value.trim().length;
+          const min = 30;
+          islamImportanceCounter.textContent = `${len}/${min} characters minimum`;
+          islamImportanceCounter.style.color = len < min ? '#ef4444' : '#10b981';
+        });
+      }
+
+      // Character counter for lookingForASpouseThatIs (5 chars)
+      const lookingForField = document.getElementById('lookingForASpouseThatIs');
+      const lookingForCounter = document.getElementById('lookingForCounter');
+      if (lookingForField && lookingForCounter) {
+        lookingForField.addEventListener('input', function() {
+          const len = this.value.trim().length;
+          const min = 5;
+          lookingForCounter.textContent = `${len}/${min} characters minimum`;
+          lookingForCounter.style.color = len < min ? '#ef4444' : '#10b981';
+        });
+      }
     });
   </script>
 </body>

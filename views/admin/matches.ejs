@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin - Matches Management | D'amour Muslim</title>
+  <link rel="stylesheet" href="/css/output.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+  <style>
+    :where([class^="ri-"])::before { content: "\f3c2"; }
+    .material-shadow { box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); }
+    .material-shadow-hover { box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15); }
+    .gradient-bg { background: linear-gradient(135deg, #E91E63 0%, #673AB7 100%); }
+
+    .expandable-row { cursor: pointer; transition: background-color 0.15s ease; }
+    .expandable-row:hover { background-color: #f9fafb; }
+    .expanded-details { display: none; }
+    .expanded-details.open { display: table-row; }
+    .rotate-icon { transition: transform 0.2s ease; }
+    .rotate-icon.open { transform: rotate(180deg); }
+
+    .score-high { background: #dcfce7; color: #16a34a; border: 2px solid #16a34a; }
+    .score-mid { background: #fef3c7; color: #d97706; border: 2px solid #d97706; }
+    .score-low { background: #f1f5f9; color: #94a3b8; border: 2px solid #94a3b8; }
+
+    .tab-btn { transition: all 0.2s ease; }
+    .tab-btn.active { background: #E91E63; color: white; }
+    .tab-btn:not(.active):hover { background: #fdf2f8; color: #E91E63; }
+
+    .subscore-bar { height: 6px; border-radius: 3px; background: #e5e7eb; overflow: hidden; }
+    .subscore-bar-fill { height: 100%; border-radius: 3px; transition: width 0.4s ease; }
+  </style>
+</head>
+
+<body class="bg-gray-50 font-['Roboto']">
+  <!-- Top Bar -->
+  <header class="bg-white border-b border-gray-200 sticky top-0 z-50">
+    <div class="max-w-full mx-auto px-4 py-3">
+      <div class="flex items-center justify-between gap-4">
+        <div class="flex items-center gap-3">
+          <a href="/admin/dashboard" class="p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors">
+            <i class="ri-arrow-left-line text-xl"></i>
+          </a>
+          <h1 class="text-lg font-bold text-gray-900">Matches Management</h1>
+        </div>
+        <div class="flex items-center gap-3 text-sm">
+          <span class="text-gray-500"><%= isAdmin ? 'Admin' : 'Moderator' %></span>
+          <a href="/logout" class="text-red-500 hover:text-red-700 font-medium">Logout</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="py-6 min-h-screen">
+    <div class="max-w-full mx-auto px-4">
+
+      <!-- Tabs -->
+      <div class="flex gap-2 mb-6 flex-wrap">
+        <button class="tab-btn active px-5 py-2.5 rounded-lg text-sm font-medium material-shadow" data-tab="search-user">
+          <i class="ri-user-search-line mr-1"></i> Search User
+        </button>
+        <button class="tab-btn px-5 py-2.5 rounded-lg text-sm font-medium border border-gray-200" data-tab="compare">
+          <i class="ri-scales-line mr-1"></i> Compare Matches
+        </button>
+        <button class="tab-btn px-5 py-2.5 rounded-lg text-sm font-medium border border-gray-200" data-tab="top-matches">
+          <i class="ri-trophy-line mr-1"></i> Top Matched Profiles
+        </button>
+      </div>
+
+      <!-- Tab: Search User & View Matches -->
+      <div id="tab-search-user" class="tab-content">
+        <!-- Search Bar -->
+        <div class="bg-white rounded-xl material-shadow p-4 mb-6">
+          <div class="flex items-center gap-3 flex-wrap">
+            <div class="relative flex-1 min-w-[250px]">
+              <input type="text" id="userSearchInput" placeholder="Search by name, username, or phone..." class="block w-full pl-4 pr-10 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 text-sm">
+              <button id="userSearchBtn" class="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer text-gray-400 hover:text-primary">
+                <i class="ri-search-line text-lg"></i>
+              </button>
+            </div>
+            <div class="flex items-center gap-2 text-sm">
+              <label class="flex items-center gap-1 cursor-pointer"><input type="radio" name="userSearchBy" value="name" checked class="accent-pink-500"><span class="text-gray-700">Name</span></label>
+              <label class="flex items-center gap-1 cursor-pointer"><input type="radio" name="userSearchBy" value="username" class="accent-pink-500"><span class="text-gray-700">Username</span></label>
+              <label class="flex items-center gap-1 cursor-pointer"><input type="radio" name="userSearchBy" value="phone" class="accent-pink-500"><span class="text-gray-700">Phone</span></label>
+            </div>
+          </div>
+          <div id="userSearchResults" class="mt-4"></div>
+        </div>
+
+        <!-- User Detail & Matches Container -->
+        <div id="userMatchesContainer"></div>
+      </div>
+
+      <!-- Tab: Compare Two Users -->
+      <div id="tab-compare" class="tab-content hidden">
+        <div class="bg-white rounded-xl material-shadow p-6 mb-6">
+          <h2 class="text-lg font-semibold text-gray-900 mb-4">Compare Match Scores</h2>
+          <p class="text-sm text-gray-600 mb-4">Search for two users to compare their compatibility score and see the detailed breakdown.</p>
+
+          <!-- Shared search-by radio buttons -->
+          <div class="flex items-center gap-2 text-sm mb-4">
+            <span class="text-gray-600 mr-1">Search by:</span>
+            <label class="flex items-center gap-1 cursor-pointer"><input type="radio" name="compareSearchBy" value="name" checked class="accent-pink-500"><span class="text-gray-700">Name</span></label>
+            <label class="flex items-center gap-1 cursor-pointer"><input type="radio" name="compareSearchBy" value="username" class="accent-pink-500"><span class="text-gray-700">Username</span></label>
+            <label class="flex items-center gap-1 cursor-pointer"><input type="radio" name="compareSearchBy" value="phone" class="accent-pink-500"><span class="text-gray-700">Phone</span></label>
+          </div>
+
+          <div class="grid md:grid-cols-2 gap-6">
+            <!-- User A -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">User A</label>
+              <div class="relative">
+                <input type="text" id="compareUserASearch" placeholder="Search by name, username, or phone..." class="block w-full pl-4 pr-10 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-sm">
+                <button class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-primary" onclick="searchCompareUser('A')">
+                  <i class="ri-search-line text-lg"></i>
+                </button>
+              </div>
+              <div id="compareUserAResult" class="mt-2 text-sm"></div>
+              <input type="hidden" id="compareUserIdA">
+            </div>
+            <!-- User B -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">User B</label>
+              <div class="relative">
+                <input type="text" id="compareUserBSearch" placeholder="Search by name, username, or phone..." class="block w-full pl-4 pr-10 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-sm">
+                <button class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-primary" onclick="searchCompareUser('B')">
+                  <i class="ri-search-line text-lg"></i>
+                </button>
+              </div>
+              <div id="compareUserBResult" class="mt-2 text-sm"></div>
+              <input type="hidden" id="compareUserIdB">
+            </div>
+          </div>
+          <button id="compareBtn" class="mt-4 px-6 py-2.5 bg-primary text-white hover:bg-pink-600 transition-all rounded-lg text-sm font-medium disabled:bg-gray-300 disabled:cursor-not-allowed" disabled>
+            <i class="ri-scales-line mr-1"></i> Compare
+          </button>
+          <div id="compareResults" class="mt-6"></div>
+        </div>
+      </div>
+
+      <!-- Tab: Top Matched Profiles -->
+      <div id="tab-top-matches" class="tab-content hidden">
+        <div class="bg-white rounded-xl material-shadow p-6">
+          <div class="flex items-center justify-between mb-4">
+            <h2 class="text-lg font-bold text-gray-900">Top Matched Profile Pairs</h2>
+            <div class="flex items-center gap-3">
+              <label class="text-sm text-gray-600">Show top:</label>
+              <select id="topNSelect" onchange="loadTopMatches()" class="text-sm border border-gray-300 rounded-lg px-3 py-1.5">
+                <option value="20">20 pairs</option>
+                <option value="50" selected>50 pairs</option>
+                <option value="100">100 pairs</option>
+              </select>
+              <label class="text-sm text-gray-600 ml-2">Sort:</label>
+              <select id="topSortSelect" onchange="loadTopMatches()" class="text-sm border border-gray-300 rounded-lg px-3 py-1.5">
+                <option value="score-desc" selected>Score ↓</option>
+                <option value="score-asc">Score ↑</option>
+                <option value="recent">Most Recent</option>
+              </select>
+            </div>
+          </div>
+          <p class="text-sm text-gray-500 mb-4">Highest-scoring compatible pairs across all precomputed matches. Only pairs that passed the hard filter gate are shown.</p>
+          <div id="topMatchesContainer">
+            <div class="text-center py-8">
+              <button onclick="loadTopMatches()" class="px-6 py-3 bg-primary text-white hover:bg-pink-600 rounded-lg text-sm font-medium transition-colors">
+                <i class="ri-play-line mr-1"></i> Load Top Matches
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <script>
+    // ═══════════════════════════════════════════════════════════════════════════
+    //  MODULAR HELPERS — used across all tabs
+    // ═══════════════════════════════════════════════════════════════════════════
+
+    // Returns ALL populated fields for a user, including partner preferences.
+    function getAllFields(obj) {
+      if (!obj) return [];
+      const raw = [
+        ['Name', obj.name], ['Username', obj.username], ['Age', obj.age],
+        ['Gender', obj.gender], ['Email', obj.email], ['Phone', obj.contact],
+        ['City', obj.city], ['Country', obj.country],
+        ['Nationality', obj.nationality], ['Ethnicity', obj.ethnicity],
+        ['Height', obj.height ? (obj.height / 30.48).toFixed(1) + ' ft' : null],
+        ['Marital Status', obj.maritalStatus],
+        ['Islamic Sect', obj.islamicSect],
+        ['Preferred Islamic Sect', obj.preferredIslamicSect],
+        ['Prays', obj.prays != null ? (obj.prays ? 'Yes' : 'No') : null],
+        ['Born Muslim', obj.bornMuslim != null ? (obj.bornMuslim ? 'Yes' : 'No') : null],
+        ['Education', obj.highestEducation],
+        ['Work', obj.work],
+        ['Children', obj.children && obj.children.length > 0 ? obj.children.length + ' child(ren)' : 'None'],
+        ['Preferred Age Range', obj.preferredAgeRange],
+        ['Preferred Height Range', obj.preferredHeightRange],
+        ['Willing Non-UK Citizen', obj.willingToConsiderANonUkCitizen],
+        ['Accept w/ Children', obj.acceptSomeoneWithChildren != null ? (obj.acceptSomeoneWithChildren ? 'Yes' : 'No') : null],
+        ['Accept Divorced', obj.acceptADivorcedPerson != null ? (obj.acceptADivorcedPerson ? 'Yes' : 'No') : null],
+        ['Accept Widow', obj.acceptAWidow != null ? (obj.acceptAWidow ? 'Yes' : 'No') : null],
+        ['About Me', obj.aboutMe],
+        ['Looking For', obj.lookingForASpouseThatIs],
+        ['Tier', obj.profileCompletenessTier],
+        ['Approved', obj.isApproved != null ? (obj.isApproved ? 'Yes' : 'No') : null],
+        ['Deactivated', obj.isDeactivated != null ? (obj.isDeactivated ? 'Yes' : 'No') : null],
+      ];
+      return raw.filter(f => f[1] !== null && f[1] !== undefined && f[1] !== '' && f[1] !== '-');
+    }
+
+    // Render a simple key→value table
+    function renderFieldTable(fields) {
+      return fields.map(f => `<tr class="border-t border-gray-50"><td class="px-3 py-1.5 text-gray-500 w-48">${f[0]}</td><td class="px-3 py-1.5">${f[1]}</td></tr>`).join('');
+    }
+
+    // Build union set of field labels from two sets of fields
+    function unionFieldLabels(fieldsA, fieldsB) {
+      const keys = new Set();
+      fieldsA.forEach(f => keys.add(f[0]));
+      fieldsB.forEach(f => keys.add(f[0]));
+      return [...keys];
+    }
+
+    function getFieldValue(fields, label) {
+      const f = fields.find(x => x[0] === label);
+      return f ? f[1] : '<span class="text-gray-300">—</span>';
+    }
+
+    // Render a FULL side-by-side comparison table: field | userA | userB
+    function renderSideBySideTable(fieldsA, fieldsB, labelA, labelB) {
+      const allLabels = unionFieldLabels(fieldsA, fieldsB);
+      return `
+        <table class="w-full text-xs">
+          <thead>
+            <tr class="bg-gray-100">
+              <th class="px-3 py-2 text-left text-gray-600 w-48">Field</th>
+              <th class="px-3 py-2 text-left text-gray-900 font-medium">${labelA}</th>
+              <th class="px-3 py-2 text-left text-gray-900 font-medium border-l border-gray-200">${labelB}</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${allLabels.map(lbl => {
+              const vA = getFieldValue(fieldsA, lbl);
+              const vB = getFieldValue(fieldsB, lbl);
+              const match = vA !== '<span class="text-gray-300">—</span>' && vB !== '<span class="text-gray-300">—</span>' && vA === vB;
+              const rowBg = match ? 'bg-green-50' : '';
+              return `<tr class="border-t border-gray-50 ${rowBg}">
+                <td class="px-3 py-1.5 text-gray-500">${lbl}</td>
+                <td class="px-3 py-1.5">${vA}</td>
+                <td class="px-3 py-1.5 border-l border-gray-100">${vB}</td>
+              </tr>`;
+            }).join('')}
+          </tbody>
+        </table>`;
+    }
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    //  EXPANDABLE SCORE DISSECTION — each category expands to textual explanation
+    // ═══════════════════════════════════════════════════════════════════════════
+    function buildCategoryExplanation(catKey, subScore, viewer, viewee, catMax) {
+      const e = subScore ? subScore.earned : 0;
+      if (e === 0) return '<p class="text-gray-400 italic text-xs">0 pts — required field(s) missing on one or both profiles.</p>';
+
+      switch (catKey) {
+        case 'islamic': {
+          const parts = [];
+          const vSpec = (viewer.preferredIslamicSect && viewer.preferredIslamicSect.toLowerCase() !== 'any islamic sect');
+          const cSpec = (viewee.preferredIslamicSect && viewee.preferredIslamicSect.toLowerCase() !== 'any islamic sect');
+          if (vSpec && cSpec) {
+            parts.push(`Both specified a specific sect: "${viewer.preferredIslamicSect}" ↔ "${viewee.preferredIslamicSect}". Full sect compatibility (${e}/${catMax} pts).`);
+          } else {
+            parts.push(`One or both selected "Any Islamic Sect" — compatible but less specific. Partial score (${e}/${catMax} pts).`);
+          }
+          if (viewer.prays != null && viewee.prays != null) {
+            parts.push(`Prayer practice: viewer ${viewer.prays ? 'prays' : 'does not pray'} · viewee ${viewee.prays ? 'prays' : 'does not pray'} → ${viewer.prays === viewee.prays ? 'aligned (full points)' : 'mismatched (no points)'}.`);
+          }
+          if (subScore) {
+            parts.push(`Sect source: viewer=${subScore.viewerSectSource || 'N/A'}, viewee=${subScore.vieweeSectSource || 'N/A'}. Sect earned=${subScore.sectEarned || 0}, Prayer earned=${subScore.prayerEarned || 0}.`);
+          }
+          return `<p class="text-xs text-gray-700">${parts.join(' ')}</p>`;
+        }
+        case 'age': {
+          const vRange = (viewer.preferredAgeRange || '').split('-').map(Number);
+          const cRange = (viewee.preferredAgeRange || '').split('-').map(Number);
+          let txt = `Viewer prefers ${viewer.preferredAgeRange || 'proxy ±7 yrs (implied from own age ' + viewer.age + ')'}, viewee age is ${viewee.age}. `;
+          txt += `Viewee prefers ${viewee.preferredAgeRange || 'proxy ±7 yrs (implied from own age ' + viewee.age + ')'}, viewer age is ${viewer.age}. `;
+          txt += `Earned ${e}/${catMax} pts.`;
+          if (subScore && (subScore.viewerIsProxy || subScore.vieweeIsProxy)) {
+            txt += ` <span class="text-amber-600 font-medium">⚠ Proxy used (capped at 50% of max): ${[subScore.viewerIsProxy ? 'viewer' : '', subScore.vieweeIsProxy ? 'viewee' : ''].filter(Boolean).join(' + ')}.</span>`;
+          }
+          return `<p class="text-xs text-gray-700">${txt}</p>`;
+        }
+        case 'height': {
+          let txt = `Viewer prefers ${viewer.preferredHeightRange || 'proxy ±10 cm (implied from own height ' + viewer.height + ' cm)'}, viewee height is ${viewee.height || '?'} cm. `;
+          txt += `Viewee prefers ${viewee.preferredHeightRange || 'proxy ±10 cm (implied from own height ' + viewee.height + ' cm)'}, viewer height is ${viewer.height || '?'} cm. `;
+          txt += `Earned ${e}/${catMax} pts.`;
+          if (subScore && (subScore.viewerIsProxy || subScore.vieweeIsProxy)) {
+            txt += ` <span class="text-amber-600 font-medium">⚠ Proxy used (capped at 50% of max): ${[subScore.viewerIsProxy ? 'viewer' : '', subScore.vieweeIsProxy ? 'viewee' : ''].filter(Boolean).join(' + ')}.</span>`;
+          }
+          return `<p class="text-xs text-gray-700">${txt}</p>`;
+        }
+        case 'maritalFamily': {
+          const bothNM = viewer.maritalStatus === 'nevermarried' && viewee.maritalStatus === 'nevermarried';
+          return `<p class="text-xs text-gray-700">Viewer: ${viewer.maritalStatus || '?'} · Viewee: ${viewee.maritalStatus || '?'}. ${bothNM ? 'Both never married → full 10 points.' : 'Acceptance confirmed by filters.'} Earned ${e}/${catMax} pts.</p>`;
+        }
+        case 'location': {
+          const sameCity = viewer.city && viewee.city && viewer.city.toLowerCase() === viewee.city.toLowerCase() && viewer.country && viewee.country && viewer.country.toLowerCase() === viewee.country.toLowerCase();
+          const sameCountry = viewer.country && viewee.country && viewer.country.toLowerCase() === viewee.country.toLowerCase();
+          let desc = `Viewer: ${viewer.city || '?'}, ${viewer.country || '?'}. Viewee: ${viewee.city || '?'}, ${viewee.country || '?'}. `;
+          desc += sameCity ? 'Same city → full 15 pts.' : sameCountry ? 'Same country → 10 pts.' : 'Different countries → 5 pts (passed cross-border filter).';
+          return `<p class="text-xs text-gray-700">${desc} Earned ${e}/${catMax} pts.</p>`;
+        }
+        case 'nationalityEthnicity': {
+          const vEth = (viewer.ethnicity || '').toLowerCase();
+          const cEth = (viewee.ethnicity || '').toLowerCase();
+          let desc = `Viewer: ${viewer.ethnicity || '?'}. Viewee: ${viewee.ethnicity || '?'}. `;
+          if (vEth === cEth) desc += 'Same ethnicity → 10 pts.';
+          else desc += 'Different ethnicities → 0 pts.';
+          return `<p class="text-xs text-gray-700">${desc} Earned ${e}/${catMax} pts.</p>`;
+        }
+        case 'education': {
+          let desc = `Viewer: ${viewer.highestEducation || '?'}. Viewee: ${viewee.highestEducation || '?'}. `;
+          if (e === 10) desc += 'Same education tier → 10 pts.';
+          else if (e === 6) desc += 'One tier apart → 6 pts.';
+          else desc += 'Two+ tiers apart or non-ranked → 2 pts.';
+          return `<p class="text-xs text-gray-700">${desc} Earned ${e}/${catMax} pts.</p>`;
+        }
+        default:
+          return `<p class="text-xs text-gray-700">Earned ${e}/${catMax} pts.</p>`;
+      }
+    }
+
+    // Render ONE expandable category row (used in top matches + user matches)
+    function renderExpandableCategory(catKey, catLabel, catMax, subScore, viewer, viewee, collapseId) {
+      const s = subScore || { earned: 0 };
+      const pct = catMax > 0 ? Math.round((s.earned / catMax) * 100) : 0;
+      const barColor = pct >= 80 ? '#16a34a' : pct >= 40 ? '#d97706' : '#94a3b8';
+      return `
+        <div class="border border-gray-200 rounded-lg overflow-hidden mb-1">
+          <div class="flex items-center gap-3 p-2 bg-gray-50 cursor-pointer" onclick="toggleCatExpand('${collapseId}')">
+            <i id="${collapseId}-chevron" class="ri-arrow-right-s-line text-gray-400 text-sm rotate-icon transition-transform"></i>
+            <span class="text-xs text-gray-600 w-48 flex-shrink-0">${catLabel}</span>
+            <div class="flex-1">
+              <div class="flex items-center gap-2">
+                <div class="subscore-bar flex-1"><div class="subscore-bar-fill" style="width:${pct}%; background:${barColor};"></div></div>
+                <span class="text-xs text-gray-700 w-16 text-right">${s.earned}/${catMax}</span>
+              </div>
+            </div>
+          </div>
+          <div id="${collapseId}" class="hidden p-3 bg-white border-t border-gray-100">
+            ${buildCategoryExplanation(catKey, s, viewer, viewee, catMax)}
+          </div>
+        </div>`;
+    }
+
+    // Render all expandable categories
+    function renderExpandableScoreDissection(subScores, finalScore, viewer, viewee, idPrefix) {
+      const categories = [
+        { key: 'islamic', label: 'Islamic Compatibility', max: 30 },
+        { key: 'age', label: 'Age Compatibility', max: 15 },
+        { key: 'height', label: 'Height Compatibility', max: 10 },
+        { key: 'maritalFamily', label: 'Marital/Family Alignment', max: 10 },
+        { key: 'location', label: 'Location & Openness', max: 15 },
+        { key: 'nationalityEthnicity', label: 'Nationality/Ethnicity', max: 10 },
+        { key: 'education', label: 'Education', max: 10 },
+      ];
+      let html = '<div class="space-y-1">';
+      categories.forEach((cat, idx) => {
+        html += renderExpandableCategory(cat.key, cat.label, cat.max,
+          (subScores && subScores[cat.key]) || { earned: 0 },
+          viewer, viewee, idPrefix + '-cat-' + idx);
+      });
+      html += `
+        <div class="flex items-center gap-3 pt-2 mt-2">
+          <span class="text-xs font-bold text-gray-700 w-48">Total</span>
+          <span class="text-sm font-bold text-primary">${finalScore}/100</span>
+        </div>
+        <div class="mt-2 text-xs text-gray-400 italic">
+          <i class="ri-information-line mr-1"></i> v2 direct-sum scoring. Missing fields → 0 pts (no normalization).
+        </div>`;
+      html += '</div>';
+      return html;
+    }
+
+    // Global toggle for expandable categories
+    window.toggleCatExpand = function(id) {
+      const el = document.getElementById(id);
+      const chevron = document.getElementById(id + '-chevron');
+      el.classList.toggle('hidden');
+      if (chevron) chevron.classList.toggle('open');
+    };
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    //  TAB SWITCHING
+    // ═══════════════════════════════════════════════════════════════════════════
+    document.addEventListener('DOMContentLoaded', function() {
+      const tabBtns = document.querySelectorAll('.tab-btn');
+      const tabContents = document.querySelectorAll('.tab-content');
+      tabBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+          tabBtns.forEach(b => { b.classList.remove('active', 'material-shadow'); b.classList.add('border', 'border-gray-200'); });
+          this.classList.add('active', 'material-shadow');
+          this.classList.remove('border', 'border-gray-200');
+          tabContents.forEach(tc => tc.classList.add('hidden'));
+          document.getElementById('tab-' + this.dataset.tab).classList.remove('hidden');
+        });
+      });
+
+      // ═══════════════════════════════════════════════════════════════════════
+      //  TAB 1: SEARCH USER & VIEW MATCHES
+      // ═══════════════════════════════════════════════════════════════════════
+      const userSearchInput = document.getElementById('userSearchInput');
+      const userSearchBtn = document.getElementById('userSearchBtn');
+      function getUserSearchBy() {
+        const radio = document.querySelector('input[name="userSearchBy"]:checked');
+        return radio ? radio.value : 'name';
+      }
+      userSearchBtn.addEventListener('click', searchUsers);
+      userSearchInput.addEventListener('keydown', function(e) { if (e.key === 'Enter') { e.preventDefault(); searchUsers(); } });
+
+      async function searchUsers() {
+        const term = userSearchInput.value.trim(); if (!term) return;
+        const by = getUserSearchBy();
+        const c = document.getElementById('userSearchResults');
+        c.innerHTML = '<div class="text-center py-4"><i class="ri-loader-4-line animate-spin text-2xl text-gray-400"></i><p class="text-sm text-gray-500 mt-2">Searching...</p></div>';
+        try {
+          const resp = await fetch(`/api/admin/matches/search?term=${encodeURIComponent(term)}&by=${by}`);
+          const data = await resp.json();
+          if (data.success && data.users.length > 0) {
+            c.innerHTML = '<div class="text-xs text-gray-500 mb-2">Found ' + data.users.length + ' user(s). Click to view matches:</div>' +
+              data.users.map(u => `<button onclick="loadUserMatches('${u._id}')" class="block w-full text-left px-4 py-3 bg-gray-50 hover:bg-pink-50 hover:text-primary rounded-lg mb-1 transition-colors text-sm"><span class="font-medium">${u.name || u.username}</span><span class="text-gray-500 ml-2">@${u.username}</span><span class="text-gray-400 ml-2">· ${u.gender || '?'} · ${u.age || '?'}y</span>${u.email ? '<span class="text-gray-400 ml-2">· ' + u.email + '</span>' : ''}</button>`).join('');
+          } else { c.innerHTML = '<p class="text-sm text-gray-500 text-center py-4">No users found.</p>'; }
+        } catch (err) { c.innerHTML = '<p class="text-sm text-red-500 text-center py-4">Search failed.</p>'; }
+      }
+
+      window.loadUserMatches = async function(userId) {
+        const c = document.getElementById('userMatchesContainer');
+        c.innerHTML = '<div class="text-center py-8"><i class="ri-loader-4-line animate-spin text-3xl text-gray-400"></i><p class="text-gray-500 mt-2">Loading matches...</p></div>';
+        try {
+          const resp = await fetch(`/api/admin/matches/user/${userId}`);
+          const data = await resp.json();
+          if (!data.success) { c.innerHTML = '<p class="text-red-500 text-center py-4">' + (data.error || 'Failed') + '</p>'; return; }
+          const user = data.user, matches = data.matches || [];
+          const userFields = getAllFields(user);
+          let html = `<div class="bg-white rounded-xl material-shadow p-6 mb-6"><h2 class="text-lg font-bold text-gray-900 mb-4">${user.username}'s Profile</h2><div class="overflow-x-auto"><table class="w-full text-sm"><thead><tr class="bg-gray-50"><th class="px-4 py-2 text-left font-medium text-gray-600 w-48">Field</th><th class="px-4 py-2 text-left text-gray-900">Value</th></tr></thead><tbody>${renderFieldTable(userFields)}</tbody></table></div></div>`;
+          html += `<div class="bg-white rounded-xl material-shadow p-6"><div class="flex items-center justify-between mb-4"><h2 class="text-lg font-bold text-gray-900">${user.username}'s Matches (${matches.length})</h2><div class="flex items-center gap-2"><label class="text-sm text-gray-600">Sort:</label><select id="matchSortSelect" onchange="sortMatches()" class="text-sm border border-gray-300 rounded-lg px-3 py-1.5"><option value="score-desc">Score ↓</option><option value="score-asc">Score ↑</option><option value="name-asc">Name A-Z</option></select></div></div>`;
+          if (matches.length === 0) {
+            html += '<p class="text-gray-500 text-center py-8">No matches computed for this user yet.</p>';
+          } else {
+            html += `<div id="matchesList">${buildUserMatchesHTML(matches, user)}</div>`;
+          }
+          html += '</div>'; c.innerHTML = html;
+          window._currentMatches = matches; window._currentUser = user;
+        } catch (err) { c.innerHTML = '<p class="text-red-500 text-center py-4">Failed to load matches.</p>'; }
+      };
+
+      function buildUserMatchesHTML(matches, viewer) {
+        return matches.map((m, i) => {
+          const v = m.viewee || {}, score = m.finalScore || 0;
+          let cls = 'score-low'; if (score >= 70) cls = 'score-high'; else if (score >= 50) cls = 'score-mid';
+          return `<div class="border border-gray-200 rounded-xl mb-4 overflow-hidden">
+            <div class="flex items-center gap-4 p-4 bg-gray-50 cursor-pointer" onclick="togglePanel('matchDetails${i}','matchChevron${i}')">
+              <span class="w-10 h-10 rounded-full ${cls} flex items-center justify-center font-bold text-sm flex-shrink-0">${score}%</span>
+              <div class="min-w-0"><span class="font-semibold text-gray-900">${v.username || '?'}</span><span class="text-gray-500 text-sm ml-2">${v.age ? v.age + 'y' : ''} · ${v.city || v.country || ''}</span></div>
+              <i id="matchChevron${i}" class="ri-arrow-down-s-line text-gray-400 text-lg rotate-icon transition-transform ml-auto"></i>
+            </div>
+            <div id="matchDetails${i}" class="hidden">
+              <div class="p-4 border-t border-gray-200">
+                <h4 class="text-sm font-semibold text-gray-700 mb-3">Profile Details</h4>
+                <table class="w-full text-sm"><tbody>${renderFieldTable(getAllFields(v))}</tbody></table>
+              </div>
+              <div class="p-4 border-t border-gray-200 bg-gray-50">
+                <h4 class="text-sm font-semibold text-gray-700 mb-3">Score Dissection</h4>
+                ${renderExpandableScoreDissection(m.subScores, score, viewer, v, 'um'+i)}
+                <div class="mt-3 text-xs text-gray-500">Computed: ${m.computedAt ? new Date(m.computedAt).toLocaleString() : 'N/A'}</div>
+              </div>
+            </div>
+          </div>`;
+        }).join('');
+      }
+
+      window.togglePanel = function(detailId, chevronId) {
+        const d = document.getElementById(detailId), ch = document.getElementById(chevronId);
+        d.classList.toggle('hidden'); if (ch) ch.classList.toggle('open');
+      };
+
+      window.sortMatches = function() {
+        const sortBy = document.getElementById('matchSortSelect').value;
+        const matches = window._currentMatches || [];
+        let sorted;
+        if (sortBy === 'score-desc') sorted = [...matches].sort((a,b) => (b.finalScore||0)-(a.finalScore||0));
+        else if (sortBy === 'score-asc') sorted = [...matches].sort((a,b) => (a.finalScore||0)-(b.finalScore||0));
+        else sorted = [...matches].sort((a,b) => ((a.viewee&&a.viewee.username)||'').localeCompare((b.viewee&&b.viewee.username)||''));
+        document.getElementById('matchesList').innerHTML = buildUserMatchesHTML(sorted, window._currentUser);
+      };
+
+      // ═══════════════════════════════════════════════════════════════════════
+      //  TAB 2: COMPARE TWO USERS
+      // ═══════════════════════════════════════════════════════════════════════
+      function getCompareSearchBy() {
+        const radio = document.querySelector('input[name="compareSearchBy"]:checked');
+        return radio ? radio.value : 'name';
+      }
+
+      window.searchCompareUser = async function(slot) {
+        const input = document.getElementById('compareUser' + slot + 'Search');
+        const resultDiv = document.getElementById('compareUser' + slot + 'Result');
+        const term = input.value.trim(); if (!term) return;
+        const by = getCompareSearchBy();
+        resultDiv.innerHTML = '<span class="text-gray-400"><i class="ri-loader-4-line animate-spin mr-1"></i>Searching...</span>';
+        try {
+          const resp = await fetch(`/api/admin/matches/search?term=${encodeURIComponent(term)}&by=${by}`);
+          const data = await resp.json();
+          if (data.success && data.users.length > 0) {
+            resultDiv.innerHTML = data.users.slice(0, 5).map(u => `<button onclick="selectCompareUser('${slot}','${u._id}','${(u.name||u.username).replace(/'/g,"\\'")}')" class="block w-full text-left px-3 py-1.5 hover:bg-pink-50 hover:text-primary rounded text-sm">${u.name||u.username} (@${u.username}) · ${u.gender||'?'} · ${u.age||'?'}y</button>`).join('');
+          } else { resultDiv.innerHTML = '<span class="text-gray-500 text-sm">No users found.</span>'; }
+        } catch (err) { resultDiv.innerHTML = '<span class="text-red-500 text-sm">Search failed.</span>'; }
+      };
+
+      window.selectCompareUser = function(slot, userId, displayName) {
+        document.getElementById('compareUserId' + slot).value = userId;
+        document.getElementById('compareUser' + slot + 'Search').value = displayName;
+        document.getElementById('compareUser' + slot + 'Result').innerHTML = '<span class="text-green-600 text-sm"><i class="ri-check-line"></i> ' + displayName + '</span>';
+        checkCompareReady();
+      };
+
+      function checkCompareReady() {
+        document.getElementById('compareBtn').disabled = !(document.getElementById('compareUserIdA').value && document.getElementById('compareUserIdB').value);
+      }
+
+      document.getElementById('compareBtn').addEventListener('click', async function() {
+        const idA = document.getElementById('compareUserIdA').value;
+        const idB = document.getElementById('compareUserIdB').value;
+        if (!idA || !idB) return;
+        const c = document.getElementById('compareResults');
+        c.innerHTML = '<div class="text-center py-6"><i class="ri-loader-4-line animate-spin text-3xl text-gray-400"></i><p class="text-gray-500 mt-2">Computing...</p></div>';
+        try {
+          const resp = await fetch(`/api/admin/matches/compare?a=${idA}&b=${idB}`);
+          const data = await resp.json();
+          if (!data.success) { c.innerHTML = '<p class="text-red-500 text-center">' + (data.error||'Failed') + '</p>'; return; }
+          const score = data.score || {}, uA = data.userA || {}, uB = data.userB || {}, fullA = data.fullUserA || {}, fullB = data.fullUserB || {};
+          const fieldsA = getAllFields(fullA), fieldsB = getAllFields(fullB);
+
+          let hardFilterHtml = '';
+          if (score.finalScore == null && score.hardFilterPassed === false && score.failures && score.failures.length > 0) {
+            hardFilterHtml = `<div class="p-4 border-t border-gray-200 bg-red-50"><h4 class="text-sm font-semibold text-red-800 mb-2"><i class="ri-close-circle-line mr-1"></i> Hard Filter Gate — Not Compatible</h4><p class="text-xs text-red-700 mb-2">These deal-breakers blocked the match:</p><ul class="list-disc list-inside text-sm text-red-700 space-y-1">${score.failures.map(f=>'<li>'+f+'</li>').join('')}</ul><p class="text-xs text-red-600 mt-2 italic">Filters checked: gender, approval, divorce acceptance, widow acceptance, children acceptance, cross-border, Islamic sect.</p></div>`;
+          } else if (score.finalScore == null && !score.computedOnTheFly) {
+            hardFilterHtml = `<div class="p-4 border-t border-gray-200 bg-amber-50"><h4 class="text-sm font-semibold text-amber-800 mb-1"><i class="ri-information-line mr-1"></i> No Score Available</h4><p class="text-sm text-amber-700">No precomputed score. Possible reasons:<ul class="list-disc list-inside text-xs text-amber-700 mt-1"><li>Same gender</li><li>Not yet approved</li><li>Deactivated</li><li>Scores not yet generated</li></ul></p></div>`;
+          }
+
+          c.innerHTML = `<div class="border border-gray-200 rounded-xl overflow-hidden">
+            <div class="grid grid-cols-3"><div class="p-4 bg-gray-50 border-r text-center"><div class="font-bold">${uA.username||'A'}</div><div class="text-xs text-gray-500">${uA.age||'?'}y · ${uA.city||'?'} · ${uA.gender||'?'}</div></div><div class="p-4 bg-pink-50 text-center flex items-center justify-center"><div><div class="text-2xl font-bold text-primary">${score.finalScore!=null?score.finalScore+'%':'N/A'}</div><div class="text-xs text-gray-500">Compatibility</div></div></div><div class="p-4 bg-gray-50 border-l text-center"><div class="font-bold">${uB.username||'B'}</div><div class="text-xs text-gray-500">${uB.age||'?'}y · ${uB.city||'?'} · ${uB.gender||'?'}</div></div></div>
+            <div class="p-4 border-t"><h4 class="text-sm font-semibold text-gray-700 mb-3">Profile Details — Cross-Check (all fields)</h4>
+              ${renderSideBySideTable(fieldsA, fieldsB, uA.username||'User A', uB.username||'User B')}
+            </div>
+            ${score.subScores ? `<div class="p-4 border-t"><h4 class="text-sm font-semibold text-gray-700 mb-3">Score Dissection</h4>${renderExpandableScoreDissection(score.subScores, score.finalScore||0, fullA, fullB, 'cmp')}</div>` : ''}
+            ${hardFilterHtml}
+          </div>`;
+        } catch (err) { c.innerHTML = '<p class="text-red-500 text-center py-4">Comparison failed.</p>'; }
+      });
+
+      ['A','B'].forEach(slot => {
+        const inp = document.getElementById('compareUser'+slot+'Search');
+        if (inp) inp.addEventListener('keydown', function(e) { if (e.key==='Enter') { e.preventDefault(); searchCompareUser(slot); } });
+      });
+
+      // ═══════════════════════════════════════════════════════════════════════
+      //  TAB 3: TOP MATCHED PROFILES
+      // ═══════════════════════════════════════════════════════════════════════
+      window._topOffset = 0;
+      window._topLoaded = [];
+      window._topHasMore = false;
+
+      window.loadTopMatches = async function(reset = true) {
+        const c = document.getElementById('topMatchesContainer');
+        const topN = parseInt(document.getElementById('topNSelect').value);
+        const sort = document.getElementById('topSortSelect').value;
+
+        if (reset) {
+          window._topOffset = 0;
+          window._topLoaded = [];
+          c.innerHTML = '<div class="text-center py-8"><i class="ri-loader-4-line animate-spin text-3xl text-gray-400"></i><p class="text-gray-500 mt-2">Loading top matches...</p></div>';
+        }
+
+        try {
+          const resp = await fetch(`/api/admin/matches/top?limit=${topN}&sort=${sort}&offset=${window._topOffset}`);
+          const data = await resp.json();
+          if (!data.success) { c.innerHTML = '<p class="text-red-500 text-center py-4">'+(data.error||'Failed')+'</p>'; return; }
+
+          const pairs = data.pairs || [];
+          if (reset && pairs.length === 0) {
+            c.innerHTML = '<p class="text-gray-500 text-center py-8">No matches computed yet. Run batch score generation first.</p>';
+            return;
+          }
+
+          window._topLoaded = reset ? pairs : [...window._topLoaded, ...pairs];
+          window._topOffset = window._topLoaded.length;
+          window._topHasMore = data.hasMore;
+
+          const allPairs = window._topLoaded;
+          const totalCount = data.totalCount || allPairs.length;
+
+          c.innerHTML = `<div class="text-xs text-gray-500 mb-3">Showing ${allPairs.length} of ${totalCount} top pairs</div>
+            <div class="space-y-3" id="topPairsList">${allPairs.map((p, i) => {
+              const score = p.finalScore||0, vA=p.viewer||{}, vB=p.viewee||{};
+              let cls='score-low'; if(score>=70)cls='score-high'; else if(score>=50)cls='score-mid';
+              const fA = getAllFields(vA), fB = getAllFields(vB);
+              return `<div class="border border-gray-200 rounded-xl overflow-hidden">
+                <div class="flex items-center gap-4 p-4 bg-gray-50 cursor-pointer" onclick="togglePanel('topDet${i}','topCh${i}')">
+                  <span class="text-xs text-gray-400 w-6">#${i+1}</span>
+                  <span class="w-10 h-10 rounded-full ${cls} flex items-center justify-center font-bold text-sm flex-shrink-0">${score}%</span>
+                  <div class="flex-1 min-w-0"><span class="font-semibold">${vA.username||'?'}</span> <span class="text-gray-400"><i class="ri-arrow-left-right-line"></i></span> <span class="font-semibold">${vB.username||'?'}</span></div>
+                  <span class="text-xs text-gray-500">${vA.age||'?'}y · ${vA.city||''} ↔ ${vB.age||'?'}y · ${vB.city||''}</span>
+                  <i id="topCh${i}" class="ri-arrow-down-s-line text-gray-400 text-lg rotate-icon transition-transform ml-auto"></i>
+                </div>
+                <div id="topDet${i}" class="hidden">
+                  <div class="p-4 border-t"><h4 class="text-sm font-semibold text-gray-700 mb-3">Side-by-Side Comparison — All Fields</h4>
+                    ${renderSideBySideTable(fA, fB, vA.username||'User A', vB.username||'User B')}
+                  </div>
+                  <div class="p-4 border-t bg-gray-50"><h4 class="text-sm font-semibold text-gray-700 mb-3">Score Dissection</h4>
+                    ${renderExpandableScoreDissection(p.subScores, score, vA, vB, 'top'+i)}
+                    <div class="mt-2 text-xs text-gray-500">Computed: ${p.computedAt?new Date(p.computedAt).toLocaleString():'N/A'}</div>
+                  </div>
+                </div>
+              </div>`;
+            }).join('')}</div>
+            ${window._topHasMore ? `<div class="text-center pt-4"><button onclick="loadMoreTopMatches()" class="px-6 py-2.5 border-2 border-primary text-primary hover:bg-primary hover:text-white rounded-lg text-sm font-medium transition-all duration-300"><i class="ri-arrow-down-line mr-1"></i> Load More (${totalCount - allPairs.length} remaining)</button></div>` : ''}`;
+        } catch (err) { console.error('loadTopMatches error:', err); c.innerHTML = '<p class="text-red-500 text-center py-4">Failed: ' + (err.message || 'unknown') + '</p>'; }
+      };
+
+      window.loadMoreTopMatches = function() {
+        loadTopMatches(false);
+      };
+    });
+  </script>
+</body>
+
+</html>
