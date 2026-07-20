@@ -498,7 +498,7 @@ async function sendReservationNotification(reservation) {
                     <td style="padding:12px 16px;font-size:13px;color:#6b7280;"><a href="${reservation.pageUrl}" style="color:#E91E63;">${reservation.pageUrl}</a></td>
                   </tr>` : ''}
                 </table>
-                <a href="https://damourmuslim.com/admin/reservations" style="display:inline-block;background:linear-gradient(135deg,#E91E63 0%,#673AB7 100%);color:#ffffff;text-decoration:none;font-size:15px;font-weight:700;padding:12px 28px;border-radius:50px;box-shadow:0 4px 12px rgba(233,30,99,0.3);">🔗 View in Admin Panel</a>
+                <a href="https://shadiamour.com/admin/reservations" style="display:inline-block;background:linear-gradient(135deg,#E91E63 0%,#673AB7 100%);color:#ffffff;text-decoration:none;font-size:15px;font-weight:700;padding:12px 28px;border-radius:50px;box-shadow:0 4px 12px rgba(233,30,99,0.3);">🔗 View in Admin Panel</a>
               </td>
             </tr>
             <!-- Footer -->

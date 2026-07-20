@@ -7,10 +7,10 @@ const https = require("https");
 
 // =========== CONFIGURATION ===========
 const INDEXNOW_ENDPOINT = "api.indexnow.org";
-const API_KEY = "e32877601cd8479c8d31b02259302796";
-const KEY_LOCATION = "https://damourmuslim.com/e32877601cd8479c8d31b02259302796.txt";
-const SITE_HOST = "damourmuslim.com";
-const BASE_URL = "https://damourmuslim.com";
+const API_KEY = "2128807a441c4ed5bb4654d9c19cf659";
+const KEY_LOCATION = "https://shadiamour.com/2128807a441c4ed5bb4654d9c19cf659.txt";
+const SITE_HOST = "shadiamour.com";
+const BASE_URL = "https://shadiamour.com";
 const BATCH_SIZE = 100;
 
 // =========== IN-MEMORY DEDUP (avoids spamming same URL in short window) ===========
