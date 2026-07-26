@@ -1,859 +1,781 @@
-// SEO LANDING PAGES — UK CITY MATRIMONY HUBS
-// ============================================
 const cityPages = [
   {
-    path: "/muslim-matrimony-london",
-    pageTitle: "Muslim Matrimony London — Verified Matches Across the Capital | D'amour Muslim",
-    h1: "Muslim Matrimony in London — Britain's Most Diverse Muslim Community",
-    heroSubtitle: "Home to well over a million Muslims from every background imaginable, London offers the widest pool of potential matches in the UK. D'amour Muslim helps you search it properly.",
-    metaDescription: "Muslim matrimony in London — verified profiles from Tower Hamlets, Newham, Redbridge, Southall, Waltham Forest and beyond. Free to join D'amour Muslim.",
-    keywords: "muslim matrimony london, muslim marriage london, london muslim singles, london rishta, muslim matchmaking london",
-    canonicalPath: "/muslim-matrimony-london",
-    ctaHeading: "Find Your Match in London",
-    ctaSubtext: "Register free and browse verified Muslim profiles from across Greater London.",
+    path: "/muslim-marriage-london",
+    pageTitle: "Muslim Marriage London | Halal Matchmaking & Rishta Service London 2026",
+    h1: "Muslim Marriage in London | Halal Matchmaking for London Muslims",
+    heroSubtitle: "London is home to the largest and most diverse Muslim community in the United Kingdom, offering a rich and vibrant environment for finding a halal spouse.",
+    metaDescription: "Find your halal Muslim spouse in London. Verified profiles, serious rishta connections & Islamic matchmaking",
+    keywords: "muslim marriage london, halal matchmaking london, muslim rishta london, pakistani rishta london, bangladeshi muslim marriage london",
+    canonicalPath: "/muslim-marriage-london",
+    ctaHeading: "Find Your Muslim Spouse in London Today — Join shadiAmour Free",
+    ctaSubtext: "Register free and browse verified Muslim profiles from across London.",
     relatedLinks: [
-      { url: "/muslim-matrimony-birmingham", label: "Muslim Matrimony Birmingham" },
-      { url: "/muslim-matrimony-luton", label: "Muslim Matrimony Luton" },
-      { url: "/muslim-marriage-uk", label: "Muslim Marriage UK" },
-      { url: "/muslim-matchmaking", label: "Muslim Matchmaking" }
+      { url: "/muslim-marriage-birmingham", label: "Muslim Marriage Birmingham" },
+      { url: "/muslim-marriage-luton", label: "Muslim Marriage Luton" },
+      { url: "/muslim-marriage-leicester", label: "Muslim Marriage Leicester" },
+      { url: "/muslim-marriage-manchester", label: "Muslim Marriage Manchester" }
     ],
     pageFaqSchema: [
-      { q: "Which parts of London have the most active D'amour Muslim members?", a: "Tower Hamlets, Newham, Redbridge, Waltham Forest, and Southall in Ealing all have strong representation, alongside members across Croydon, Harrow, and further out into Greater London. Members typically list their borough so you can search accordingly." },
-      { q: "Is London's Muslim community really that diverse?", a: "Yes — London is home to Bangladeshi, Pakistani, Somali, Arab, Turkish, Nigerian, and dozens of other Muslim communities, often concentrated in specific boroughs. This means your search can be as broad or as specific as you like." },
-      { q: "Can I filter for a specific ethnic or cultural background in London?", a: "Yes. Profiles include fields for ethnicity, cultural background, and mother tongue, so you can search within your own community or open your search more widely." },
-      { q: "Is D'amour Muslim free for London-based members?", a: "Yes, entirely. Registration, browsing every verified profile, and sending interest cost nothing — the same as anywhere else on the platform." },
-      { q: "Can families in London manage a profile together?", a: "Yes — parents or a wali can register and run a profile on behalf of their son or daughter, which is especially useful for London's larger, more traditional families." }
+      { q: "Is shadiAmour the best Muslim marriage site for London?", a: "shadiAmour is one of the most trusted halal marriage platforms for London Muslims. Our verified profile system and London-focused matchmaking make it the preferred choice for serious marriage seekers." },
+      { q: "Can parents register on behalf of their child in London?", a: "Yes. Many London families register on behalf of their son or daughter and manage the profile on their behalf." },
+      { q: "How do I find a Pakistani rishta in London?", a: "Create a free profile on shadiAmour, select your location as London, and filter by Pakistani background. You can also join our WhatsApp rishta groups for London." }
     ],
     pageFaqs: [
-      { q: "Which parts of London have the most active D'amour Muslim members?", a: "Tower Hamlets, Newham, Redbridge, Waltham Forest, and Southall in Ealing all have strong representation, alongside members across Croydon, Harrow, and further out into Greater London. Members typically list their borough so you can search accordingly." },
-      { q: "Is London's Muslim community really that diverse?", a: "Yes — London is home to Bangladeshi, Pakistani, Somali, Arab, Turkish, Nigerian, and dozens of other Muslim communities, often concentrated in specific boroughs. This means your search can be as broad or as specific as you like." },
-      { q: "Can I filter for a specific ethnic or cultural background in London?", a: "Yes. Profiles include fields for ethnicity, cultural background, and mother tongue, so you can search within your own community or open your search more widely." },
-      { q: "Is D'amour Muslim free for London-based members?", a: "Yes, entirely. Registration, browsing every verified profile, and sending interest cost nothing — the same as anywhere else on the platform." },
-      { q: "Can families in London manage a profile together?", a: "Yes — parents or a wali can register and run a profile on behalf of their son or daughter, which is especially useful for London's larger, more traditional families." }
+      { q: "Is shadiAmour the best Muslim marriage site for London?", a: "shadiAmour is one of the most trusted halal marriage platforms for London Muslims. Our verified profile system and London-focused matchmaking make it the preferred choice for serious marriage seekers." },
+      { q: "Can parents register on behalf of their child in London?", a: "Yes. Many London families register on behalf of their son or daughter and manage the profile on their behalf." },
+      { q: "How do I find a Pakistani rishta in London?", a: "Create a free profile on shadiAmour, select your location as London, and filter by Pakistani background. You can also join our WhatsApp rishta groups for London." }
     ],
     bodyContent: `
       <div class="prose max-w-none">
-        <p class="text-lg text-gray-700 mb-6 leading-relaxed">No city in the UK — or arguably in Europe — matches London for the sheer scale and diversity of its Muslim population. Well over a million Muslims call Greater London home, spanning Bangladeshi, Pakistani, Somali, Arab, Turkish, West African, and dozens of other communities. That scale is exactly why a structured search matters here: the pool is enormous, but finding someone genuinely compatible within it takes more than luck.</p>
+        <p class="text-lg text-gray-700 mb-6 leading-relaxed">London is home to the largest and most diverse Muslim community in the United Kingdom. With over 1.2 million Muslims spread across boroughs from Tower Hamlets and Waltham Forest to Brent and Southwark, the city offers a rich and vibrant environment for finding a halal spouse. shadiAmour connects serious London Muslims seeking nikah through a verified, faith-first matchmaking platform — modern, safe, and completely halal.</p>
 
-        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">London's Muslim Community</h2>
-        <p class="text-gray-700 mb-6 leading-relaxed">London's Muslim population is not one community but many, each with its own history, language, and marriage customs. Tower Hamlets has one of the largest Bangladeshi Muslim populations anywhere outside Bangladesh. Newham and Redbridge host large Pakistani, Indian, and Bangladeshi communities. Southall in Ealing has a strong Pakistani and Punjabi presence. Somali, Arab, and Turkish communities are well established across East and North London. This diversity means a London-based search can be tailored precisely to your own background, or opened up entirely.</p>
+        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Muslim Community in London</h2>
+        <p class="text-gray-700 mb-6 leading-relaxed">London's Muslim community spans Pakistani, Bangladeshi, Somali, Arab, West African, and British-born Muslims. Tower Hamlets holds one of the highest Muslim populations in England. East London — including Stratford, Ilford, Whitechapel, and Upton Park — is particularly active for rishta searches. Outer boroughs such as Wembley, Harrow, and Ilford also have strong family-based Muslim networks.</p>
 
-        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Key Areas on D'amour Muslim</h2>
+        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Key Challenges & How shadiAmour Helps</h2>
+        <p class="text-gray-700 mb-6 leading-relaxed">Despite its size, London Muslims often face unique challenges: the fast pace of city life leaves little time for rishta searches; the sheer number of options online can feel overwhelming; and cultural diversity means finding someone with the right combination of faith, background, and values requires a focused platform. shadiAmour's verified profiles and curated matches cut through the noise.</p>
+
+        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Why London Muslims Choose shadiAmour</h2>
         <ul class="list-none space-y-3 mb-6">
-          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700"><strong>Tower Hamlets:</strong> Home to one of the UK's largest Bangladeshi Muslim communities, centred around Whitechapel and Bethnal Green.</span></li>
-          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700"><strong>Newham & Redbridge:</strong> Large, established Pakistani, Indian, and Bangladeshi communities across East Ham, Forest Gate, and Ilford.</span></li>
-          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700"><strong>Southall (Ealing):</strong> A long-standing Pakistani and Punjabi Muslim community with deep community roots.</span></li>
-          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700"><strong>Waltham Forest & Croydon:</strong> Growing, increasingly professional Muslim populations spread across North and South London.</span></li>
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700">Profiles verified by our London-based team</span></li>
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700">Matches filtered by borough, sect, background & values</span></li>
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700">Free to join — browse thousands of London Muslim singles</span></li>
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700">Active WhatsApp groups connecting London families</span></li>
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700">GDPR-compliant and privacy-first approach</span></li>
         </ul>
 
-        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">London's Islamic Landmarks</h2>
-        <p class="text-gray-700 mb-6 leading-relaxed">London's Islamic heritage runs deep. The East London Mosque in Whitechapel is one of the largest and oldest purpose-built mosques in the UK, a genuine community anchor for East London's Bangladeshi population. London Central Mosque, with its striking golden dome overlooking Regent's Park, remains one of the most recognisable Islamic landmarks in the country. Together, these institutions reflect a Muslim community that has been rooted in the capital for generations.</p>
-
-        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">How D'amour Muslim Serves London</h2>
-        <p class="text-gray-700 mb-6 leading-relaxed">Given London's scale, the platform's filters matter more here than anywhere else. Search by borough, ethnicity, religious practice, and age to cut a million-plus population down to genuinely relevant matches. Every profile passes moderation before appearing, family-managed accounts are fully supported, and messaging stays gated until both sides express interest — the same standards that apply across the whole platform, calibrated for a city this size.</p>
-
-        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Three Steps to Finding a Match in London</h2>
-        <div class="grid md:grid-cols-3 gap-4 mb-8">
+        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Recommended Page Sections & Content</h2>
+        <div class="grid md:grid-cols-2 gap-4 mb-8">
           <div class="bg-gray-50 rounded-xl p-5 border border-gray-100">
-            <span class="text-primary font-bold text-2xl block mb-2">1</span>
-            <h3 class="text-xl font-semibold text-gray-800 mb-3 mt-0">Build Your Profile</h3>
-            <p class="text-gray-700 text-sm leading-relaxed">Add your borough, background, and religious practice. Submit for review — usually approved within 24 hours.</p>
+            <h3 class="text-xl font-semibold text-gray-800 mb-3 mt-0">Pakistani Muslim Marriage London</h3>
+            <p class="text-gray-700 text-sm leading-relaxed">Connect with Pakistani Muslim singles in London looking for serious nikah. Our platform is the most trusted for Pakistani rishta London, with families from across the UK and Pakistan actively searching.</p>
           </div>
           <div class="bg-gray-50 rounded-xl p-5 border border-gray-100">
-            <span class="text-primary font-bold text-2xl block mb-2">2</span>
-            <h3 class="text-xl font-semibold text-gray-800 mb-3 mt-0">Narrow the Search</h3>
-            <p class="text-gray-700 text-sm leading-relaxed">Filter by area, ethnicity, and age — essential in a city this size and this diverse.</p>
+            <h3 class="text-xl font-semibold text-gray-800 mb-3 mt-0">Bangladeshi Muslim Marriage London</h3>
+            <p class="text-gray-700 text-sm leading-relaxed">Discover Bangladeshi Muslim profiles in East London and beyond. Verified rishta connections for serious marriage with Islamic values at the centre.</p>
           </div>
           <div class="bg-gray-50 rounded-xl p-5 border border-gray-100">
-            <span class="text-primary font-bold text-2xl block mb-2">3</span>
-            <h3 class="text-xl font-semibold text-gray-800 mb-3 mt-0">Express Interest</h3>
-            <p class="text-gray-700 text-sm leading-relaxed">Secure messaging opens once both sides agree — no unsolicited contact, ever.</p>
+            <h3 class="text-xl font-semibold text-gray-800 mb-3 mt-0">Muslim Rishta London</h3>
+            <p class="text-gray-700 text-sm leading-relaxed">Browse active rishta proposals from London Muslims. Families can register on behalf of their children and search privately with full control over who sees the profile.</p>
+          </div>
+          <div class="bg-gray-50 rounded-xl p-5 border border-gray-100">
+            <h3 class="text-xl font-semibold text-gray-800 mb-3 mt-0">Halal Matchmaking London</h3>
+            <p class="text-gray-700 text-sm leading-relaxed">Our halal matching process ensures every connection is purposeful, respectful, and marriage-focused. No casual dating, no time-wasters.</p>
           </div>
         </div>
 
-        <blockquote class="border-l-4 border-primary pl-4 italic text-gray-600 my-6">The Quran describes humanity as made into different peoples so that they may come to know one another — a fitting description of London's Muslim community itself.</blockquote>
-
         <div class="bg-primary/5 rounded-2xl p-6 border border-primary/10 mt-8">
-          <p class="text-gray-700 font-medium">Also explore: <a href="/muslim-matrimony-birmingham" class="text-primary hover:underline">Birmingham</a> &bull; <a href="/muslim-matrimony-luton" class="text-primary hover:underline">Luton</a> &bull; <a href="/muslim-marriage-uk" class="text-primary hover:underline">Muslim Marriage UK</a> &bull; <a href="/muslim-matchmaking" class="text-primary hover:underline">Muslim Matchmaking</a></p>
+          <p class="text-gray-700 font-medium">Also explore: <a href="/muslim-marriage-birmingham" class="text-primary hover:underline">Birmingham</a> &bull; <a href="/muslim-marriage-luton" class="text-primary hover:underline">Luton</a> &bull; <a href="/muslim-marriage-leicester" class="text-primary hover:underline">Leicester</a> &bull; <a href="/muslim-marriage-manchester" class="text-primary hover:underline">Manchester</a></p>
         </div>
       </div>
     `
   },
   {
-    path: "/muslim-matrimony-birmingham",
-    pageTitle: "Muslim Matrimony Birmingham — Verified Matches in England's Second City | D'amour Muslim",
-    h1: "Muslim Matrimony in Birmingham — A Community Built Over Generations",
-    heroSubtitle: "Birmingham has one of the largest and most established Muslim communities outside London. D'amour Muslim connects you with verified matches across the city.",
-    metaDescription: "Muslim matrimony in Birmingham — verified profiles from Sparkhill, Small Heath, Alum Rock, Handsworth and beyond. Free to join D'amour Muslim.",
-    keywords: "muslim matrimony birmingham, muslim marriage birmingham, birmingham muslim singles, birmingham rishta, muslim matchmaking birmingham",
-    canonicalPath: "/muslim-matrimony-birmingham",
-    ctaHeading: "Find Your Match in Birmingham",
+    path: "/muslim-marriage-birmingham",
+    pageTitle: "Muslim Marriage Birmingham | Halal Rishta & Matchmaking Service Birmingham 2026",
+    h1: "Muslim Marriage in Birmingham | Halal Matchmaking for Birmingham Muslims",
+    heroSubtitle: "Birmingham is home to one of the oldest and most established Muslim communities in the United Kingdom, with deep roots in Pakistani, Bangladeshi, Yemeni, and Somali communities.",
+    metaDescription: "Find a halal Muslim spouse in Birmingham. Verified rishta profiles, Islamic matchmaking & Muslim marriage c",
+    keywords: "muslim marriage birmingham, halal matchmaking birmingham, muslim rishta birmingham, pakistani muslim marriage birmingham, british muslim marriage birmingham",
+    canonicalPath: "/muslim-marriage-birmingham",
+    ctaHeading: "Find Your Muslim Spouse in Birmingham — Join shadiAmour Free",
     ctaSubtext: "Register free and browse verified Muslim profiles from across Birmingham.",
     relatedLinks: [
-      { url: "/muslim-matrimony-london", label: "Muslim Matrimony London" },
-      { url: "/muslim-matrimony-coventry", label: "Muslim Matrimony Coventry" },
-      { url: "/muslim-marriage-uk", label: "Muslim Marriage UK" },
-      { url: "/british-pakistani-marriage", label: "British Pakistani Marriage" }
+      { url: "/muslim-marriage-coventry", label: "Muslim Marriage Coventry" },
+      { url: "/muslim-marriage-london", label: "Muslim Marriage London" },
+      { url: "/muslim-marriage-leicester", label: "Muslim Marriage Leicester" },
+      { url: "/muslim-marriage-nottingham", label: "Muslim Marriage Nottingham" }
     ],
     pageFaqSchema: [
-      { q: "Which Birmingham areas have the strongest presence on D'amour Muslim?", a: "Sparkhill, Small Heath, Alum Rock, Handsworth, Aston, and Balsall Heath are all well represented, reflecting Birmingham's long-established Pakistani and Bangladeshi Muslim communities." },
-      { q: "Is Birmingham's Muslim community mostly Pakistani?", a: "Pakistani-heritage Muslims form the largest group, but there are also substantial Bangladeshi, Somali, and Arab communities across the city. Profiles let you specify your own background." },
-      { q: "Can my family get involved in a Birmingham-based search?", a: "Yes — parents or a wali can register and manage a profile, which fits naturally with Birmingham's strong tradition of family-led rishta searching." },
-      { q: "Is D'amour Muslim free to use in Birmingham?", a: "Yes — registration, browsing, and sending interest are all free, with no subscription needed for core features." },
-      { q: "Can I search for a UK-wide or overseas match from Birmingham?", a: "Yes — you can search locally within Birmingham, more broadly across the UK, or open your search to Pakistan and other diaspora communities entirely." }
+      { q: "What is the best Muslim marriage site for Birmingham?", a: "shadiAmour is widely regarded as one of the best platforms for Muslim marriage in Birmingham, with a large pool of verified local profiles and active family participation." },
+      { q: "Is Birmingham a good city for Muslim rishta searches?", a: "Yes. Birmingham's large and culturally active Muslim community makes it one of the best UK cities for finding a compatible halal spouse." },
+      { q: "Can I search for Birmingham Muslims only?", a: "Yes. On shadiAmour you can filter profiles by city, including Birmingham, making it easy to find local matches." }
     ],
     pageFaqs: [
-      { q: "Which Birmingham areas have the strongest presence on D'amour Muslim?", a: "Sparkhill, Small Heath, Alum Rock, Handsworth, Aston, and Balsall Heath are all well represented, reflecting Birmingham's long-established Pakistani and Bangladeshi Muslim communities." },
-      { q: "Is Birmingham's Muslim community mostly Pakistani?", a: "Pakistani-heritage Muslims form the largest group, but there are also substantial Bangladeshi, Somali, and Arab communities across the city. Profiles let you specify your own background." },
-      { q: "Can my family get involved in a Birmingham-based search?", a: "Yes — parents or a wali can register and manage a profile, which fits naturally with Birmingham's strong tradition of family-led rishta searching." },
-      { q: "Is D'amour Muslim free to use in Birmingham?", a: "Yes — registration, browsing, and sending interest are all free, with no subscription needed for core features." },
-      { q: "Can I search for a UK-wide or overseas match from Birmingham?", a: "Yes — you can search locally within Birmingham, more broadly across the UK, or open your search to Pakistan and other diaspora communities entirely." }
+      { q: "What is the best Muslim marriage site for Birmingham?", a: "shadiAmour is widely regarded as one of the best platforms for Muslim marriage in Birmingham, with a large pool of verified local profiles and active family participation." },
+      { q: "Is Birmingham a good city for Muslim rishta searches?", a: "Yes. Birmingham's large and culturally active Muslim community makes it one of the best UK cities for finding a compatible halal spouse." },
+      { q: "Can I search for Birmingham Muslims only?", a: "Yes. On shadiAmour you can filter profiles by city, including Birmingham, making it easy to find local matches." }
     ],
     bodyContent: `
       <div class="prose max-w-none">
-        <p class="text-lg text-gray-700 mb-6 leading-relaxed">Birmingham is home to one of the largest, most established Muslim communities in the UK outside London — a population built up over generations of migration, settlement, and community-building. For many Brummie Muslims, the rishta process still runs on family networks and local reputation. D'amour Muslim gives that same process a far wider reach.</p>
+        <p class="text-lg text-gray-700 mb-6 leading-relaxed">Birmingham is home to one of the oldest and most established Muslim communities in the United Kingdom. With over 350,000 Muslims, the city has deep roots in Pakistani, Bangladeshi, Yemeni, and Somali communities. shadiAmour provides Birmingham Muslims with a trusted, halal-only marriage platform — combining the warmth of community-based rishta traditions with the reach of a modern verified matchmaking service.</p>
 
-        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Birmingham's Muslim Community</h2>
-        <p class="text-gray-700 mb-6 leading-relaxed">Birmingham's Muslim population, largely of Pakistani and Kashmiri heritage with significant Bangladeshi, Somali, and Arab communities, took root through waves of post-war migration into the city's manufacturing industries. That history has produced tightly-knit, multi-generational communities where family standing and biradari connections still carry real weight — alongside a growing, increasingly professional younger generation balancing tradition with a distinctly British outlook.</p>
+        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Muslim Community in Birmingham</h2>
+        <p class="text-gray-700 mb-6 leading-relaxed">Sparkhill, Alum Rock, Small Heath, Handsworth, and Bordesley Green are among the most prominent Muslim neighbourhoods in Birmingham. The city has a strong culture of family-led rishta searches, mosque networks, and community introductions. Pakistani and Bangladeshi Muslim families form the largest groups, with a growing number of British-born Muslims seeking matches both locally and across the UK.</p>
 
-        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Key Areas on D'amour Muslim</h2>
+        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Key Challenges & How shadiAmour Helps</h2>
+        <p class="text-gray-700 mb-6 leading-relaxed">Birmingham Muslims often report that while the community is large, finding the right match still takes time. Over-reliance on limited family networks, mismatched expectations, and a lack of verified platforms can slow down the rishta process. shadiAmour addresses this with a structured, verified, and privacy-first approach designed for Birmingham's marriage-minded community.</p>
+
+        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Why Birmingham Muslims Choose shadiAmour</h2>
         <ul class="list-none space-y-3 mb-6">
-          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700"><strong>Sparkhill & Sparkbrook:</strong> Long-established, densely Muslim neighbourhoods at the heart of Birmingham's South Asian community.</span></li>
-          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700"><strong>Small Heath:</strong> A large, historic Pakistani and Bangladeshi Muslim population.</span></li>
-          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700"><strong>Alum Rock:</strong> One of the city's most vibrant Muslim commercial and residential areas.</span></li>
-          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700"><strong>Handsworth & Aston:</strong> Diverse, multicultural areas with a strong Muslim presence alongside other communities.</span></li>
-          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700"><strong>Balsall Heath:</strong> A close-knit community with deep mosque and family ties.</span></li>
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700">Dedicated Birmingham Muslim profiles — verified and active</span></li>
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700">Filter by area within Birmingham (Sparkhill, Handsworth, etc.)</span></li>
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700">Family-friendly registration — parents can create profiles</span></li>
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700">Birmingham-active WhatsApp rishta groups</span></li>
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700">Premium weekly curated matches available</span></li>
         </ul>
 
-        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Birmingham's Islamic Landmarks</h2>
-        <p class="text-gray-700 mb-6 leading-relaxed">Birmingham Central Mosque, with its recognisable dome and minarets, has served as one of the city's most important Islamic institutions since the 1970s, standing as a symbol of the community's permanence in the city. Smaller, equally significant mosques are scattered across Sparkhill, Small Heath, and Alum Rock, each anchoring its own local Muslim community.</p>
-
-        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">How D'amour Muslim Serves Birmingham</h2>
-        <p class="text-gray-700 mb-6 leading-relaxed">Profiles let Birmingham members specify their area, biradari background, and religious practice, giving families the detail they've traditionally relied on before making contact. Family-managed accounts are fully supported, every profile is manually reviewed, and messaging only opens once interest is mutual — a digital extension of the trust Birmingham's Muslim community has always placed in a proper introduction.</p>
-
-        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Three Steps to Finding a Match in Birmingham</h2>
-        <div class="grid md:grid-cols-3 gap-4 mb-8">
+        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Recommended Page Sections & Content</h2>
+        <div class="grid md:grid-cols-2 gap-4 mb-8">
           <div class="bg-gray-50 rounded-xl p-5 border border-gray-100">
-            <span class="text-primary font-bold text-2xl block mb-2">1</span>
-            <h3 class="text-xl font-semibold text-gray-800 mb-3 mt-0">Build Your Profile</h3>
-            <p class="text-gray-700 text-sm leading-relaxed">Include your area, background, and what you're looking for. Submit for review.</p>
+            <h3 class="text-xl font-semibold text-gray-800 mb-3 mt-0">Pakistani Muslim Marriage Birmingham</h3>
+            <p class="text-gray-700 text-sm leading-relaxed">Birmingham has one of the largest Pakistani Muslim communities in the UK. Find verified Pakistani rishta proposals in Birmingham through shadiAmour's trusted platform.</p>
           </div>
           <div class="bg-gray-50 rounded-xl p-5 border border-gray-100">
-            <span class="text-primary font-bold text-2xl block mb-2">2</span>
-            <h3 class="text-xl font-semibold text-gray-800 mb-3 mt-0">Browse Local Profiles</h3>
-            <p class="text-gray-700 text-sm leading-relaxed">Filter by area and background, or widen your search across the West Midlands.</p>
+            <h3 class="text-xl font-semibold text-gray-800 mb-3 mt-0">Muslim Rishta Birmingham</h3>
+            <p class="text-gray-700 text-sm leading-relaxed">Browse serious rishta proposals from Birmingham Muslims. Whether you are searching personally or your family is involved, shadiAmour makes the process structured and dignified.</p>
           </div>
           <div class="bg-gray-50 rounded-xl p-5 border border-gray-100">
-            <span class="text-primary font-bold text-2xl block mb-2">3</span>
-            <h3 class="text-xl font-semibold text-gray-800 mb-3 mt-0">Connect With Family</h3>
-            <p class="text-gray-700 text-sm leading-relaxed">Once mutual interest is confirmed, bring in your family for the next step.</p>
+            <h3 class="text-xl font-semibold text-gray-800 mb-3 mt-0">Halal Matchmaking Birmingham</h3>
+            <p class="text-gray-700 text-sm leading-relaxed">Our Birmingham matchmaking service focuses exclusively on nikah-intent connections. Every profile is verified and every conversation is guided by Islamic values.</p>
+          </div>
+          <div class="bg-gray-50 rounded-xl p-5 border border-gray-100">
+            <h3 class="text-xl font-semibold text-gray-800 mb-3 mt-0">British Muslim Marriage Birmingham</h3>
+            <p class="text-gray-700 text-sm leading-relaxed">Connect with British-born Muslims in Birmingham who balance Islamic values with modern UK life — educated, professional, and serious about nikah.</p>
           </div>
         </div>
 
-        <blockquote class="border-l-4 border-primary pl-4 italic text-gray-600 my-6">Choosing a spouse for their character and faith above wealth or family name is guidance as relevant in Sparkhill today as it was fourteen centuries ago.</blockquote>
-
         <div class="bg-primary/5 rounded-2xl p-6 border border-primary/10 mt-8">
-          <p class="text-gray-700 font-medium">Also explore: <a href="/muslim-matrimony-london" class="text-primary hover:underline">London</a> &bull; <a href="/muslim-matrimony-coventry" class="text-primary hover:underline">Coventry</a> &bull; <a href="/muslim-marriage-uk" class="text-primary hover:underline">Muslim Marriage UK</a> &bull; <a href="/british-pakistani-marriage" class="text-primary hover:underline">British Pakistani Marriage</a></p>
+          <p class="text-gray-700 font-medium">Also explore: <a href="/muslim-marriage-coventry" class="text-primary hover:underline">Coventry</a> &bull; <a href="/muslim-marriage-london" class="text-primary hover:underline">London</a> &bull; <a href="/muslim-marriage-leicester" class="text-primary hover:underline">Leicester</a> &bull; <a href="/muslim-marriage-nottingham" class="text-primary hover:underline">Nottingham</a></p>
         </div>
       </div>
     `
   },
   {
-    path: "/muslim-matrimony-manchester",
-    pageTitle: "Muslim Matrimony Manchester — Verified Matches Across Greater Manchester | D'amour Muslim",
-    h1: "Muslim Matrimony in Manchester — Tradition Meets a Modern City",
-    heroSubtitle: "From Rusholme to Cheetham Hill, Manchester's Muslim community blends deep tradition with a young, professional energy. D'amour Muslim helps you search it properly.",
-    metaDescription: "Muslim matrimony in Manchester — verified profiles from Rusholme, Longsight, Cheetham Hill, Levenshulme and beyond. Free to join D'amour Muslim.",
-    keywords: "muslim matrimony manchester, muslim marriage manchester, manchester muslim singles, manchester rishta, muslim matchmaking manchester",
-    canonicalPath: "/muslim-matrimony-manchester",
-    ctaHeading: "Find Your Match in Manchester",
-    ctaSubtext: "Register free and browse verified Muslim profiles from across Greater Manchester.",
+    path: "/muslim-marriage-manchester",
+    pageTitle: "Muslim Marriage Manchester | Halal Matchmaking & Rishta Manchester 2026",
+    h1: "Muslim Marriage in Manchester | Halal Matchmaking for Manchester Muslims",
+    heroSubtitle: "Manchester has emerged as one of the most vibrant Muslim communities in the North of England, with a growing population of young, educated British Muslims.",
+    metaDescription: "Find a halal Muslim spouse in Manchester. Verified profiles, Islamic matchmaking & Muslim rishta for Manche",
+    keywords: "muslim marriage manchester, halal matchmaking manchester, muslim rishta manchester, pakistani muslim marriage manchester, young muslim marriage manchester",
+    canonicalPath: "/muslim-marriage-manchester",
+    ctaHeading: "Find Your Muslim Spouse in Manchester — Join shadiAmour Free",
+    ctaSubtext: "Register free and browse verified Muslim profiles from across Manchester.",
     relatedLinks: [
-      { url: "/muslim-matrimony-leeds", label: "Muslim Matrimony Leeds" },
-      { url: "/muslim-matrimony-sheffield", label: "Muslim Matrimony Sheffield" },
-      { url: "/muslim-marriage-uk", label: "Muslim Marriage UK" },
-      { url: "/muslim-matchmaking", label: "Muslim Matchmaking" }
+      { url: "/muslim-marriage-leeds", label: "Muslim Marriage Leeds" },
+      { url: "/muslim-marriage-bradford", label: "Muslim Marriage Bradford" },
+      { url: "/muslim-marriage-sheffield", label: "Muslim Marriage Sheffield" },
+      { url: "/muslim-marriage-london", label: "Muslim Marriage London" }
     ],
     pageFaqSchema: [
-      { q: "Which Manchester areas are best represented on D'amour Muslim?", a: "Rusholme, Longsight, Cheetham Hill, Levenshulme, and Victoria Park all have an active Muslim community and strong representation on the platform." },
-      { q: "Does Manchester have a large student and professional Muslim population?", a: "Yes — the city's universities and growing professional sector have brought in a significant younger, career-focused Muslim population alongside its longer-established communities." },
-      { q: "Can I search across Greater Manchester, not just the city centre?", a: "Yes — the location filter covers the wider Greater Manchester area, including Bolton, Oldham, and Rochdale, all of which have significant Muslim populations." },
-      { q: "Is registration free for Manchester-based members?", a: "Yes, entirely free — registration, browsing, and sending interest cost nothing." },
-      { q: "Can families in Manchester manage a profile together?", a: "Yes — parents or a wali can register and run a profile, and communication only opens once both sides have expressed mutual interest." }
+      { q: "Is Manchester a good city for Muslim marriage?", a: "Yes. Manchester has a large, young, and educated Muslim population, making it one of the strongest cities for finding a halal spouse in the North of England." },
+      { q: "How do I find a Muslim rishta in Manchester?", a: "Create a free profile on shadiAmour and filter by Manchester. You can also join our Manchester-specific WhatsApp rishta groups for faster connections." },
+      { q: "Does shadiAmour cover all areas of Manchester?", a: "Yes. Our platform covers all Manchester areas including Rusholme, Longsight, Cheetham Hill, Whalley Range, and surrounding areas." }
     ],
     pageFaqs: [
-      { q: "Which Manchester areas are best represented on D'amour Muslim?", a: "Rusholme, Longsight, Cheetham Hill, Levenshulme, and Victoria Park all have an active Muslim community and strong representation on the platform." },
-      { q: "Does Manchester have a large student and professional Muslim population?", a: "Yes — the city's universities and growing professional sector have brought in a significant younger, career-focused Muslim population alongside its longer-established communities." },
-      { q: "Can I search across Greater Manchester, not just the city centre?", a: "Yes — the location filter covers the wider Greater Manchester area, including Bolton, Oldham, and Rochdale, all of which have significant Muslim populations." },
-      { q: "Is registration free for Manchester-based members?", a: "Yes, entirely free — registration, browsing, and sending interest cost nothing." },
-      { q: "Can families in Manchester manage a profile together?", a: "Yes — parents or a wali can register and run a profile, and communication only opens once both sides have expressed mutual interest." }
+      { q: "Is Manchester a good city for Muslim marriage?", a: "Yes. Manchester has a large, young, and educated Muslim population, making it one of the strongest cities for finding a halal spouse in the North of England." },
+      { q: "How do I find a Muslim rishta in Manchester?", a: "Create a free profile on shadiAmour and filter by Manchester. You can also join our Manchester-specific WhatsApp rishta groups for faster connections." },
+      { q: "Does shadiAmour cover all areas of Manchester?", a: "Yes. Our platform covers all Manchester areas including Rusholme, Longsight, Cheetham Hill, Whalley Range, and surrounding areas." }
     ],
     bodyContent: `
       <div class="prose max-w-none">
-        <p class="text-lg text-gray-700 mb-6 leading-relaxed">Manchester's Muslim community sits at an interesting crossroads — decades-old neighbourhoods built by Pakistani, Bangladeshi, and Somali families, alongside a fast-growing population of students and young professionals drawn in by the city's universities and booming job market. D'amour Muslim is built to serve both sides of that community at once.</p>
+        <p class="text-lg text-gray-700 mb-6 leading-relaxed">Manchester has emerged as one of the most vibrant Muslim communities in the North of England. With a growing population of young British Muslims — many educated, professional, and faith-conscious — Manchester is an excellent city for finding a compatible halal spouse. shadiAmour connects Manchester Muslims with verified rishta profiles from across the city and the wider UK.</p>
 
-        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Manchester's Muslim Community</h2>
-        <p class="text-gray-700 mb-6 leading-relaxed">Greater Manchester's Muslim population has grown steadily since the post-war era, concentrated initially in inner-city areas and now spreading into the wider conurbation, including Bolton, Oldham, and Rochdale. Rusholme — known locally as the Curry Mile — sits at the symbolic heart of the community, while Manchester's universities have added a distinctly younger, more mobile Muslim population in recent years.</p>
+        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Muslim Community in Manchester</h2>
+        <p class="text-gray-700 mb-6 leading-relaxed">Rusholme, Longsight, Levenshulme, Cheetham Hill, and Whalley Range are home to Manchester's most active Muslim communities. The city draws Muslims from Pakistani, Bangladeshi, Somali, and Arab backgrounds, with a significant population of students and young professionals at the University of Manchester and Manchester Metropolitan University.</p>
 
-        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Key Areas on D'amour Muslim</h2>
+        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Key Challenges & How shadiAmour Helps</h2>
+        <p class="text-gray-700 mb-6 leading-relaxed">Manchester's diverse and youthful Muslim population means there is no shortage of singles — but finding someone who aligns with your values, background, and marriage intentions still requires the right platform. shadiAmour's halal-only approach filters out casual users and connects serious marriage seekers in a structured, respectful environment.</p>
+
+        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Why Manchester Muslims Choose shadiAmour</h2>
         <ul class="list-none space-y-3 mb-6">
-          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700"><strong>Rusholme:</strong> The cultural heart of Muslim Manchester, famed for the Curry Mile.</span></li>
-          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700"><strong>Longsight & Levenshulme:</strong> Well-established, diverse Muslim neighbourhoods just south of the city centre.</span></li>
-          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700"><strong>Cheetham Hill:</strong> A historic multicultural district with a significant Muslim population.</span></li>
-          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700"><strong>Victoria Park & Whalley Range:</strong> Home to Manchester Central Mosque and a settled, family-oriented community.</span></li>
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700">Active Manchester Muslim profiles — verified and updated regularly</span></li>
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700">Great for young professionals and graduates seeking nikah</span></li>
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700">Search by Rusholme, Longsight, city centre and more</span></li>
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700">Manchester-specific rishta WhatsApp groups available</span></li>
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700">Free to join — no hidden fees to get started</span></li>
         </ul>
 
-        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Manchester's Islamic Landmarks</h2>
-        <p class="text-gray-700 mb-6 leading-relaxed">Manchester Central Mosque in Victoria Park has served the city's Muslim community for decades, anchoring one of the most established Muslim neighbourhoods in the North West. Smaller mosques dotted across Rusholme, Longsight, and Cheetham Hill reflect the city's many distinct communities, each with its own history and character.</p>
-
-        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">How D'amour Muslim Serves Manchester</h2>
-        <p class="text-gray-700 mb-6 leading-relaxed">Whether you're a Manchester-born professional or part of a longer-established family in Longsight or Cheetham Hill, the platform's filters let you search precisely by area, background, and religious practice. Every profile is manually reviewed, family-managed accounts are supported, and communication opens only when both sides agree.</p>
-
-        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Three Steps to Finding a Match in Manchester</h2>
-        <div class="grid md:grid-cols-3 gap-4 mb-8">
+        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Recommended Page Sections & Content</h2>
+        <div class="grid md:grid-cols-2 gap-4 mb-8">
           <div class="bg-gray-50 rounded-xl p-5 border border-gray-100">
-            <span class="text-primary font-bold text-2xl block mb-2">1</span>
-            <h3 class="text-xl font-semibold text-gray-800 mb-3 mt-0">Build Your Profile</h3>
-            <p class="text-gray-700 text-sm leading-relaxed">Add your area, background, and criteria, then submit for moderation.</p>
+            <h3 class="text-xl font-semibold text-gray-800 mb-3 mt-0">Pakistani Muslim Marriage Manchester</h3>
+            <p class="text-gray-700 text-sm leading-relaxed">Find Pakistani Muslim singles in Manchester seeking serious nikah. Our platform has a strong Manchester Pakistani community registered and actively searching.</p>
           </div>
           <div class="bg-gray-50 rounded-xl p-5 border border-gray-100">
-            <span class="text-primary font-bold text-2xl block mb-2">2</span>
-            <h3 class="text-xl font-semibold text-gray-800 mb-3 mt-0">Browse Greater Manchester</h3>
-            <p class="text-gray-700 text-sm leading-relaxed">Search the city centre or the wider conurbation, filtered your way.</p>
+            <h3 class="text-xl font-semibold text-gray-800 mb-3 mt-0">Muslim Rishta Manchester</h3>
+            <p class="text-gray-700 text-sm leading-relaxed">Browse verified rishta proposals in Manchester. Family-registered profiles and personal profiles are both available, keeping the process flexible and respectful.</p>
           </div>
           <div class="bg-gray-50 rounded-xl p-5 border border-gray-100">
-            <span class="text-primary font-bold text-2xl block mb-2">3</span>
-            <h3 class="text-xl font-semibold text-gray-800 mb-3 mt-0">Express Interest</h3>
-            <p class="text-gray-700 text-sm leading-relaxed">Secure messaging opens once both sides say yes.</p>
+            <h3 class="text-xl font-semibold text-gray-800 mb-3 mt-0">Halal Matchmaking Manchester</h3>
+            <p class="text-gray-700 text-sm leading-relaxed">Our Manchester matchmaking connects serious Muslims with nikah intention. All profiles are verified and all interactions are guided by Islamic principles.</p>
+          </div>
+          <div class="bg-gray-50 rounded-xl p-5 border border-gray-100">
+            <h3 class="text-xl font-semibold text-gray-800 mb-3 mt-0">Young Muslim Marriage Manchester</h3>
+            <p class="text-gray-700 text-sm leading-relaxed">Manchester has a thriving young British Muslim population. shadiAmour is the ideal platform for educated, professional young Muslims in Manchester seeking a halal life partner.</p>
           </div>
         </div>
 
-        <blockquote class="border-l-4 border-primary pl-4 italic text-gray-600 my-6">Marriage is described in Islamic teaching as a source of tranquillity between two people — a quality worth searching for carefully, wherever you're based.</blockquote>
-
         <div class="bg-primary/5 rounded-2xl p-6 border border-primary/10 mt-8">
-          <p class="text-gray-700 font-medium">Also explore: <a href="/muslim-matrimony-leeds" class="text-primary hover:underline">Leeds</a> &bull; <a href="/muslim-matrimony-sheffield" class="text-primary hover:underline">Sheffield</a> &bull; <a href="/muslim-marriage-uk" class="text-primary hover:underline">Muslim Marriage UK</a> &bull; <a href="/muslim-matchmaking" class="text-primary hover:underline">Muslim Matchmaking</a></p>
+          <p class="text-gray-700 font-medium">Also explore: <a href="/muslim-marriage-leeds" class="text-primary hover:underline">Leeds</a> &bull; <a href="/muslim-marriage-bradford" class="text-primary hover:underline">Bradford</a> &bull; <a href="/muslim-marriage-sheffield" class="text-primary hover:underline">Sheffield</a> &bull; <a href="/muslim-marriage-london" class="text-primary hover:underline">London</a></p>
         </div>
       </div>
     `
   },
   {
-    path: "/muslim-matrimony-bradford",
-    pageTitle: "Muslim Matrimony Bradford — Verified Matches in Yorkshire's Muslim Heartland | D'amour Muslim",
-    h1: "Muslim Matrimony in Bradford — One of Britain's Strongest Muslim Communities",
-    heroSubtitle: "Bradford has one of the highest proportions of Muslims of any city in the UK. D'amour Muslim connects you with verified matches from across the district.",
-    metaDescription: "Muslim matrimony in Bradford — verified profiles from Manningham, Toller, Heaton, Girlington and beyond. Free to join D'amour Muslim.",
-    keywords: "muslim matrimony bradford, muslim marriage bradford, bradford muslim singles, bradford rishta, muslim matchmaking bradford",
-    canonicalPath: "/muslim-matrimony-bradford",
-    ctaHeading: "Find Your Match in Bradford",
+    path: "/muslim-marriage-bradford",
+    pageTitle: "Muslim Marriage Bradford | Halal Rishta & Matchmaking Bradford 2026",
+    h1: "Muslim Marriage in Bradford | Halal Matchmaking for Bradford Muslims",
+    heroSubtitle: "Bradford has one of the most close-knit and culturally rich Muslim communities in the UK, predominantly of Pakistani heritage.",
+    metaDescription: "Find a halal Muslim spouse in Bradford. Verified Muslim profiles, Islamic matchmaking & rishta connections f",
+    keywords: "muslim marriage bradford, halal matchmaking bradford, muslim rishta bradford, pakistani muslim marriage bradford, bradford muslim marriage 2026",
+    canonicalPath: "/muslim-marriage-bradford",
+    ctaHeading: "Find Your Muslim Spouse in Bradford — Join shadiAmour Free",
     ctaSubtext: "Register free and browse verified Muslim profiles from across Bradford.",
     relatedLinks: [
-      { url: "/muslim-matrimony-leeds", label: "Muslim Matrimony Leeds" },
-      { url: "/muslim-matrimony-manchester", label: "Muslim Matrimony Manchester" },
-      { url: "/muslim-rishta", label: "Muslim Rishta" },
-      { url: "/british-pakistani-marriage", label: "British Pakistani Marriage" }
+      { url: "/muslim-marriage-leeds", label: "Muslim Marriage Leeds" },
+      { url: "/muslim-marriage-manchester", label: "Muslim Marriage Manchester" },
+      { url: "/muslim-marriage-birmingham", label: "Muslim Marriage Birmingham" },
+      { url: "/muslim-marriage-london", label: "Muslim Marriage London" }
     ],
     pageFaqSchema: [
-      { q: "Which Bradford areas have strong representation?", a: "Manningham, Toller, Heaton, and Girlington all have long-established Muslim communities and active members on D'amour Muslim." },
-      { q: "Is Bradford's Muslim community mostly of Kashmiri and Pakistani heritage?", a: "Yes — Bradford has one of the largest Mirpuri and wider Pakistani-heritage Muslim populations in the UK, with roots going back to the mill and textile industries of the 1950s and 60s." },
-      { q: "Does biradari still play a big role in Bradford's rishta culture?", a: "It remains significant for many families, alongside a growing openness — especially among younger, British-raised Bradfordians — to broader criteria like education and shared values." },
-      { q: "Is D'amour Muslim free for Bradford families?", a: "Yes — registration, browsing, and sending interest are all free, and family-managed profiles are fully supported." },
-      { q: "Can Bradford members search for a match in Pakistan?", a: "Yes — many Bradford families have direct ties to Pakistan, particularly Azad Kashmir, and can search or receive proposals from Pakistan-based members." }
+      { q: "What is the best Muslim marriage site for Bradford?", a: "shadiAmour is one of the most trusted Muslim marriage platforms for Bradford, with a strong Pakistani community, verified profiles, and family-friendly registration." },
+      { q: "Can Bradford families search for matches across the UK?", a: "Yes. shadiAmour allows Bradford families to search UK-wide, making it easy to find compatible matches in London, Birmingham, Manchester, and beyond." },
+      { q: "Is shadiAmour free for Bradford Muslims?", a: "Yes. Creating a profile and browsing matches is completely free. Premium plans offer additional features such as curated weekly matches." }
     ],
     pageFaqs: [
-      { q: "Which Bradford areas have strong representation?", a: "Manningham, Toller, Heaton, and Girlington all have long-established Muslim communities and active members on D'amour Muslim." },
-      { q: "Is Bradford's Muslim community mostly of Kashmiri and Pakistani heritage?", a: "Yes — Bradford has one of the largest Mirpuri and wider Pakistani-heritage Muslim populations in the UK, with roots going back to the mill and textile industries of the 1950s and 60s." },
-      { q: "Does biradari still play a big role in Bradford's rishta culture?", a: "It remains significant for many families, alongside a growing openness — especially among younger, British-raised Bradfordians — to broader criteria like education and shared values." },
-      { q: "Is D'amour Muslim free for Bradford families?", a: "Yes — registration, browsing, and sending interest are all free, and family-managed profiles are fully supported." },
-      { q: "Can Bradford members search for a match in Pakistan?", a: "Yes — many Bradford families have direct ties to Pakistan, particularly Azad Kashmir, and can search or receive proposals from Pakistan-based members." }
+      { q: "What is the best Muslim marriage site for Bradford?", a: "shadiAmour is one of the most trusted Muslim marriage platforms for Bradford, with a strong Pakistani community, verified profiles, and family-friendly registration." },
+      { q: "Can Bradford families search for matches across the UK?", a: "Yes. shadiAmour allows Bradford families to search UK-wide, making it easy to find compatible matches in London, Birmingham, Manchester, and beyond." },
+      { q: "Is shadiAmour free for Bradford Muslims?", a: "Yes. Creating a profile and browsing matches is completely free. Premium plans offer additional features such as curated weekly matches." }
     ],
     bodyContent: `
       <div class="prose max-w-none">
-        <p class="text-lg text-gray-700 mb-6 leading-relaxed">Bradford holds one of the highest proportions of Muslims of any city in the UK, with a community whose roots run deep — built by families who arrived from Azad Kashmir and wider Pakistan through the mid-twentieth century to work in the city's mills and textile mills. That history has produced one of Britain's most tightly-knit, multi-generational Muslim communities, where the rishta process still carries real cultural weight.</p>
+        <p class="text-lg text-gray-700 mb-6 leading-relaxed">Bradford has one of the most close-knit and culturally rich Muslim communities in the UK. With a population that is significantly Muslim — predominantly of Pakistani heritage — Bradford is a city where family values, Islamic tradition, and community ties run deep. shadiAmour provides Bradford Muslims with a trusted, verified halal marriage platform that honours these values while expanding the rishta search beyond local networks.</p>
 
-        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Bradford's Muslim Community</h2>
-        <p class="text-gray-700 mb-6 leading-relaxed">Bradford's Muslim population is overwhelmingly of Pakistani and Kashmiri heritage, with strong biradari networks and close ties back to specific villages and towns in Azad Kashmir. Family reputation and community standing still matter a great deal here, even as a younger generation increasingly balances those expectations with their own British-shaped priorities.</p>
+        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Muslim Community in Bradford</h2>
+        <p class="text-gray-700 mb-6 leading-relaxed">Manningham, Toller, Great Horton, Bowling, and Little Horton are key Muslim neighbourhoods in Bradford. The city's Muslim community is largely Pakistani, with Mirpuri, Kashmiri, and Pashtun backgrounds well represented. Family involvement in rishta searches is strong, with many parents actively seeking matches for their children through community channels.</p>
 
-        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Key Areas on D'amour Muslim</h2>
+        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Key Challenges & How shadiAmour Helps</h2>
+        <p class="text-gray-700 mb-6 leading-relaxed">Bradford's tight-knit community means the rishta pool can feel limited when searching only through family and local networks. Many Bradford Muslims are now looking beyond their immediate neighbourhood for compatible matches across the UK. shadiAmour bridges this gap with a nationwide verified platform that still respects Bradford's family-centred values.</p>
+
+        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Why Bradford Muslims Choose shadiAmour</h2>
         <ul class="list-none space-y-3 mb-6">
-          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700"><strong>Manningham:</strong> One of Bradford's most historic and densely Muslim neighbourhoods.</span></li>
-          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700"><strong>Toller:</strong> A well-established, family-oriented Muslim community.</span></li>
-          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700"><strong>Heaton:</strong> A settled, increasingly professional Muslim population.</span></li>
-          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700"><strong>Girlington:</strong> A tight-knit community with strong mosque and family ties.</span></li>
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700">Strong Bradford Pakistani community represented on platform</span></li>
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700">Family registration available — parents can register and manage profiles</span></li>
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700">Search across UK while keeping Bradford as your base</span></li>
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700">Bradford-connected WhatsApp rishta groups active</span></li>
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700">Completely halal — serious marriage intent only</span></li>
         </ul>
 
-        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Bradford's Islamic Heritage</h2>
-        <p class="text-gray-700 mb-6 leading-relaxed">Bradford is home to dozens of mosques serving its various communities, many of them established decades ago as anchors for families settling in from Pakistan. The city's madrassahs and community centres remain central to daily life, reflecting a Muslim population whose faith and family life are deeply intertwined.</p>
-
-        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">How D'amour Muslim Serves Bradford</h2>
-        <p class="text-gray-700 mb-6 leading-relaxed">Profiles let Bradford members specify biradari, area, and family background — the details that matter most locally — while family-managed accounts make it easy for parents to lead the search in the traditional way. Every profile is manually reviewed, and messaging opens only once interest is mutual.</p>
-
-        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Three Steps to Finding a Match in Bradford</h2>
-        <div class="grid md:grid-cols-3 gap-4 mb-8">
+        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Recommended Page Sections & Content</h2>
+        <div class="grid md:grid-cols-2 gap-4 mb-8">
           <div class="bg-gray-50 rounded-xl p-5 border border-gray-100">
-            <span class="text-primary font-bold text-2xl block mb-2">1</span>
-            <h3 class="text-xl font-semibold text-gray-800 mb-3 mt-0">Build Your Profile</h3>
-            <p class="text-gray-700 text-sm leading-relaxed">Add your area, biradari, and background, then submit for review.</p>
+            <h3 class="text-xl font-semibold text-gray-800 mb-3 mt-0">Pakistani Muslim Marriage Bradford</h3>
+            <p class="text-gray-700 text-sm leading-relaxed">Bradford's Pakistani Muslim community is one of the largest in the UK. Find verified rishta proposals from Bradford and across the UK through shadiAmour.</p>
           </div>
           <div class="bg-gray-50 rounded-xl p-5 border border-gray-100">
-            <span class="text-primary font-bold text-2xl block mb-2">2</span>
-            <h3 class="text-xl font-semibold text-gray-800 mb-3 mt-0">Browse Bradford Proposals</h3>
-            <p class="text-gray-700 text-sm leading-relaxed">Search locally, or open your search to Pakistan and beyond.</p>
+            <h3 class="text-xl font-semibold text-gray-800 mb-3 mt-0">Muslim Rishta Bradford</h3>
+            <p class="text-gray-700 text-sm leading-relaxed">Browse serious rishta proposals from Bradford Muslims. Families and individuals can both register, ensuring a respectful and structured search.</p>
           </div>
           <div class="bg-gray-50 rounded-xl p-5 border border-gray-100">
-            <span class="text-primary font-bold text-2xl block mb-2">3</span>
-            <h3 class="text-xl font-semibold text-gray-800 mb-3 mt-0">Involve the Family</h3>
-            <p class="text-gray-700 text-sm leading-relaxed">Bring in parents or a wali once mutual interest is confirmed.</p>
+            <h3 class="text-xl font-semibold text-gray-800 mb-3 mt-0">Halal Matchmaking Bradford</h3>
+            <p class="text-gray-700 text-sm leading-relaxed">shadiAmour's Bradford matchmaking is halal-only and marriage-focused. Every profile is verified before being made visible on the platform.</p>
+          </div>
+          <div class="bg-gray-50 rounded-xl p-5 border border-gray-100">
+            <h3 class="text-xl font-semibold text-gray-800 mb-3 mt-0">Bradford Muslim Marriage 2026</h3>
+            <p class="text-gray-700 text-sm leading-relaxed">In 2026, Bradford Muslims are increasingly turning to trusted online platforms like shadiAmour to widen their rishta search while maintaining Islamic values and family involvement.</p>
           </div>
         </div>
 
-        <blockquote class="border-l-4 border-primary pl-4 italic text-gray-600 my-6">Welcoming a proposal from someone whose character and faith you trust is, according to tradition, far preferable to the harm caused by needless delay.</blockquote>
-
         <div class="bg-primary/5 rounded-2xl p-6 border border-primary/10 mt-8">
-          <p class="text-gray-700 font-medium">Also explore: <a href="/muslim-matrimony-leeds" class="text-primary hover:underline">Leeds</a> &bull; <a href="/muslim-matrimony-manchester" class="text-primary hover:underline">Manchester</a> &bull; <a href="/muslim-rishta" class="text-primary hover:underline">Muslim Rishta</a> &bull; <a href="/british-pakistani-marriage" class="text-primary hover:underline">British Pakistani Marriage</a></p>
+          <p class="text-gray-700 font-medium">Also explore: <a href="/muslim-marriage-leeds" class="text-primary hover:underline">Leeds</a> &bull; <a href="/muslim-marriage-manchester" class="text-primary hover:underline">Manchester</a> &bull; <a href="/muslim-marriage-birmingham" class="text-primary hover:underline">Birmingham</a> &bull; <a href="/muslim-marriage-london" class="text-primary hover:underline">London</a></p>
         </div>
       </div>
     `
   },
   {
-    path: "/muslim-matrimony-leicester",
-    pageTitle: "Muslim Matrimony Leicester — Verified Matches in One of Britain's Most Diverse Cities | D'amour Muslim",
-    h1: "Muslim Matrimony in Leicester — A Uniquely Diverse Muslim Community",
-    heroSubtitle: "Leicester's Muslim population spans Gujarati, Pakistani, Bangladeshi, and Somali communities, among others. D'amour Muslim helps you search that diversity properly.",
-    metaDescription: "Muslim matrimony in Leicester — verified profiles from Highfields, Spinney Hills, Evington, Belgrave and beyond. Free to join D'amour Muslim.",
-    keywords: "muslim matrimony leicester, muslim marriage leicester, leicester muslim singles, leicester rishta, muslim matchmaking leicester",
-    canonicalPath: "/muslim-matrimony-leicester",
-    ctaHeading: "Find Your Match in Leicester",
+    path: "/muslim-marriage-leicester",
+    pageTitle: "Muslim Marriage Leicester | Halal Matchmaking & Rishta Leicester 2026",
+    h1: "Muslim Marriage in Leicester | Halal Matchmaking for Leicester Muslims",
+    heroSubtitle: "Leicester is one of the most culturally diverse cities in the UK, with significant Gujarati, Pakistani, and Bangladeshi Muslim populations.",
+    metaDescription: "Find a halal Muslim spouse in Leicester. Verified Muslim profiles, Islamic matchmaking & rishta for Leicester",
+    keywords: "muslim marriage leicester, halal matchmaking leicester, muslim rishta leicester, gujarati muslim marriage leicester, pakistani muslim marriage leicester",
+    canonicalPath: "/muslim-marriage-leicester",
+    ctaHeading: "Find Your Muslim Spouse in Leicester — Join shadiAmour Free",
     ctaSubtext: "Register free and browse verified Muslim profiles from across Leicester.",
     relatedLinks: [
-      { url: "/muslim-matrimony-nottingham", label: "Muslim Matrimony Nottingham" },
-      { url: "/muslim-matrimony-birmingham", label: "Muslim Matrimony Birmingham" },
-      { url: "/muslim-marriage-uk", label: "Muslim Marriage UK" },
-      { url: "/find-muslim-spouse", label: "Find a Spouse" }
+      { url: "/muslim-marriage-birmingham", label: "Muslim Marriage Birmingham" },
+      { url: "/muslim-marriage-coventry", label: "Muslim Marriage Coventry" },
+      { url: "/muslim-marriage-nottingham", label: "Muslim Marriage Nottingham" },
+      { url: "/muslim-marriage-london", label: "Muslim Marriage London" }
     ],
     pageFaqSchema: [
-      { q: "Which Leicester areas have the strongest presence on D'amour Muslim?", a: "Highfields, Spinney Hills, Evington, North Evington, and Belgrave all have well-established Muslim communities and active members." },
-      { q: "Is Leicester's Muslim community mainly Gujarati?", a: "It's genuinely mixed — Leicester has a significant Gujarati Muslim population, many with East African roots, alongside substantial Pakistani, Bangladeshi, and Somali communities." },
-      { q: "Can I filter by ethnic or cultural background in Leicester?", a: "Yes — profiles include fields for ethnicity, mother tongue, and cultural background, letting you search within your own community or open it up." },
-      { q: "Is D'amour Muslim free for Leicester-based members?", a: "Yes — registration, browsing, and sending interest are all free, with no subscription required." },
-      { q: "Can families in Leicester manage a profile together?", a: "Yes — parents or a wali can register and run a profile on a child's behalf, and messaging opens only once both sides agree." }
+      { q: "What is the best Muslim marriage site for Leicester?", a: "shadiAmour is a trusted and well-regarded Muslim marriage platform for Leicester Muslims, with strong Gujarati, Pakistani, and Bangladeshi community representation." },
+      { q: "Are there Gujarati Muslim profiles on shadiAmour?", a: "Yes. shadiAmour has verified profiles from Leicester's Gujarati Muslim community and allows you to filter by ethnicity and background." },
+      { q: "How do I start a rishta search in Leicester?", a: "Create a free profile on shadiAmour and set your location to Leicester. You can also join our Leicester-specific rishta WhatsApp groups for additional connections." }
     ],
     pageFaqs: [
-      { q: "Which Leicester areas have the strongest presence on D'amour Muslim?", a: "Highfields, Spinney Hills, Evington, North Evington, and Belgrave all have well-established Muslim communities and active members." },
-      { q: "Is Leicester's Muslim community mainly Gujarati?", a: "It's genuinely mixed — Leicester has a significant Gujarati Muslim population, many with East African roots, alongside substantial Pakistani, Bangladeshi, and Somali communities." },
-      { q: "Can I filter by ethnic or cultural background in Leicester?", a: "Yes — profiles include fields for ethnicity, mother tongue, and cultural background, letting you search within your own community or open it up." },
-      { q: "Is D'amour Muslim free for Leicester-based members?", a: "Yes — registration, browsing, and sending interest are all free, with no subscription required." },
-      { q: "Can families in Leicester manage a profile together?", a: "Yes — parents or a wali can register and run a profile on a child's behalf, and messaging opens only once both sides agree." }
+      { q: "What is the best Muslim marriage site for Leicester?", a: "shadiAmour is a trusted and well-regarded Muslim marriage platform for Leicester Muslims, with strong Gujarati, Pakistani, and Bangladeshi community representation." },
+      { q: "Are there Gujarati Muslim profiles on shadiAmour?", a: "Yes. shadiAmour has verified profiles from Leicester's Gujarati Muslim community and allows you to filter by ethnicity and background." },
+      { q: "How do I start a rishta search in Leicester?", a: "Create a free profile on shadiAmour and set your location to Leicester. You can also join our Leicester-specific rishta WhatsApp groups for additional connections." }
     ],
     bodyContent: `
       <div class="prose max-w-none">
-        <p class="text-lg text-gray-700 mb-6 leading-relaxed">Leicester is one of the most ethnically diverse cities in Britain, and its Muslim community reflects that fully. Gujarati Muslim families — many of whom arrived via East Africa in the 1960s and 70s — sit alongside substantial Pakistani, Bangladeshi, and Somali communities, giving Leicester a Muslim population with genuinely distinct layers of history and culture.</p>
+        <p class="text-lg text-gray-700 mb-6 leading-relaxed">Leicester is one of the most culturally diverse cities in the UK and home to a thriving Muslim community. With significant Gujarati, Pakistani, and Bangladeshi Muslim populations, Leicester offers a unique and diverse environment for halal marriage searches. shadiAmour is the trusted platform connecting Leicester Muslims with verified rishta profiles from across the city and the wider UK.</p>
 
-        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Leicester's Muslim Community</h2>
-        <p class="text-gray-700 mb-6 leading-relaxed">Leicester's Gujarati Muslim community, many with roots in Uganda, Kenya, and Tanzania before arriving in the UK, brought with them a distinct South Asian East African identity that remains visible in the city's mosques, businesses, and family customs. Pakistani, Bangladeshi, and more recently Somali communities have added further layers, making Leicester one of the more genuinely multi-ethnic Muslim cities in the country.</p>
+        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Muslim Community in Leicester</h2>
+        <p class="text-gray-700 mb-6 leading-relaxed">Highfields, Evington, Spinney Hills, and Belgrave are among Leicester's most prominent Muslim communities. The city has a particularly strong Gujarati Muslim presence, alongside Pakistani and Bangladeshi communities. Leicester Muslims are known for a strong sense of community and family values, with many families actively involved in the rishta process.</p>
 
-        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Key Areas on D'amour Muslim</h2>
+        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Key Challenges & How shadiAmour Helps</h2>
+        <p class="text-gray-700 mb-6 leading-relaxed">Leicester's diversity means that finding someone from a compatible background, sect, and culture requires a platform that allows detailed filtering. shadiAmour enables Leicester Muslims to search by ethnicity, background, and Islamic practice — making it easier to find a genuinely compatible match rather than relying on chance community encounters.</p>
+
+        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Why Leicester Muslims Choose shadiAmour</h2>
         <ul class="list-none space-y-3 mb-6">
-          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700"><strong>Highfields:</strong> One of Leicester's oldest and most diverse Muslim neighbourhoods.</span></li>
-          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700"><strong>Spinney Hills:</strong> A well-established, family-oriented Muslim community.</span></li>
-          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700"><strong>Evington & North Evington:</strong> Increasingly professional, mixed South Asian Muslim populations.</span></li>
-          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700"><strong>Belgrave:</strong> A vibrant, multicultural area with a significant Muslim presence.</span></li>
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700">Gujarati, Pakistani, and Bangladeshi profiles from Leicester</span></li>
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700">Detailed background and sect filters available</span></li>
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700">Leicester Muslims frequently noted for genuine and serious rishta conversations</span></li>
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700">Family registration available for Leicester parents</span></li>
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700">Active Leicester Muslim WhatsApp rishta groups</span></li>
         </ul>
 
-        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Leicester's Islamic Landmarks</h2>
-        <p class="text-gray-700 mb-6 leading-relaxed">Leicester Central Mosque and a wide network of smaller mosques across Highfields and Spinney Hills serve the city's varied Muslim communities, each reflecting the particular heritage of the congregation it serves — from Gujarati to Pakistani to Somali traditions, all within a few square miles of one another.</p>
-
-        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">How D'amour Muslim Serves Leicester</h2>
-        <p class="text-gray-700 mb-6 leading-relaxed">Given the city's diversity, profile fields for ethnicity, mother tongue, and cultural background matter especially here — letting you search precisely within your own community or explore more broadly. Every profile is manually reviewed, family involvement is fully supported, and messaging opens only once both sides agree.</p>
-
-        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Three Steps to Finding a Match in Leicester</h2>
-        <div class="grid md:grid-cols-3 gap-4 mb-8">
+        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Recommended Page Sections & Content</h2>
+        <div class="grid md:grid-cols-2 gap-4 mb-8">
           <div class="bg-gray-50 rounded-xl p-5 border border-gray-100">
-            <span class="text-primary font-bold text-2xl block mb-2">1</span>
-            <h3 class="text-xl font-semibold text-gray-800 mb-3 mt-0">Build Your Profile</h3>
-            <p class="text-gray-700 text-sm leading-relaxed">Add your area, background, and religious practice, then submit for review.</p>
+            <h3 class="text-xl font-semibold text-gray-800 mb-3 mt-0">Gujarati Muslim Marriage Leicester</h3>
+            <p class="text-gray-700 text-sm leading-relaxed">Leicester has a large Gujarati Muslim community. shadiAmour provides verified Gujarati Muslim profiles from Leicester for serious nikah connections.</p>
           </div>
           <div class="bg-gray-50 rounded-xl p-5 border border-gray-100">
-            <span class="text-primary font-bold text-2xl block mb-2">2</span>
-            <h3 class="text-xl font-semibold text-gray-800 mb-3 mt-0">Browse Leicester Profiles</h3>
-            <p class="text-gray-700 text-sm leading-relaxed">Filter by ethnicity, area, and age to find genuinely compatible matches.</p>
+            <h3 class="text-xl font-semibold text-gray-800 mb-3 mt-0">Pakistani Muslim Marriage Leicester</h3>
+            <p class="text-gray-700 text-sm leading-relaxed">Find Pakistani Muslim singles in Leicester seeking serious halal marriage. Our verified platform makes it easy to connect with genuine rishta proposals.</p>
           </div>
           <div class="bg-gray-50 rounded-xl p-5 border border-gray-100">
-            <span class="text-primary font-bold text-2xl block mb-2">3</span>
-            <h3 class="text-xl font-semibold text-gray-800 mb-3 mt-0">Express Interest</h3>
-            <p class="text-gray-700 text-sm leading-relaxed">Secure messaging opens once both sides express mutual interest.</p>
+            <h3 class="text-xl font-semibold text-gray-800 mb-3 mt-0">Muslim Rishta Leicester</h3>
+            <p class="text-gray-700 text-sm leading-relaxed">Browse Leicester Muslim rishta proposals on shadiAmour. All profiles are manually verified by our team before being approved on the platform.</p>
+          </div>
+          <div class="bg-gray-50 rounded-xl p-5 border border-gray-100">
+            <h3 class="text-xl font-semibold text-gray-800 mb-3 mt-0">Halal Matchmaking Leicester</h3>
+            <p class="text-gray-700 text-sm leading-relaxed">Our Leicester matchmaking is exclusively for nikah-intent connections. Serious, respectful, and guided by Islamic values at every step.</p>
           </div>
         </div>
 
-        <blockquote class="border-l-4 border-primary pl-4 italic text-gray-600 my-6">The Quran frames humanity's many peoples and tribes as a means of coming to know one another — with true honour measured by character, not background.</blockquote>
-
         <div class="bg-primary/5 rounded-2xl p-6 border border-primary/10 mt-8">
-          <p class="text-gray-700 font-medium">Also explore: <a href="/muslim-matrimony-nottingham" class="text-primary hover:underline">Nottingham</a> &bull; <a href="/muslim-matrimony-birmingham" class="text-primary hover:underline">Birmingham</a> &bull; <a href="/muslim-marriage-uk" class="text-primary hover:underline">Muslim Marriage UK</a> &bull; <a href="/find-muslim-spouse" class="text-primary hover:underline">Find a Spouse</a></p>
+          <p class="text-gray-700 font-medium">Also explore: <a href="/muslim-marriage-birmingham" class="text-primary hover:underline">Birmingham</a> &bull; <a href="/muslim-marriage-coventry" class="text-primary hover:underline">Coventry</a> &bull; <a href="/muslim-marriage-nottingham" class="text-primary hover:underline">Nottingham</a> &bull; <a href="/muslim-marriage-london" class="text-primary hover:underline">London</a></p>
         </div>
       </div>
     `
   },
   {
-    path: "/muslim-matrimony-leeds",
-    pageTitle: "Muslim Matrimony Leeds — Verified Matches in West Yorkshire | D'amour Muslim",
-    h1: "Muslim Matrimony in Leeds — A Growing, Close-Knit Muslim Community",
-    heroSubtitle: "From Harehills to Beeston, Leeds' Muslim community combines deep local roots with a growing professional class. D'amour Muslim connects you with verified matches across the city.",
-    metaDescription: "Muslim matrimony in Leeds — verified profiles from Harehills, Chapeltown, Beeston, Hyde Park and beyond. Free to join D'amour Muslim.",
-    keywords: "muslim matrimony leeds, muslim marriage leeds, leeds muslim singles, leeds rishta, muslim matchmaking leeds",
-    canonicalPath: "/muslim-matrimony-leeds",
-    ctaHeading: "Find Your Match in Leeds",
+    path: "/muslim-marriage-leeds",
+    pageTitle: "Muslim Marriage Leeds | Halal Matchmaking & Rishta Leeds 2026",
+    h1: "Muslim Marriage in Leeds | Halal Matchmaking for Leeds Muslims",
+    heroSubtitle: "Leeds is a growing hub for young, educated British Muslims in the North of England, with a significant Muslim population across Harehills, Chapeltown, Beeston, and Hyde Park.",
+    metaDescription: "Find a halal Muslim spouse in Leeds. Verified Muslim profiles, Islamic matchmaking & rishta connections for",
+    keywords: "muslim marriage leeds, halal matchmaking leeds, muslim rishta leeds, pakistani muslim marriage leeds, young muslim marriage leeds",
+    canonicalPath: "/muslim-marriage-leeds",
+    ctaHeading: "Find Your Muslim Spouse in Leeds — Join shadiAmour Free",
     ctaSubtext: "Register free and browse verified Muslim profiles from across Leeds.",
     relatedLinks: [
-      { url: "/muslim-matrimony-bradford", label: "Muslim Matrimony Bradford" },
-      { url: "/muslim-matrimony-sheffield", label: "Muslim Matrimony Sheffield" },
-      { url: "/muslim-marriage-uk", label: "Muslim Marriage UK" },
-      { url: "/muslim-matchmaking", label: "Muslim Matchmaking" }
+      { url: "/muslim-marriage-bradford", label: "Muslim Marriage Bradford" },
+      { url: "/muslim-marriage-sheffield", label: "Muslim Marriage Sheffield" },
+      { url: "/muslim-marriage-manchester", label: "Muslim Marriage Manchester" },
+      { url: "/muslim-marriage-nottingham", label: "Muslim Marriage Nottingham" }
     ],
     pageFaqSchema: [
-      { q: "Which Leeds areas have the strongest presence on D'amour Muslim?", a: "Harehills, Chapeltown, Beeston, and Hyde Park all have well-established Muslim communities and active members on the platform." },
-      { q: "Is Leeds' Muslim community similar to Bradford's, just down the road?", a: "There's overlap in Pakistani heritage, but Leeds' community has developed its own distinct character, with a strong Bangladeshi presence too and a growing student and professional population tied to the city's universities." },
-      { q: "Can I search across both Leeds and nearby Bradford?", a: "Yes — you can filter by either city individually, or widen your search across West Yorkshire more broadly." },
-      { q: "Is D'amour Muslim free for Leeds-based members?", a: "Yes — registration, browsing, and sending interest cost nothing." },
-      { q: "Can families in Leeds manage a profile together?", a: "Yes — parents or a wali can register and run a profile, with communication opening only once both sides agree." }
+      { q: "Is shadiAmour good for Leeds Muslims?", a: "Yes. shadiAmour has an active Leeds Muslim community and is particularly popular with young professionals and students in the city." },
+      { q: "Can students at Leeds universities use shadiAmour?", a: "Yes. shadiAmour is free to join and welcomes Leeds students who are serious about finding a halal spouse." },
+      { q: "How does shadiAmour work for Leeds rishta searches?", a: "Create a free profile, set your location to Leeds, and browse verified profiles. Our team also curates weekly matches for premium members." }
     ],
     pageFaqs: [
-      { q: "Which Leeds areas have the strongest presence on D'amour Muslim?", a: "Harehills, Chapeltown, Beeston, and Hyde Park all have well-established Muslim communities and active members on the platform." },
-      { q: "Is Leeds' Muslim community similar to Bradford's, just down the road?", a: "There's overlap in Pakistani heritage, but Leeds' community has developed its own distinct character, with a strong Bangladeshi presence too and a growing student and professional population tied to the city's universities." },
-      { q: "Can I search across both Leeds and nearby Bradford?", a: "Yes — you can filter by either city individually, or widen your search across West Yorkshire more broadly." },
-      { q: "Is D'amour Muslim free for Leeds-based members?", a: "Yes — registration, browsing, and sending interest cost nothing." },
-      { q: "Can families in Leeds manage a profile together?", a: "Yes — parents or a wali can register and run a profile, with communication opening only once both sides agree." }
+      { q: "Is shadiAmour good for Leeds Muslims?", a: "Yes. shadiAmour has an active Leeds Muslim community and is particularly popular with young professionals and students in the city." },
+      { q: "Can students at Leeds universities use shadiAmour?", a: "Yes. shadiAmour is free to join and welcomes Leeds students who are serious about finding a halal spouse." },
+      { q: "How does shadiAmour work for Leeds rishta searches?", a: "Create a free profile, set your location to Leeds, and browse verified profiles. Our team also curates weekly matches for premium members." }
     ],
     bodyContent: `
       <div class="prose max-w-none">
-        <p class="text-lg text-gray-700 mb-6 leading-relaxed">Leeds' Muslim community has grown steadily over decades into one of West Yorkshire's most established, combining long-settled Pakistani and Bangladeshi families with a growing wave of students and young professionals drawn to the city's universities and expanding job market. D'amour Muslim is built to serve both.</p>
+        <p class="text-lg text-gray-700 mb-6 leading-relaxed">Leeds is a growing hub for young, educated British Muslims in the North of England. With a significant Muslim population across Harehills, Chapeltown, Beeston, and Hyde Park, Leeds offers a strong community environment for halal marriage searches. shadiAmour connects Leeds Muslims with verified rishta profiles locally and across the UK.</p>
 
-        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Leeds' Muslim Community</h2>
-        <p class="text-gray-700 mb-6 leading-relaxed">Concentrated historically in inner-city areas like Harehills and Chapeltown, Leeds' Muslim population has expanded steadily into Beeston, Hyde Park, and Armley. Alongside its established Pakistani and Bangladeshi communities, the city's universities have brought in a distinctly younger, more mobile Muslim population, adding fresh energy to a long-standing community.</p>
+        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Muslim Community in Leeds</h2>
+        <p class="text-gray-700 mb-6 leading-relaxed">Harehills has the largest concentration of Muslims in Leeds, with Pakistani and Bangladeshi communities well established. Hyde Park, home to many students from the University of Leeds and Leeds Beckett University, has a growing population of young British Muslims. Beeston and Armley also have active Muslim families involved in rishta searches.</p>
 
-        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Key Areas on D'amour Muslim</h2>
+        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Key Challenges & How shadiAmour Helps</h2>
+        <p class="text-gray-700 mb-6 leading-relaxed">Leeds Muslims often navigate the challenge of balancing a professional, student, or family lifestyle with the search for a halal spouse. Traditional family networks may be smaller than in cities like Bradford or Birmingham. shadiAmour fills this gap with a UK-wide verified platform that brings serious Leeds Muslims together with compatible matches.</p>
+
+        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Why Leeds Muslims Choose shadiAmour</h2>
         <ul class="list-none space-y-3 mb-6">
-          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700"><strong>Harehills:</strong> One of Leeds' largest and most established Muslim communities.</span></li>
-          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700"><strong>Chapeltown:</strong> A historic, multicultural area with a significant Muslim presence.</span></li>
-          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700"><strong>Beeston:</strong> A well-known South Asian Muslim community south of the city centre.</span></li>
-          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700"><strong>Hyde Park & Armley:</strong> Diverse areas with growing student and family populations.</span></li>
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700">Strong Leeds Muslim community representation on platform</span></li>
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700">Ideal for Leeds students and young professionals</span></li>
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700">Search across Yorkshire and the wider UK</span></li>
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700">Leeds-connected WhatsApp rishta groups available</span></li>
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700">Free to join and browse verified profiles</span></li>
         </ul>
 
-        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Leeds' Islamic Landmarks</h2>
-        <p class="text-gray-700 mb-6 leading-relaxed">Makkah Masjid and a network of smaller community mosques across Harehills and Beeston have anchored Leeds' Muslim population for generations, serving as both places of worship and genuine community hubs for families settling and raising children in the city.</p>
-
-        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">How D'amour Muslim Serves Leeds</h2>
-        <p class="text-gray-700 mb-6 leading-relaxed">Profiles let Leeds members specify their area, background, and religious practice, with family-managed accounts fully supported for those wanting a more traditional, family-led approach. Every profile is manually reviewed before appearing, and communication opens only once interest is mutual.</p>
-
-        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Three Steps to Finding a Match in Leeds</h2>
-        <div class="grid md:grid-cols-3 gap-4 mb-8">
+        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Recommended Page Sections & Content</h2>
+        <div class="grid md:grid-cols-2 gap-4 mb-8">
           <div class="bg-gray-50 rounded-xl p-5 border border-gray-100">
-            <span class="text-primary font-bold text-2xl block mb-2">1</span>
-            <h3 class="text-xl font-semibold text-gray-800 mb-3 mt-0">Build Your Profile</h3>
-            <p class="text-gray-700 text-sm leading-relaxed">Add your area and background, then submit for review.</p>
+            <h3 class="text-xl font-semibold text-gray-800 mb-3 mt-0">Pakistani Muslim Marriage Leeds</h3>
+            <p class="text-gray-700 text-sm leading-relaxed">Find Pakistani Muslim singles in Leeds for serious halal marriage. shadiAmour's verified platform connects Leeds Pakistanis with rishta proposals from across the UK.</p>
           </div>
           <div class="bg-gray-50 rounded-xl p-5 border border-gray-100">
-            <span class="text-primary font-bold text-2xl block mb-2">2</span>
-            <h3 class="text-xl font-semibold text-gray-800 mb-3 mt-0">Browse West Yorkshire</h3>
-            <p class="text-gray-700 text-sm leading-relaxed">Search Leeds alone, or widen to Bradford and the surrounding area.</p>
+            <h3 class="text-xl font-semibold text-gray-800 mb-3 mt-0">Muslim Rishta Leeds</h3>
+            <p class="text-gray-700 text-sm leading-relaxed">Browse verified Muslim rishta proposals in Leeds. Our manual verification process ensures every profile is genuine and marriage-focused.</p>
           </div>
           <div class="bg-gray-50 rounded-xl p-5 border border-gray-100">
-            <span class="text-primary font-bold text-2xl block mb-2">3</span>
-            <h3 class="text-xl font-semibold text-gray-800 mb-3 mt-0">Express Interest</h3>
-            <p class="text-gray-700 text-sm leading-relaxed">Messaging opens once both sides agree to connect.</p>
+            <h3 class="text-xl font-semibold text-gray-800 mb-3 mt-0">Halal Matchmaking Leeds</h3>
+            <p class="text-gray-700 text-sm leading-relaxed">Our Leeds matchmaking is halal-only and built for serious nikah seekers. Students, professionals, and families are all welcome.</p>
+          </div>
+          <div class="bg-gray-50 rounded-xl p-5 border border-gray-100">
+            <h3 class="text-xl font-semibold text-gray-800 mb-3 mt-0">Young Muslim Marriage Leeds</h3>
+            <p class="text-gray-700 text-sm leading-relaxed">Leeds has a vibrant young Muslim population. shadiAmour is the ideal platform for British-born young Muslims in Leeds looking for a halal life partner.</p>
           </div>
         </div>
 
-        <blockquote class="border-l-4 border-primary pl-4 italic text-gray-600 my-6">A well-known hadith advises choosing a spouse principally for their faith — timeless guidance for a community balancing tradition and change in equal measure.</blockquote>
-
         <div class="bg-primary/5 rounded-2xl p-6 border border-primary/10 mt-8">
-          <p class="text-gray-700 font-medium">Also explore: <a href="/muslim-matrimony-bradford" class="text-primary hover:underline">Bradford</a> &bull; <a href="/muslim-matrimony-sheffield" class="text-primary hover:underline">Sheffield</a> &bull; <a href="/muslim-marriage-uk" class="text-primary hover:underline">Muslim Marriage UK</a> &bull; <a href="/muslim-matchmaking" class="text-primary hover:underline">Muslim Matchmaking</a></p>
+          <p class="text-gray-700 font-medium">Also explore: <a href="/muslim-marriage-bradford" class="text-primary hover:underline">Bradford</a> &bull; <a href="/muslim-marriage-sheffield" class="text-primary hover:underline">Sheffield</a> &bull; <a href="/muslim-marriage-manchester" class="text-primary hover:underline">Manchester</a> &bull; <a href="/muslim-marriage-nottingham" class="text-primary hover:underline">Nottingham</a></p>
         </div>
       </div>
     `
   },
   {
-    path: "/muslim-matrimony-sheffield",
-    pageTitle: "Muslim Matrimony Sheffield — Verified Matches in South Yorkshire | D'amour Muslim",
-    h1: "Muslim Matrimony in Sheffield — A Close, Growing Muslim Community",
-    heroSubtitle: "Sheffield's Muslim community may be smaller than its Yorkshire neighbours, but it's tightly knit and growing. D'amour Muslim helps you find a genuine match here.",
-    metaDescription: "Muslim matrimony in Sheffield — verified profiles from Burngreave, Page Hall, Firth Park, Netherthorpe and beyond. Free to join D'amour Muslim.",
-    keywords: "muslim matrimony sheffield, muslim marriage sheffield, sheffield muslim singles, sheffield rishta, muslim matchmaking sheffield",
-    canonicalPath: "/muslim-matrimony-sheffield",
-    ctaHeading: "Find Your Match in Sheffield",
+    path: "/muslim-marriage-sheffield",
+    pageTitle: "Muslim Marriage Sheffield | Halal Matchmaking & Rishta Sheffield 2026",
+    h1: "Muslim Marriage in Sheffield | Halal Matchmaking for Sheffield Muslims",
+    heroSubtitle: "Sheffield has a long-established Muslim community with roots going back several decades, with significant Pakistani, Yemeni, and Somali communities.",
+    metaDescription: "Find a halal Muslim spouse in Sheffield. Verified Muslim profiles, Islamic matchmaking & rishta connections f",
+    keywords: "muslim marriage sheffield, halal matchmaking sheffield, muslim rishta sheffield, pakistani muslim marriage sheffield, yemeni muslim marriage sheffield",
+    canonicalPath: "/muslim-marriage-sheffield",
+    ctaHeading: "Find Your Muslim Spouse in Sheffield — Join shadiAmour Free",
     ctaSubtext: "Register free and browse verified Muslim profiles from across Sheffield.",
     relatedLinks: [
-      { url: "/muslim-matrimony-leeds", label: "Muslim Matrimony Leeds" },
-      { url: "/muslim-matrimony-nottingham", label: "Muslim Matrimony Nottingham" },
-      { url: "/muslim-marriage-uk", label: "Muslim Marriage UK" },
-      { url: "/muslim-singles-uk", label: "Muslim Singles UK" }
+      { url: "/muslim-marriage-leeds", label: "Muslim Marriage Leeds" },
+      { url: "/muslim-marriage-manchester", label: "Muslim Marriage Manchester" },
+      { url: "/muslim-marriage-bradford", label: "Muslim Marriage Bradford" },
+      { url: "/muslim-marriage-nottingham", label: "Muslim Marriage Nottingham" }
     ],
     pageFaqSchema: [
-      { q: "Which Sheffield areas have an active Muslim community?", a: "Burngreave, Page Hall, Firth Park, and Netherthorpe all have well-established Muslim communities with growing representation on D'amour Muslim." },
-      { q: "Is Sheffield's Muslim community diverse?", a: "Yes — alongside long-established Pakistani and Yemeni communities (Sheffield has one of the UK's oldest Yemeni populations), there are growing Somali, Kurdish, and Arab communities too." },
-      { q: "Should I widen my search beyond Sheffield?", a: "Given the city's smaller Muslim population relative to Leeds or Bradford, many Sheffield members choose to widen their search across South Yorkshire or the wider UK — the platform makes this easy." },
-      { q: "Is D'amour Muslim free for Sheffield-based members?", a: "Yes — registration, browsing, and sending interest are all free." },
-      { q: "Can my family manage a Sheffield-based profile?", a: "Yes — parents or a wali can register and run a profile on a child's behalf, exactly as elsewhere on the platform." }
+      { q: "What is the best Muslim marriage site for Sheffield?", a: "shadiAmour is a trusted halal marriage platform for Sheffield Muslims, with verified profiles and active community representation." },
+      { q: "Are there Yemeni Muslim profiles on shadiAmour?", a: "Yes. shadiAmour welcomes Muslims from all backgrounds, including Sheffield's Yemeni Muslim community, and allows ethnic background filtering." },
+      { q: "Is shadiAmour free for Sheffield Muslims?", a: "Yes. Joining and browsing profiles is completely free for Sheffield Muslims. Premium plans offer additional features." }
     ],
     pageFaqs: [
-      { q: "Which Sheffield areas have an active Muslim community?", a: "Burngreave, Page Hall, Firth Park, and Netherthorpe all have well-established Muslim communities with growing representation on D'amour Muslim." },
-      { q: "Is Sheffield's Muslim community diverse?", a: "Yes — alongside long-established Pakistani and Yemeni communities (Sheffield has one of the UK's oldest Yemeni populations), there are growing Somali, Kurdish, and Arab communities too." },
-      { q: "Should I widen my search beyond Sheffield?", a: "Given the city's smaller Muslim population relative to Leeds or Bradford, many Sheffield members choose to widen their search across South Yorkshire or the wider UK — the platform makes this easy." },
-      { q: "Is D'amour Muslim free for Sheffield-based members?", a: "Yes — registration, browsing, and sending interest are all free." },
-      { q: "Can my family manage a Sheffield-based profile?", a: "Yes — parents or a wali can register and run a profile on a child's behalf, exactly as elsewhere on the platform." }
+      { q: "What is the best Muslim marriage site for Sheffield?", a: "shadiAmour is a trusted halal marriage platform for Sheffield Muslims, with verified profiles and active community representation." },
+      { q: "Are there Yemeni Muslim profiles on shadiAmour?", a: "Yes. shadiAmour welcomes Muslims from all backgrounds, including Sheffield's Yemeni Muslim community, and allows ethnic background filtering." },
+      { q: "Is shadiAmour free for Sheffield Muslims?", a: "Yes. Joining and browsing profiles is completely free for Sheffield Muslims. Premium plans offer additional features." }
     ],
     bodyContent: `
       <div class="prose max-w-none">
-        <p class="text-lg text-gray-700 mb-6 leading-relaxed">Sheffield's Muslim community is smaller than its neighbours across Yorkshire, but it's genuinely historic — home to one of the oldest Yemeni communities in the UK, alongside well-established Pakistani, Somali, and Kurdish populations. That closeness brings both strength and a real need to widen the search when the local pool feels limited, which is exactly where D'amour Muslim helps.</p>
+        <p class="text-lg text-gray-700 mb-6 leading-relaxed">Sheffield has a long-established Muslim community with roots going back several decades. With significant Pakistani, Yemeni, and Somali communities, Sheffield offers a culturally rich environment for halal marriage searches. shadiAmour provides Sheffield Muslims with a trusted, verified platform that connects serious marriage seekers locally and across the UK.</p>
 
-        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Sheffield's Muslim Community</h2>
-        <p class="text-gray-700 mb-6 leading-relaxed">Sheffield's Yemeni community traces its roots back over a century, tied originally to the city's steelworks. Pakistani, Somali, and Kurdish communities followed in subsequent decades, each building their own mosques, businesses, and neighbourhoods. The result is a smaller but genuinely diverse Muslim population, close-knit in a way larger cities sometimes lose.</p>
+        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Muslim Community in Sheffield</h2>
+        <p class="text-gray-700 mb-6 leading-relaxed">Page Hall, Burngreave, Firth Park, and Sharrow are among Sheffield's most established Muslim neighbourhoods. The city has a notable Yemeni Muslim community — one of the oldest in the UK — alongside a large Pakistani community. Sheffield Hallam and the University of Sheffield also contribute a growing population of young British Muslim students.</p>
 
-        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Key Areas on D'amour Muslim</h2>
+        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Key Challenges & How shadiAmour Helps</h2>
+        <p class="text-gray-700 mb-6 leading-relaxed">Sheffield's Muslim community is close-knit but can feel limited for rishta searches, particularly for those seeking matches outside their immediate ethnic group. shadiAmour allows Sheffield Muslims to search across backgrounds, cities, and the UK — widening the pool while keeping the process halal, verified, and family-appropriate.</p>
+
+        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Why Sheffield Muslims Choose shadiAmour</h2>
         <ul class="list-none space-y-3 mb-6">
-          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700"><strong>Burngreave:</strong> One of Sheffield's most established, multicultural Muslim areas.</span></li>
-          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700"><strong>Page Hall:</strong> A close-knit community with a strong South Asian Muslim presence.</span></li>
-          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700"><strong>Firth Park:</strong> A growing, family-oriented Muslim neighbourhood.</span></li>
-          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700"><strong>Netherthorpe:</strong> Home to Sheffield's historic Yemeni Muslim community.</span></li>
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700">Pakistani and Yemeni Muslim profiles from Sheffield available</span></li>
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700">Search across Sheffield and the wider UK</span></li>
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700">Family-friendly registration for Sheffield parents</span></li>
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700">Sheffield-connected WhatsApp rishta groups</span></li>
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700">Halal-only platform — serious marriage intent required</span></li>
         </ul>
 
-        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Sheffield's Islamic Heritage</h2>
-        <p class="text-gray-700 mb-6 leading-relaxed">Sheffield is home to some of the oldest mosques in the UK, founded by early Yemeni settlers in the early-to-mid twentieth century. These, alongside newer mosques serving Pakistani, Somali, and Kurdish congregations, reflect a Muslim community with a genuinely long and layered history in the city.</p>
-
-        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">How D'amour Muslim Serves Sheffield</h2>
-        <p class="text-gray-700 mb-6 leading-relaxed">Given the smaller local pool, Sheffield members often benefit from widening their search across South Yorkshire or the wider UK — the platform's filters make that easy, while still letting you search locally first. Every profile is manually reviewed, and family-managed accounts are fully supported.</p>
-
-        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Three Steps to Finding a Match in Sheffield</h2>
-        <div class="grid md:grid-cols-3 gap-4 mb-8">
+        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Recommended Page Sections & Content</h2>
+        <div class="grid md:grid-cols-2 gap-4 mb-8">
           <div class="bg-gray-50 rounded-xl p-5 border border-gray-100">
-            <span class="text-primary font-bold text-2xl block mb-2">1</span>
-            <h3 class="text-xl font-semibold text-gray-800 mb-3 mt-0">Build Your Profile</h3>
-            <p class="text-gray-700 text-sm leading-relaxed">Add your area and background, then submit for review.</p>
+            <h3 class="text-xl font-semibold text-gray-800 mb-3 mt-0">Pakistani Muslim Marriage Sheffield</h3>
+            <p class="text-gray-700 text-sm leading-relaxed">Connect with Pakistani Muslim singles in Sheffield seeking serious halal marriage. Our verified platform ensures genuine rishta connections.</p>
           </div>
           <div class="bg-gray-50 rounded-xl p-5 border border-gray-100">
-            <span class="text-primary font-bold text-2xl block mb-2">2</span>
-            <h3 class="text-xl font-semibold text-gray-800 mb-3 mt-0">Widen if Needed</h3>
-            <p class="text-gray-700 text-sm leading-relaxed">Search locally, or open up to South Yorkshire and beyond.</p>
+            <h3 class="text-xl font-semibold text-gray-800 mb-3 mt-0">Muslim Rishta Sheffield</h3>
+            <p class="text-gray-700 text-sm leading-relaxed">Browse Sheffield Muslim rishta proposals on shadiAmour. All profiles are manually reviewed and approved before being made visible.</p>
           </div>
           <div class="bg-gray-50 rounded-xl p-5 border border-gray-100">
-            <span class="text-primary font-bold text-2xl block mb-2">3</span>
-            <h3 class="text-xl font-semibold text-gray-800 mb-3 mt-0">Express Interest</h3>
-            <p class="text-gray-700 text-sm leading-relaxed">Messaging opens once both sides agree to connect.</p>
+            <h3 class="text-xl font-semibold text-gray-800 mb-3 mt-0">Halal Matchmaking Sheffield</h3>
+            <p class="text-gray-700 text-sm leading-relaxed">Our Sheffield matchmaking is exclusively for nikah-intent connections. Every step of the process is guided by Islamic values.</p>
+          </div>
+          <div class="bg-gray-50 rounded-xl p-5 border border-gray-100">
+            <h3 class="text-xl font-semibold text-gray-800 mb-3 mt-0">Sheffield Muslim Marriage 2026</h3>
+            <p class="text-gray-700 text-sm leading-relaxed">In 2026, Sheffield Muslims are increasingly using trusted platforms like shadiAmour to find serious rishta connections beyond their local community networks.</p>
           </div>
         </div>
 
-        <blockquote class="border-l-4 border-primary pl-4 italic text-gray-600 my-6">Marriage is described in the Quran as a source of tranquillity between two people — worth searching for patiently, wherever the local community's size.</blockquote>
-
         <div class="bg-primary/5 rounded-2xl p-6 border border-primary/10 mt-8">
-          <p class="text-gray-700 font-medium">Also explore: <a href="/muslim-matrimony-leeds" class="text-primary hover:underline">Leeds</a> &bull; <a href="/muslim-matrimony-nottingham" class="text-primary hover:underline">Nottingham</a> &bull; <a href="/muslim-marriage-uk" class="text-primary hover:underline">Muslim Marriage UK</a> &bull; <a href="/muslim-singles-uk" class="text-primary hover:underline">Muslim Singles UK</a></p>
+          <p class="text-gray-700 font-medium">Also explore: <a href="/muslim-marriage-leeds" class="text-primary hover:underline">Leeds</a> &bull; <a href="/muslim-marriage-manchester" class="text-primary hover:underline">Manchester</a> &bull; <a href="/muslim-marriage-bradford" class="text-primary hover:underline">Bradford</a> &bull; <a href="/muslim-marriage-nottingham" class="text-primary hover:underline">Nottingham</a></p>
         </div>
       </div>
     `
   },
   {
-    path: "/muslim-matrimony-coventry",
-    pageTitle: "Muslim Matrimony Coventry — Verified Matches in the West Midlands | D'amour Muslim",
-    h1: "Muslim Matrimony in Coventry — A Steadily Growing Muslim Community",
-    heroSubtitle: "Coventry's Muslim community has deep roots and a rapidly growing younger population. D'amour Muslim connects you with verified matches across the city.",
-    metaDescription: "Muslim matrimony in Coventry — verified profiles from Foleshill, Hillfields, Stoke and beyond. Free to join D'amour Muslim.",
-    keywords: "muslim matrimony coventry, muslim marriage coventry, coventry muslim singles, coventry rishta, muslim matchmaking coventry",
-    canonicalPath: "/muslim-matrimony-coventry",
-    ctaHeading: "Find Your Match in Coventry",
+    path: "/muslim-marriage-coventry",
+    pageTitle: "Muslim Marriage Coventry | Halal Matchmaking & Rishta Coventry 2026",
+    h1: "Muslim Marriage in Coventry | Halal Matchmaking for Coventry Muslims",
+    heroSubtitle: "Coventry has a growing and vibrant Muslim community, with families from Pakistani, Bangladeshi, and Somali backgrounds well established across the city.",
+    metaDescription: "Find a halal Muslim spouse in Coventry. Verified Muslim profiles, Islamic matchmaking & rishta for Coventry",
+    keywords: "muslim marriage coventry, halal matchmaking coventry, muslim rishta coventry, pakistani muslim marriage coventry, coventry muslim marriage 2026",
+    canonicalPath: "/muslim-marriage-coventry",
+    ctaHeading: "Find Your Muslim Spouse in Coventry — Join shadiAmour Free",
     ctaSubtext: "Register free and browse verified Muslim profiles from across Coventry.",
     relatedLinks: [
-      { url: "/muslim-matrimony-birmingham", label: "Muslim Matrimony Birmingham" },
-      { url: "/muslim-matrimony-nottingham", label: "Muslim Matrimony Nottingham" },
-      { url: "/muslim-marriage-uk", label: "Muslim Marriage UK" },
-      { url: "/muslim-matchmaking", label: "Muslim Matchmaking" }
+      { url: "/muslim-marriage-birmingham", label: "Muslim Marriage Birmingham" },
+      { url: "/muslim-marriage-leicester", label: "Muslim Marriage Leicester" },
+      { url: "/muslim-marriage-london", label: "Muslim Marriage London" },
+      { url: "/muslim-marriage-nottingham", label: "Muslim Marriage Nottingham" }
     ],
     pageFaqSchema: [
-      { q: "Which Coventry areas have an established Muslim community?", a: "Foleshill, Hillfields, Stoke, and Wood End all have well-established Muslim populations and growing representation on D'amour Muslim." },
-      { q: "Is Coventry's Muslim community mostly Pakistani?", a: "Pakistani-heritage families form the largest group, with Foleshill in particular home to one of the city's oldest mosques, alongside growing Bangladeshi, Somali, and Kurdish communities." },
-      { q: "Does Coventry's proximity to Birmingham matter for my search?", a: "It can — many Coventry members choose to widen their search into Birmingham and the wider West Midlands, which the platform's location filter makes simple." },
-      { q: "Is registration free for Coventry-based members?", a: "Yes — registration, browsing, and sending interest are all free." },
-      { q: "Can families in Coventry manage a profile together?", a: "Yes — parents or a wali can register and run a profile, with messaging opening only once both sides agree." }
+      { q: "Is shadiAmour good for Coventry Muslims?", a: "Yes. While Coventry's local Muslim community is smaller, shadiAmour's UK-wide reach gives Coventry Muslims access to a large pool of verified matches." },
+      { q: "Can Coventry Muslims connect with Birmingham profiles?", a: "Yes. shadiAmour allows you to search across cities, making it easy to connect with Muslims in neighbouring Birmingham, Leicester, and across the UK." },
+      { q: "How does shadiAmour work for Coventry rishta searches?", a: "Create a free profile, set your location to Coventry, and browse verified profiles from Coventry and the wider UK." }
     ],
     pageFaqs: [
-      { q: "Which Coventry areas have an established Muslim community?", a: "Foleshill, Hillfields, Stoke, and Wood End all have well-established Muslim populations and growing representation on D'amour Muslim." },
-      { q: "Is Coventry's Muslim community mostly Pakistani?", a: "Pakistani-heritage families form the largest group, with Foleshill in particular home to one of the city's oldest mosques, alongside growing Bangladeshi, Somali, and Kurdish communities." },
-      { q: "Does Coventry's proximity to Birmingham matter for my search?", a: "It can — many Coventry members choose to widen their search into Birmingham and the wider West Midlands, which the platform's location filter makes simple." },
-      { q: "Is registration free for Coventry-based members?", a: "Yes — registration, browsing, and sending interest are all free." },
-      { q: "Can families in Coventry manage a profile together?", a: "Yes — parents or a wali can register and run a profile, with messaging opening only once both sides agree." }
+      { q: "Is shadiAmour good for Coventry Muslims?", a: "Yes. While Coventry's local Muslim community is smaller, shadiAmour's UK-wide reach gives Coventry Muslims access to a large pool of verified matches." },
+      { q: "Can Coventry Muslims connect with Birmingham profiles?", a: "Yes. shadiAmour allows you to search across cities, making it easy to connect with Muslims in neighbouring Birmingham, Leicester, and across the UK." },
+      { q: "How does shadiAmour work for Coventry rishta searches?", a: "Create a free profile, set your location to Coventry, and browse verified profiles from Coventry and the wider UK." }
     ],
     bodyContent: `
       <div class="prose max-w-none">
-        <p class="text-lg text-gray-700 mb-6 leading-relaxed">Coventry's Muslim community has grown steadily since the mid-twentieth century, built originally around the city's manufacturing industry and now home to a genuinely multi-generational population. Sitting close to Birmingham, Coventry offers both a strong local community and easy access to a much wider West Midlands search.</p>
+        <p class="text-lg text-gray-700 mb-6 leading-relaxed">Coventry has a growing and vibrant Muslim community, with families from Pakistani, Bangladeshi, and Somali backgrounds well established across the city. As one of the West Midlands' key cities, Coventry offers excellent opportunities for halal marriage connections — both locally and through the wider shadiAmour UK network.</p>
 
-        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Coventry's Muslim Community</h2>
-        <p class="text-gray-700 mb-6 leading-relaxed">Foleshill has long been the centre of Coventry's Muslim life, home to one of the city's oldest and most established mosques. Pakistani-heritage families make up the largest share of the community, with growing Bangladeshi, Somali, and Kurdish populations adding to the mix in recent years, particularly around Hillfields and Stoke.</p>
+        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Muslim Community in Coventry</h2>
+        <p class="text-gray-700 mb-6 leading-relaxed">Foleshill, Hillfields, and Radford are home to Coventry's most active Muslim communities. The city's Muslim population includes Pakistani, Bangladeshi, and East African Muslim families, with a growing presence of young professionals and students at Coventry University and the University of Warwick.</p>
 
-        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Key Areas on D'amour Muslim</h2>
+        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Key Challenges & How shadiAmour Helps</h2>
+        <p class="text-gray-700 mb-6 leading-relaxed">Coventry's Muslim community is smaller than neighbouring Birmingham, which can limit local rishta options when relying solely on family networks. shadiAmour's UK-wide reach means Coventry Muslims can connect with compatible matches in Birmingham, London, Leicester, and beyond — without compromising on values or seriousness.</p>
+
+        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Why Coventry Muslims Choose shadiAmour</h2>
         <ul class="list-none space-y-3 mb-6">
-          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700"><strong>Foleshill:</strong> The historic heart of Muslim Coventry, home to some of the city's oldest mosques.</span></li>
-          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700"><strong>Hillfields:</strong> A diverse, multicultural area with a growing Muslim population.</span></li>
-          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700"><strong>Stoke:</strong> An increasingly professional, family-oriented Muslim community.</span></li>
-          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700"><strong>Wood End:</strong> A settled community with strong local mosque ties.</span></li>
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700">Coventry Muslim profiles alongside UK-wide reach</span></li>
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700">Connect with Birmingham, Leicester & wider West Midlands Muslims</span></li>
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700">Free to join and browse verified profiles</span></li>
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700">Family registration available for Coventry parents</span></li>
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700">Halal-only platform — verified and marriage-focused</span></li>
         </ul>
 
-        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Coventry's Islamic Heritage</h2>
-        <p class="text-gray-700 mb-6 leading-relaxed">Foleshill's mosques have anchored the city's Muslim community since the earliest waves of post-war migration, serving generations of families as both places of worship and genuine community hubs. Newer mosques across Hillfields and Stoke reflect the city's expanding and increasingly varied Muslim population.</p>
-
-        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">How D'amour Muslim Serves Coventry</h2>
-        <p class="text-gray-700 mb-6 leading-relaxed">Coventry members can search locally, or take advantage of the platform's location filter to widen their search into nearby Birmingham and the wider West Midlands. Every profile is manually reviewed before it appears, and family-managed accounts are fully supported.</p>
-
-        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Three Steps to Finding a Match in Coventry</h2>
-        <div class="grid md:grid-cols-3 gap-4 mb-8">
+        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Recommended Page Sections & Content</h2>
+        <div class="grid md:grid-cols-2 gap-4 mb-8">
           <div class="bg-gray-50 rounded-xl p-5 border border-gray-100">
-            <span class="text-primary font-bold text-2xl block mb-2">1</span>
-            <h3 class="text-xl font-semibold text-gray-800 mb-3 mt-0">Build Your Profile</h3>
-            <p class="text-gray-700 text-sm leading-relaxed">Add your area, background, and criteria, then submit for review.</p>
+            <h3 class="text-xl font-semibold text-gray-800 mb-3 mt-0">Pakistani Muslim Marriage Coventry</h3>
+            <p class="text-gray-700 text-sm leading-relaxed">Find Pakistani Muslim singles in Coventry for serious halal marriage. shadiAmour also connects Coventry Muslims with matches across the West Midlands.</p>
           </div>
           <div class="bg-gray-50 rounded-xl p-5 border border-gray-100">
-            <span class="text-primary font-bold text-2xl block mb-2">2</span>
-            <h3 class="text-xl font-semibold text-gray-800 mb-3 mt-0">Browse the West Midlands</h3>
-            <p class="text-gray-700 text-sm leading-relaxed">Search Coventry alone, or widen into Birmingham and beyond.</p>
+            <h3 class="text-xl font-semibold text-gray-800 mb-3 mt-0">Muslim Rishta Coventry</h3>
+            <p class="text-gray-700 text-sm leading-relaxed">Browse verified Muslim rishta proposals from Coventry on shadiAmour. Our manual verification ensures every profile is genuine.</p>
           </div>
           <div class="bg-gray-50 rounded-xl p-5 border border-gray-100">
-            <span class="text-primary font-bold text-2xl block mb-2">3</span>
-            <h3 class="text-xl font-semibold text-gray-800 mb-3 mt-0">Express Interest</h3>
-            <p class="text-gray-700 text-sm leading-relaxed">Messaging opens once both sides agree to connect.</p>
+            <h3 class="text-xl font-semibold text-gray-800 mb-3 mt-0">Halal Matchmaking Coventry</h3>
+            <p class="text-gray-700 text-sm leading-relaxed">Our Coventry matchmaking is halal-only and marriage-focused. Young professionals, families, and community members are all welcome.</p>
+          </div>
+          <div class="bg-gray-50 rounded-xl p-5 border border-gray-100">
+            <h3 class="text-xl font-semibold text-gray-800 mb-3 mt-0">Coventry Muslim Marriage 2026</h3>
+            <p class="text-gray-700 text-sm leading-relaxed">In 2026, Coventry Muslims are turning to trusted national platforms like shadiAmour to find serious rishta connections beyond the local area.</p>
           </div>
         </div>
 
-        <blockquote class="border-l-4 border-primary pl-4 italic text-gray-600 my-6">Choosing a spouse for their character and faith is guidance that holds regardless of the size of your local community.</blockquote>
-
         <div class="bg-primary/5 rounded-2xl p-6 border border-primary/10 mt-8">
-          <p class="text-gray-700 font-medium">Also explore: <a href="/muslim-matrimony-birmingham" class="text-primary hover:underline">Birmingham</a> &bull; <a href="/muslim-matrimony-nottingham" class="text-primary hover:underline">Nottingham</a> &bull; <a href="/muslim-marriage-uk" class="text-primary hover:underline">Muslim Marriage UK</a> &bull; <a href="/muslim-matchmaking" class="text-primary hover:underline">Muslim Matchmaking</a></p>
+          <p class="text-gray-700 font-medium">Also explore: <a href="/muslim-marriage-birmingham" class="text-primary hover:underline">Birmingham</a> &bull; <a href="/muslim-marriage-leicester" class="text-primary hover:underline">Leicester</a> &bull; <a href="/muslim-marriage-london" class="text-primary hover:underline">London</a> &bull; <a href="/muslim-marriage-nottingham" class="text-primary hover:underline">Nottingham</a></p>
         </div>
       </div>
     `
   },
   {
-    path: "/muslim-matrimony-luton",
-    pageTitle: "Muslim Matrimony Luton — Verified Matches in One of Britain's Most Muslim Towns | D'amour Muslim",
-    h1: "Muslim Matrimony in Luton — Among the Highest Muslim Populations in England",
-    heroSubtitle: "Luton has one of the highest proportions of Muslims of any town in England, and its own iconic mosque to match. D'amour Muslim connects you with verified matches across the town.",
-    metaDescription: "Muslim matrimony in Luton — verified profiles from Bury Park, High Town, Marsh Farm and beyond. Free to join D'amour Muslim.",
-    keywords: "muslim matrimony luton, muslim marriage luton, luton muslim singles, luton rishta, muslim matchmaking luton",
-    canonicalPath: "/muslim-matrimony-luton",
-    ctaHeading: "Find Your Match in Luton",
+    path: "/muslim-marriage-luton",
+    pageTitle: "Muslim Marriage Luton | Halal Matchmaking & Rishta Luton 2026",
+    h1: "Muslim Marriage in Luton | Halal Matchmaking for Luton Muslims",
+    heroSubtitle: "Luton has one of the highest proportions of Muslims of any UK town, with a Muslim population representing over 25% of the city.",
+    metaDescription: "Find a halal Muslim spouse in Luton. Verified Muslim profiles, Islamic matchmaking & rishta for Luton Muslim",
+    keywords: "muslim marriage luton, halal matchmaking luton, muslim rishta luton, pakistani muslim marriage luton, luton muslim marriage 2026",
+    canonicalPath: "/muslim-marriage-luton",
+    ctaHeading: "Find Your Muslim Spouse in Luton — Join shadiAmour Free",
     ctaSubtext: "Register free and browse verified Muslim profiles from across Luton.",
     relatedLinks: [
-      { url: "/muslim-matrimony-london", label: "Muslim Matrimony London" },
-      { url: "/muslim-matrimony-nottingham", label: "Muslim Matrimony Nottingham" },
-      { url: "/muslim-marriage-uk", label: "Muslim Marriage UK" },
-      { url: "/muslim-rishta", label: "Muslim Rishta" }
+      { url: "/muslim-marriage-london", label: "Muslim Marriage London" },
+      { url: "/muslim-marriage-birmingham", label: "Muslim Marriage Birmingham" },
+      { url: "/muslim-marriage-coventry", label: "Muslim Marriage Coventry" },
+      { url: "/muslim-marriage-leicester", label: "Muslim Marriage Leicester" }
     ],
     pageFaqSchema: [
-      { q: "Which Luton areas have the strongest Muslim presence?", a: "Bury Park, High Town, and Marsh Farm are all well-established Muslim neighbourhoods with active representation on D'amour Muslim." },
-      { q: "Is Luton's Muslim population really that high, proportionally?", a: "Yes — Luton has one of the highest proportions of Muslims of any town in England, with a large, long-established Pakistani and Bangladeshi community centred around Bury Park." },
-      { q: "Does Luton's closeness to London affect the search?", a: "It can help — many Luton members widen their search to include London and the wider South East, which the location filter supports easily." },
-      { q: "Is D'amour Muslim free for Luton-based members?", a: "Yes — registration, browsing, and sending interest cost nothing." },
-      { q: "Can families in Luton manage a profile together?", a: "Yes — parents or a wali can register and run a profile, and messaging only opens once both sides agree." }
+      { q: "What is the best Muslim marriage site for Luton?", a: "shadiAmour is a highly trusted halal marriage platform for Luton Muslims, with strong Pakistani and Bangladeshi community representation and UK-wide reach." },
+      { q: "Can Luton Muslims connect with London profiles?", a: "Yes. shadiAmour's UK-wide reach makes it easy for Luton Muslims to connect with matches in nearby London and across the South East." },
+      { q: "Is shadiAmour free for Luton Muslims?", a: "Yes. Joining and browsing profiles is completely free. Premium plans unlock additional features such as curated weekly matches." }
     ],
     pageFaqs: [
-      { q: "Which Luton areas have the strongest Muslim presence?", a: "Bury Park, High Town, and Marsh Farm are all well-established Muslim neighbourhoods with active representation on D'amour Muslim." },
-      { q: "Is Luton's Muslim population really that high, proportionally?", a: "Yes — Luton has one of the highest proportions of Muslims of any town in England, with a large, long-established Pakistani and Bangladeshi community centred around Bury Park." },
-      { q: "Does Luton's closeness to London affect the search?", a: "It can help — many Luton members widen their search to include London and the wider South East, which the location filter supports easily." },
-      { q: "Is D'amour Muslim free for Luton-based members?", a: "Yes — registration, browsing, and sending interest cost nothing." },
-      { q: "Can families in Luton manage a profile together?", a: "Yes — parents or a wali can register and run a profile, and messaging only opens once both sides agree." }
+      { q: "What is the best Muslim marriage site for Luton?", a: "shadiAmour is a highly trusted halal marriage platform for Luton Muslims, with strong Pakistani and Bangladeshi community representation and UK-wide reach." },
+      { q: "Can Luton Muslims connect with London profiles?", a: "Yes. shadiAmour's UK-wide reach makes it easy for Luton Muslims to connect with matches in nearby London and across the South East." },
+      { q: "Is shadiAmour free for Luton Muslims?", a: "Yes. Joining and browsing profiles is completely free. Premium plans unlock additional features such as curated weekly matches." }
     ],
     bodyContent: `
       <div class="prose max-w-none">
-        <p class="text-lg text-gray-700 mb-6 leading-relaxed">Luton holds one of the highest proportions of Muslims of any town in England, built up by a large, long-established Pakistani and Bangladeshi community centred around Bury Park. Its position just north of London gives Luton members the advantage of a strong local community and easy access to the wider South East.</p>
+        <p class="text-lg text-gray-700 mb-6 leading-relaxed">Luton has one of the highest proportions of Muslims of any UK town, with a Muslim population representing over 25% of the city. Predominantly Pakistani and Bangladeshi in background, Luton's Muslim community is active, family-oriented, and deeply invested in Islamic values. shadiAmour provides Luton Muslims with a trusted halal marriage platform that serves both local and UK-wide rishta searches.</p>
 
-        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Luton's Muslim Community</h2>
-        <p class="text-gray-700 mb-6 leading-relaxed">Bury Park sits at the centre of Muslim Luton, home to one of the largest mosques in the UK and a thriving high street of halal restaurants, grocers, and community businesses. Pakistani-heritage families form the backbone of the community, with significant Bangladeshi and growing Somali populations across High Town and Marsh Farm.</p>
+        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Muslim Community in Luton</h2>
+        <p class="text-gray-700 mb-6 leading-relaxed">Bury Park is the heart of Luton's Muslim community — a vibrant area with mosques, halal businesses, and active family networks. Luton's Muslim community has strong ties to Pakistan, Bangladesh, and East Africa. Many Luton families maintain connections with the Pakistani and Bangladeshi diaspora, making cross-border rishta searches common.</p>
 
-        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Key Areas on D'amour Muslim</h2>
+        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Key Challenges & How shadiAmour Helps</h2>
+        <p class="text-gray-700 mb-6 leading-relaxed">Despite its large Muslim population, Luton's rishta pool can feel limited when confined to local networks alone. Young British Muslims in Luton are increasingly looking for matches across the UK — particularly in London, Birmingham, and the South East. shadiAmour bridges this gap with a UK-wide verified platform.</p>
+
+        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Why Luton Muslims Choose shadiAmour</h2>
         <ul class="list-none space-y-3 mb-6">
-          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700"><strong>Bury Park:</strong> The heart of Muslim Luton, home to one of the UK's largest mosques.</span></li>
-          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700"><strong>High Town:</strong> A well-established, family-oriented Muslim community.</span></li>
-          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700"><strong>Marsh Farm:</strong> A growing, increasingly diverse Muslim population.</span></li>
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700">Strong Luton Pakistani and Bangladeshi community on platform</span></li>
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700">Connect with London and South East Muslim matches</span></li>
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700">Free to join and browse verified Luton profiles</span></li>
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700">Family registration available — parents can manage profiles</span></li>
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700">Active Luton Muslim WhatsApp rishta groups</span></li>
         </ul>
 
-        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Luton's Islamic Landmarks</h2>
-        <p class="text-gray-700 mb-6 leading-relaxed">Luton's Central Mosque in Bury Park is one of the largest mosques in the UK, a striking landmark that reflects the scale and permanence of the town's Muslim community. It stands as both a spiritual anchor and a genuine point of pride for generations of families who have called Luton home.</p>
-
-        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">How D'amour Muslim Serves Luton</h2>
-        <p class="text-gray-700 mb-6 leading-relaxed">Profiles let Luton members specify area, background, and religious practice, while the location filter makes it simple to widen a search into London and the South East when useful. Every profile is manually reviewed, and family-managed accounts are fully supported.</p>
-
-        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Three Steps to Finding a Match in Luton</h2>
-        <div class="grid md:grid-cols-3 gap-4 mb-8">
+        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Recommended Page Sections & Content</h2>
+        <div class="grid md:grid-cols-2 gap-4 mb-8">
           <div class="bg-gray-50 rounded-xl p-5 border border-gray-100">
-            <span class="text-primary font-bold text-2xl block mb-2">1</span>
-            <h3 class="text-xl font-semibold text-gray-800 mb-3 mt-0">Build Your Profile</h3>
-            <p class="text-gray-700 text-sm leading-relaxed">Add your area and background, then submit for review.</p>
+            <h3 class="text-xl font-semibold text-gray-800 mb-3 mt-0">Pakistani Muslim Marriage Luton</h3>
+            <p class="text-gray-700 text-sm leading-relaxed">Connect with Pakistani Muslim singles in Luton for serious halal marriage. shadiAmour also links Luton Muslims with matches across London and the South East.</p>
           </div>
           <div class="bg-gray-50 rounded-xl p-5 border border-gray-100">
-            <span class="text-primary font-bold text-2xl block mb-2">2</span>
-            <h3 class="text-xl font-semibold text-gray-800 mb-3 mt-0">Browse Locally or Beyond</h3>
-            <p class="text-gray-700 text-sm leading-relaxed">Search Luton, or widen into London and the South East.</p>
+            <h3 class="text-xl font-semibold text-gray-800 mb-3 mt-0">Muslim Rishta Luton</h3>
+            <p class="text-gray-700 text-sm leading-relaxed">Browse verified Muslim rishta proposals from Luton on shadiAmour. All profiles are manually reviewed for seriousness and intent.</p>
           </div>
           <div class="bg-gray-50 rounded-xl p-5 border border-gray-100">
-            <span class="text-primary font-bold text-2xl block mb-2">3</span>
-            <h3 class="text-xl font-semibold text-gray-800 mb-3 mt-0">Express Interest</h3>
-            <p class="text-gray-700 text-sm leading-relaxed">Messaging opens once both sides agree to connect.</p>
+            <h3 class="text-xl font-semibold text-gray-800 mb-3 mt-0">Halal Matchmaking Luton</h3>
+            <p class="text-gray-700 text-sm leading-relaxed">Our Luton matchmaking connects serious Muslims for nikah. Verified, halal, and family-appropriate at every step.</p>
+          </div>
+          <div class="bg-gray-50 rounded-xl p-5 border border-gray-100">
+            <h3 class="text-xl font-semibold text-gray-800 mb-3 mt-0">Luton Muslim Marriage 2026</h3>
+            <p class="text-gray-700 text-sm leading-relaxed">In 2026, Luton Muslims are using trusted national platforms like shadiAmour to expand their rishta search while keeping Islamic values at the core.</p>
           </div>
         </div>
 
-        <blockquote class="border-l-4 border-primary pl-4 italic text-gray-600 my-6">Marriage is described in the Quran as a source of calm and mercy between two people — worth pursuing patiently and sincerely.</blockquote>
-
         <div class="bg-primary/5 rounded-2xl p-6 border border-primary/10 mt-8">
-          <p class="text-gray-700 font-medium">Also explore: <a href="/muslim-matrimony-london" class="text-primary hover:underline">London</a> &bull; <a href="/muslim-matrimony-nottingham" class="text-primary hover:underline">Nottingham</a> &bull; <a href="/muslim-marriage-uk" class="text-primary hover:underline">Muslim Marriage UK</a> &bull; <a href="/muslim-rishta" class="text-primary hover:underline">Muslim Rishta</a></p>
+          <p class="text-gray-700 font-medium">Also explore: <a href="/muslim-marriage-london" class="text-primary hover:underline">London</a> &bull; <a href="/muslim-marriage-birmingham" class="text-primary hover:underline">Birmingham</a> &bull; <a href="/muslim-marriage-coventry" class="text-primary hover:underline">Coventry</a> &bull; <a href="/muslim-marriage-leicester" class="text-primary hover:underline">Leicester</a></p>
         </div>
       </div>
     `
   },
   {
-    path: "/muslim-matrimony-glasgow",
-    pageTitle: "Muslim Matrimony Glasgow — Verified Matches in Scotland's Largest Muslim Community | D'amour Muslim",
-    h1: "Muslim Matrimony in Glasgow — Scotland's Largest Muslim Community",
-    heroSubtitle: "Glasgow is home to the largest Muslim community in Scotland, anchored by decades of Pakistani settlement. D'amour Muslim connects you with verified matches across the city.",
-    metaDescription: "Muslim matrimony in Glasgow — verified profiles from Pollokshields, Govanhill, and the Southside. Free to join D'amour Muslim.",
-    keywords: "muslim matrimony glasgow, muslim marriage glasgow, glasgow muslim singles, glasgow rishta, muslim matchmaking scotland",
-    canonicalPath: "/muslim-matrimony-glasgow",
-    ctaHeading: "Find Your Match in Glasgow",
+    path: "/muslim-marriage-glasgow",
+    pageTitle: "Muslim Marriage Glasgow | Halal Matchmaking & Rishta Glasgow Scotland 2026",
+    h1: "Muslim Marriage in Glasgow | Halal Matchmaking for Glasgow & Scotland Muslims",
+    heroSubtitle: "Glasgow is the largest city in Scotland and home to a growing and diverse Muslim community, with Pakistani roots going back several generations.",
+    metaDescription: "Find a halal Muslim spouse in Glasgow. Verified Muslim profiles, Islamic matchmaking & rishta for Glasgow &",
+    keywords: "muslim marriage glasgow, halal matchmaking glasgow scotland, muslim rishta glasgow, pakistani muslim marriage glasgow, glasgow muslim marriage 2026",
+    canonicalPath: "/muslim-marriage-glasgow",
+    ctaHeading: "Find Your Muslim Spouse in Glasgow — Join shadiAmour Free",
     ctaSubtext: "Register free and browse verified Muslim profiles from across Glasgow and Scotland.",
     relatedLinks: [
-      { url: "/muslim-matrimony-manchester", label: "Muslim Matrimony Manchester" },
-      { url: "/muslim-marriage-uk", label: "Muslim Marriage UK" },
-      { url: "/muslim-matchmaking", label: "Muslim Matchmaking" },
-      { url: "/muslim-singles-uk", label: "Muslim Singles UK" }
+      { url: "/muslim-marriage-london", label: "Muslim Marriage London" },
+      { url: "/muslim-marriage-birmingham", label: "Muslim Marriage Birmingham" },
+      { url: "/muslim-marriage-manchester", label: "Muslim Marriage Manchester" },
+      { url: "/muslim-marriage-bradford", label: "Muslim Marriage Bradford" }
     ],
     pageFaqSchema: [
-      { q: "Which Glasgow areas have an established Muslim community?", a: "Pollokshields and Govanhill on the Southside are the traditional heart of Muslim Glasgow, with growing representation elsewhere across the city." },
-      { q: "Is Glasgow's Muslim community mostly Pakistani?", a: "Yes, predominantly — Pakistani-heritage families have formed the backbone of Scotland's Muslim population since the mid-twentieth century, alongside smaller but growing Bangladeshi, Arab, and Somali communities." },
-      { q: "Does the platform serve the rest of Scotland too?", a: "Yes — while Glasgow has Scotland's largest Muslim population, members can search or be found across Edinburgh, Dundee, and the wider country." },
-      { q: "Is D'amour Muslim free for Glasgow-based members?", a: "Yes — registration, browsing, and sending interest are all free." },
-      { q: "Can families in Glasgow manage a profile together?", a: "Yes — parents or a wali can register and run a profile, with the same halal-first messaging structure that applies across the whole platform." }
+      { q: "What is the best Muslim marriage site for Glasgow?", a: "shadiAmour is the most trusted halal marriage platform for Glasgow Muslims, offering UK-wide reach and a strong Pakistani community network." },
+      { q: "Can Glasgow Muslims connect with Muslims in England?", a: "Yes. shadiAmour connects Glasgow Muslims with verified profiles from London, Birmingham, Manchester, Bradford, and across the UK." },
+      { q: "Is shadiAmour available in Scotland?", a: "Yes. shadiAmour is a UK-wide platform and is fully available for Muslims in Glasgow, Edinburgh, Dundee, and across Scotland." }
     ],
     pageFaqs: [
-      { q: "Which Glasgow areas have an established Muslim community?", a: "Pollokshields and Govanhill on the Southside are the traditional heart of Muslim Glasgow, with growing representation elsewhere across the city." },
-      { q: "Is Glasgow's Muslim community mostly Pakistani?", a: "Yes, predominantly — Pakistani-heritage families have formed the backbone of Scotland's Muslim population since the mid-twentieth century, alongside smaller but growing Bangladeshi, Arab, and Somali communities." },
-      { q: "Does the platform serve the rest of Scotland too?", a: "Yes — while Glasgow has Scotland's largest Muslim population, members can search or be found across Edinburgh, Dundee, and the wider country." },
-      { q: "Is D'amour Muslim free for Glasgow-based members?", a: "Yes — registration, browsing, and sending interest are all free." },
-      { q: "Can families in Glasgow manage a profile together?", a: "Yes — parents or a wali can register and run a profile, with the same halal-first messaging structure that applies across the whole platform." }
+      { q: "What is the best Muslim marriage site for Glasgow?", a: "shadiAmour is the most trusted halal marriage platform for Glasgow Muslims, offering UK-wide reach and a strong Pakistani community network." },
+      { q: "Can Glasgow Muslims connect with Muslims in England?", a: "Yes. shadiAmour connects Glasgow Muslims with verified profiles from London, Birmingham, Manchester, Bradford, and across the UK." },
+      { q: "Is shadiAmour available in Scotland?", a: "Yes. shadiAmour is a UK-wide platform and is fully available for Muslims in Glasgow, Edinburgh, Dundee, and across Scotland." }
     ],
     bodyContent: `
       <div class="prose max-w-none">
-        <p class="text-lg text-gray-700 mb-6 leading-relaxed">Glasgow is home to Scotland's largest Muslim community, built up over generations largely by Pakistani-heritage families who settled in the city from the mid-twentieth century onward. Centred on the Southside, Glasgow's Muslim community has its own distinct character — proudly Scottish and proudly Muslim at once — and D'amour Muslim is built to serve it properly.</p>
+        <p class="text-lg text-gray-700 mb-6 leading-relaxed">Glasgow is the largest city in Scotland and home to a growing and diverse Muslim community. With Pakistani roots going back several generations, alongside more recent communities from Afghanistan, Somalia, and the Arab world, Glasgow's Muslim population is culturally rich and deeply family-oriented. shadiAmour provides Glasgow Muslims with a trusted UK-wide halal marriage platform that brings Scotland's Muslims into a larger verified rishta network.</p>
 
-        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Glasgow's Muslim Community</h2>
-        <p class="text-gray-700 mb-6 leading-relaxed">Pollokshields and Govanhill have long served as the heart of Muslim Glasgow, home to generations of Pakistani families alongside a growing number of Bangladeshi, Arab, and Somali households. As Scotland's largest city, Glasgow also serves as a natural hub for Muslims across the wider country, from Edinburgh to Dundee.</p>
+        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Muslim Community in Glasgow</h2>
+        <p class="text-gray-700 mb-6 leading-relaxed">Pollokshields, Govanhill, and the South Side of Glasgow are the historic heartlands of the Pakistani Muslim community in Scotland. Glasgow's Muslim community is predominantly Pakistani, with strong ties to Mirpur and Punjab. The city is also home to a growing Afghan, Somali, and Arab Muslim population, particularly around the East End and city centre.</p>
 
-        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Key Areas on D'amour Muslim</h2>
+        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Key Challenges & How shadiAmour Helps</h2>
+        <p class="text-gray-700 mb-6 leading-relaxed">Glasgow Muslims often face a smaller local rishta pool compared to cities like Birmingham or Bradford. Many Glasgow Muslims are open to UK-wide matches but find it difficult to connect with serious profiles from England through local channels. shadiAmour's UK-wide verified platform is the solution — connecting Glasgow Muslims with serious marriage-minded profiles across the UK.</p>
+
+        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Why Glasgow Muslims Choose shadiAmour</h2>
         <ul class="list-none space-y-3 mb-6">
-          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700"><strong>Pollokshields:</strong> The traditional centre of Muslim Glasgow, home to long-established Pakistani families.</span></li>
-          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700"><strong>Govanhill:</strong> A diverse, multicultural area with a growing Muslim population.</span></li>
-          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700"><strong>The wider Southside:</strong> An increasingly professional, family-oriented Muslim community.</span></li>
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700">Glasgow and Scotland-wide Muslim profiles on the platform</span></li>
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700">Connect with Pakistani Muslims across the UK</span></li>
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700">Perfect for Glasgow Muslims open to UK-wide matches</span></li>
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700">Family registration available — parents can manage profiles</span></li>
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700">UK's most trusted halal platform — verified and free to join</span></li>
         </ul>
 
-        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Glasgow's Islamic Landmarks</h2>
-        <p class="text-gray-700 mb-6 leading-relaxed">Glasgow Central Mosque, sitting prominently on the banks of the River Clyde, is the largest mosque in Scotland and one of the most recognisable Islamic landmarks north of the border. It has served as a spiritual and community anchor for Glasgow's Muslims for decades, alongside smaller mosques across Pollokshields and Govanhill.</p>
-
-        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">How D'amour Muslim Serves Glasgow</h2>
-        <p class="text-gray-700 mb-6 leading-relaxed">Profiles let Glasgow members specify their area and background, and the location filter extends easily across Scotland for those open to a wider search. Every profile is manually reviewed before appearing, and family-managed accounts are fully supported, just as anywhere else on the platform.</p>
-
-        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Three Steps to Finding a Match in Glasgow</h2>
-        <div class="grid md:grid-cols-3 gap-4 mb-8">
+        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Recommended Page Sections & Content</h2>
+        <div class="grid md:grid-cols-2 gap-4 mb-8">
           <div class="bg-gray-50 rounded-xl p-5 border border-gray-100">
-            <span class="text-primary font-bold text-2xl block mb-2">1</span>
-            <h3 class="text-xl font-semibold text-gray-800 mb-3 mt-0">Build Your Profile</h3>
-            <p class="text-gray-700 text-sm leading-relaxed">Add your area and background, then submit for review.</p>
+            <h3 class="text-xl font-semibold text-gray-800 mb-3 mt-0">Pakistani Muslim Marriage Glasgow</h3>
+            <p class="text-gray-700 text-sm leading-relaxed">Glasgow has one of the largest Pakistani Muslim communities in Scotland. shadiAmour connects Glasgow Pakistanis with verified rishta proposals from across the UK.</p>
           </div>
           <div class="bg-gray-50 rounded-xl p-5 border border-gray-100">
-            <span class="text-primary font-bold text-2xl block mb-2">2</span>
-            <h3 class="text-xl font-semibold text-gray-800 mb-3 mt-0">Browse Scotland</h3>
-            <p class="text-gray-700 text-sm leading-relaxed">Search Glasgow, or widen your search across the country.</p>
+            <h3 class="text-xl font-semibold text-gray-800 mb-3 mt-0">Muslim Rishta Glasgow</h3>
+            <p class="text-gray-700 text-sm leading-relaxed">Browse verified Muslim rishta proposals from Glasgow on shadiAmour. All profiles are manually reviewed before approval.</p>
           </div>
           <div class="bg-gray-50 rounded-xl p-5 border border-gray-100">
-            <span class="text-primary font-bold text-2xl block mb-2">3</span>
-            <h3 class="text-xl font-semibold text-gray-800 mb-3 mt-0">Express Interest</h3>
-            <p class="text-gray-700 text-sm leading-relaxed">Messaging opens once both sides agree to connect.</p>
+            <h3 class="text-xl font-semibold text-gray-800 mb-3 mt-0">Halal Matchmaking Glasgow Scotland</h3>
+            <p class="text-gray-700 text-sm leading-relaxed">Our Glasgow matchmaking connects serious Scottish Muslims with halal marriage partners across the UK. Verified, respectful, and nikah-focused.</p>
+          </div>
+          <div class="bg-gray-50 rounded-xl p-5 border border-gray-100">
+            <h3 class="text-xl font-semibold text-gray-800 mb-3 mt-0">Glasgow Muslim Marriage 2026</h3>
+            <p class="text-gray-700 text-sm leading-relaxed">In 2026, Glasgow Muslims are increasingly using national platforms like shadiAmour to connect with verified rishta proposals from across England, Scotland, and Wales.</p>
           </div>
         </div>
 
-        <blockquote class="border-l-4 border-primary pl-4 italic text-gray-600 my-6">Prophetic guidance points toward choosing a spouse for their character and faith — timeless advice for a community as proudly Scottish as it is Muslim.</blockquote>
-
         <div class="bg-primary/5 rounded-2xl p-6 border border-primary/10 mt-8">
-          <p class="text-gray-700 font-medium">Also explore: <a href="/muslim-matrimony-manchester" class="text-primary hover:underline">Manchester</a> &bull; <a href="/muslim-marriage-uk" class="text-primary hover:underline">Muslim Marriage UK</a> &bull; <a href="/muslim-matchmaking" class="text-primary hover:underline">Muslim Matchmaking</a> &bull; <a href="/muslim-singles-uk" class="text-primary hover:underline">Muslim Singles UK</a></p>
+          <p class="text-gray-700 font-medium">Also explore: <a href="/muslim-marriage-london" class="text-primary hover:underline">London</a> &bull; <a href="/muslim-marriage-birmingham" class="text-primary hover:underline">Birmingham</a> &bull; <a href="/muslim-marriage-manchester" class="text-primary hover:underline">Manchester</a> &bull; <a href="/muslim-marriage-bradford" class="text-primary hover:underline">Bradford</a></p>
         </div>
       </div>
     `
   },
   {
-    path: "/muslim-matrimony-nottingham",
-    pageTitle: "Muslim Matrimony Nottingham — Verified Matches in the East Midlands | D'amour Muslim",
-    h1: "Muslim Matrimony in Nottingham — A Diverse, Established Muslim Community",
-    heroSubtitle: "From Radford to Hyson Green, Nottingham's Muslim community spans Pakistani, Kurdish, and Arab backgrounds alike. D'amour Muslim helps you search it properly.",
-    metaDescription: "Muslim matrimony in Nottingham — verified profiles from Radford, Forest Fields, Hyson Green, Sneinton and beyond. Free to join D'amour Muslim.",
-    keywords: "muslim matrimony nottingham, muslim marriage nottingham, nottingham muslim singles, nottingham rishta, muslim matchmaking nottingham",
-    canonicalPath: "/muslim-matrimony-nottingham",
-    ctaHeading: "Find Your Match in Nottingham",
+    path: "/muslim-marriage-nottingham",
+    pageTitle: "Muslim Marriage Nottingham | Halal Matchmaking & Rishta Nottingham 2026",
+    h1: "Muslim Marriage in Nottingham | Halal Matchmaking for Nottingham Muslims",
+    heroSubtitle: "Nottingham is home to a growing and diverse Muslim community with strong Pakistani, Bangladeshi, and East African roots.",
+    metaDescription: "Find a halal Muslim spouse in Nottingham. Verified Muslim profiles, Islamic matchmaking & rishta for Notting",
+    keywords: "muslim marriage nottingham, halal matchmaking nottingham, muslim rishta nottingham, pakistani muslim marriage nottingham, nottingham muslim marriage 2026",
+    canonicalPath: "/muslim-marriage-nottingham",
+    ctaHeading: "Find Your Muslim Spouse in Nottingham — Join shadiAmour Free",
     ctaSubtext: "Register free and browse verified Muslim profiles from across Nottingham.",
     relatedLinks: [
-      { url: "/muslim-matrimony-leicester", label: "Muslim Matrimony Leicester" },
-      { url: "/muslim-matrimony-sheffield", label: "Muslim Matrimony Sheffield" },
-      { url: "/muslim-marriage-uk", label: "Muslim Marriage UK" },
-      { url: "/muslim-matchmaking", label: "Muslim Matchmaking" }
+      { url: "/muslim-marriage-leicester", label: "Muslim Marriage Leicester" },
+      { url: "/muslim-marriage-birmingham", label: "Muslim Marriage Birmingham" },
+      { url: "/muslim-marriage-coventry", label: "Muslim Marriage Coventry" },
+      { url: "/muslim-marriage-london", label: "Muslim Marriage London" }
     ],
     pageFaqSchema: [
-      { q: "Which Nottingham areas have an established Muslim community?", a: "Radford, Forest Fields, Hyson Green, and Sneinton all have well-established Muslim populations and growing representation on D'amour Muslim." },
-      { q: "Is Nottingham's Muslim community diverse?", a: "Yes — alongside a large Pakistani-heritage community, Nottingham has notable Kurdish and Arab populations, plus growing Bangladeshi and Somali communities." },
-      { q: "Should I widen my search beyond Nottingham?", a: "Many members do, particularly toward nearby Leicester and Sheffield, both of which have significant Muslim populations and are easy to include via the location filter." },
-      { q: "Is D'amour Muslim free for Nottingham-based members?", a: "Yes — registration, browsing, and sending interest are all free." },
-      { q: "Can families in Nottingham manage a profile together?", a: "Yes — parents or a wali can register and run a profile, and messaging only opens once both sides agree." }
+      { q: "What is the best Muslim marriage site for Nottingham?", a: "shadiAmour is a trusted halal marriage platform for Nottingham Muslims, with verified profiles and UK-wide reach across the East Midlands." },
+      { q: "Can Nottingham Muslims connect with Leicester or Birmingham profiles?", a: "Yes. shadiAmour's UK-wide platform allows Nottingham Muslims to easily connect with Muslims in nearby Leicester, Birmingham, and across the UK." },
+      { q: "Is shadiAmour free for Nottingham Muslims?", a: "Yes. Joining and browsing profiles is completely free. Premium plans offer additional features such as curated weekly matches." }
     ],
     pageFaqs: [
-      { q: "Which Nottingham areas have an established Muslim community?", a: "Radford, Forest Fields, Hyson Green, and Sneinton all have well-established Muslim populations and growing representation on D'amour Muslim." },
-      { q: "Is Nottingham's Muslim community diverse?", a: "Yes — alongside a large Pakistani-heritage community, Nottingham has notable Kurdish and Arab populations, plus growing Bangladeshi and Somali communities." },
-      { q: "Should I widen my search beyond Nottingham?", a: "Many members do, particularly toward nearby Leicester and Sheffield, both of which have significant Muslim populations and are easy to include via the location filter." },
-      { q: "Is D'amour Muslim free for Nottingham-based members?", a: "Yes — registration, browsing, and sending interest are all free." },
-      { q: "Can families in Nottingham manage a profile together?", a: "Yes — parents or a wali can register and run a profile, and messaging only opens once both sides agree." }
+      { q: "What is the best Muslim marriage site for Nottingham?", a: "shadiAmour is a trusted halal marriage platform for Nottingham Muslims, with verified profiles and UK-wide reach across the East Midlands." },
+      { q: "Can Nottingham Muslims connect with Leicester or Birmingham profiles?", a: "Yes. shadiAmour's UK-wide platform allows Nottingham Muslims to easily connect with Muslims in nearby Leicester, Birmingham, and across the UK." },
+      { q: "Is shadiAmour free for Nottingham Muslims?", a: "Yes. Joining and browsing profiles is completely free. Premium plans offer additional features such as curated weekly matches." }
     ],
     bodyContent: `
       <div class="prose max-w-none">
-        <p class="text-lg text-gray-700 mb-6 leading-relaxed">Nottingham's Muslim community has grown into one of the East Midlands' most established, with a large Pakistani-heritage population sitting alongside notable Kurdish, Arab, Bangladeshi, and Somali communities. That mix gives the city a genuinely varied Muslim population, and D'amour Muslim is built to help you search across all of it.</p>
+        <p class="text-lg text-gray-700 mb-6 leading-relaxed">Nottingham is home to a growing and diverse Muslim community with strong Pakistani, Bangladeshi, and East African roots. As a key East Midlands city with two major universities, Nottingham attracts both established Muslim families and young British Muslim professionals. shadiAmour provides Nottingham Muslims with a trusted halal marriage platform connecting them with serious rishta profiles locally and across the UK.</p>
 
-        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Nottingham's Muslim Community</h2>
-        <p class="text-gray-700 mb-6 leading-relaxed">Radford and Forest Fields have long been home to Nottingham's largest Muslim population, with Hyson Green and Sneinton adding further diversity in more recent decades. Alongside its established Pakistani community, Nottingham has one of the more visible Kurdish and Arab Muslim populations in the East Midlands, reflecting decades of varied migration into the city.</p>
+        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Muslim Community in Nottingham</h2>
+        <p class="text-gray-700 mb-6 leading-relaxed">Hyson Green, St Ann's, Radford, and Forest Fields are Nottingham's most established Muslim neighbourhoods. The city has a strong Pakistani community, with Mirpuri, Punjabi, and Kashmiri families well represented. Nottingham's universities also attract a diverse student population, including many young British Muslims actively seeking halal marriage connections.</p>
 
-        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Key Areas on D'amour Muslim</h2>
+        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Key Challenges & How shadiAmour Helps</h2>
+        <p class="text-gray-700 mb-6 leading-relaxed">Nottingham's Muslim community is active but smaller than nearby Birmingham or Leicester, which can limit local rishta options. Many Nottingham Muslims are looking for matches across the East Midlands and beyond. shadiAmour's UK-wide verified platform provides the reach and structure needed to find a genuinely compatible halal spouse.</p>
+
+        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Why Nottingham Muslims Choose shadiAmour</h2>
         <ul class="list-none space-y-3 mb-6">
-          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700"><strong>Radford:</strong> One of Nottingham's largest and most established Muslim neighbourhoods.</span></li>
-          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700"><strong>Forest Fields:</strong> A close-knit, family-oriented Muslim community.</span></li>
-          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700"><strong>Hyson Green:</strong> A diverse area with a strong Kurdish and Arab Muslim presence.</span></li>
-          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700"><strong>Sneinton:</strong> A growing, multicultural Muslim population.</span></li>
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700">Nottingham Muslim profiles alongside UK-wide reach</span></li>
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700">Connect with Leicester, Birmingham & East Midlands Muslims</span></li>
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700">Free to join and browse verified Nottingham profiles</span></li>
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700">Family registration available for Nottingham parents</span></li>
+          <li class="flex items-start gap-3"><span class="text-primary mt-1">✓</span><span class="text-gray-700">Halal-only, verified, and marriage-focused platform</span></li>
         </ul>
 
-        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Nottingham's Islamic Heritage</h2>
-        <p class="text-gray-700 mb-6 leading-relaxed">Nottingham's mosques, concentrated across Radford and Forest Fields, have served the city's Muslim community for decades, growing alongside the population itself. Newer mosques and community centres in Hyson Green reflect the more recent Kurdish and Arab presence, adding further depth to the city's Islamic life.</p>
-
-        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">How D'amour Muslim Serves Nottingham</h2>
-        <p class="text-gray-700 mb-6 leading-relaxed">Profiles let Nottingham members specify area, ethnicity, and background, with the location filter making it simple to widen a search toward Leicester or Sheffield when helpful. Every profile is manually reviewed, and family-managed accounts are fully supported.</p>
-
-        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Three Steps to Finding a Match in Nottingham</h2>
-        <div class="grid md:grid-cols-3 gap-4 mb-8">
+        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Recommended Page Sections & Content</h2>
+        <div class="grid md:grid-cols-2 gap-4 mb-8">
           <div class="bg-gray-50 rounded-xl p-5 border border-gray-100">
-            <span class="text-primary font-bold text-2xl block mb-2">1</span>
-            <h3 class="text-xl font-semibold text-gray-800 mb-3 mt-0">Build Your Profile</h3>
-            <p class="text-gray-700 text-sm leading-relaxed">Add your area, ethnicity, and background, then submit for review.</p>
+            <h3 class="text-xl font-semibold text-gray-800 mb-3 mt-0">Pakistani Muslim Marriage Nottingham</h3>
+            <p class="text-gray-700 text-sm leading-relaxed">Find Pakistani Muslim singles in Nottingham for serious halal marriage. shadiAmour connects Nottingham Pakistanis with verified rishta proposals from across the UK.</p>
           </div>
           <div class="bg-gray-50 rounded-xl p-5 border border-gray-100">
-            <span class="text-primary font-bold text-2xl block mb-2">2</span>
-            <h3 class="text-xl font-semibold text-gray-800 mb-3 mt-0">Browse the East Midlands</h3>
-            <p class="text-gray-700 text-sm leading-relaxed">Search Nottingham, or widen toward Leicester and Sheffield.</p>
+            <h3 class="text-xl font-semibold text-gray-800 mb-3 mt-0">Muslim Rishta Nottingham</h3>
+            <p class="text-gray-700 text-sm leading-relaxed">Browse verified Muslim rishta proposals from Nottingham on shadiAmour. Our team manually reviews every profile before approval.</p>
           </div>
           <div class="bg-gray-50 rounded-xl p-5 border border-gray-100">
-            <span class="text-primary font-bold text-2xl block mb-2">3</span>
-            <h3 class="text-xl font-semibold text-gray-800 mb-3 mt-0">Express Interest</h3>
-            <p class="text-gray-700 text-sm leading-relaxed">Messaging opens once both sides agree to connect.</p>
+            <h3 class="text-xl font-semibold text-gray-800 mb-3 mt-0">Halal Matchmaking Nottingham</h3>
+            <p class="text-gray-700 text-sm leading-relaxed">Our Nottingham matchmaking is halal-only and built for serious nikah seekers. Students, professionals, and families are all welcome.</p>
+          </div>
+          <div class="bg-gray-50 rounded-xl p-5 border border-gray-100">
+            <h3 class="text-xl font-semibold text-gray-800 mb-3 mt-0">Nottingham Muslim Marriage 2026</h3>
+            <p class="text-gray-700 text-sm leading-relaxed">In 2026, Nottingham Muslims are turning to trusted platforms like shadiAmour to find serious rishta connections across the East Midlands and the wider UK.</p>
           </div>
         </div>
 
-        <blockquote class="border-l-4 border-primary pl-4 italic text-gray-600 my-6">The Quran describes humanity's many peoples and tribes as a means of coming to know one another — a fitting description of Nottingham's own Muslim community.</blockquote>
-
         <div class="bg-primary/5 rounded-2xl p-6 border border-primary/10 mt-8">
-          <p class="text-gray-700 font-medium">Also explore: <a href="/muslim-matrimony-leicester" class="text-primary hover:underline">Leicester</a> &bull; <a href="/muslim-matrimony-sheffield" class="text-primary hover:underline">Sheffield</a> &bull; <a href="/muslim-marriage-uk" class="text-primary hover:underline">Muslim Marriage UK</a> &bull; <a href="/muslim-matchmaking" class="text-primary hover:underline">Muslim Matchmaking</a></p>
+          <p class="text-gray-700 font-medium">Also explore: <a href="/muslim-marriage-leicester" class="text-primary hover:underline">Leicester</a> &bull; <a href="/muslim-marriage-birmingham" class="text-primary hover:underline">Birmingham</a> &bull; <a href="/muslim-marriage-coventry" class="text-primary hover:underline">Coventry</a> &bull; <a href="/muslim-marriage-london" class="text-primary hover:underline">London</a></p>
         </div>
       </div>
     `
