@@ -370,6 +370,10 @@ const userSchema = new mongoose.Schema({
       type: Boolean,
       default: false,
     },
+    indexOverride: {
+      type: Boolean,
+      default: false,
+    },
     ogImageOverride: {
       type: String,
     },

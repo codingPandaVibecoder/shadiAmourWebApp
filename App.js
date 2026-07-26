@@ -7710,12 +7710,7 @@ res.redirect(301, googleFormUrl);
 // Update the sitemap.xml route to include static blogs
 app.get("/sitemap.xml", async (req, res) => {
   try {
-    const users = await User.find({
-      approvalStatus: "approved",
-      "seoSettings.noIndex": { $ne: true },
-      isDeactivated: { $ne: true },
-      profileSlug: { $exists: true, $ne: null }
-    }).select("_id updatedAt createdAt profileSlug");
+    // Individual profile URLs are intentionally excluded — profiles default to noindex.
     const blogs = await Blog.find({ isPublished: true }).select("slug updatedAt publishedAt");
     const categoryPageDocs = await CategoryPage.find({ isPublished: true, noIndex: { $ne: true } }).select("categorySlug pageSlug updatedAt createdAt");
 
@@ -7986,23 +7981,8 @@ app.get("/sitemap.xml", async (req, res) => {
   </url>`;
     });
 
-    // Add profile URLs (existing code continues...)
-    users.forEach((user) => {
-      if (user.profileSlug) {
-        const lastmod = user.updatedAt
-          ? user.updatedAt.toISOString().split("T")[0]
-          : user.createdAt
-            ? user.createdAt.toISOString().split("T")[0]
-            : new Date().toISOString().split("T")[0];
-        sitemap += `
-  <url>
-    <loc>https://www.shadiamour.com/profiles/${user._id}</loc>
-    <lastmod>${lastmod}</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>`;
-      }
-    });
+    // Individual profile URLs are intentionally excluded from the sitemap —
+    // profile pages default to noindex (see profile.ejs shouldNoIndex logic).
 
     // Add category pages
     categoryPageDocs.forEach((cp) => {
@@ -8321,6 +8301,7 @@ app.post("/seoadmin/profile/:id/update", requireSeoAdmin, async (req, res) => {
       focusKeyword,
       customKeywords,
       noIndex,
+      indexOverride,
       ogImageOverride,
       canonicalUrlOverride,
       seoField1,
@@ -8371,6 +8352,7 @@ app.post("/seoadmin/profile/:id/update", requireSeoAdmin, async (req, res) => {
     profile.seoSettings.focusKeyword = focusKeyword || "";
     profile.seoSettings.customKeywords = customKeywords ? customKeywords.split(",").map(k => k.trim()).filter(k => k) : [];
     profile.seoSettings.noIndex = noIndex === "true";
+    profile.seoSettings.indexOverride = indexOverride === "true";
     profile.seoSettings.ogImageOverride = ogImageOverride || "";
     profile.seoSettings.canonicalUrlOverride = canonicalUrlOverride || "";
     profile.seoSettings.internalNotes = internalNotes || "";

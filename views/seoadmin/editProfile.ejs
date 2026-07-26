@@ -230,10 +230,10 @@
               </h2>
             </div>
             <div class="p-6 space-y-5">
-              <!-- No-Index Toggle -->
+              <!-- No-Index Toggle (legacy) -->
               <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
                 <div>
-                  <label class="font-medium text-gray-900">Exclude from Search Engines</label>
+                  <label class="font-medium text-gray-900">Exclude from Search Engines (legacy)</label>
                   <p class="text-sm text-gray-500">Add noindex meta tag to prevent indexing</p>
                 </div>
                 <label class="relative inline-flex items-center cursor-pointer">
@@ -245,6 +245,24 @@
                     class="sr-only peer"
                   >
                   <div class="w-11 h-6 bg-gray-300 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-pink-300 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-pink-600"></div>
+                </label>
+              </div>
+              
+              <!-- Index Override Toggle — profiles default to noindex; flip this to allow indexing -->
+              <div class="flex items-center justify-between p-4 bg-green-50 rounded-lg border border-green-200">
+                <div>
+                  <label class="font-medium text-gray-900">Allow Search Engines to Index</label>
+                  <p class="text-sm text-gray-500">Profiles are noindexed by default. Turn this ON to allow this profile in search results.</p>
+                </div>
+                <label class="relative inline-flex items-center cursor-pointer">
+                  <input 
+                    type="checkbox" 
+                    name="indexOverride" 
+                    value="true"
+                    <%= profile.seoSettings && profile.seoSettings.indexOverride ? 'checked' : '' %>
+                    class="sr-only peer"
+                  >
+                  <div class="w-11 h-6 bg-gray-300 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-300 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600"></div>
                 </label>
               </div>
               

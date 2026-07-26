@@ -52,8 +52,8 @@
 
   const richDescription = `${profile.randomNameForSeo}, ${profile.age}, from ${city}, ${country} — a ${ethnicity} ${genderLabel.toLowerCase()} seeking halal Muslim marriage. Connect on ${appName}, the trusted Islamic matrimony and matchmaking site for UK Muslims.`;
   
-  // Check if profile should be noindexed
-  const shouldNoIndex = profile.seoSettings && profile.seoSettings.noIndex;
+  // Check if profile should be noindexed — default is noindex unless explicitly overridden
+  const shouldNoIndex = !(profile.seoSettings && profile.seoSettings.indexOverride === true);
   %>
 
   <% if (shouldNoIndex) { %>
