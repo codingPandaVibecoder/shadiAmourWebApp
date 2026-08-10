@@ -1,0 +1,221 @@
+<footer class="gradient-bg text-white">
+  <div class="max-w-6xl mx-auto px-6 py-12">
+    <div class="grid md:grid-cols-4 gap-8 mb-8">
+      <div>
+        <h4 class="text-xl font-semibold mb-4 font-['Playfair_Display']">Connect With Us</h4>
+        <div class="flex gap-4 mb-6">
+          <a href="https://www.facebook.com/share/1NLEx7zWnu/" target="_blank" rel="noopener noreferrer" class="w-10 h-10 flex items-center justify-center bg-white bg-opacity-20 rounded-full hover:bg-opacity-30 transition-all duration-300">
+            <i class="ri-facebook-fill ri-lg"></i>
+          </a>
+          <a href="https://www.instagram.com/d_amourmuslim" target="_blank" rel="noopener noreferrer" class="w-10 h-10 flex items-center justify-center bg-white bg-opacity-20 rounded-full hover:bg-opacity-30 transition-all duration-300">
+            <i class="ri-instagram-fill ri-lg"></i>
+          </a>
+          <a href="https://tiktok.com/@damour.muslim" target="_blank" rel="noopener noreferrer" class="w-10 h-10 flex items-center justify-center bg-white bg-opacity-20 rounded-full hover:bg-opacity-30 transition-all duration-300">
+            <i class="ri-tiktok-fill ri-lg"></i>
+          </a>
+          <a href="https://youtube.com/@damourmuslim-v8w?si=FL672MpChI6t7nAE" target="_blank" rel="noopener noreferrer" class="w-10 h-10 flex items-center justify-center bg-white bg-opacity-20 rounded-full hover:bg-opacity-30 transition-all duration-300">
+            <i class="ri-youtube-fill ri-lg"></i>
+          </a>
+          <!-- <a href="" target="_blank" rel="noopener noreferrer" class="w-10 h-10 flex items-center justify-center bg-white bg-opacity-20 rounded-full hover:bg-opacity-30 transition-all duration-300">
+            <i class="ri-linkedin-fill ri-lg"></i>
+          </a> -->
+          <!-- <a href="" target="_blank" rel="noopener noreferrer" class="w-10 h-10 flex items-center justify-center bg-white bg-opacity-20 rounded-full hover:bg-opacity-30 transition-all duration-300">
+            <i class="ri-twitter-x-fill ri-lg"></i>
+          </a> -->
+        </div>
+
+        <!-- WhatsApp Group with pink default, green on hover -->
+        <a href="https://chat.whatsapp.com/Kjrn4Lwi54MLhd0NOZLxgl" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-3 bg-pink-500 hover:bg-green-500 text-white px-4 py-3 rounded-lg transition-all duration-300 font-medium">
+          <i class="ri-whatsapp-fill text-xl"></i>
+          <span>Join our WhatsApp Group</span>
+        </a>
+        
+      </div>
+
+      <div>
+        <h4 class="text-xl font-semibold mb-4 font-['Playfair_Display']">Contact</h4>
+        <div class="space-y-2">
+          <div class="flex items-center gap-3">
+            <div class="w-5 h-5 flex items-center justify-center">
+              <i class="ri-mail-line"></i>
+            </div>
+            <span>contact@shadiamour.com</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <div class="w-5 h-5 flex items-center justify-center">
+              <i class="ri-phone-line"></i>
+            </div>
+            <span>+447454516156</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <div class="w-5 h-5 flex items-center justify-center">
+              <i class="ri-map-pin-line"></i>
+            </div>
+            <span>London, UK</span>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <h4 class="text-xl font-semibold mb-4 font-['Playfair_Display']">About Us</h4>
+        <div class="space-y-2">
+          <a href="/company-details" class="block hover:text-pink-200 transition-colors duration-300">Company details</a>
+          <a href="/our-team" class="block hover:text-pink-200 transition-colors duration-300">Our Team</a>
+          <a href="/our-ads" class="block hover:text-pink-200 transition-colors duration-300">Our Ads</a>
+          <a href="/privacy" class="block hover:text-pink-200 transition-colors duration-300">Privacy Policy</a>
+          <a href="/terms" class="block hover:text-pink-200 transition-colors duration-300">Terms of Service</a>
+          <a href="/refund-policy" class="block hover:text-pink-200 transition-colors duration-300">Refund Policy</a>
+          <a href="/gdpr-faqs" class="block hover:text-pink-200 transition-colors duration-300">GDPR FAQs</a>
+          <a href="/pricing" class="block hover:text-pink-200 transition-colors duration-300">Pricing Plans</a>
+          <a href="/account-faqs" class="block hover:text-pink-200 transition-colors duration-300">Account FAQs</a>
+          <a href="/islamic-faqs" class="block hover:text-pink-200 transition-colors duration-300">Islamic FAQs</a>
+          
+        </div>
+      </div>
+
+      <div>
+        <h4 class="text-xl font-semibold mb-4 font-['Playfair_Display']">Need Help?</h4>
+        <div class="space-y-4">
+          <!-- 24/7 Support -->
+          <div class="bg-white bg-opacity-10 rounded-lg p-3 hover:bg-opacity-20 transition-all duration-300">
+            <div class="flex items-start gap-3">
+              <div class="w-6 h-6 flex items-center justify-center mt-0.5">
+                <i class="ri-customer-service-2-line text-pink-300"></i>
+              </div>
+              <div>
+                <p class="text-sm font-medium text-pink-200 mb-1">Having Issues?</p>
+                <p class="text-xs text-pink-100 mb-2">Reach us 24/7 support at</p>
+                <a href="mailto:support@shadiamour.com" class="text-white hover:text-pink-200 transition-colors duration-300 text-sm font-medium underline">
+                  support@shadiamour.com
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bug Reports -->
+          <div class="bg-white bg-opacity-10 rounded-lg p-3 hover:bg-opacity-20 transition-all duration-300">
+            <div class="flex items-start gap-3">
+              <div class="w-6 h-6 flex items-center justify-center mt-0.5">
+                <i class="ri-bug-line text-pink-300"></i>
+              </div>
+              <div>
+                <p class="text-sm font-medium text-pink-200 mb-1">Facing Any Bugs?</p>
+                <p class="text-xs text-pink-100 mb-2">Please report them at</p>
+                <a href="mailto:issues@shadiamour.com" class="text-white hover:text-pink-200 transition-colors duration-300 text-sm font-medium underline">
+                  issues@shadiamour.com
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SEO Hub Architecture Links — ensures all landing pages are reachable globally -->
+    <div class="border-t border-white border-opacity-10 pt-8 pb-8">
+      <div class="grid md:grid-cols-4 gap-6">
+        <div>
+          <h4 class="text-sm font-semibold mb-3 text-pink-100 uppercase tracking-widest">Muslim Marriage Guides</h4>
+          <div class="grid grid-cols-2 gap-x-4 gap-y-1 text-sm">
+            <a href="/muslim-marriage" class="hover:text-pink-200 transition-colors duration-300 py-0.5">Muslim Marriage</a>
+            <a href="/halal-marriage" class="hover:text-pink-200 transition-colors duration-300 py-0.5">Halal Marriage</a>
+            <a href="/muslim-matrimonial" class="hover:text-pink-200 transition-colors duration-300 py-0.5">Muslim Matrimonial</a>
+            <a href="/muslim-matchmaking" class="hover:text-pink-200 transition-colors duration-300 py-0.5">Muslim Matchmaking</a>
+            <a href="/muslim-rishta" class="hover:text-pink-200 transition-colors duration-300 py-0.5">Muslim Rishta</a>
+            <a href="/find-muslim-spouse" class="hover:text-pink-200 transition-colors duration-300 py-0.5">Find Muslim Spouse</a>
+            <a href="/verified-muslim-profiles" class="hover:text-pink-200 transition-colors duration-300 py-0.5">Verified Profiles</a>
+            <a href="/trusted-muslim-matchmaking" class="hover:text-pink-200 transition-colors duration-300 py-0.5">Trusted Matchmaking</a>
+            <a href="/best-muslim-marriage-website" class="hover:text-pink-200 transition-colors duration-300 py-0.5">Best Marriage Site</a>
+            <a href="/free-muslim-marriage-site" class="hover:text-pink-200 transition-colors duration-300 py-0.5">Free Marriage Site</a>
+          </div>
+        </div>
+        <div>
+          <h4 class="text-sm font-semibold mb-3 text-pink-100 uppercase tracking-widest">Muslim Matrimony by UK City</h4>
+          <div class="grid grid-cols-2 gap-x-4 gap-y-1 text-sm">
+            <a href="/muslim-marriage-london" class="hover:text-pink-200 transition-colors duration-300 py-0.5">London</a>
+            <a href="/muslim-marriage-birmingham" class="hover:text-pink-200 transition-colors duration-300 py-0.5">Birmingham</a>
+            <a href="/muslim-marriage-manchester" class="hover:text-pink-200 transition-colors duration-300 py-0.5">Manchester</a>
+            <a href="/muslim-marriage-bradford" class="hover:text-pink-200 transition-colors duration-300 py-0.5">Bradford</a>
+            <a href="/muslim-marriage-leicester" class="hover:text-pink-200 transition-colors duration-300 py-0.5">Leicester</a>
+            <a href="/muslim-marriage-leeds" class="hover:text-pink-200 transition-colors duration-300 py-0.5">Leeds</a>
+            <a href="/muslim-marriage-sheffield" class="hover:text-pink-200 transition-colors duration-300 py-0.5">Sheffield</a>
+            <a href="/muslim-marriage-coventry" class="hover:text-pink-200 transition-colors duration-300 py-0.5">Coventry</a>
+            <a href="/muslim-marriage-luton" class="hover:text-pink-200 transition-colors duration-300 py-0.5">Luton</a>
+            <a href="/muslim-marriage-glasgow" class="hover:text-pink-200 transition-colors duration-300 py-0.5">Glasgow</a>
+            <a href="/muslim-marriage-nottingham" class="hover:text-pink-200 transition-colors duration-300 py-0.5">Nottingham</a>
+          </div>
+        </div>
+        <div>
+          <h4 class="text-sm font-semibold mb-3 text-pink-100 uppercase tracking-widest">Rishta in Pakistan</h4>
+          <div class="grid grid-cols-2 gap-x-4 gap-y-1 text-sm">
+            <a href="/online-rishta-pakistan" class="hover:text-pink-200 transition-colors duration-300 py-0.5">Online Rishta Pakistan</a>
+            <a href="/rishta-lahore" class="hover:text-pink-200 transition-colors duration-300 py-0.5">Rishta Lahore</a>
+            <a href="/rishta-karachi" class="hover:text-pink-200 transition-colors duration-300 py-0.5">Rishta Karachi</a>
+            <a href="/rishta-islamabad" class="hover:text-pink-200 transition-colors duration-300 py-0.5">Rishta Islamabad</a>
+            <a href="/rishta-rawalpindi" class="hover:text-pink-200 transition-colors duration-300 py-0.5">Rishta Rawalpindi</a>
+            <a href="/rishta-faisalabad" class="hover:text-pink-200 transition-colors duration-300 py-0.5">Rishta Faisalabad</a>
+          </div>
+        </div>
+        <div>
+          <h4 class="text-sm font-semibold mb-3 text-pink-100 uppercase tracking-widest">UK &amp; Niche Pages</h4>
+          <div class="grid grid-cols-2 gap-x-4 gap-y-1 text-sm">
+            <a href="/muslim-marriage-uk" class="hover:text-pink-200 transition-colors duration-300 py-0.5">Muslim Marriage UK</a>
+            <a href="/british-pakistani-marriage" class="hover:text-pink-200 transition-colors duration-300 py-0.5">British Pakistani Marriage</a>
+            <a href="/muslim-singles-uk" class="hover:text-pink-200 transition-colors duration-300 py-0.5">Muslim Singles UK</a>
+            <a href="/muslim-second-marriage" class="hover:text-pink-200 transition-colors duration-300 py-0.5">Muslim Second Marriage</a>
+            <a href="/divorced-muslim-marriage" class="hover:text-pink-200 transition-colors duration-300 py-0.5">Divorced Muslim Marriage</a>
+            <a href="/muslim-marriage-over-30" class="hover:text-pink-200 transition-colors duration-300 py-0.5">Muslim Marriage Over 30</a>
+          </div>
+        </div>
+        <% if (typeof categoryPages !== 'undefined' && categoryPages && categoryPages.length > 0) { %>
+        <div>
+          <h4 class="text-sm font-semibold mb-3 text-pink-100 uppercase tracking-widest">Category Pages</h4>
+          <div class="grid grid-cols-2 gap-x-4 gap-y-1 text-sm">
+            <% categoryPages.forEach(function(cp) { %>
+            <a href="/<%= cp.categorySlug %>/<%= cp.pageSlug %>" class="hover:text-pink-200 transition-colors duration-300 py-0.5"><%= cp.title %></a>
+            <% }) %>
+          </div>
+        </div>
+        <% } %>
+      </div>
+    </div>
+
+    <div class="border-t border-white border-opacity-20 pt-8 text-center">
+      <% if (globalSeoSettings && globalSeoSettings.footerSeoText) { %>
+      <div class="text-pink-100 text-sm mb-4 max-w-4xl mx-auto">
+        <%= globalSeoSettings.footerSeoText %>
+      </div>
+      <% } %>
+      <p class="text-pink-100">&copy; 2025 shadiamour. All rights reserved. Built with love for the Muslim community.</p>
+      <a href="https://g.page/r/CZ4hGu7kA3HYEAI/review" target="_blank" rel="noopener noreferrer" class=" mt-2 block hover:text-pink-200 transition-colors duration-300">
+            <span>Like our work? Please leave a review</span>
+          </a>
+    </div>
+  </div>
+</footer>
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "shadiamour",
+    "url": "https://www.shadiamour.com",
+    "logo": "https://www.shadiamour.com/images/logo.png",
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "telephone": "+44-7454-516156",
+      "contactType": "customer service",
+      "email": "contact@shadiamour.com"
+    },
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "London",
+      "addressCountry": "UK"
+    },
+    "sameAs": [
+      "https://www.facebook.com/share/1NLEx7zWnu/",
+      "https://www.instagram.com/d_amourmuslim",
+      "https://tiktok.com/@damour.muslim",
+      "https://chat.whatsapp.com/Kjrn4Lwi54MLhd0NOZLxgl"
+    ]
+  }
+</script>

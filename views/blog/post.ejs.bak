@@ -36,7 +36,7 @@
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
   <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
   <link rel="manifest" href="/images/site.webmanifest">
-  <meta name="theme-color" content="#00113a">
+  <meta name="theme-color" content="#E91E63">
 
   <link rel="stylesheet" href="/css/output.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
@@ -70,92 +70,93 @@
   <%- include('../partials/analytics') %>
 </head>
 
-<body class="bg-background text-on-background font-body-md antialiased flex flex-col min-h-screen">
+<body class="bg-gray-50 font-['Roboto']">
   <%- include('../partials/header') %>
 
-  <main class="flex-grow pt-[92px] pb-16">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6">
+  <main class="pt-24 min-h-screen">
+    <div class="mx-auto px-6">
       <!-- Breadcrumb -->
-      <nav class="flex py-4 mb-6 text-sm text-on-surface-variant" aria-label="Breadcrumb">
-        <ol class="flex flex-wrap items-center gap-1.5 w-full">
-          <li class="flex items-center gap-1.5">
+      <!-- **UPDATED**: Responsive Breadcrumb that wraps on long titles -->
+      <nav class="flex py-3 px-4 mb-6 bg-white rounded-lg text-sm text-gray-600" aria-label="Breadcrumb">
+        <ol class="flex flex-wrap items-start w-full">
+          <li class="flex items-center shrink-0">
             <a href="/" class="hover:text-primary transition-colors">Home</a>
-            <span class="material-symbols-outlined text-lg text-outline">chevron_right</span>
+            <i class="ri-arrow-right-s-line mx-2 shrink-0"></i>
           </li>
-          <li class="flex items-center gap-1.5">
+          <li class="flex items-center shrink-0">
             <a href="/blog" class="hover:text-primary transition-colors">Blog</a>
-            <span class="material-symbols-outlined text-lg text-outline">chevron_right</span>
+            <i class="ri-arrow-right-s-line mx-2 shrink-0"></i>
           </li>
           <li class="text-primary font-medium break-words min-w-0 leading-relaxed">
             <%= blog.title %>
           </li>
         </ol>
       </nav>
-
       <!-- Article Header -->
-      <article class="bg-surface-white rounded-xl border border-outline-variant/30 shadow-[0px_4px_20px_rgba(0,35,102,0.05)] overflow-hidden mb-8">
+      <article class="bg-white rounded-2xl material-shadow overflow-hidden mb-8">
         <!-- Featured Image -->
         <% if (blog.featuredImage && blog.featuredImage.url) { %>
-        <div class="relative overflow-hidden">
-          <img src="<%= blog.featuredImage.url %>" alt="<%= blog.featuredImage.alt || blog.title %>" class="w-full h-64 md:h-80 object-cover" />
-        </div>
+        <!-- <div class="h-65 relative overflow-hidden"> -->
+        <img src="<%= blog.featuredImage.url %>" alt="<%= blog.featuredImage.alt || blog.title %>" class="w-full h-[80px] object-cover" />
+        <!-- </div> -->
         <% } %>
 
-        <div class="p-6 md:p-10">
+        <div class="p-5">
           <!-- Category and Date -->
-          <div class="flex flex-wrap items-center justify-between gap-3 text-sm text-on-surface-variant mb-6">
-            <span class="px-3 py-1 bg-secondary-container/20 text-secondary rounded-full text-xs font-medium">
+          <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
+            <span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-xs font-medium">
               <%= blog.category %>
             </span>
             <div class="flex items-center gap-4">
-              <time datetime="<%= blog.publishedAt %>" class="flex items-center gap-1.5">
-                <span class="material-symbols-outlined text-lg text-outline">calendar_month</span>
+              <time datetime="<%= blog.publishedAt %>">
                 <%= new Date(blog.publishedAt).toLocaleDateString('en-GB', {
                   year: 'numeric', month: 'long', day: 'numeric'
                 }) %>
               </time>
-              <span class="flex items-center gap-1.5">
-                <span class="material-symbols-outlined text-lg text-outline">schedule</span>
+              <span class="flex items-center gap-1">
+                <i class="ri-time-line"></i>
                 5 min read
               </span>
             </div>
           </div>
 
           <!-- Title -->
-          <h1 class="text-headline-lg font-headline-lg text-primary mb-6 leading-tight">
+          <h1 class="p-4 text-3xl md:text-4xl font-bold text-gray-800 mb-4 font-['Playfair_Display']">
             <%= blog.title %>
           </h1>
 
           <!-- Excerpt -->
           <% if (blog.excerpt) { %>
-          <p class="text-body-lg font-body-lg text-on-surface-variant mb-8 border-l-4 border-premium-gold pl-4">
+          <p class=" p-3 text-lg text-gray-600 mb-6 italic">
             <%= blog.excerpt %>
           </p>
           <% } %>
 
           <!-- Author -->
-          <div class="flex items-center gap-3 pb-6 mb-8 border-b border-outline-variant/40">
-            <div class="w-12 h-12 bg-primary-fixed rounded-full flex items-center justify-center">
-              <span class="material-symbols-outlined text-primary-container">person</span>
+          <div class="flex items-center gap-3 p-6 border-b border-gray-200">
+            <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
+              <i class="ri-user-line text-primary text-xl"></i>
             </div>
             <div>
-              <p class="font-medium text-on-surface"><%= blog.author.name || "shadiAmour Team" %></p>
-              <p class="text-sm text-on-surface-variant">Expert Marriage Consultant</p>
+              <p class="font-medium text-gray-800"><%= blog.author.name || "shadiAmour Team" %></p>
+              <p class="text-sm text-gray-500">Expert Marriage Consultant</p>
             </div>
           </div>
 
           <!-- Blog Content -->
-          <div class="article-content max-w-none">
-            <%- blog.content %>
+          <div class="p-8 prose prose-lg max-w-none">
+            <div class="article-content">
+              <%- blog.content %>
+            </div>
           </div>
 
           <!-- Tags -->
           <% if (blog.tags && blog.tags.length > 0) { %>
-          <div class="mt-8 pt-6 border-t border-outline-variant/40">
-            <h3 class="text-sm font-medium text-on-surface-variant mb-3">Tags:</h3>
+          <div class="mt-8 p-6 border-t border-gray-200">
+            <h3 class="text-sm font-medium text-gray-500 mb-3">Tags:</h3>
             <div class="flex flex-wrap gap-2">
               <% blog.tags.forEach(tag => { %>
-              <a href="/blog?tag=<%= tag %>" class="px-3 py-1 bg-neutral-gray border border-outline-variant text-on-surface-variant rounded-full text-sm hover:bg-primary/10 hover:text-primary hover:border-primary transition-colors">
+              <a href="/blog?tag=<%= tag %>" class="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm hover:bg-primary/10 hover:text-primary transition-colors">
                 #<%= tag %>
               </a>
               <% }) %>
@@ -168,16 +169,16 @@
       <!-- FAQ Section (from blog faqSchema) -->
       <% if (blog.faqSchema && blog.faqSchema.length > 0) { %>
       <section class="mb-8">
-        <div class="bg-surface-white rounded-xl border border-outline-variant/30 shadow-[0px_4px_20px_rgba(0,35,102,0.05)] p-6 md:p-8">
-          <h2 class="text-headline-md font-headline-md text-primary mb-6">Frequently Asked Questions</h2>
+        <div class="bg-white rounded-2xl material-shadow p-8">
+          <h2 class="text-2xl font-bold text-gray-800 mb-6 font-['Playfair_Display']">Frequently Asked Questions</h2>
           <div class="space-y-4">
             <% blog.faqSchema.forEach(function(faq) { %>
-            <details class="border border-outline-variant rounded-xl overflow-hidden group bg-surface-white">
-              <summary class="flex items-center justify-between p-5 cursor-pointer hover:bg-surface-container-low transition-colors">
-                <h3 class="text-lg font-semibold text-on-surface pr-4"><%= faq.question %></h3>
-                <span class="material-symbols-outlined text-xl text-outline group-open:rotate-180 transition-transform duration-300 flex-shrink-0">expand_more</span>
+            <details class="border border-gray-200 rounded-xl overflow-hidden group">
+              <summary class="flex items-center justify-between p-5 cursor-pointer hover:bg-gray-50 transition-colors">
+                <h3 class="text-lg font-semibold text-gray-800 pr-4"><%= faq.question %></h3>
+                <i class="ri-arrow-down-s-line text-xl text-gray-400 group-open:rotate-180 transition-transform duration-300 flex-shrink-0"></i>
               </summary>
-              <div class="px-5 pb-5 text-on-surface-variant leading-relaxed">
+              <div class="px-5 pb-5 text-gray-600 leading-relaxed">
                 <p><%= faq.answer %></p>
               </div>
             </details>
@@ -190,21 +191,21 @@
       <!-- Related Posts -->
       <% if (relatedBlogs && relatedBlogs.length > 0) { %>
       <section class="mb-8">
-        <h2 class="text-headline-md font-headline-md text-primary mb-6">Related Articles</h2>
-        <div class="grid md:grid-cols-3 gap-gutter">
+        <h2 class="text-2xl font-bold text-gray-800 mb-6 font-['Playfair_Display']">Related Articles</h2>
+        <div class="grid md:grid-cols-3 gap-6">
           <% relatedBlogs.forEach(related => { %>
-          <article class="bg-surface-white rounded-xl border border-outline-variant/30 shadow-[0px_4px_20px_rgba(0,35,102,0.05)] hover:shadow-[0px_8px_28px_rgba(0,35,102,0.12)] transition-all duration-300 overflow-hidden group">
-            <div class="aspect-video bg-gradient-to-br from-primary-container/10 to-secondary-container/10 relative overflow-hidden">
+          <article class="bg-white rounded-xl material-shadow hover:material-shadow-hover transition-all duration-300 overflow-hidden group">
+            <div class="aspect-video bg-gradient-to-br from-primary/10 to-secondary/10 relative overflow-hidden">
               <div class="absolute inset-0 flex items-center justify-center">
-                <span class="material-symbols-outlined text-4xl text-primary-container/40">article</span>
+                <i class="ri-article-line text-4xl text-primary/30"></i>
               </div>
             </div>
             <div class="p-4">
-              <h3 class="font-semibold text-on-surface mb-2 line-clamp-2 group-hover:text-primary transition-colors">
+              <h3 class="font-semibold text-gray-800 mb-2 line-clamp-2 group-hover:text-primary transition-colors">
                 <a href="/blog/<%= related.slug %>"><%= related.title %></a>
               </h3>
-              <p class="text-sm text-on-surface-variant mb-3 line-clamp-2"><%= related.excerpt %></p>
-              <time class="text-xs text-outline">
+              <p class="text-sm text-gray-600 mb-3 line-clamp-2"><%= related.excerpt %></p>
+              <time class="text-xs text-gray-500">
                 <%= new Date(related.publishedAt).toLocaleDateString('en-GB') %>
               </time>
             </div>
@@ -216,8 +217,8 @@
 
       <!-- Back to Blog -->
       <div class="text-center mb-8">
-        <a href="/blog" class="inline-flex items-center gap-2 px-6 py-3 bg-primary text-on-primary rounded-xl font-medium hover:bg-primary-container transition-colors">
-          <span class="material-symbols-outlined">arrow_back</span>
+        <a href="/blog" class="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-button hover:bg-pink-600 transition-colors">
+          <i class="ri-arrow-left-line"></i>
           Back to Blog
         </a>
       </div>
@@ -234,6 +235,43 @@
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
       overflow: hidden;
+    }
+
+    .material-shadow {
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .material-shadow-hover {
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    }
+
+    .prose {
+      line-height: 1.7;
+    }
+
+    .prose p {
+      margin-bottom: 1.5rem;
+    }
+
+    .prose h2,
+    .prose h3,
+    .prose h4 {
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    .prose ul,
+    .prose ol {
+      margin-bottom: 1.5rem;
+      padding-left: 1.5rem;
+    }
+
+    .prose blockquote {
+      border-left: 4px solid #E91E63;
+      padding-left: 1.5rem;
+      margin: 2rem 0;
+      font-style: italic;
+      color: #666;
     }
   </style>
 </body>

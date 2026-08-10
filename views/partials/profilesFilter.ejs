@@ -1,7 +1,10 @@
-<div class="sticky top-24 bg-white rounded-2xl material-shadow p-6 h-fit">
+<div class="sticky top-28 bg-neutral-gray rounded-xl p-6 h-fit border border-outline-variant/30">
   <div class="flex items-center justify-between mb-6">
-    <h3 class="text-lg font-semibold text-gray-900 font-['Playfair_Display']">Filter Profiles</h3>
-    <button id="clearFilters" data-track="true" data-event-name="clear_filters" data-category="engagement" data-label="Clear Filters" class="text-primary hover:text-pink-600 text-sm font-medium transition-colors duration-300">
+    <h2 class="text-headline-md font-headline-md text-primary">Filter Profiles</h2>
+    <span class="material-symbols-outlined text-primary">filter_list</span>
+  </div>
+  <div class="flex justify-end -mt-3 mb-4">
+    <button id="clearFilters" data-track="true" data-event-name="clear_filters" data-category="engagement" data-label="Clear Filters" class="text-primary hover:text-primary/70 text-sm font-medium transition-colors duration-300">
       Clear All
     </button>
   </div>
@@ -9,29 +12,29 @@
   <form id="filterForm" class="space-y-6">
     <!-- Gender Filter -->
     <div>
-      <label class="block text-sm font-medium text-gray-700 mb-3">Gender</label>
+      <label class="block text-label-md font-label-md text-on-surface-variant mb-3 uppercase tracking-wider">Gender</label>
       <div class="space-y-2">
         <label class="flex items-center cursor-pointer">
-          <input type="radio" name="gender" value="" class="h-4 w-4 text-primary focus:ring-primary border-gray-300" <%= !filters?.gender ? 'checked' : '' %>>
-          <span class="ml-2 text-sm text-gray-700">All</span>
+          <input type="radio" name="gender" value="" class="h-4 w-4 text-primary focus:ring-primary border-outline-variant" <%= !filters?.gender ? 'checked' : '' %>>
+          <span class="ml-3 text-body-md text-on-surface">All</span>
         </label>
         <label class="flex items-center cursor-pointer">
-          <input type="radio" name="gender" value="male" class="h-4 w-4 text-primary focus:ring-primary border-gray-300" <%= filters?.gender === 'male' ? 'checked' : '' %>>
-          <span class="ml-2 text-sm text-gray-700">Male</span>
+          <input type="radio" name="gender" value="male" class="h-4 w-4 text-primary focus:ring-primary border-outline-variant" <%= filters?.gender === 'male' ? 'checked' : '' %>>
+          <span class="ml-3 text-body-md text-on-surface">Male</span>
         </label>
         <label class="flex items-center cursor-pointer">
-          <input type="radio" name="gender" value="female" class="h-4 w-4 text-primary focus:ring-primary border-gray-300" <%= filters?.gender === 'female' ? 'checked' : '' %>>
-          <span class="ml-2 text-sm text-gray-700">Female</span>
+          <input type="radio" name="gender" value="female" class="h-4 w-4 text-primary focus:ring-primary border-outline-variant" <%= filters?.gender === 'female' ? 'checked' : '' %>>
+          <span class="ml-3 text-body-md text-on-surface">Female</span>
         </label>
       </div>
     </div>
 
     <!-- Age Range Filter (selects) -->
     <div>
-      <label class="block text-sm font-medium text-gray-700 mb-3">Age Range</label>
+      <label class="block text-label-md font-label-md text-on-surface-variant mb-3 uppercase tracking-wider">Age Range</label>
       <div class="grid grid-cols-2 gap-3">
         <div>
-          <select name="minAge" id="minAgeSelect" class="block w-full px-3 py-2 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 bg-white text-sm">
+          <select name="minAge" id="minAgeSelect" class="block w-full px-3 py-2.5 border border-outline-variant rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-on-surface bg-white text-sm">
             <option value="">Min Age</option>
             <% for (let a = 18; a <= 70; a++) { %>
               <option value="<%= a %>" <%= (filters?.minAge && Number(filters.minAge) === a) ? 'selected' : '' %>><%= a %></option>
@@ -39,7 +42,7 @@
           </select>
         </div>
         <div>
-          <select name="maxAge" id="maxAgeSelect" class="block w-full px-3 py-2 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 bg-white text-sm">
+          <select name="maxAge" id="maxAgeSelect" class="block w-full px-3 py-2.5 border border-outline-variant rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-on-surface bg-white text-sm">
             <option value="">Max Age</option>
             <% for (let a = 18; a <= 70; a++) { %>
               <option value="<%= a %>" <%= (filters?.maxAge && Number(filters.maxAge) === a) ? 'selected' : '' %>><%= a %></option>
@@ -51,10 +54,10 @@
 
     <!-- Height Range Filter -->
     <div>
-      <label class="block text-sm font-medium text-gray-700 mb-3">Height Range</label>
+      <label class="block text-label-md font-label-md text-on-surface-variant mb-3 uppercase tracking-wider">Height Range</label>
       <div class="grid grid-cols-2 gap-3">
         <div>
-          <select name="minHeight" id="minHeightSelect" class="block w-full px-3 py-2 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 bg-white text-sm">
+          <select name="minHeight" id="minHeightSelect" class="block w-full px-3 py-2.5 border border-outline-variant rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-on-surface bg-white text-sm">
             <option value="">Min Height</option>
             <% 
             // Generate height options with cm values but ft display
@@ -89,7 +92,7 @@
           </select>
         </div>
         <div>
-          <select name="maxHeight" id="maxHeightSelect" class="block w-full px-3 py-2 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 bg-white text-sm">
+          <select name="maxHeight" id="maxHeightSelect" class="block w-full px-3 py-2.5 border border-outline-variant rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-on-surface bg-white text-sm">
             <option value="">Max Height</option>
             <% heights.forEach(height => { %>
             <option value="<%= height.cm %>" <%= filters?.maxHeight == height.cm ? 'selected' : '' %>>
@@ -103,13 +106,13 @@
 
     <!-- Location Filter: Country & City Selects -->
     <div>
-      <label class="block text-sm font-medium text-gray-700 mb-3">Location</label>
+      <label class="block text-label-md font-label-md text-on-surface-variant mb-3 uppercase tracking-wider">Location</label>
       <div class="space-y-3">
         <div class="relative">
           <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <i class="ri-earth-line text-gray-400"></i>
+            <span class="material-symbols-outlined text-base text-on-surface-variant">public</span>
           </div>
-          <select name="country" id="filterCountry" class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 bg-white text-sm appearance-none" <% if (typeof geoFilterUI !== 'undefined' && geoFilterUI && geoFilterUI.countries.length === 1) { %>disabled<% } %>>
+          <select name="country" id="filterCountry" class="block w-full pl-10 pr-3 py-2.5 border border-outline-variant rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-on-surface bg-white text-sm appearance-none" <% if (typeof geoFilterUI !== 'undefined' && geoFilterUI && geoFilterUI.countries.length === 1) { %>disabled<% } %>>
             <% if (typeof geoFilterUI !== 'undefined' && geoFilterUI) { %>
               <!-- Geo-restricted: pre-select the country (e.g., Pakistan) -->
               <% geoFilterUI.countries.forEach(function(c, index) { %>
@@ -137,9 +140,9 @@
         </div>
         <div class="relative">
           <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <i class="ri-map-pin-line text-gray-400"></i>
+            <span class="material-symbols-outlined text-base text-on-surface-variant">location_on</span>
           </div>
-          <select name="city" id="filterCity" class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 bg-white text-sm appearance-none" <% if (!(typeof geoFilterUI !== 'undefined' && geoFilterUI)) { %>disabled<% } %>>
+          <select name="city" id="filterCity" class="block w-full pl-10 pr-3 py-2.5 border border-outline-variant rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-on-surface bg-white text-sm appearance-none" <% if (!(typeof geoFilterUI !== 'undefined' && geoFilterUI)) { %>disabled<% } %>>
             <option value="">All Cities</option>
             <% if (typeof geoFilterUI !== 'undefined' && geoFilterUI && geoFilterUI.countries.length > 0) { %>
               <% const defaultCountry = geoFilterUI.countries[0].value; %>
@@ -157,14 +160,14 @@
     
 
     <!-- Apply Filters Button -->
-    <button type="submit" data-track="true" data-event-name="apply_filters" data-category="engagement" data-label="Apply Filters" class="w-full py-2.5 px-4 bg-primary text-white hover:bg-pink-600 transition-all duration-300 !rounded-button ripple material-shadow">
-      <i class="ri-search-line mr-2"></i>Apply Filters
+    <button type="submit" data-track="true" data-event-name="apply_filters" data-category="engagement" data-label="Apply Filters" class="w-full bg-primary-container text-on-primary font-label-md text-label-md py-3 rounded-lg hover:bg-trust-blue transition-colors flex items-center justify-center gap-2">
+      <span class="material-symbols-outlined text-lg">search</span>Apply Filters
     </button>
 
     <!-- Active Filters Display -->
     <div id="activeFilters" class="hidden">
-      <div class="border-t border-gray-200 pt-4">
-        <h4 class="text-sm font-medium text-gray-700 mb-2">Active Filters:</h4>
+      <div class="border-t border-outline-variant/50 pt-4">
+        <h4 class="text-label-md font-label-md text-on-surface-variant mb-2">Active Filters:</h4>
         <div id="filterTags" class="flex flex-wrap gap-2"></div>
       </div>
     </div>

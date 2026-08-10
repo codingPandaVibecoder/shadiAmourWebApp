@@ -15,7 +15,7 @@
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
   <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
   <link rel="manifest" href="/images/site.webmanifest">
-  <meta name="theme-color" content="#E91E63">
+  <meta name="theme-color" content="#00113a">
 
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
@@ -36,45 +36,6 @@
   <style>
     :where([class^="ri-"])::before {
       content: "\f3c2";
-    }
-
-    .material-shadow {
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    .material-shadow-hover {
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
-    }
-
-    .material-shadow-elevated {
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
-    }
-
-    .ripple {
-      position: relative;
-      overflow: hidden;
-    }
-
-    .ripple::before {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 0;
-      height: 0;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.3);
-      transform: translate(-50%, -50%);
-      transition: width 0.6s, height 0.6s;
-    }
-
-    .ripple:active::before {
-      width: 300px;
-      height: 300px;
-    }
-
-    .gradient-bg {
-      background: linear-gradient(135deg, #E91E63 0%, #673AB7 100%);
     }
     /* Mobile-first: Form appears first on small screens */
 @media (max-width: 1023px) {
@@ -103,244 +64,166 @@
   <%- include('partials/analytics') %>
 </head>
 
-<body class="bg-gray-50 font-['Roboto']">
-  <header class="fixed top-0 left-0 right-0 bg-white material-shadow z-50">
-    <div class="flex items-center justify-between px-6 h-16">
-      <div class="flex items-center">
-        <a href="/" class="hover:opacity-80 transition-opacity duration-300 cursor-pointer flex items-center">
-          <img src="/images/websitelogo.svg" alt="shadiamour" class="h-9 w-auto" width="200" height="36">
-        </a>
+<body class="bg-background text-on-surface font-body-md antialiased flex flex-col min-h-screen">
+  <!-- Transactional page — navigation shell suppressed per new design -->
+  <main class="flex-grow w-full flex flex-col md:flex-row">
+    <!-- Left Side: Brand Content Section -->
+    <div class="content-section relative w-full md:w-1/2 min-h-[50vh] md:min-h-full flex flex-col justify-center px-margin-x py-16 md:p-section-padding bg-primary-container text-on-primary overflow-hidden">
+      <!-- Background Image -->
+      <div class="absolute inset-0 z-0">
+        <div class="bg-cover bg-center w-full h-full opacity-40 mix-blend-multiply" style="background-image: url('https://res.cloudinary.com/dhuc2plh0/image/upload/v1760555667/jeremy-wong-weddings-464ps_nOflw-unsplash_wov3ei.jpg');"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-primary-container/90 via-primary-container/60 to-transparent"></div>
       </div>
-      <div class="flex items-center gap-4">
-        <a href="/login" class="px-6 py-2 border-2 border-primary text-primary hover:bg-primary hover:text-white transition-all duration-300 !rounded-button whitespace-nowrap ripple">
-          Login
-        </a>
-      </div>
-    </div>
-  </header>
 
-  <main class="pt-24 pb-16 min-h-screen">
-    <div class="flex flex-col lg:flex-row">
-      <!-- Left Side: Content Section with Background Image -->
-      <div class="content-section w-full lg:w-1/2 py-8 px-6 bg-cover bg-center bg-no-repeat relative" style="background-image: url('https://res.cloudinary.com/dhuc2plh0/image/upload/v1760555667/jeremy-wong-weddings-464ps_nOflw-unsplash_wov3ei.jpg');">
-        <div class="absolute inset-0 bg-black/50"></div>
-        <div class="relative z-10 flex items-center justify-center h-full">
-          <div class="w-full px-6 py-8">
-            <h1 class="text-3xl md:text-4xl font-bold text-white mb-4 font-['Playfair_Display'] lg:text-left">
-              Create Your Muslim Rishta Profile & Find Your Perfect Muslim Spouse
-            </h1>
-            <p class="text-lg text-white mb-8 leading-relaxed lg:text-left">
-              Join thousands of verified Muslim profiles across London, Leicester and the UK. Start your blessed journey toward halal marriage, Islamic wedding and a beautiful Nikkah ceremony.
-            </p>
+      <div class="relative z-10 max-w-lg w-full">
+        <!-- Brand Anchor -->
+        <div class="mb-8">
+          <a href="/" class="text-headline-lg font-headline-lg font-extrabold text-on-primary block hover:opacity-80 transition-opacity">Shadi Amour</a>
+        </div>
 
-            <!-- Trust Indicators -->
-            <div class="mt-8 lg:text-left">
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-5 text-white">
-                <div class="flex items-center gap-3 bg-white/10 p-4 rounded-xl backdrop-blur-sm">
-                  <div class="w-10 h-10 flex items-center justify-center text-primary bg-white rounded-full">
-                    <i class="ri-shield-check-line text-xl"></i>
-                  </div>
-                  <div>
-                    <span class="font-medium">Verified Muslim Profiles</span>
-                    <p class="text-xs text-white/80 mt-1">Quality matches guaranteed</p>
-                  </div>
-                </div>
-                <div class="flex items-center gap-3 bg-white/10 p-4 rounded-xl backdrop-blur-sm">
-                  <div class="w-10 h-10 flex items-center justify-center text-primary bg-white rounded-full">
-                    <i class="ri-heart-2-line text-xl"></i>
-                  </div>
-                  <div>
-                    <span class="font-medium">Halal Marriage Focus</span>
-                    <p class="text-xs text-white/80 mt-1">Islamic values respected</p>
-                  </div>
-                </div>
-                <div class="flex items-center gap-3 bg-white/10 p-4 rounded-xl backdrop-blur-sm">
-                  <div class="w-10 h-10 flex items-center justify-center text-primary bg-white rounded-full">
-                    <i class="ri-map-pin-line text-xl"></i>
-                  </div>
-                  <div>
-                    <span class="font-medium">UK Muslim Community</span>
-                    <p class="text-xs text-white/80 mt-1">Across major UK cities</p>
-                  </div>
-                </div>
-                <div class="flex items-center gap-3 bg-white/10 p-4 rounded-xl backdrop-blur-sm">
-                  <div class="w-10 h-10 flex items-center justify-center text-primary bg-white rounded-full">
-                    <i class="ri-time-line text-xl"></i>
-                  </div>
-                  <div>
-                    <span class="font-medium">100% Free Registration</span>
-                    <p class="text-xs text-white/80 mt-1">No hidden fees</p>
-                  </div>
-                </div>
-              </div>
+        <h1 class="text-display-lg-mobile md:text-display-lg font-display-lg-mobile md:font-display-lg text-on-primary mb-element-gap leading-tight">
+          Create Your Muslim Rishta Profile &amp; Find Your Perfect Muslim Spouse
+        </h1>
+        <p class="text-body-lg font-body-lg text-on-primary/90 mb-10">
+          Join thousands of verified Muslim profiles across London, Leicester and the UK. Start your blessed journey toward halal marriage, Islamic wedding and a beautiful Nikkah ceremony.
+        </p>
+
+        <!-- Trust Pills -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="flex items-start gap-3 bg-primary-container/40 backdrop-blur-sm p-4 rounded-lg border border-on-primary/10">
+            <span class="material-symbols-outlined text-premium-gold" style="font-variation-settings: 'FILL' 1;">verified_user</span>
+            <div>
+              <span class="block text-body-md font-body-md text-on-primary">Verified Muslim Profiles</span>
+              <p class="text-label-md font-label-md text-on-primary/80 mt-1">Quality matches guaranteed</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-3 bg-primary-container/40 backdrop-blur-sm p-4 rounded-lg border border-on-primary/10">
+            <span class="material-symbols-outlined text-premium-gold" style="font-variation-settings: 'FILL' 1;">favorite</span>
+            <div>
+              <span class="block text-body-md font-body-md text-on-primary">Halal Marriage Focus</span>
+              <p class="text-label-md font-label-md text-on-primary/80 mt-1">Islamic values respected</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-3 bg-primary-container/40 backdrop-blur-sm p-4 rounded-lg border border-on-primary/10">
+            <span class="material-symbols-outlined text-premium-gold" style="font-variation-settings: 'FILL' 1;">location_city</span>
+            <div>
+              <span class="block text-body-md font-body-md text-on-primary">UK Muslim Community</span>
+              <p class="text-label-md font-label-md text-on-primary/80 mt-1">Across major UK cities</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-3 bg-primary-container/40 backdrop-blur-sm p-4 rounded-lg border border-on-primary/10">
+            <span class="material-symbols-outlined text-premium-gold" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+            <div>
+              <span class="block text-body-md font-body-md text-on-primary">100% Free Registration</span>
+              <p class="text-label-md font-label-md text-on-primary/80 mt-1">No hidden fees</p>
             </div>
           </div>
         </div>
       </div>
+    </div>
 
-      <!-- Right Side: Form Section -->
-      <div class="form-section w-full lg:w-1/2 bg-gradient-to-br from-gray-50 to-gray-100">
-        <div class="py-8 flex items-center justify-center h-full">
-          <div class="w-full max-w-md px-6">
-            <div class="bg-white rounded-2xl p-8 material-shadow">
-              
-              <!-- Parent Notice Section (Initial View) -->
-              <!-- <div id="parentNotice" class="text-center">
-                <div class="w-20 h-20 bg-gradient-to-r from-primary to-secondary rounded-full flex items-center justify-center mx-auto mb-6">
-                  <i class="ri-parent-line text-3xl text-white"></i>
-                </div>
-                
-                <h2 class="text-2xl font-bold text-gray-800 font-['Playfair_Display'] mb-4">Important Notice</h2>
-                
-                <div class="bg-amber-50 border border-amber-200 rounded-xl p-6 mb-6 text-left">
-                  <div class="flex items-start gap-3">
-                    <i class="ri-information-line text-amber-600 text-xl mt-0.5"></i>
-                    <div>
-                      <p class="text-gray-700 font-medium mb-2">This website is strictly for parents who want to create their son/daughter's profile.</p>
-                      <p class="text-gray-600 text-sm">If you are a parent looking to find a suitable match for your child, please continue below.</p>
-                    </div>
-                  </div>
-                </div>
+    <!-- Right Side: Form Section -->
+    <div class="form-section w-full md:w-1/2 flex items-center justify-center px-margin-x py-16 md:p-section-padding bg-surface-white">
+      <div class="w-full max-w-md">
+        <!-- Registration Options -->
+        <div id="registrationOptions">
+          <div class="text-center mb-8">
+            <div class="w-16 h-16 bg-primary-container rounded-full flex items-center justify-center mx-auto mb-4">
+              <span class="material-symbols-outlined text-on-primary" style="font-variation-settings: 'FILL' 1;">person_add</span>
+            </div>
+            <h2 class="text-headline-md font-headline-md text-on-surface">Create Your Profile Today</h2>
+            <p class="text-body-md font-body-md text-on-surface-variant mt-2">Choose your registration method</p>
+          </div>
 
-                <div class="bg-blue-50 border border-blue-200 rounded-xl p-4 mb-6">
-                  <p class="text-gray-700 text-sm">
-                    Creating a profile for yourself? Visit 
-                    <a href="https://www.shadiamour.com/register" target="_blank" rel="noopener noreferrer" data-track="true" data-event-name="external_shadiamour_click" data-category="navigation" data-label="ShaadiAmour.com" class="text-primary font-semibold hover:underline">
-                      ShaadiAmour.com
-                    </a>
-                  </p>
-                </div>
+          <% if (typeof error !== 'undefined' && error) { %>
+          <div class="mb-4 p-4 bg-error-container rounded-lg">
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-error">error</span>
+              <p class="text-on-error-container text-sm font-medium"><%= error %></p>
+            </div>
+          </div>
+          <% } %>
 
-                <button type="button" id="continueAsParent" data-track="true" data-event-name="register_continue_parent" data-category="conversion" data-label="Register as Parent" class="w-full py-3 px-6 bg-primary text-white font-semibold rounded-xl hover:bg-pink-600 transition-all duration-300 ripple material-shadow">
-                  <span class="flex items-center justify-center gap-2">
-                    <span>Register</span>
-                    <i class="ri-arrow-right-line"></i>
-                  </span>
+          <!-- Google Sign Up -->
+          <a href="/auth/google" data-track="true" data-event-name="register_google" data-category="auth" data-label="Continue with Google" class="w-full inline-flex items-center justify-center gap-3 px-6 py-3 border border-outline-variant bg-surface-white text-on-surface hover:bg-surface-container-low transition-all duration-300 rounded-lg text-body-md font-body-md mb-6 shadow-sm">
+            <svg class="w-5 h-5" viewBox="0 0 24 24">
+              <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
+              <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
+              <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
+              <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
+            </svg>
+            <span>Continue with Google</span>
+          </a>
+
+          <div class="flex items-center my-6">
+            <div class="flex-1 h-px bg-outline-variant/50"></div>
+            <span class="px-4 text-label-md font-label-md text-on-surface-variant">or register manually</span>
+            <div class="flex-1 h-px bg-outline-variant/50"></div>
+          </div>
+
+          <!-- Manual Registration Form -->
+          <form id="registrationForm" method="POST" action="/register" class="space-y-5">
+            <div class="relative">
+              <input type="email" id="email" name="email" required class="peer w-full px-4 pt-6 pb-2 border border-outline-variant rounded-lg text-body-md font-body-md text-on-surface bg-surface-white focus:outline-none focus:border-primary-container focus:ring-1 focus:ring-primary-container transition-colors placeholder-transparent" placeholder=" " autocomplete="email">
+              <label for="email" class="absolute left-4 top-2 text-label-md font-label-md text-on-surface-variant transition-all peer-placeholder-shown:top-4 peer-placeholder-shown:text-body-md peer-placeholder-shown:font-body-md peer-focus:top-2 peer-focus:text-label-md peer-focus:text-primary-container pointer-events-none">Email Address <span class="text-error">*</span></label>
+            </div>
+
+            <!-- Email Verification Section -->
+            <div id="emailVerificationSection" class="hidden space-y-3">
+              <div class="flex gap-2">
+                <button type="button" id="sendCodeBtn" data-track="true" data-event-name="send_verification_code" data-category="conversion" data-label="Send Verification Code" class="flex-1 py-2.5 px-4 bg-primary-container text-on-primary font-label-md font-medium rounded-lg hover:bg-trust-blue transition-all duration-300 text-sm">
+                  <span class="material-symbols-outlined text-sm align-middle mr-1">mail</span>
+                  Send Verification Code
                 </button>
-              </div> -->
+              </div>
 
-              <!-- Registration Options (After clicking Continue) -->
-              <div id="registrationOptions">
-                <div class="text-center mb-8">
-                  <div class="w-16 h-16 bg-gradient-to-r from-primary to-secondary rounded-full flex items-center justify-center mx-auto mb-4">
-                    <i class="ri-user-add-line text-2xl text-white"></i>
-                  </div>
-                  <h2 class="text-2xl font-bold text-gray-800 font-['Playfair_Display']">Create Your Profile Today</h2>
-                  <p class="text-gray-600 mt-2">Choose your registration method</p>
-                </div>
-
-                <% if (typeof error !== 'undefined' && error) { %>
-                <div class="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg">
-                  <div class="flex items-center gap-2">
-                    <i class="ri-error-warning-line text-red-500"></i>
-                    <p class="text-red-600 text-sm font-medium"><%= error %></p>
-                  </div>
-                </div>
-                <% } %>
-
-                <!-- Google Sign Up -->
-                <a href="/auth/google" data-track="true" data-event-name="register_google" data-category="auth" data-label="Continue with Google" class="w-full inline-flex items-center justify-center gap-3 px-6 py-3 border-2 border-gray-300 bg-white text-gray-700 hover:bg-gray-50 hover:border-gray-400 transition-all duration-300 rounded-xl text-base font-medium mb-4">
-                  <svg class="w-5 h-5" viewBox="0 0 24 24">
-                    <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
-                    <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
-                    <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
-                    <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
-                  </svg>
-                  <span>Continue with Google</span>
-                </a>
-
-                <div class="flex items-center my-6">
-                  <div class="flex-1 border-t border-gray-300"></div>
-                  <span class="px-4 text-sm text-gray-500 bg-white">or register manually</span>
-                  <div class="flex-1 border-t border-gray-300"></div>
-                </div>
-
-                <!-- Manual Registration Form -->
-                <form id="registrationForm" method="POST" action="/register" class="space-y-4">
-                  <div class="space-y-2">
-                    <label for="email" class="block text-sm font-medium text-gray-700">Email Address <span class="text-red-500">*</span></label>
-                    <div class="relative">
-                      <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <i class="ri-mail-line text-gray-400"></i>
-                      </div>
-                      <input type="email" id="email" name="email" required class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="Enter your email address">
-                    </div>
-                  </div>
-
-                  <!-- Email Verification Section -->
-                  <div id="emailVerificationSection" class="hidden space-y-3">
-                    <div class="flex gap-2">
-                      <button type="button" id="sendCodeBtn" data-track="true" data-event-name="send_verification_code" data-category="conversion" data-label="Send Verification Code" class="flex-1 py-2.5 px-4 bg-secondary text-white font-medium rounded-xl hover:bg-purple-700 transition-all duration-300 text-sm">
-                        <i class="ri-mail-send-line mr-1"></i>
-                        Send Verification Code
-                      </button>
-                    </div>
-                    
-                    <div id="verificationCodeWrapper" class="hidden space-y-2">
-                      <label for="verificationCode" class="block text-sm font-medium text-gray-700">Verification Code <span class="text-red-500">*</span></label>
-                      <div class="flex gap-2">
-                        <div class="relative flex-1">
-                          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                            <i class="ri-key-2-line text-gray-400"></i>
-                          </div>
-                          <input type="text" id="verificationCode" name="verificationCode" maxlength="6" class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white text-center tracking-widest font-mono" placeholder="Enter 4-digit code">
-                        </div>
-                        <button type="button" id="verifyCodeBtn" data-track="true" data-event-name="verify_email_code" data-category="conversion" data-label="Verify Email" class="px-4 py-2.5 bg-green-500 text-white font-medium rounded-xl hover:bg-green-600 transition-all duration-300 text-sm">
-                          Verify
-                        </button>
-                      </div>
-                      <p id="codeError" class="hidden text-sm text-red-600"></p>
-                      <p id="codeSentMessage" class="text-sm text-green-600"><i class="ri-check-line"></i> Code sent to your email. Please check your inbox.</p>
-                    </div>
-                    
-                    <!-- Email Verified Badge -->
-                    <div id="emailVerifiedBadge" class="hidden flex items-center gap-2 p-3 bg-green-50 border border-green-200 rounded-xl">
-                      <i class="ri-checkbox-circle-fill text-green-500 text-xl"></i>
-                      <span class="text-green-700 font-medium">Email Verified</span>
-                    </div>
-                  </div>
-                  
-                  <input type="hidden" id="emailVerified" name="emailVerified" value="false">
-
-                  <div class="space-y-2">
-                    <label for="password" class="block text-sm font-medium text-gray-700">Password <span class="text-red-500">*</span></label>
-                    <div class="relative">
-                      <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <i class="ri-lock-line text-gray-400"></i>
-                      </div>
-                      <input type="password" id="password" name="password" required minlength="5" class="block w-full pl-10 pr-10 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="Create a password (min 5 characters)">
-                      <button type="button" class="toggle-password absolute inset-y-0 right-0 pr-3 flex items-center" data-target="password">
-                        <i class="ri-eye-off-line text-gray-400 hover:text-gray-600"></i>
-                      </button>
-                    </div>
-                  </div>
-
-                  <div class="space-y-2">
-                    <label for="confirmPassword" class="block text-sm font-medium text-gray-700">Confirm Password <span class="text-red-500">*</span></label>
-                    <div class="relative">
-                      <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <i class="ri-lock-line text-gray-400"></i>
-                      </div>
-                      <input type="password" id="confirmPassword" name="confirmPassword" required minlength="5" class="block w-full pl-10 pr-10 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="Confirm your password">
-                      <button type="button" class="toggle-password absolute inset-y-0 right-0 pr-3 flex items-center" data-target="confirmPassword">
-                        <i class="ri-eye-off-line text-gray-400 hover:text-gray-600"></i>
-                      </button>
-                    </div>
-                    <p id="passwordError" class="hidden text-sm text-red-600 mt-1"></p>
-                  </div>
-
-                  <button type="submit" id="submitBtn" disabled data-track="true" data-event-name="register_submit" data-category="conversion" data-label="Create Account" class="w-full py-3 px-6 bg-gray-400 text-white font-semibold rounded-xl cursor-not-allowed transition-all duration-300 ripple material-shadow">
-                    Create Account
+              <div id="verificationCodeWrapper" class="hidden space-y-2">
+                <label for="verificationCode" class="block text-label-md font-label-md text-on-surface-variant">Verification Code <span class="text-error">*</span></label>
+                <div class="flex gap-2">
+                  <input type="text" id="verificationCode" name="verificationCode" maxlength="6" class="block w-full px-4 py-2.5 border border-outline-variant rounded-lg focus:outline-none focus:border-primary-container focus:ring-1 focus:ring-primary-container text-on-surface placeholder-on-surface-variant bg-surface-white text-center tracking-widest font-mono" placeholder="Enter 4-digit code">
+                  <button type="button" id="verifyCodeBtn" data-track="true" data-event-name="verify_email_code" data-category="conversion" data-label="Verify Email" class="px-4 py-2.5 bg-halal-green text-on-primary font-medium rounded-lg hover:bg-halal-green/90 transition-all duration-300 text-sm whitespace-nowrap">
+                    Verify
                   </button>
-                  <p id="submitHelp" class="text-xs text-gray-500 text-center">Please verify your email first to create an account</p>
-                </form>
-
-                <div class="text-center text-sm mt-6">
-                  <span class="text-gray-600">Already have an account?</span>
-                  <a href="/login" data-track="true" data-event-name="login_from_register" data-category="navigation" data-label="Login from Register" class="font-medium text-primary hover:text-pink-600 transition-colors duration-300 ml-1">Login here</a>
                 </div>
+                <p id="codeError" class="hidden text-sm text-error"></p>
+                <p id="codeSentMessage" class="text-sm text-halal-green"><i class="ri-check-line"></i> Code sent to your email. Please check your inbox.</p>
+              </div>
+
+              <!-- Email Verified Badge -->
+              <div id="emailVerifiedBadge" class="hidden flex items-center gap-2 p-3 bg-halal-green/10 border border-halal-green/30 rounded-lg">
+                <span class="material-symbols-outlined text-halal-green" style="font-variation-settings: 'FILL' 1;">verified</span>
+                <span class="text-halal-green font-medium">Email Verified</span>
               </div>
             </div>
+
+            <input type="hidden" id="emailVerified" name="emailVerified" value="false">
+
+            <div class="relative">
+              <input type="password" id="password" name="password" required minlength="5" class="peer w-full px-4 pt-6 pb-2 border border-outline-variant rounded-lg text-body-md font-body-md text-on-surface bg-surface-white focus:outline-none focus:border-primary-container focus:ring-1 focus:ring-primary-container transition-colors placeholder-transparent pr-12" placeholder=" " autocomplete="new-password">
+              <label for="password" class="absolute left-4 top-2 text-label-md font-label-md text-on-surface-variant transition-all peer-placeholder-shown:top-4 peer-placeholder-shown:text-body-md peer-placeholder-shown:font-body-md peer-focus:top-2 peer-focus:text-label-md peer-focus:text-primary-container pointer-events-none">Password <span class="text-error">*</span></label>
+              <button type="button" class="toggle-password absolute inset-y-0 right-0 pr-3 flex items-center" data-target="password" aria-label="Toggle password visibility">
+                <i class="ri-eye-off-line text-gray-400 hover:text-gray-600"></i>
+              </button>
+            </div>
+
+            <div class="relative">
+              <input type="password" id="confirmPassword" name="confirmPassword" required minlength="5" class="peer w-full px-4 pt-6 pb-2 border border-outline-variant rounded-lg text-body-md font-body-md text-on-surface bg-surface-white focus:outline-none focus:border-primary-container focus:ring-1 focus:ring-primary-container transition-colors placeholder-transparent pr-12" placeholder=" " autocomplete="new-password">
+              <label for="confirmPassword" class="absolute left-4 top-2 text-label-md font-label-md text-on-surface-variant transition-all peer-placeholder-shown:top-4 peer-placeholder-shown:text-body-md peer-placeholder-shown:font-body-md peer-focus:top-2 peer-focus:text-label-md peer-focus:text-primary-container pointer-events-none">Confirm Password <span class="text-error">*</span></label>
+              <button type="button" class="toggle-password absolute inset-y-0 right-0 pr-3 flex items-center" data-target="confirmPassword" aria-label="Toggle password visibility">
+                <i class="ri-eye-off-line text-gray-400 hover:text-gray-600"></i>
+              </button>
+              <p id="passwordError" class="hidden text-sm text-error mt-1"></p>
+            </div>
+
+            <button type="submit" id="submitBtn" disabled data-track="true" data-event-name="register_submit" data-category="conversion" data-label="Create Account" class="w-full py-3 px-6 bg-gray-400 text-white font-semibold rounded-lg cursor-not-allowed transition-all duration-300">
+              Create Account
+            </button>
+            <p id="submitHelp" class="text-label-md font-label-md text-on-surface-variant text-center">Please verify your email first to create an account</p>
+          </form>
+
+          <div class="text-center text-body-md font-body-md mt-6">
+            <span class="text-on-surface-variant">Already have an account?</span>
+            <a href="/login" data-track="true" data-event-name="login_from_register" data-category="navigation" data-label="Login from Register" class="font-medium text-primary-container hover:text-trust-blue transition-colors duration-300 ml-1">Login here</a>
           </div>
         </div>
       </div>

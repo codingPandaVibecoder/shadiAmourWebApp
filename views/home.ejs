@@ -16,7 +16,7 @@
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
   <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
   <link rel="manifest" href="/images/site.webmanifest">
-  <meta name="theme-color" content="#E91E63">
+  <meta name="theme-color" content="#00113a">
 
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
@@ -44,124 +44,6 @@
   <link rel="stylesheet" href="/css/output.css">
   <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css"></noscript>
-  <style>
-    :where([class^="ri-"])::before {
-      content: "\f3c2";
-    }
-
-    .material-shadow {
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    .material-shadow-hover {
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
-    }
-
-    .material-shadow-elevated {
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
-    }
-
-    .ripple {
-      position: relative;
-      overflow: hidden;
-    }
-
-    .ripple::before {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 0;
-      height: 0;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.3);
-      transform: translate(-50%, -50%);
-      transition: width 0.6s, height 0.6s;
-    }
-
-    .ripple:active::before {
-      width: 300px;
-      height: 300px;
-    }
-
-    .gradient-bg {
-      background: linear-gradient(135deg, #E91E63 0%, #673AB7 100%);
-    }
-
-    /* Review card hover effects */
-    .group:hover .w-12 {
-      transform: scale(1.1);
-      transition: transform 0.3s ease;
-    }
-
-    /* Staggered animation for reviews */
-    .reviews-grid {
-      animation: fadeInUp 0.8s ease-out;
-    }
-
-    @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(30px);
-      }
-
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    /* Review quote styling */
-    .review-quote::before {
-      content: '"';
-      font-size: 2rem;
-      color: #E91E63;
-      opacity: 0.3;
-      font-family: 'Playfair Display', serif;
-    }
-
-    /* Section Distinguishability - Reviews */
-    .reviews-section {
-      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-      position: relative;
-    }
-
-
-
-    /* Review Cards Hover Effect */
-    .reviews-section .group:hover {
-      transform: translateY(-8px);
-    }
-
-    .reviews-section .group:hover .w-12 {
-      transform: scale(1.15) rotate(5deg);
-      transition: transform 0.4s ease;
-    }
-
-    /* Share Experience Card Animation */
-    .reviews-section a[target="_blank"]:hover {
-      animation: pulse-glow 0.6s ease-in-out;
-    }
-
-    @keyframes pulse-glow {
-
-      0%,
-      100% {
-        box-shadow: 0 0 20px rgba(59, 130, 246, 0.4);
-      }
-
-      50% {
-        box-shadow: 0 0 40px rgba(59, 130, 246, 0.6);
-      }
-    }
-
-    /* Section Distinguishability - Newsletter */
-    .newsletter-section {
-      background: linear-gradient(135deg, #fef7ff 0%, #f3e8ff 50%, #fef7ff 100%);
-      border-top: 3px solid #E91E63;
-      border-bottom: 3px solid #673AB7;
-    }
-  </style>
   <!-- Structured Data for SEO -->
   <script type="application/ld+json">
     {
@@ -364,1459 +246,1219 @@
   <%- include('partials/analytics') %>
 </head>
 
-<body class="bg-gray-50 font-['Roboto']">
+<body class="bg-background text-on-surface font-body-md overflow-x-hidden">
   <%- include('partials/header') %>
 
-  <main class="pt-24 min-h-screen">
-    <div class="max-w-6xl mx-auto px-6">
-      <div class="text-center mb-12">
-        <h1 class="text-4xl font-bold text-gray-800 mb-4 font-['Playfair_Display']">
-          Shadi Amour | Halal Muslim Matchmaking for Young Singles in the UK
-        </h1>
-        <p class="text-lg text-gray-600 max-w-3xl mx-auto">
-          Join Shadi Amour — the modern halal Muslim matchmaking platform where young Muslims find love and marriage with purpose across London, Birmingham, and Manchester.
-        </p>
-      </div>
-
-      <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-        <a href="/profiles?gender=male" data-track="true" data-event-name="browse_men_click" data-category="engagement" data-label="Browse Muslim Men" class="bg-white rounded-2xl material-shadow hover:material-shadow-hover transition-all duration-300 cursor-pointer group overflow-hidden">
-          <div class="p-8 text-center">
-            <div class="mb-6 relative">
-              <img src="https://res.cloudinary.com/dhuc2plh0/image/upload/c_fill,w_700,h_450,q_auto,f_auto/v1759650466/covermain_tfda9t.jpg" srcset="https://res.cloudinary.com/dhuc2plh0/image/upload/c_fill,w_400,h_260,q_auto,f_auto/v1759650466/covermain_tfda9t.jpg 400w, https://res.cloudinary.com/dhuc2plh0/image/upload/c_fill,w_700,h_450,q_auto,f_auto/v1759650466/covermain_tfda9t.jpg 700w" sizes="(max-width: 768px) 100vw, 50vw" alt="Muslim men for marriage in UK - halal matchmaking service London Leicester" class="w-full h-64 object-cover object-top rounded-xl group-hover:scale-105 transition-transform duration-500" width="700" height="450" fetchpriority="high">
+  <main class="min-h-screen pt-[92px]">
+    <!-- ── Hero Section ─────────────────────────────────────────────────────── -->
+    <section class="relative min-h-[85vh] flex items-center pt-12 pb-section-padding px-margin-x max-w-container-max mx-auto overflow-hidden">
+      <div class="grid lg:grid-cols-2 gap-12 items-center relative z-10">
+        <div class="space-y-8 animate-in fade-in slide-in-from-left duration-1000">
+          <span class="bg-primary-fixed text-on-primary-fixed px-4 py-1 rounded-full text-label-md font-label-md inline-block uppercase tracking-widest">Premium Matrimonial Service</span>
+          <h1 class="text-4xl md:text-display-lg font-display-lg text-primary leading-tight">
+            Shadi Amour | Halal Muslim Matchmaking for Young Singles in the UK
+          </h1>
+          <p class="text-body-lg font-body-lg text-on-surface-variant max-w-xl">
+            Join Shadi Amour — the modern halal Muslim matchmaking platform where young Muslims find love and marriage with purpose across London, Birmingham, and Manchester.
+          </p>
+          <div class="flex flex-wrap gap-4 pt-4">
+            <a class="bg-primary text-on-primary px-10 py-5 rounded-xl font-bold text-body-md shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all flex items-center gap-2" href="/register" data-track="true" data-event-name="hero_register_click" data-category="cta" data-label="Hero Register Now Free">
+              Register Now Free <span class="material-symbols-outlined">arrow_forward</span>
+            </a>
+            <a class="border-2 border-primary text-primary px-10 py-5 rounded-xl font-bold text-body-md hover:bg-primary/5 transition-all" href="#how-it-works">
+              How It Works
+            </a>
+          </div>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-6 pt-10 border-t border-outline-variant">
+            <div class="flex flex-col items-center sm:items-start text-center sm:text-left">
+              <span class="material-symbols-outlined text-primary text-3xl mb-2" style="font-variation-settings: 'FILL' 1;">verified_user</span>
+              <span class="font-bold text-primary block">Verified Profiles</span>
+              <span class="text-label-md text-on-surface-variant">Every user is moderated</span>
             </div>
-            <h3 class="text-3xl font-bold text-gray-800 mb-4 font-['Playfair_Display'] group-hover:text-primary transition-colors duration-300">Find Muslim Men for Marriage UK</h3>
-            <p class="text-gray-600 mb-6">Discover your ideal Muslim husband through our verified halal Muslim matchmaking service. Connect with single Muslim men seeking serious marriage across London, Birmingham, Manchester, and Leicester. Our Muslim marriage app features Pakistani, Bangladeshi, and British Muslim singles ready for halal dating and modern Nikkah partnerships.</p>
-            <div class="flex items-center justify-center">
-              <div class="w-6 h-6 flex items-center justify-center text-primary group-hover:translate-x-2 transition-transform duration-300">
-                <i class="ri-arrow-right-line ri-lg"></i>
+            <div class="flex flex-col items-center sm:items-start text-center sm:text-left">
+              <span class="material-symbols-outlined text-primary text-3xl mb-2" style="font-variation-settings: 'FILL' 1;">mosque</span>
+              <span class="font-bold text-primary block">Halal Only</span>
+              <span class="text-label-md text-on-surface-variant">Marriage-focused platform</span>
+            </div>
+            <div class="flex flex-col items-center sm:items-start text-center sm:text-left">
+              <span class="material-symbols-outlined text-primary text-3xl mb-2" style="font-variation-settings: 'FILL' 1;">lock</span>
+              <span class="font-bold text-primary block">Privacy First</span>
+              <span class="text-label-md text-on-surface-variant">Your data stays protected</span>
+            </div>
+            <div class="flex flex-col items-center sm:items-start text-center sm:text-left">
+              <span class="material-symbols-outlined text-primary text-3xl mb-2" style="font-variation-settings: 'FILL' 1;">location_on</span>
+              <span class="font-bold text-primary block">UK Focused</span>
+              <span class="text-label-md text-on-surface-variant">London • Leicester • Birmingham</span>
+            </div>
+          </div>
+        </div>
+        <!-- Hero Image Asymmetric Grid -->
+        <div class="relative grid grid-cols-2 gap-4 h-[600px] animate-in fade-in slide-in-from-right duration-1000">
+          <div class="space-y-4 pt-12">
+            <div class="rounded-3xl overflow-hidden h-72 shadow-xl hover:scale-105 transition-transform duration-500">
+              <img class="w-full h-full object-cover object-top" src="https://res.cloudinary.com/dhuc2plh0/image/upload/c_fill,w_700,h_450,q_auto,f_auto/v1759650466/covermain_tfda9t.jpg" srcset="https://res.cloudinary.com/dhuc2plh0/image/upload/c_fill,w_400,h_260,q_auto,f_auto/v1759650466/covermain_tfda9t.jpg 400w, https://res.cloudinary.com/dhuc2plh0/image/upload/c_fill,w_700,h_450,q_auto,f_auto/v1759650466/covermain_tfda9t.jpg 700w" sizes="(max-width: 768px) 100vw, 50vw" alt="Muslim men for marriage in UK - halal matchmaking service London Leicester" width="700" height="450" fetchpriority="high">
+            </div>
+            <div class="bg-premium-gold rounded-3xl h-32 flex items-center justify-center text-white p-6 shadow-lg">
+              <div class="text-center">
+                <div class="text-headline-md font-bold">10k+</div>
+                <div class="text-label-md uppercase tracking-tighter">Verified Singles</div>
               </div>
             </div>
           </div>
-        </a>
-
-        <a href="/profiles?gender=female" data-track="true" data-event-name="browse_women_click" data-category="engagement" data-label="Browse Muslim Women" class="bg-white rounded-2xl material-shadow hover:material-shadow-hover transition-all duration-300 cursor-pointer group overflow-hidden">
-          <div class="p-8 text-center">
-            <div class="mb-6 relative">
+          <div class="space-y-4">
+            <div class="bg-primary rounded-3xl h-32 flex items-center justify-center text-on-primary p-6 shadow-lg">
+              <div class="text-center">
+                <div class="text-headline-md font-bold">100%</div>
+                <div class="text-label-md uppercase tracking-tighter">Halal Process</div>
+              </div>
+            </div>
+            <div class="rounded-3xl overflow-hidden h-[450px] shadow-2xl border-8 border-white hover:scale-105 transition-transform duration-500">
               <picture>
                 <source type="image/webp" srcset="/images/homepagewoman.webp">
-                <img src="/images/homepagewoman.jpg" alt="Muslim women for marriage UK - Islamic matrimonial service Birmingham London" class="w-full h-64 object-cover object-top rounded-xl group-hover:scale-105 transition-transform duration-500" width="700" height="450" fetchpriority="high">
+                <img class="w-full h-full object-cover object-top" src="/images/homepagewoman.jpg" alt="Muslim women for marriage UK - Islamic matrimonial service Birmingham London" width="700" height="450" fetchpriority="high">
               </picture>
             </div>
-            <h3 class="text-3xl font-bold text-gray-800 mb-4 font-['Playfair_Display'] group-hover:text-primary transition-colors duration-300">Muslim Women for Marriage</h3>
-            <p class="text-gray-600 mb-6">Browse authentic profiles of Muslim women seeking halal love marriage in the UK. Our online Muslim matchmaking platform connects you with single Muslim women ready for Islamic matrimony, Muslim engagement, and serious Muslim relationships. Find your Muslim soulmate among verified profiles in London and beyond.</p>
-
-            <div class="flex items-center justify-center">
-              <div class="w-6 h-6 flex items-center justify-center text-primary group-hover:translate-x-2 transition-transform duration-300">
-                <i class="ri-arrow-right-line ri-lg"></i>
-              </div>
-            </div>
           </div>
+        </div>
+      </div>
+      <!-- Atmospheric Gradient -->
+      <div class="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-primary/5 to-transparent -z-10 pointer-events-none"></div>
+    </section>
+
+    <!-- ── Search Selection ─────────────────────────────────────────────────── -->
+    <section class="bg-neutral-gray py-12 px-margin-x">
+      <div class="max-w-container-max mx-auto grid md:grid-cols-2 gap-8">
+        <a class="group bg-white p-8 rounded-2xl shadow-sm hover:shadow-xl transition-all border border-outline-variant flex items-center justify-between overflow-hidden relative" href="/profiles?gender=male" data-track="true" data-event-name="browse_men_click" data-category="engagement" data-label="Browse Muslim Men">
+          <div class="relative z-10">
+            <h3 class="text-headline-md font-headline-md text-primary mb-2">Find Muslim Men for Marriage UK</h3>
+            <p class="text-on-surface-variant max-w-sm">Discover your ideal Muslim husband through our verified halal Muslim matchmaking service. Connect with single Muslim men seeking serious marriage across London, Birmingham, Manchester, and Leicester. Our Muslim marriage app features Pakistani, Bangladeshi, and British Muslim singles ready for halal dating and modern Nikkah partnerships.</p>
+            <span class="mt-4 inline-block font-bold text-primary group-hover:translate-x-2 transition-transform">Browse Men →</span>
+          </div>
+          <span class="material-symbols-outlined text-8xl text-primary/5 absolute -right-4 -bottom-4 group-hover:scale-110 transition-transform" style="font-variation-settings: 'FILL' 1;">person</span>
+        </a>
+        <a class="group bg-white p-8 rounded-2xl shadow-sm hover:shadow-xl transition-all border border-outline-variant flex items-center justify-between overflow-hidden relative" href="/profiles?gender=female" data-track="true" data-event-name="browse_women_click" data-category="engagement" data-label="Browse Muslim Women">
+          <div class="relative z-10">
+            <h3 class="text-headline-md font-headline-md text-primary mb-2">Muslim Women for Marriage</h3>
+            <p class="text-on-surface-variant max-w-sm">Browse authentic profiles of Muslim women seeking halal love marriage in the UK. Our online Muslim matchmaking platform connects you with single Muslim women ready for Islamic matrimony, Muslim engagement, and serious Muslim relationships. Find your Muslim soulmate among verified profiles in London and beyond.</p>
+            <span class="mt-4 inline-block font-bold text-primary group-hover:translate-x-2 transition-transform">Browse Women →</span>
+          </div>
+          <span class="material-symbols-outlined text-8xl text-primary/5 absolute -right-4 -bottom-4 group-hover:scale-110 transition-transform" style="font-variation-settings: 'FILL' 1;">woman</span>
         </a>
       </div>
+    </section>
 
-    </div>
-
-    <!-- Trust Bar Section -->
-    <div class="bg-white py-8 mt-16 border-y border-gray-100">
-      <div class="max-w-6xl mx-auto px-6">
-        <div class="flex flex-wrap items-center justify-center gap-8 md:gap-12">
-          <div class="flex items-center gap-3">
-            <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
-              <i class="ri-shield-check-line text-2xl text-primary"></i>
-            </div>
-            <div>
-              <p class="font-semibold text-gray-800">Verified Profiles</p>
-              <p class="text-sm text-gray-500">Every user is moderated</p>
-            </div>
-          </div>
-          <div class="flex items-center gap-3">
-            <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
-              <i class="ri-heart-3-line text-2xl text-primary"></i>
-            </div>
-            <div>
-              <p class="font-semibold text-gray-800">Halal Only</p>
-              <p class="text-sm text-gray-500">Marriage-focused platform</p>
-            </div>
-          </div>
-          <div class="flex items-center gap-3">
-            <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
-              <i class="ri-lock-line text-2xl text-primary"></i>
-            </div>
-            <div>
-              <p class="font-semibold text-gray-800">Privacy First</p>
-              <p class="text-sm text-gray-500">Your data stays protected</p>
-            </div>
-          </div>
-          <div class="flex items-center gap-3">
-            <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
-              <i class="ri-map-pin-line text-2xl text-primary"></i>
-            </div>
-            <div>
-              <p class="font-semibold text-gray-800">UK Focused</p>
-              <p class="text-sm text-gray-500">London • Leicester • Birmingham</p>
-            </div>
-          </div>
+    <!-- ── How It Works ─────────────────────────────────────────────────────── -->
+    <section class="py-section-padding px-margin-x max-w-container-max mx-auto text-center" id="how-it-works">
+      <h2 class="text-headline-lg font-headline-lg text-primary mb-4">How It Works</h2>
+      <p class="text-on-surface-variant mb-16">Find your Muslim spouse in four simple steps</p>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-gutter relative">
+        <!-- Connector Line (Desktop) -->
+        <div class="hidden lg:block absolute top-12 left-[10%] right-[10%] h-0.5 bg-primary/10 -z-10"></div>
+        <!-- Step 1 -->
+        <div class="bg-white p-8 rounded-2xl border border-outline-variant relative group">
+          <div class="w-16 h-16 bg-primary text-on-primary rounded-full flex items-center justify-center font-bold text-2xl mx-auto mb-6 group-hover:scale-110 transition-transform">1</div>
+          <h3 class="font-bold text-lg text-primary mb-3">Create Your Free Profile</h3>
+          <p class="text-on-surface-variant text-sm">Takes 2 minutes — no payment required</p>
+        </div>
+        <!-- Step 2 -->
+        <div class="bg-white p-8 rounded-2xl border border-outline-variant relative group">
+          <div class="w-16 h-16 bg-primary text-on-primary rounded-full flex items-center justify-center font-bold text-2xl mx-auto mb-6 group-hover:scale-110 transition-transform">2</div>
+          <h3 class="font-bold text-lg text-primary mb-3">Browse Verified UK Muslim Profiles</h3>
+          <p class="text-on-surface-variant text-sm">Filter by city, age, background and more</p>
+        </div>
+        <!-- Step 3 -->
+        <div class="bg-white p-8 rounded-2xl border border-outline-variant relative group">
+          <div class="w-16 h-16 bg-primary text-on-primary rounded-full flex items-center justify-center font-bold text-2xl mx-auto mb-6 group-hover:scale-110 transition-transform">3</div>
+          <h3 class="font-bold text-lg text-primary mb-3">Send Connection Requests</h3>
+          <p class="text-on-surface-variant text-sm">You are in full control of who you connect with</p>
+        </div>
+        <!-- Step 4 -->
+        <div class="bg-white p-8 rounded-2xl border border-outline-variant relative group">
+          <div class="w-16 h-16 bg-primary text-on-primary rounded-full flex items-center justify-center font-bold text-2xl mx-auto mb-6 group-hover:scale-110 transition-transform">4</div>
+          <h3 class="font-bold text-lg text-primary mb-3">Connect Through Halal Chat</h3>
+          <p class="text-on-surface-variant text-sm">Respectful, private, and purpose-built for marriage</p>
         </div>
       </div>
-    </div>
-
-    <!-- How It Works Section -->
-    <div class="py-20 bg-gray-50">
-      <div class="max-w-6xl mx-auto px-6">
-        <div class="text-center mb-16">
-          <h2 class="text-4xl font-bold text-gray-800 mb-4 font-['Playfair_Display']">How It Works</h2>
-          <p class="text-lg text-gray-600 max-w-2xl mx-auto">Find your Muslim spouse in four simple steps</p>
-        </div>
-
-        <div class="grid md:grid-cols-4 gap-8">
-          <!-- Step 1 -->
-          <div class="text-center group">
-            <div class="relative mb-6">
-              <div class="w-20 h-20 mx-auto bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center text-white text-3xl font-bold group-hover:scale-110 transition-transform duration-300">
-                1
-              </div>
-              <div class="hidden md:block absolute top-1/2 left-full w-full h-0.5 bg-gradient-to-r from-primary/50 to-transparent -translate-y-1/2"></div>
-            </div>
-            <h3 class="text-xl font-bold text-gray-800 mb-2">Create Your Free Profile</h3>
-            <p class="text-gray-600">Takes 2 minutes — no payment required</p>
-          </div>
-
-          <!-- Step 2 -->
-          <div class="text-center group">
-            <div class="relative mb-6">
-              <div class="w-20 h-20 mx-auto bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center text-white text-3xl font-bold group-hover:scale-110 transition-transform duration-300">
-                2
-              </div>
-              <div class="hidden md:block absolute top-1/2 left-full w-full h-0.5 bg-gradient-to-r from-primary/50 to-transparent -translate-y-1/2"></div>
-            </div>
-            <h3 class="text-xl font-bold text-gray-800 mb-2">Browse Verified UK Muslim Profiles</h3>
-            <p class="text-gray-600">Filter by city, age, background and more</p>
-          </div>
-
-          <!-- Step 3 -->
-          <div class="text-center group">
-            <div class="relative mb-6">
-              <div class="w-20 h-20 mx-auto bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center text-white text-3xl font-bold group-hover:scale-110 transition-transform duration-300">
-                3
-              </div>
-              <div class="hidden md:block absolute top-1/2 left-full w-full h-0.5 bg-gradient-to-r from-primary/50 to-transparent -translate-y-1/2"></div>
-            </div>
-            <h3 class="text-xl font-bold text-gray-800 mb-2">Send Connection Requests</h3>
-            <p class="text-gray-600">You are in full control of who you connect with</p>
-          </div>
-
-          <!-- Step 4 -->
-          <div class="text-center group">
-            <div class="relative mb-6">
-              <div class="w-20 h-20 mx-auto bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center text-white text-3xl font-bold group-hover:scale-110 transition-transform duration-300">
-                4
-              </div>
-            </div>
-            <h3 class="text-xl font-bold text-gray-800 mb-2">Connect Through Halal Chat</h3>
-            <p class="text-gray-600">Respectful, private, and purpose-built for marriage</p>
-          </div>
-        </div>
-
-        <!-- CTAs -->
-        <div class="flex flex-wrap items-center justify-center gap-4 mt-12">
-          <a href="/register" data-track="true" data-event-name="cta_register_click" data-category="cta" data-label="Create Your Free Profile" class="gradient-bg text-white font-bold py-4 px-8 rounded-button hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 ripple text-lg">
-            <i class="ri-user-add-line mr-2"></i>Create Your Free Profile
-          </a>
-          <a href="/profiles" data-track="true" data-event-name="cta_browse_profiles" data-category="cta" data-label="Browse Profiles" class="bg-white text-primary font-bold py-4 px-8 rounded-button border-2 border-primary hover:bg-primary hover:text-white transition-all duration-300 text-lg">
-            <i class="ri-search-line mr-2"></i>Browse Profiles
-          </a>
-        </div>
+      <div class="mt-12 flex justify-center gap-4">
+        <a class="bg-primary text-on-primary px-8 py-4 rounded-xl font-bold flex items-center gap-2 hover:bg-primary-container transition-all" href="/register" data-track="true" data-event-name="cta_register_click" data-category="cta" data-label="Create Your Free Profile">
+          <span class="material-symbols-outlined">person_add</span> Create Your Free Profile
+        </a>
+        <a class="border-2 border-primary text-primary px-8 py-4 rounded-xl font-bold flex items-center gap-2 hover:bg-primary/5 transition-all" href="/profiles" data-track="true" data-event-name="cta_browse_profiles" data-category="cta" data-label="Browse Profiles">
+          <span class="material-symbols-outlined">search</span> Browse Profiles
+        </a>
       </div>
-    </div>
+    </section>
 
-    <!-- Muslim Marriage Across UK Cities Section -->
-    <!-- Recently Added by Our Team Section -->
+    <!-- ── Recently Added by Our Team (Bento Grid Style) ────────────────────── -->
     <% if (typeof staffAddedProfiles !== 'undefined' && staffAddedProfiles.length > 0) { %>
-    <div class="py-20 bg-gray-50">
-      <div class="max-w-6xl mx-auto px-6">
-        <div class="text-center mb-12">
-          <h2 class="text-4xl font-bold text-gray-800 mb-4 font-['Playfair_Display']">Recently Added by Our Team</h2>
-          <p class="text-lg text-gray-600 max-w-2xl mx-auto">Hand-picked profiles added and verified by our matchmaking team</p>
+    <section class="py-section-padding bg-primary text-on-primary overflow-hidden">
+      <div class="max-w-container-max mx-auto px-margin-x">
+        <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
+          <div>
+            <h2 class="text-headline-lg font-headline-lg mb-4">Recently Added by Our Team</h2>
+            <p class="text-on-primary-container max-w-xl">Hand-picked profiles added and verified by our matchmaking team</p>
+          </div>
+          <a class="text-premium-gold font-bold hover:underline flex items-center gap-2" href="/profiles/addedBy/staff" data-track="true" data-event-name="staff_profiles_view_more" data-category="engagement" data-label="View More Staff-Added Profiles">View More Staff-Added Profiles <span class="material-symbols-outlined">open_in_new</span></a>
         </div>
-
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           <% staffAddedProfiles.slice(0, 4).forEach(function(profile) { %>
-            <a href="/profiles/<%= profile.profileSlug || profile._id %>" data-track="true" data-event-name="staff_profile_card_click" data-category="engagement" data-label="<%= profile.name || profile.username %>" class="bg-white rounded-2xl overflow-hidden material-shadow hover:material-shadow-hover transition-all duration-300 block group">
-              <div class="aspect-[4/5] relative overflow-hidden bg-gray-100">
-                <% if (profile.profilePic && profile.profilePic.url) { %>
-                  <img src="<%= profile.profilePic.url.replace('/upload/', '/upload/c_fill,w_300,h_400,q_auto,f_auto/') %>" srcset="<%= profile.profilePic.url.replace('/upload/', '/upload/c_fill,w_200,h_267,q_auto,f_auto/') %> 200w, <%= profile.profilePic.url.replace('/upload/', '/upload/c_fill,w_300,h_400,q_auto,f_auto/') %> 300w, <%= profile.profilePic.url.replace('/upload/', '/upload/c_fill,w_400,h_533,q_auto,f_auto/') %> 400w" sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 300px" alt="<%= profile.name || profile.username %><%= profile.age ? ', ' + profile.age + ' year old' : '' %><%= profile.work ? ' ' + profile.work : '' %> - Muslim marriage profile<%= profile.city ? ' in ' + profile.city : '' %>" class="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500" loading="lazy" width="300" height="400">
-                <% } else { %>
-                  <div class="w-full h-full bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center">
-                    <i class="ri-user-3-line text-6xl text-primary/40"></i>
-                  </div>
-                <% } %>
-                <div class="absolute top-2 right-2 bg-green-500 text-white px-2 py-1 rounded-full text-xs font-medium flex items-center gap-1">
-                  <i class="ri-shield-check-line"></i> Staff Verified
-                </div>
+          <a href="/profiles/<%= profile.profileSlug || profile._id %>" data-track="true" data-event-name="staff_profile_card_click" data-category="engagement" data-label="<%= profile.name || profile.username %>" class="bg-white rounded-2xl overflow-hidden group hover:-translate-y-2 transition-all duration-300 block">
+            <div class="h-64 bg-surface-container-high relative overflow-hidden">
+              <% if (profile.profilePic && profile.profilePic.url) { %>
+              <img class="w-full h-full object-cover object-top group-hover:scale-110 transition-transform duration-500" src="<%= profile.profilePic.url.replace('/upload/', '/upload/c_fill,w_300,h_400,q_auto,f_auto/') %>" srcset="<%= profile.profilePic.url.replace('/upload/', '/upload/c_fill,w_200,h_267,q_auto,f_auto/') %> 200w, <%= profile.profilePic.url.replace('/upload/', '/upload/c_fill,w_300,h_400,q_auto,f_auto/') %> 300w, <%= profile.profilePic.url.replace('/upload/', '/upload/c_fill,w_400,h_533,q_auto,f_auto/') %> 400w" sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 300px" alt="<%= profile.name || profile.username %><%= profile.age ? ', ' + profile.age + ' year old' : '' %><%= profile.work ? ' ' + profile.work : '' %> - Muslim marriage profile<%= profile.city ? ' in ' + profile.city : '' %>" loading="lazy" width="300" height="400">
+              <% } else { %>
+              <div class="w-full h-full bg-gradient-to-br from-primary/20 to-primary-fixed/20 flex items-center justify-center">
+                <span class="material-symbols-outlined text-6xl text-primary/40">person</span>
               </div>
-              <div class="p-4 text-center">
-                <h4 class="font-semibold text-gray-800 mb-1"><%= profile.name || profile.username %><% if (profile.age) { %>, <%= profile.age %><% } %></h4>
-                <p class="text-sm text-gray-500"><i class="ri-map-pin-line"></i> <%= profile.city || 'UK' %></p>
-                <% if (profile.work) { %>
-                <p class="text-xs text-gray-400 mt-1"><%= profile.work %></p>
-                <% } %>
+              <% } %>
+              <div class="absolute top-4 right-4 bg-halal-green text-white text-[10px] font-bold px-2 py-1 rounded flex items-center gap-1 shadow-md">
+                <span class="material-symbols-outlined text-[12px]" style="font-variation-settings: 'FILL' 1;">verified</span> Staff Verified
               </div>
-            </a>
+            </div>
+            <div class="p-6 text-on-surface">
+              <div class="font-bold text-lg mb-1"><%= profile.name || profile.username %><% if (profile.age) { %>, <%= profile.age %><% } %></div>
+              <div class="flex items-center text-on-surface-variant text-sm mb-3">
+                <span class="material-symbols-outlined text-sm mr-1">location_on</span> <%= profile.city || 'UK' %>
+              </div>
+              <% if (profile.work) { %>
+              <p class="text-sm line-clamp-2 text-on-surface-variant"><%= profile.work %></p>
+              <% } %>
+            </div>
+          </a>
           <% }); %>
         </div>
+      </div>
+    </section>
+    <% } %>
 
-        <div class="text-center mt-10">
-          <a href="/profiles/addedBy/staff" data-track="true" data-event-name="staff_profiles_view_more" data-category="engagement" data-label="View More Staff-Added Profiles" class="inline-flex items-center gap-2 gradient-bg text-white font-semibold py-3 px-8 rounded-button hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-300">
-            View More Staff-Added Profiles <i class="ri-arrow-right-line"></i>
+    <!-- ── Muslim Marriage Across Every Major UK City ───────────────────────── -->
+    <section class="py-section-padding px-margin-x max-w-container-max mx-auto text-center">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-headline-lg font-headline-lg text-primary mb-6">Muslim Marriage Across Every Major UK City</h2>
+        <p class="text-body-lg text-on-surface-variant leading-relaxed mb-8">
+          shadiamour connects serious Muslims seeking halal marriage across the UK — including London, Birmingham, Manchester, Bradford, Leeds, Leicester, Sheffield, and beyond. Whether you are searching for a Muslim spouse nearby or across the country, our verified profiles and halal matchmaking process make the journey easier, safer, and more dignified.
+        </p>
+        <div class="flex flex-wrap items-center justify-center gap-3">
+          <a href="/muslim-marriage-london" class="px-4 py-2 bg-neutral-gray border border-outline-variant rounded-full text-sm font-medium text-on-surface-variant hover:text-primary hover:border-primary transition-colors">London</a>
+          <a href="/muslim-marriage-birmingham" class="px-4 py-2 bg-neutral-gray border border-outline-variant rounded-full text-sm font-medium text-on-surface-variant hover:text-primary hover:border-primary transition-colors">Birmingham</a>
+          <a href="/muslim-marriage-manchester" class="px-4 py-2 bg-neutral-gray border border-outline-variant rounded-full text-sm font-medium text-on-surface-variant hover:text-primary hover:border-primary transition-colors">Manchester</a>
+          <a href="/muslim-marriage-bradford" class="px-4 py-2 bg-neutral-gray border border-outline-variant rounded-full text-sm font-medium text-on-surface-variant hover:text-primary hover:border-primary transition-colors">Bradford</a>
+          <a href="/muslim-marriage-leeds" class="px-4 py-2 bg-neutral-gray border border-outline-variant rounded-full text-sm font-medium text-on-surface-variant hover:text-primary hover:border-primary transition-colors">Leeds</a>
+          <a href="/muslim-marriage-leicester" class="px-4 py-2 bg-neutral-gray border border-outline-variant rounded-full text-sm font-medium text-on-surface-variant hover:text-primary hover:border-primary transition-colors">Leicester</a>
+          <a href="/muslim-marriage-sheffield" class="px-4 py-2 bg-neutral-gray border border-outline-variant rounded-full text-sm font-medium text-on-surface-variant hover:text-primary hover:border-primary transition-colors">Sheffield</a>
+          <a href="/profiles" class="px-4 py-2 bg-neutral-gray border border-outline-variant rounded-full text-sm font-medium text-on-surface-variant hover:text-primary hover:border-primary transition-colors">And More</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Success Stories ──────────────────────────────────────────────────── -->
+    <section class="py-section-padding px-margin-x max-w-container-max mx-auto overflow-hidden">
+      <div class="text-center mb-16">
+        <h2 class="text-headline-lg font-headline-lg text-primary mb-4">UK Muslim Marriage Success Stories</h2>
+        <p class="text-on-surface-variant max-w-2xl mx-auto mb-4">Authentic testimonials from Muslim couples who found their perfect match through our halal Muslim matchmaking service. Discover why we're the top-rated Muslim marriage app for young Muslim singles across London, Birmingham, Manchester, and the entire UK.</p>
+        <div class="flex items-center justify-center gap-2 mb-2">
+          <div class="flex text-premium-gold">
+            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+          </div>
+          <span class="font-bold text-primary">4.9/5 - Best Halal Muslim Dating Platform UK</span>
+        </div>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- Testimonial 1 -->
+        <div class="bg-surface-container-low p-8 rounded-3xl relative">
+          <span class="material-symbols-outlined text-6xl text-primary/10 absolute top-4 right-8">format_quote</span>
+          <div class="flex items-center gap-4 mb-6">
+            <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-on-primary font-bold">A</div>
+            <div>
+              <h4 class="font-bold text-primary">Ahmed K.</h4>
+              <div class="flex text-premium-gold scale-75 origin-left">
+                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+              </div>
+            </div>
+          </div>
+          <p class="text-on-surface-variant italic mb-6">"Alhamdulillah, I found my Muslim soulmate through ShadiAmour - the most trusted halal Muslim matchmaking platform in London. The service connects serious Muslim singles seeking modern Nikkah and halal love marriage. Highly recommended for young Muslim marriage seekers!"</p>
+          <span class="text-label-md text-on-surface-variant opacity-60">2 months ago</span>
+        </div>
+        <!-- Testimonial 2 -->
+        <div class="bg-surface-container-low p-8 rounded-3xl relative">
+          <span class="material-symbols-outlined text-6xl text-primary/10 absolute top-4 right-8">format_quote</span>
+          <div class="flex items-center gap-4 mb-6">
+            <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-on-primary font-bold">F</div>
+            <div>
+              <h4 class="font-bold text-primary">Fatima S.</h4>
+              <div class="flex text-premium-gold scale-75 origin-left">
+                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+              </div>
+            </div>
+          </div>
+          <p class="text-on-surface-variant italic mb-6">"Excellent Muslim matrimony service! The profiles are authentic, the process is simple, and Alhamdulillah I found my spouse here. shadiAmour is perfect for serious Muslim marriage seekers in London and beyond."</p>
+          <span class="text-label-md text-on-surface-variant opacity-60">1 month ago</span>
+        </div>
+        <!-- Testimonial 3 -->
+        <div class="bg-surface-container-low p-8 rounded-3xl relative">
+          <span class="material-symbols-outlined text-6xl text-primary/10 absolute top-4 right-8">format_quote</span>
+          <div class="flex items-center gap-4 mb-6">
+            <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-on-primary font-bold">M</div>
+            <div>
+              <h4 class="font-bold text-primary">Mohammad A.</h4>
+              <div class="flex text-premium-gold scale-75 origin-left">
+                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+              </div>
+            </div>
+          </div>
+          <p class="text-on-surface-variant italic mb-6">"This is the best Muslim marriage platform I’ve ever used. It respects Islamic principles, offers privacy, and truly connects compatible matches. A must for anyone looking for Muslim matchmaking in the UK."</p>
+          <span class="text-label-md text-on-surface-variant opacity-60">3 weeks ago</span>
+        </div>
+        <!-- Testimonial 4 -->
+        <div class="bg-surface-container-low p-8 rounded-3xl relative">
+          <span class="material-symbols-outlined text-6xl text-primary/10 absolute top-4 right-8">format_quote</span>
+          <div class="flex items-center gap-4 mb-6">
+            <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-on-primary font-bold">Z</div>
+            <div>
+              <h4 class="font-bold text-primary">Zainab H.</h4>
+              <div class="flex text-premium-gold scale-75 origin-left">
+                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+              </div>
+            </div>
+          </div>
+          <p class="text-on-surface-variant italic mb-6">"Professional and respectful service. The support team was very helpful, and the matchmaking system worked perfectly. I found my naseeb through this blessed Muslim marriage site in Leicester."</p>
+          <span class="text-label-md text-on-surface-variant opacity-60">1 week ago</span>
+        </div>
+        <!-- Testimonial 5 -->
+        <div class="bg-surface-container-low p-8 rounded-3xl relative">
+          <span class="material-symbols-outlined text-6xl text-primary/10 absolute top-4 right-8">format_quote</span>
+          <div class="flex items-center gap-4 mb-6">
+            <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-on-primary font-bold">Y</div>
+            <div>
+              <h4 class="font-bold text-primary">Yusuf M.</h4>
+              <div class="flex text-premium-gold scale-75 origin-left">
+                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+              </div>
+            </div>
+          </div>
+          <p class="text-on-surface-variant italic mb-6">"Trustworthy and reliable — shadiAmour is my go-to for Muslim matrimony. Easy to use, full of genuine profiles, and most importantly, it delivers results. Highly recommend for Muslims in London looking for marriage."</p>
+          <span class="text-label-md text-on-surface-variant opacity-60">2 weeks ago</span>
+        </div>
+        <!-- Testimonial 6 -->
+        <div class="bg-surface-container-low p-8 rounded-3xl relative">
+          <span class="material-symbols-outlined text-6xl text-primary/10 absolute top-4 right-8">format_quote</span>
+          <div class="flex items-center gap-4 mb-6">
+            <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-on-primary font-bold">A</div>
+            <div>
+              <h4 class="font-bold text-primary">Aisha R.</h4>
+              <div class="flex text-premium-gold scale-75 origin-left">
+                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+              </div>
+            </div>
+          </div>
+          <p class="text-on-surface-variant italic mb-6">"Amazing Muslim matchmaking experience! The platform balances Islamic values with modern features, making it easy to connect with serious Muslims. BarakAllahu feeki for creating such a trusted UK matrimonial service."</p>
+          <span class="text-label-md text-on-surface-variant opacity-60">4 days ago</span>
+        </div>
+      </div>
+      <div class="mt-16 bg-primary-container p-12 rounded-[40px] text-center text-on-primary">
+        <h3 class="text-headline-md mb-4">Share Your Experience</h3>
+        <p class="text-on-primary-container mb-8 max-w-md mx-auto">Help others by sharing your journey with shadiAmour. Your review matters to our growing community!</p>
+        <a class="bg-white text-primary px-10 py-4 rounded-xl font-bold inline-flex items-center gap-2 hover:scale-105 transition-transform" href="https://www.google.com/maps/place/D'Amour+Muslim/@51.528607,-0.4312449,60135m/data=!3m1!1e3!4m8!3m7!1s0x61837d7f1b1f36ff:0xd87103e4ee1a219e!8m2!3d51.5286416!4d-0.1015987!9m1!1b1!16s%2Fg%2F11xmnzvdcg?entry=ttu&g_ep=EgoyMDI1MDgxOS4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener noreferrer">
+          <span class="material-symbols-outlined">edit</span> Write a Review on Google Maps
+        </a>
+        <div class="flex justify-center gap-8 mt-8 text-sm text-on-primary-container">
+          <span class="flex items-center gap-1"><span class="material-symbols-outlined text-xs">timer</span> Takes 2 minutes</span>
+          <span class="flex items-center gap-1"><span class="material-symbols-outlined text-xs">verified</span> Verified platform</span>
+          <span class="flex items-center gap-1"><span class="material-symbols-outlined text-xs">favorite</span> Help others find love</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Why Choose Us ────────────────────────────────────────────────────── -->
+    <section class="py-section-padding bg-neutral-gray px-margin-x overflow-hidden">
+      <div class="max-w-container-max mx-auto text-center mb-16">
+        <h2 class="text-headline-lg font-headline-lg text-primary mb-4">Why Muslims Across the UK Choose shadiamour</h2>
+        <p class="text-on-surface-variant">The trusted platform for serious, halal marriage seekers</p>
+      </div>
+      <div class="max-w-container-max mx-auto grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="bg-white p-8 rounded-2xl border border-outline-variant hover:shadow-xl transition-all">
+          <div class="w-12 h-12 bg-primary/5 rounded-full flex items-center justify-center mb-6">
+            <span class="material-symbols-outlined text-primary">verified</span>
+          </div>
+          <h3 class="font-bold text-primary mb-3">Halal Only</h3>
+          <p class="text-sm text-on-surface-variant">Serious marriage — never casual dating or socialising. Every connection is purposeful and respectful.</p>
+        </div>
+        <div class="bg-white p-8 rounded-2xl border border-outline-variant hover:shadow-xl transition-all">
+          <div class="w-12 h-12 bg-primary/5 rounded-full flex items-center justify-center mb-6">
+            <span class="material-symbols-outlined text-primary">location_on</span>
+          </div>
+          <h3 class="font-bold text-primary mb-3">UK-Focused</h3>
+          <p class="text-sm text-on-surface-variant">Built for British Muslims, not a generic global app. We understand the needs of the UK Muslim community.</p>
+        </div>
+        <div class="bg-white p-8 rounded-2xl border border-outline-variant hover:shadow-xl transition-all">
+          <div class="w-12 h-12 bg-primary/5 rounded-full flex items-center justify-center mb-6">
+            <span class="material-symbols-outlined text-primary">security</span>
+          </div>
+          <h3 class="font-bold text-primary mb-3">Verified Profiles</h3>
+          <p class="text-sm text-on-surface-variant">Real people with real intentions — moderated and approved. No fake profiles or time wasters.</p>
+        </div>
+        <div class="bg-white p-8 rounded-2xl border border-outline-variant hover:shadow-xl transition-all">
+          <div class="w-12 h-12 bg-primary/5 rounded-full flex items-center justify-center mb-6">
+            <span class="material-symbols-outlined text-primary">visibility_off</span>
+          </div>
+          <h3 class="font-bold text-primary mb-3">Privacy by Design</h3>
+          <p class="text-sm text-on-surface-variant">Your personal details stay protected at every step. Control who sees your profile and information.</p>
+        </div>
+        <div class="bg-white p-8 rounded-2xl border border-outline-variant hover:shadow-xl transition-all">
+          <div class="w-12 h-12 bg-primary/5 rounded-full flex items-center justify-center mb-6">
+            <span class="material-symbols-outlined text-primary">support_agent</span>
+          </div>
+          <h3 class="font-bold text-primary mb-3">Personal Support</h3>
+          <p class="text-sm text-on-surface-variant">Our team is here if you need guidance along the way. Real humans ready to help you find your naseeb.</p>
+        </div>
+        <div class="bg-white p-8 rounded-2xl border border-outline-variant hover:shadow-xl transition-all">
+          <div class="w-12 h-12 bg-primary/5 rounded-full flex items-center justify-center mb-6">
+            <span class="material-symbols-outlined text-primary">volunteer_activism</span>
+          </div>
+          <h3 class="font-bold text-primary mb-3">Free to Join</h3>
+          <p class="text-sm text-on-surface-variant">Create your profile and browse matches completely free. No hidden costs to get started.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Booking Section ──────────────────────────────────────────────────── -->
+    <section id="booking" class="py-section-padding px-margin-x max-w-container-max mx-auto overflow-hidden">
+      <div class="grid lg:grid-cols-2 gap-16 items-center">
+        <div>
+          <h2 class="text-headline-lg font-headline-lg text-primary mb-6">Book a Free Reservation — Get Expert Guidance</h2>
+          <p class="text-body-lg text-on-surface-variant mb-12">Not sure where to start? Our marriage consultants are here to help you find the right match — <span class="text-halal-green font-bold">completely free.</span></p>
+          <div class="space-y-8">
+            <div class="flex gap-6">
+              <div class="flex-shrink-0 w-12 h-12 rounded-full bg-primary/5 flex items-center justify-center text-primary">
+                <span class="material-symbols-outlined">psychology</span>
+              </div>
+              <div>
+                <h4 class="font-bold text-primary mb-1 text-lg">Personalised Matchmaking Advice</h4>
+                <p class="text-on-surface-variant">Get one-on-one guidance from our experienced marriage consultants who understand the UK Muslim community.</p>
+              </div>
+            </div>
+            <div class="flex gap-6">
+              <div class="flex-shrink-0 w-12 h-12 rounded-full bg-primary/5 flex items-center justify-center text-primary">
+                <span class="material-symbols-outlined">verified_user</span>
+              </div>
+              <div>
+                <h4 class="font-bold text-primary mb-1 text-lg">Confidential &amp; Halal</h4>
+                <p class="text-on-surface-variant">Your information stays private. Every conversation is respectful, purpose-driven, and aligned with Islamic values.</p>
+              </div>
+            </div>
+            <div class="flex gap-6">
+              <div class="flex-shrink-0 w-12 h-12 rounded-full bg-primary/5 flex items-center justify-center text-primary">
+                <span class="material-symbols-outlined">payments</span>
+              </div>
+              <div>
+                <h4 class="font-bold text-primary mb-1 text-lg">No Cost, No Commitment</h4>
+                <p class="text-on-surface-variant">This is a free service to help you get started. There's absolutely no obligation — we're here to help, not to sell.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="bg-white p-10 rounded-[40px] shadow-2xl border border-outline-variant">
+          <h3 class="text-headline-md text-primary text-center mb-8">Reserve Your Free Call</h3>
+          <form id="homeSectionReservationForm" class="space-y-6" novalidate>
+            <div>
+              <label class="block text-label-md text-on-surface-variant mb-2" for="res-name">Your Name *</label>
+              <input id="res-name" name="name" type="text" required class="w-full px-4 py-3 rounded-xl border border-outline-variant focus:ring-2 focus:ring-primary focus:border-transparent outline-none" placeholder="Enter your full name">
+            </div>
+            <div>
+              <label class="block text-label-md text-on-surface-variant mb-2" for="res-phone">Phone Number *</label>
+              <div class="flex">
+                <select name="countryCode" required class="reservation-country-code px-2 py-3 border border-outline-variant border-r-0 rounded-l-xl outline-none text-sm" style="width:150px;flex-shrink:0;">
+                  <option value="+44">🇬🇧 UK +44</option>
+                  <option value="+92">🇵🇰 Pakistan +92</option>
+                  <option value="+880">🇧🇩 Bangladesh +880</option>
+                  <option value="+91">🇮🇳 India +91</option>
+                  <option value="+1">🇺🇸 US/Canada +1</option>
+                  <option value="+93">🇦🇫 Afghanistan +93</option>
+                  <option value="+355">🇦🇱 Albania +355</option>
+                  <option value="+213">🇩🇿 Algeria +213</option>
+                  <option value="+376">🇦🇩 Andorra +376</option>
+                  <option value="+244">🇦🇴 Angola +244</option>
+                  <option value="+297">🇦🇼 Aruba +297</option>
+                  <option value="+54">🇦🇷 Argentina +54</option>
+                  <option value="+374">🇦🇲 Armenia +374</option>
+                  <option value="+61">🇦🇺 Australia +61</option>
+                  <option value="+43">🇦🇹 Austria +43</option>
+                  <option value="+994">🇦🇿 Azerbaijan +994</option>
+                  <option value="+973">🇧🇭 Bahrain +973</option>
+                  <option value="+375">🇧🇾 Belarus +375</option>
+                  <option value="+32">🇧🇪 Belgium +32</option>
+                  <option value="+501">🇧🇿 Belize +501</option>
+                  <option value="+229">🇧🇯 Benin +229</option>
+                  <option value="+975">🇧🇹 Bhutan +975</option>
+                  <option value="+591">🇧🇴 Bolivia +591</option>
+                  <option value="+387">🇧🇦 Bosnia +387</option>
+                  <option value="+267">🇧🇼 Botswana +267</option>
+                  <option value="+55">🇧🇷 Brazil +55</option>
+                  <option value="+673">🇧🇳 Brunei +673</option>
+                  <option value="+359">🇧🇬 Bulgaria +359</option>
+                  <option value="+226">🇧🇫 Burkina Faso +226</option>
+                  <option value="+257">🇧🇮 Burundi +257</option>
+                  <option value="+855">🇰🇭 Cambodia +855</option>
+                  <option value="+237">🇨🇲 Cameroon +237</option>
+                  <option value="+238">🇨🇻 Cape Verde +238</option>
+                  <option value="+236">🇨🇫 Central African Republic +236</option>
+                  <option value="+235">🇹🇩 Chad +235</option>
+                  <option value="+56">🇨🇱 Chile +56</option>
+                  <option value="+86">🇨🇳 China +86</option>
+                  <option value="+57">🇨🇴 Colombia +57</option>
+                  <option value="+269">🇰🇲 Comoros +269</option>
+                  <option value="+242">🇨🇬 Congo +242</option>
+                  <option value="+243">🇨🇩 DR Congo +243</option>
+                  <option value="+682">🇨🇰 Cook Islands +682</option>
+                  <option value="+506">🇨🇷 Costa Rica +506</option>
+                  <option value="+385">🇭🇷 Croatia +385</option>
+                  <option value="+53">🇨🇺 Cuba +53</option>
+                  <option value="+599">🇨🇼 Curaçao +599</option>
+                  <option value="+357">🇨🇾 Cyprus +357</option>
+                  <option value="+420">🇨🇿 Czech Republic +420</option>
+                  <option value="+45">🇩🇰 Denmark +45</option>
+                  <option value="+253">🇩🇯 Djibouti +253</option>
+                  <option value="+670">🇹🇱 East Timor +670</option>
+                  <option value="+593">🇪🇨 Ecuador +593</option>
+                  <option value="+20">🇪🇬 Egypt +20</option>
+                  <option value="+503">🇸🇻 El Salvador +503</option>
+                  <option value="+240">🇬🇶 Equatorial Guinea +240</option>
+                  <option value="+291">🇪🇷 Eritrea +291</option>
+                  <option value="+372">🇪🇪 Estonia +372</option>
+                  <option value="+251">🇪🇹 Ethiopia +251</option>
+                  <option value="+500">🇫🇰 Falkland Islands +500</option>
+                  <option value="+298">🇫🇴 Faroe Islands +298</option>
+                  <option value="+679">🇫🇯 Fiji +679</option>
+                  <option value="+358">🇫🇮 Finland +358</option>
+                  <option value="+33">🇫🇷 France +33</option>
+                  <option value="+594">🇬🇫 French Guiana +594</option>
+                  <option value="+689">🇵🇫 French Polynesia +689</option>
+                  <option value="+241">🇬🇦 Gabon +241</option>
+                  <option value="+220">🇬🇲 Gambia +220</option>
+                  <option value="+995">🇬🇪 Georgia +995</option>
+                  <option value="+49">🇩🇪 Germany +49</option>
+                  <option value="+233">🇬🇭 Ghana +233</option>
+                  <option value="+350">🇬🇮 Gibraltar +350</option>
+                  <option value="+30">🇬🇷 Greece +30</option>
+                  <option value="+299">🇬🇱 Greenland +299</option>
+                  <option value="+590">🇬🇵 Guadeloupe +590</option>
+                  <option value="+502">🇬🇹 Guatemala +502</option>
+                  <option value="+224">🇬🇳 Guinea +224</option>
+                  <option value="+245">🇬🇼 Guinea-Bissau +245</option>
+                  <option value="+592">🇬🇾 Guyana +592</option>
+                  <option value="+509">🇭🇹 Haiti +509</option>
+                  <option value="+504">🇭🇳 Honduras +504</option>
+                  <option value="+852">🇭🇰 Hong Kong +852</option>
+                  <option value="+36">🇭🇺 Hungary +36</option>
+                  <option value="+354">🇮🇸 Iceland +354</option>
+                  <option value="+62">🇮🇩 Indonesia +62</option>
+                  <option value="+964">🇮🇶 Iraq +964</option>
+                  <option value="+353">🇮🇪 Ireland +353</option>
+                  <option value="+98">🇮🇷 Iran +98</option>
+                  <option value="+39">🇮🇹 Italy +39</option>
+                  <option value="+225">🇨🇮 Ivory Coast +225</option>
+                  <option value="+81">🇯🇵 Japan +81</option>
+                  <option value="+962">🇯🇴 Jordan +962</option>
+                  <option value="+254">🇰🇪 Kenya +254</option>
+                  <option value="+686">🇰🇮 Kiribati +686</option>
+                  <option value="+383">🇽🇰 Kosovo +383</option>
+                  <option value="+965">🇰🇼 Kuwait +965</option>
+                  <option value="+996">🇰🇬 Kyrgyzstan +996</option>
+                  <option value="+856">🇱🇦 Laos +856</option>
+                  <option value="+371">🇱🇻 Latvia +371</option>
+                  <option value="+961">🇱🇧 Lebanon +961</option>
+                  <option value="+266">🇱🇸 Lesotho +266</option>
+                  <option value="+231">🇱🇷 Liberia +231</option>
+                  <option value="+218">🇱🇾 Libya +218</option>
+                  <option value="+423">🇱🇮 Liechtenstein +423</option>
+                  <option value="+370">🇱🇹 Lithuania +370</option>
+                  <option value="+352">🇱🇺 Luxembourg +352</option>
+                  <option value="+853">🇲🇴 Macau +853</option>
+                  <option value="+261">🇲🇬 Madagascar +261</option>
+                  <option value="+265">🇲🇼 Malawi +265</option>
+                  <option value="+60">🇲🇾 Malaysia +60</option>
+                  <option value="+960">🇲🇻 Maldives +960</option>
+                  <option value="+223">🇲🇱 Mali +223</option>
+                  <option value="+356">🇲🇹 Malta +356</option>
+                  <option value="+692">🇲🇭 Marshall Islands +692</option>
+                  <option value="+596">🇲🇶 Martinique +596</option>
+                  <option value="+222">🇲🇷 Mauritania +222</option>
+                  <option value="+230">🇲🇺 Mauritius +230</option>
+                  <option value="+262">🇷🇪 Mayotte +262</option>
+                  <option value="+52">🇲🇽 Mexico +52</option>
+                  <option value="+691">🇫🇲 Micronesia +691</option>
+                  <option value="+373">🇲🇩 Moldova +373</option>
+                  <option value="+377">🇲🇨 Monaco +377</option>
+                  <option value="+976">🇲🇳 Mongolia +976</option>
+                  <option value="+382">🇲🇪 Montenegro +382</option>
+                  <option value="+212">🇲🇦 Morocco +212</option>
+                  <option value="+258">🇲🇿 Mozambique +258</option>
+                  <option value="+95">🇲🇲 Myanmar +95</option>
+                  <option value="+264">🇳🇦 Namibia +264</option>
+                  <option value="+674">🇳🇷 Nauru +674</option>
+                  <option value="+977">🇳🇵 Nepal +977</option>
+                  <option value="+31">🇳🇱 Netherlands +31</option>
+                  <option value="+687">🇳🇨 New Caledonia +687</option>
+                  <option value="+64">🇳🇿 New Zealand +64</option>
+                  <option value="+505">🇳🇮 Nicaragua +505</option>
+                  <option value="+227">🇳🇪 Niger +227</option>
+                  <option value="+234">🇳🇬 Nigeria +234</option>
+                  <option value="+683">🇳🇺 Niue +683</option>
+                  <option value="+850">🇰🇵 North Korea +850</option>
+                  <option value="+389">🇲🇰 North Macedonia +389</option>
+                  <option value="+672">🇳🇫 Norfolk Island +672</option>
+                  <option value="+47">🇳🇴 Norway +47</option>
+                  <option value="+968">🇴🇲 Oman +968</option>
+                  <option value="+680">🇵🇼 Palau +680</option>
+                  <option value="+970">🇵🇸 Palestine +970</option>
+                  <option value="+507">🇵🇦 Panama +507</option>
+                  <option value="+675">🇵🇬 Papua New Guinea +675</option>
+                  <option value="+595">🇵🇾 Paraguay +595</option>
+                  <option value="+51">🇵🇪 Peru +51</option>
+                  <option value="+63">🇵🇭 Philippines +63</option>
+                  <option value="+48">🇵🇱 Poland +48</option>
+                  <option value="+351">🇵🇹 Portugal +351</option>
+                  <option value="+974">🇶🇦 Qatar +974</option>
+                  <option value="+262">🇷🇪 Réunion +262</option>
+                  <option value="+40">🇷🇴 Romania +40</option>
+                  <option value="+7">🇷🇺 Russia +7</option>
+                  <option value="+250">🇷🇼 Rwanda +250</option>
+                  <option value="+290">🇸🇭 Saint Helena +290</option>
+                  <option value="+508">🇵🇲 Saint Pierre & Miquelon +508</option>
+                  <option value="+685">🇼🇸 Samoa +685</option>
+                  <option value="+378">🇸🇲 San Marino +378</option>
+                  <option value="+239">🇸🇹 Sao Tome & Principe +239</option>
+                  <option value="+221">🇸🇳 Senegal +221</option>
+                  <option value="+381">🇷🇸 Serbia +381</option>
+                  <option value="+248">🇸🇨 Seychelles +248</option>
+                  <option value="+232">🇸🇱 Sierra Leone +232</option>
+                  <option value="+421">🇸🇰 Slovakia +421</option>
+                  <option value="+386">🇸🇮 Slovenia +386</option>
+                  <option value="+677">🇸🇧 Solomon Islands +677</option>
+                  <option value="+252">🇸🇴 Somalia +252</option>
+                  <option value="+27">🇿🇦 South Africa +27</option>
+                  <option value="+82">🇰🇷 South Korea +82</option>
+                  <option value="+34">🇪🇸 Spain +34</option>
+                  <option value="+94">🇱🇰 Sri Lanka +94</option>
+                  <option value="+249">🇸🇩 Sudan +249</option>
+                  <option value="+597">🇸🇷 Suriname +597</option>
+                  <option value="+268">🇸🇿 Eswatini +268</option>
+                  <option value="+46">🇸🇪 Sweden +46</option>
+                  <option value="+41">🇨🇭 Switzerland +41</option>
+                  <option value="+963">🇸🇾 Syria +963</option>
+                  <option value="+886">🇹🇼 Taiwan +886</option>
+                  <option value="+992">🇹🇯 Tajikistan +992</option>
+                  <option value="+255">🇹🇿 Tanzania +255</option>
+                  <option value="+66">🇹🇭 Thailand +66</option>
+                  <option value="+228">🇹🇬 Togo +228</option>
+                  <option value="+690">🇹🇰 Tokelau +690</option>
+                  <option value="+676">🇹🇴 Tonga +676</option>
+                  <option value="+216">🇹🇳 Tunisia +216</option>
+                  <option value="+90">🇹🇷 Turkey +90</option>
+                  <option value="+993">🇹🇲 Turkmenistan +993</option>
+                  <option value="+688">🇹🇻 Tuvalu +688</option>
+                  <option value="+256">🇺🇬 Uganda +256</option>
+                  <option value="+380">🇺🇦 Ukraine +380</option>
+                  <option value="+598">🇺🇾 Uruguay +598</option>
+                  <option value="+998">🇺🇿 Uzbekistan +998</option>
+                  <option value="+678">🇻🇺 Vanuatu +678</option>
+                  <option value="+58">🇻🇪 Venezuela +58</option>
+                  <option value="+84">🇻🇳 Vietnam +84</option>
+                  <option value="+681">🇼🇫 Wallis & Futuna +681</option>
+                  <option value="+967">🇾🇪 Yemen +967</option>
+                  <option value="+260">🇿🇲 Zambia +260</option>
+                  <option value="+263">🇿🇼 Zimbabwe +263</option>
+                </select>
+                <input id="res-phone" name="phone" type="tel" required class="reservation-phone w-full px-4 py-3 rounded-r-xl border border-outline-variant focus:ring-2 focus:ring-primary focus:border-transparent outline-none" placeholder="7123 456789" oninput="window.validateReservationPhone && window.validateReservationPhone(this)">
+              </div>
+              <p class="reservation-phone-error text-xs text-red-500 mt-1 hidden"></p>
+              <p class="reservation-phone-success text-xs text-green-600 mt-1 hidden"><span class="material-symbols-outlined text-sm">check_circle</span> Valid phone number</p>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="block text-label-md text-on-surface-variant mb-2" for="res-date">Preferred Date *</label>
+                <input id="res-date" name="date" type="date" required class="w-full px-4 py-3 rounded-xl border border-outline-variant focus:ring-2 focus:ring-primary outline-none" min="<%= new Date().toISOString().split('T')[0] %>">
+              </div>
+              <div>
+                <label class="block text-label-md text-on-surface-variant mb-2" for="res-time">Preferred Time *</label>
+                <input id="res-time" name="time" type="time" required class="w-full px-4 py-3 rounded-xl border border-outline-variant focus:ring-2 focus:ring-primary outline-none">
+              </div>
+            </div>
+            <button type="submit" class="w-full bg-primary text-on-primary py-4 rounded-xl font-bold text-lg hover:bg-primary-container transition-all flex items-center justify-center gap-2">
+              <span class="material-symbols-outlined">calendar_today</span> Book Now — It's Free
+            </button>
+          </form>
+          <div id="homeSectionReservationSuccess" class="hidden text-center py-6">
+            <div class="w-14 h-14 mx-auto mb-4 bg-halal-green/10 rounded-full flex items-center justify-center">
+              <span class="material-symbols-outlined text-2xl text-halal-green" style="font-variation-settings: 'FILL' 1;">check</span>
+            </div>
+            <h4 class="text-lg font-bold text-primary">Reservation Booked!</h4>
+            <p class="text-sm text-on-surface-variant mt-1">We'll contact you soon to confirm your free consultation.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── FAQ Section ──────────────────────────────────────────────────────── -->
+    <section class="py-section-padding bg-surface px-margin-x">
+      <div class="max-w-3xl mx-auto">
+        <div class="text-center mb-16">
+          <h2 class="text-headline-lg font-headline-lg text-primary mb-4">Frequently Asked Questions About Muslim Marriage in the UK</h2>
+          <p class="text-on-surface-variant">Everything you need to know about finding a halal spouse through shadiamour</p>
+        </div>
+        <div class="space-y-4">
+          <div class="bg-white rounded-2xl border border-outline-variant overflow-hidden">
+            <button type="button" class="w-full px-8 py-6 flex items-center justify-between text-left focus:outline-none" onclick="this.nextElementSibling.classList.toggle('hidden'); this.querySelector('.arrow').classList.toggle('rotate-180')">
+              <span class="font-bold text-primary">What is the safest Muslim matrimony site in the UK?</span>
+              <span class="material-symbols-outlined arrow transition-transform duration-300">expand_more</span>
+            </button>
+            <div class="px-8 pb-6 text-on-surface-variant text-sm">
+              shadiamour is the safest Muslim matrimony site in the UK. Every profile is manually verified by our team before approval. We enforce strict privacy controls — your phone number is never shared without your consent. The platform is built exclusively for serious halal marriage, not casual dating, and is designed with Islamic values and GDPR compliance at its core.
+            </div>
+          </div>
+          <div class="bg-white rounded-2xl border border-outline-variant overflow-hidden">
+            <button type="button" class="w-full px-8 py-6 flex items-center justify-between text-left focus:outline-none" onclick="this.nextElementSibling.classList.toggle('hidden'); this.querySelector('.arrow').classList.toggle('rotate-180')">
+              <span class="font-bold text-primary">How does Muslim matchmaking work at shadiamour?</span>
+              <span class="material-symbols-outlined arrow transition-transform duration-300">expand_more</span>
+            </button>
+            <div class="hidden px-8 pb-6 text-on-surface-variant text-sm">
+              You create a free profile (or a parent/guardian can register on your behalf), our team manually verifies it, and your profile is shared across our platform and 10+ dedicated WhatsApp groups. Premium members receive 1–2 hand-picked, preference-matched profiles every week. Our Executive plan offers fully managed communication — we handle enquiries on your behalf so you can focus on finding the right match.
+            </div>
+          </div>
+          <div class="bg-white rounded-2xl border border-outline-variant overflow-hidden">
+            <button type="button" class="w-full px-8 py-6 flex items-center justify-between text-left focus:outline-none" onclick="this.nextElementSibling.classList.toggle('hidden'); this.querySelector('.arrow').classList.toggle('rotate-180')">
+              <span class="font-bold text-primary">Is shadiamour free to join?</span>
+              <span class="material-symbols-outlined arrow transition-transform duration-300">expand_more</span>
+            </button>
+            <div class="hidden px-8 pb-6 text-on-surface-variant text-sm">
+              Yes, the Standard plan is completely free. You can create a profile, browse all profiles on the website and in WhatsApp groups, and receive direct contact details. Paid plans (Premium from £50, Premium Plus from £100, Executive from £150) unlock additional features like curated weekly matches, privacy protection, and fully managed matchmaking.
+            </div>
+          </div>
+          <div class="bg-white rounded-2xl border border-outline-variant overflow-hidden">
+            <button type="button" class="w-full px-8 py-6 flex items-center justify-between text-left focus:outline-none" onclick="this.nextElementSibling.classList.toggle('hidden'); this.querySelector('.arrow').classList.toggle('rotate-180')">
+              <span class="font-bold text-primary">What is the best Muslim marriage site for Pakistani Muslims in the UK?</span>
+              <span class="material-symbols-outlined arrow transition-transform duration-300">expand_more</span>
+            </button>
+            <div class="hidden px-8 pb-6 text-on-surface-variant text-sm">
+              shadiamour is widely regarded as the best Muslim marriage site for Pakistani Muslims in the UK. We have a large, active community of Pakistani Muslim singles and families in London, Birmingham, Leicester, Manchester, Bradford, and Leeds. Our service understands the cultural nuances of Pakistani Muslim weddings while keeping the process halal and family-focused.
+            </div>
+          </div>
+          <div class="bg-white rounded-2xl border border-outline-variant overflow-hidden">
+            <button type="button" class="w-full px-8 py-6 flex items-center justify-between text-left focus:outline-none" onclick="this.nextElementSibling.classList.toggle('hidden'); this.querySelector('.arrow').classList.toggle('rotate-180')">
+              <span class="font-bold text-primary">Can parents or guardians register on behalf of their child?</span>
+              <span class="material-symbols-outlined arrow transition-transform duration-300">expand_more</span>
+            </button>
+            <div class="hidden px-8 pb-6 text-on-surface-variant text-sm">
+              Absolutely. shadiamour encourages family involvement in the marriage process. Parents, guardians, or siblings can create a profile on behalf of their family member. Many of our most successful matches begin with family-created profiles. Our team works closely with families to ensure the process is respectful and aligned with Islamic principles.
+            </div>
+          </div>
+          <div class="bg-white rounded-2xl border border-outline-variant overflow-hidden">
+            <button type="button" class="w-full px-8 py-6 flex items-center justify-between text-left focus:outline-none" onclick="this.nextElementSibling.classList.toggle('hidden'); this.querySelector('.arrow').classList.toggle('rotate-180')">
+              <span class="font-bold text-primary">Does shadiamour offer a money-back guarantee?</span>
+              <span class="material-symbols-outlined arrow transition-transform duration-300">expand_more</span>
+            </button>
+            <div class="hidden px-8 pb-6 text-on-surface-variant text-sm">
+              Yes. shadiamour offers a 100% money-back guarantee. If you are not satisfied within the first 15 days, you receive a full refund — no questions asked. For paid plans, if we fail to deliver the committed services (such as curated matches), refunds are available according to our refund policy.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Advice & Guides ──────────────────────────────────────────────────── -->
+    <section class="py-section-padding px-margin-x max-w-container-max mx-auto overflow-hidden">
+      <div class="text-center mb-16">
+        <h2 class="text-headline-lg font-headline-lg text-primary mb-4">Muslim Marriage Advice &amp; Guides</h2>
+        <p class="text-on-surface-variant">Read our latest guides on halal marriage, rishta advice, and Islamic matrimony tips for UK Muslims.</p>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+        <% (homeBlogs || []).forEach(blog => { %>
+        <a href="/blog/<%= blog.slug %>" class="group bg-white rounded-3xl border border-outline-variant overflow-hidden hover:shadow-2xl transition-all block">
+          <% if (blog.featuredImage && blog.featuredImage.url) { %>
+          <div class="h-48 overflow-hidden">
+            <img src="<%= blog.featuredImage.url %>" alt="<%= blog.featuredImage.alt || blog.title %>" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" />
+          </div>
+          <% } else { %>
+          <div class="h-48 bg-primary/10 flex items-center justify-center p-8">
+            <span class="material-symbols-outlined text-6xl text-primary/30 group-hover:scale-110 transition-transform">menu_book</span>
+          </div>
+          <% } %>
+          <div class="p-8">
+            <h4 class="font-bold text-primary mb-4 line-clamp-2"><%= blog.title %></h4>
+            <p class="text-sm text-on-surface-variant mb-6 line-clamp-3"><%= blog.excerpt %></p>
+            <span class="text-primary font-bold inline-flex items-center gap-2 hover:translate-x-2 transition-transform">Read Guide <span class="material-symbols-outlined">chevron_right</span></span>
+          </div>
+        </a>
+        <% }) %>
+        <% if (!(homeBlogs || []).length) { %>
+        <div class="md:col-span-3 text-center py-8 text-on-surface-variant">
+          New guides are on the way — check back soon.
+        </div>
+        <% } %>
+      </div>
+      <div class="text-center">
+        <a class="bg-primary text-on-primary px-10 py-4 rounded-xl font-bold inline-flex items-center gap-2 hover:bg-primary-container transition-all" href="/blog">
+          <span class="material-symbols-outlined">apps</span> View All Guides &amp; Advice
+        </a>
+      </div>
+    </section>
+
+    <!-- ── Final CTA ────────────────────────────────────────────────────────── -->
+    <section class="py-24 bg-primary text-on-primary relative overflow-hidden">
+      <div class="max-w-container-max mx-auto px-margin-x text-center relative z-10">
+        <h2 class="text-3xl md:text-display-lg font-display-lg mb-8">Start Your Halal Marriage Journey Today — It's Free</h2>
+        <p class="text-xl text-on-primary-container mb-12 max-w-2xl mx-auto opacity-90">Join thousands of UK Muslims already on their path to naseeb.</p>
+        <div class="flex flex-wrap justify-center gap-6">
+          <a class="bg-white text-primary px-12 py-5 rounded-2xl font-bold text-lg hover:shadow-2xl hover:scale-105 transition-all flex items-center gap-2" href="/register" data-track="true" data-event-name="cta_register_click" data-category="cta" data-label="Register Now Free">
+            <span class="material-symbols-outlined">how_to_reg</span> Register Now Free
+          </a>
+          <a class="bg-halal-green text-on-primary px-12 py-5 rounded-2xl font-bold text-lg hover:shadow-2xl hover:scale-105 transition-all flex items-center gap-2" href="https://chat.whatsapp.com/Kjrn4Lwi54MLhd0NOZLxgl" target="_blank" rel="noopener noreferrer">
+            <span class="material-symbols-outlined">chat</span> Join Free WhatsApp Group
           </a>
         </div>
       </div>
-    </div>
-    <% } %>
+      <div class="absolute -top-40 -left-40 w-96 h-96 border-[40px] border-white/5 rounded-full pointer-events-none"></div>
+      <div class="absolute -bottom-40 -right-40 w-96 h-96 border-[60px] border-white/5 rounded-full pointer-events-none"></div>
+    </section>
 
-    <!-- Muslim Marriage Across UK Cities Section -->
-    <div class="py-20 bg-white">
-      <div class="max-w-4xl mx-auto px-6 text-center">
-        <h2 class="text-4xl font-bold text-gray-800 mb-6 font-['Playfair_Display']">Muslim Marriage Across Every Major UK City</h2>
-        <p class="text-lg text-gray-700 leading-relaxed mb-8">
-          shadiamour connects serious Muslims seeking halal marriage across the UK — including London, Birmingham, Manchester, Bradford, Leeds, Leicester, Sheffield, and beyond. Whether you are searching for a Muslim spouse nearby or across the country, our verified profiles and halal matchmaking process make the journey easier, safer, and more dignified.
-        </p>
-        <div class="flex flex-wrap items-center justify-center gap-3 text-gray-600">
-          <span class="px-4 py-2 bg-white/80 rounded-full text-sm font-medium">London</span>
-          <span class="px-4 py-2 bg-white/80 rounded-full text-sm font-medium">Birmingham</span>
-          <span class="px-4 py-2 bg-white/80 rounded-full text-sm font-medium">Manchester</span>
-          <span class="px-4 py-2 bg-white/80 rounded-full text-sm font-medium">Bradford</span>
-          <span class="px-4 py-2 bg-white/80 rounded-full text-sm font-medium">Leeds</span>
-          <span class="px-4 py-2 bg-white/80 rounded-full text-sm font-medium">Leicester</span>
-          <span class="px-4 py-2 bg-white/80 rounded-full text-sm font-medium">Sheffield</span>
-          <span class="px-4 py-2 bg-white/80 rounded-full text-sm font-medium">& More</span>
+    <!-- ── Newsletter Section ───────────────────────────────────────────────── -->
+    <section class="py-section-padding px-margin-x bg-surface-white">
+      <div class="max-w-4xl mx-auto bg-neutral-gray p-8 md:p-12 rounded-[50px] shadow-sm border border-outline-variant">
+        <div class="text-center mb-10">
+          <div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6">
+            <span class="material-symbols-outlined text-primary text-3xl">mail</span>
+          </div>
+          <h2 class="text-headline-lg font-headline-lg text-primary mb-4">Never Miss Your Perfect Muslim Match - Join Our Halal Rishta Community</h2>
+          <p class="text-on-surface-variant max-w-2xl mx-auto leading-relaxed">Subscribe for exclusive access to new verified Muslim singles, halal dating tips, and success stories from our Muslim matchmaking community. Connect with single Muslim men and women across London, Birmingham, Manchester, and Leicester seeking serious Muslim marriage and modern Nikkah partnerships.</p>
+        </div>
+        <form id="newsletterForm" class="space-y-6">
+          <div class="grid sm:grid-cols-2 gap-6">
+            <input name="name" type="text" required class="w-full px-6 py-4 rounded-2xl border border-outline-variant outline-none focus:ring-2 focus:ring-primary" placeholder="Enter your full name">
+            <input name="email" type="email" required class="w-full px-6 py-4 rounded-2xl border border-outline-variant outline-none focus:ring-2 focus:ring-primary" placeholder="Enter your email address">
+          </div>
+          <div class="grid sm:grid-cols-2 gap-6">
+            <select name="interestedIn" required class="w-full px-6 py-4 rounded-2xl border border-outline-variant outline-none focus:ring-2 focus:ring-primary appearance-none">
+              <option value="">Select your preference</option>
+              <option value="male">Single Muslim Men</option>
+              <option value="female">Single Muslim Women</option>
+            </select>
+            <select name="preferredAgeRange" class="w-full px-6 py-4 rounded-2xl border border-outline-variant outline-none focus:ring-2 focus:ring-primary appearance-none">
+              <option value="">Any age</option>
+              <option value="18-25">18-25 years</option>
+              <option value="26-30">26-30 years</option>
+              <option value="31-35">31-35 years</option>
+              <option value="36-40">36-40 years</option>
+              <option value="41+">41+ years</option>
+            </select>
+          </div>
+          <button type="submit" id="newsletter-submit" class="w-full bg-primary text-on-primary py-5 rounded-2xl font-bold text-lg hover:bg-primary-container transition-all shadow-lg">
+            Join Halal Muslim Matchmaking Community
+          </button>
+          <p class="text-[12px] text-on-surface-variant text-center px-4 leading-relaxed">By subscribing, you'll receive updates about new Muslim singles, halal matchmaking tips, and Muslim marriage success stories. We protect your privacy and follow Islamic principles. Unsubscribe anytime from our halal dating communications.</p>
+        </form>
+        <div id="newsletter-success" class="hidden max-w-xl mx-auto mt-6">
+          <div class="bg-halal-green/10 border border-halal-green/20 rounded-2xl p-6 text-center">
+            <div class="w-12 h-12 bg-halal-green/10 rounded-full flex items-center justify-center mx-auto mb-4">
+              <span class="material-symbols-outlined text-2xl text-halal-green" style="font-variation-settings: 'FILL' 1;">check</span>
+            </div>
+            <h3 class="text-xl font-bold text-halal-green mb-2">Welcome to the UK's Top Muslim Marriage Community!</h3>
+            <p class="text-on-surface-variant">JazakAllah for joining! You'll soon receive personalized Muslim match suggestions and halal dating guidance to help you find your perfect Muslim spouse.</p>
+          </div>
+        </div>
+        <div class="flex flex-wrap justify-center gap-6 mt-12 pt-8 border-t border-outline-variant text-[12px] font-bold text-on-surface-variant uppercase tracking-widest">
+          <span class="flex items-center gap-2"><span class="material-symbols-outlined text-halal-green text-lg" style="font-variation-settings: 'FILL' 1;">check_circle</span> Halal Dating Privacy Protected</span>
+          <span class="flex items-center gap-2"><span class="material-symbols-outlined text-halal-green text-lg" style="font-variation-settings: 'FILL' 1;">check_circle</span> No Spam - Islamic Values Respected</span>
+          <span class="flex items-center gap-2"><span class="material-symbols-outlined text-halal-green text-lg" style="font-variation-settings: 'FILL' 1;">check_circle</span> Easy Unsubscribe from Muslim Matchmaking Updates</span>
         </div>
       </div>
-    </div>
+    </section>
+  </main>
 
-    <!-- Success Stories / Reviews Section -->
-    <div class="py-20 px-6 reviews-section relative overflow-hidden" style="background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 30%, #fce7f3 70%, #faf5ff 100%);">
-      <!-- Background Pattern -->
-      <div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(circle at 20% 30%, rgba(59, 130, 246, 0.15) 0%, transparent 50%), radial-gradient(circle at 80% 70%, rgba(147, 51, 234, 0.15) 0%, transparent 50%);"></div>
+  <!-- ── Floating Action Button (FAB) - For Consultation ───────────────────── -->
+  <a class="fixed bottom-8 right-8 bg-premium-gold text-white p-4 rounded-full shadow-2xl flex items-center gap-3 hover:scale-110 active:scale-95 transition-all z-50 md:px-6" href="#booking">
+    <span class="material-symbols-outlined">call</span>
+    <span class="hidden md:block font-bold">Free Match Call</span>
+  </a>
 
-      <div class="relative max-w-7xl mx-auto">
-        <div class="text-center mb-12">
-          <h2 class="text-4xl font-bold text-gray-800 mb-4 font-['Playfair_Display']">UK Muslim Marriage Success Stories</h2>
-          <p class="text-lg text-gray-600 max-w-2xl mx-auto">Authentic testimonials from Muslim couples who found their perfect match through our halal Muslim matchmaking service. Discover why we're the top-rated Muslim marriage app for young Muslim singles across London, Birmingham, Manchester, and the entire UK.</p>
-          <div class="flex items-center justify-center gap-2 mt-4">
-            <div class="flex text-yellow-400">
-              <i class="ri-star-fill text-xl"></i>
-              <i class="ri-star-fill text-xl"></i>
-              <i class="ri-star-fill text-xl"></i>
-              <i class="ri-star-fill text-xl"></i>
-              <i class="ri-star-fill text-xl"></i>
-            </div>
-            <span class="text-gray-600 font-medium ml-2">4.9/5 - Best Halal Muslim Dating Platform UK</span>
-          </div>
-        </div>
-
-        <!-- Reviews Grid -->
-        <div class="grid md:grid-cols-3 gap-8 mb-16">
-          <!-- Review 1 -->
-          <div class="bg-white/80 backdrop-blur-sm rounded-2xl p-6 border border-blue-200/50 hover:bg-white/90 hover:border-blue-300/70 hover:shadow-xl transition-all duration-300 group">
-            <div class="flex items-center mb-4">
-              <div class="w-12 h-12 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center text-white font-bold text-lg">
-                A
-              </div>
-              <div class="ml-4">
-                <h4 class="font-semibold text-gray-800">Ahmed K.</h4>
-                <div class="flex text-yellow-400 text-sm">
-                  <i class="ri-star-fill"></i>
-                  <i class="ri-star-fill"></i>
-                  <i class="ri-star-fill"></i>
-                  <i class="ri-star-fill"></i>
-                  <i class="ri-star-fill"></i>
-                </div>
-              </div>
-            </div>
-            <!-- Updated Review Content Examples -->
-            <p class="text-gray-600 leading-relaxed mb-4 review-quote">"Alhamdulillah, I found my Muslim soulmate through ShadiAmour - the most trusted halal Muslim matchmaking platform in London. The service connects serious Muslim singles seeking modern Nikkah and halal love marriage. Highly recommended for young Muslim marriage seekers!"</p>
-            <div class="flex items-center text-sm text-gray-500">
-              <i class="ri-time-line mr-1"></i>
-              <span>2 months ago</span>
-            </div>
-          </div>
-
-          <!-- Review 2 -->
-          <div class="bg-white/80 backdrop-blur-sm rounded-2xl p-6 border border-blue-200/50 hover:bg-white/90 hover:border-blue-300/70 hover:shadow-xl transition-all duration-300 group">
-            <div class="flex items-center mb-4">
-              <div class="w-12 h-12 bg-gradient-to-br from-secondary to-primary rounded-full flex items-center justify-center text-white font-bold text-lg">
-                F
-              </div>
-              <div class="ml-4">
-                <h4 class="font-semibold text-gray-800">Fatima S.</h4>
-                <div class="flex text-yellow-400 text-sm">
-                  <i class="ri-star-fill"></i>
-                  <i class="ri-star-fill"></i>
-                  <i class="ri-star-fill"></i>
-                  <i class="ri-star-fill"></i>
-                  <i class="ri-star-fill"></i>
-                </div>
-              </div>
-            </div>
-            <p class="text-gray-600 leading-relaxed mb-4 review-quote">"Excellent Muslim matrimony service! The profiles are authentic, the process is simple, and Alhamdulillah I found my spouse here. shadiAmour is perfect for serious Muslim marriage seekers in London and beyond."</p>
-            <div class="flex items-center text-sm text-gray-500">
-              <i class="ri-time-line mr-1"></i>
-              <span>1 month ago</span>
-            </div>
-          </div>
-
-          <!-- Review 3 -->
-          <div class="bg-white/80 backdrop-blur-sm rounded-2xl p-6 border border-blue-200/50 hover:bg-white/90 hover:border-blue-300/70 hover:shadow-xl transition-all duration-300 group">
-            <div class="flex items-center mb-4">
-              <div class="w-12 h-12 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center text-white font-bold text-lg">
-                M
-              </div>
-              <div class="ml-4">
-                <h4 class="font-semibold text-gray-800">Mohammad A.</h4>
-                <div class="flex text-yellow-400 text-sm">
-                  <i class="ri-star-fill"></i>
-                  <i class="ri-star-fill"></i>
-                  <i class="ri-star-fill"></i>
-                  <i class="ri-star-fill"></i>
-                  <i class="ri-star-fill"></i>
-                </div>
-              </div>
-            </div>
-            <p class="text-gray-600 leading-relaxed mb-4 review-quote">"This is the best Muslim marriage platform I’ve ever used. It respects Islamic principles, offers privacy, and truly connects compatible matches. A must for anyone looking for Muslim matchmaking in the UK."</p>
-            <div class="flex items-center text-sm text-gray-500">
-              <i class="ri-time-line mr-1"></i>
-              <span>3 weeks ago</span>
-            </div>
-          </div>
-
-          <!-- Review 4 -->
-          <div class="bg-white/80 backdrop-blur-sm rounded-2xl p-6 border border-blue-200/50 hover:bg-white/90 hover:border-blue-300/70 hover:shadow-xl transition-all duration-300 group">
-            <div class="flex items-center mb-4">
-              <div class="w-12 h-12 bg-gradient-to-br from-secondary to-primary rounded-full flex items-center justify-center text-white font-bold text-lg">
-                Z
-              </div>
-              <div class="ml-4">
-                <h4 class="font-semibold text-gray-800">Zainab H.</h4>
-                <div class="flex text-yellow-400 text-sm">
-                  <i class="ri-star-fill"></i>
-                  <i class="ri-star-fill"></i>
-                  <i class="ri-star-fill"></i>
-                  <i class="ri-star-fill"></i>
-                  <i class="ri-star-fill"></i>
-                </div>
-              </div>
-            </div>
-            <p class="text-gray-600 leading-relaxed mb-4 review-quote">"Professional and respectful service. The support team was very helpful, and the matchmaking system worked perfectly. I found my naseeb through this blessed Muslim marriage site in Leicester."</p>
-            <div class="flex items-center text-sm text-gray-500">
-              <i class="ri-time-line mr-1"></i>
-              <span>1 week ago</span>
-            </div>
-          </div>
-
-          <!-- Review 5 -->
-          <div class="bg-white/80 backdrop-blur-sm rounded-2xl p-6 border border-blue-200/50 hover:bg-white/90 hover:border-blue-300/70 hover:shadow-xl transition-all duration-300 group">
-            <div class="flex items-center mb-4">
-              <div class="w-12 h-12 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center text-white font-bold text-lg">
-                Y
-              </div>
-              <div class="ml-4">
-                <h4 class="font-semibold text-gray-800">Yusuf M.</h4>
-                <div class="flex text-yellow-400 text-sm">
-                  <i class="ri-star-fill"></i>
-                  <i class="ri-star-fill"></i>
-                  <i class="ri-star-fill"></i>
-                  <i class="ri-star-fill"></i>
-                  <i class="ri-star-fill"></i>
-                </div>
-              </div>
-            </div>
-            <p class="text-gray-600 leading-relaxed mb-4 review-quote">"Trustworthy and reliable — shadiAmour is my go-to for Muslim matrimony. Easy to use, full of genuine profiles, and most importantly, it delivers results. Highly recommend for Muslims in London looking for marriage."</p>
-            <div class="flex items-center text-sm text-gray-500">
-              <i class="ri-time-line mr-1"></i>
-              <span>2 weeks ago</span>
-            </div>
-          </div>
-
-          <!-- Review 6 -->
-          <div class="bg-white/80 backdrop-blur-sm rounded-2xl p-6 border border-blue-200/50 hover:bg-white/90 hover:border-blue-300/70 hover:shadow-xl transition-all duration-300 group">
-            <div class="flex items-center mb-4">
-              <div class="w-12 h-12 bg-gradient-to-br from-secondary to-primary rounded-full flex items-center justify-center text-white font-bold text-lg">
-                A
-              </div>
-              <div class="ml-4">
-                <h4 class="font-semibold text-gray-800">Aisha R.</h4>
-                <div class="flex text-yellow-400 text-sm">
-                  <i class="ri-star-fill"></i>
-                  <i class="ri-star-fill"></i>
-                  <i class="ri-star-fill"></i>
-                  <i class="ri-star-fill"></i>
-                  <i class="ri-star-fill"></i>
-                </div>
-              </div>
-            </div>
-            <p class="text-gray-600 leading-relaxed mb-4 review-quote">"Amazing Muslim matchmaking experience! The platform balances Islamic values with modern features, making it easy to connect with serious Muslims. BarakAllahu feeki for creating such a trusted UK matrimonial service."</p>
-            <div class="flex items-center text-sm text-gray-500">
-              <i class="ri-time-line mr-1"></i>
-              <span>4 days ago</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Halal Marriage Guide Lead Magnet -->
-        <!-- <div class="mt-16 mb-4">
-  <div class="relative rounded-3xl overflow-hidden" style="background: linear-gradient(135deg, #fdf2f8 0%, #ffffff 50%, #f8fafc 100%); border: 1px solid rgba(233,30,99,0.1);">
-    <div class="absolute top-0 right-0 w-48 h-48 rounded-full opacity-30" style="background: radial-gradient(circle, #fbcfe8, transparent); transform: translate(30%, -30%);"></div>
-    <div class="absolute bottom-0 left-0 w-40 h-40 rounded-full opacity-30" style="background: radial-gradient(circle, #e9d5ff, transparent); transform: translate(-30%, 30%);"></div>
-
-    <div class="relative px-8 py-12 text-center">
-      <div class="inline-flex items-center gap-2 bg-white/80 backdrop-blur-sm rounded-full px-4 py-2 mb-6 shadow-sm border border-pink-100">
-        <span class="text-lg">📖</span>
-        <span class="text-sm font-semibold text-gray-700 uppercase tracking-wide">Free Download</span>
+  <!-- ── Floating Reservation Button ───────────────────────────────────────── -->
+  <div id="floatingReservation" style="bottom: 100px;" class="fixed right-6 z-[50]">
+    <button id="reservationToggle" class="bg-primary text-on-primary font-semibold px-5 py-3 rounded-full shadow-xl hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 flex items-center gap-2 whitespace-nowrap">
+      <span class="material-symbols-outlined text-xl">calendar_today</span>
+      <span class="text-sm">Book Free Consultation Today</span>
+      <span id="reservationArrow" class="material-symbols-outlined text-lg transition-transform duration-300">expand_less</span>
+    </button>
+    <div id="reservationFormCard" style="bottom:100%" class="hidden absolute right-0 mb-4 w-80 bg-white rounded-2xl p-6 shadow-[0_8px_24px_rgba(0,0,0,0.2)] border border-outline-variant">
+      <div class="flex items-center justify-between mb-4">
+        <h4 class="text-lg font-bold text-primary">Book Free Consultation</h4>
+        <button id="reservationClose" class="p-1 text-on-surface-variant hover:text-primary hover:bg-surface-container-low rounded-full transition-colors" aria-label="Close">
+          <span class="material-symbols-outlined text-lg">close</span>
+        </button>
       </div>
-
-      <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-3 font-['Playfair_Display']">Get FREE Halal Marriage Guide (UK)</h2>
-      <p class="text-lg text-gray-600 mb-8 max-w-xl mx-auto">Learn how to find a practising Muslim spouse the halal way</p>
-
-      <form id="guideDownloadForm" class="max-w-md mx-auto flex flex-col sm:flex-row gap-3" novalidate>
-        <input
-          type="email"
-          id="guideEmail"
-          name="email"
-          placeholder="Enter your email address"
-          autocomplete="email"
-          required
-          class="flex-1 px-5 py-3.5 rounded-xl border border-gray-200 bg-white text-gray-800 placeholder-gray-400 focus:outline-none focus:border-pink-400 focus:ring-2 focus:ring-pink-200 transition-all duration-200 text-base shadow-sm"
-        />
-        <button
-          type="submit"
-          id="guideSubmitBtn"
-          class="whitespace-nowrap px-7 py-3.5 rounded-xl font-bold text-white text-base transition-all duration-300 hover:shadow-xl hover:-translate-y-0.5 ripple"
-          style="background: linear-gradient(135deg, #E91E63 0%, #673AB7 100%);"
-        >
-          📥 Download Free Guide
+      <form id="floatingReservationForm" class="space-y-3">
+        <div>
+          <label class="block text-xs font-medium text-on-surface-variant mb-1" for="fl-name">Your Name *</label>
+          <input id="fl-name" type="text" name="name" required class="w-full px-3 py-2 border border-outline-variant rounded-lg text-sm focus:ring-2 focus:ring-primary focus:border-primary" placeholder="Full name">
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-on-surface-variant mb-1" for="fl-phone">Phone Number *</label>
+          <div class="flex gap-2">
+            <select name="countryCode" required class="reservation-country-code px-2 py-2 border border-outline-variant rounded-lg text-xs focus:ring-2 focus:ring-primary" style="width:110px;flex-shrink:0;">
+              <option value="+44">🇬🇧 UK +44</option>
+              <option value="+92">🇵🇰 Pakistan +92</option>
+              <option value="+880">🇧🇩 Bangladesh +880</option>
+              <option value="+91">🇮🇳 India +91</option>
+              <option value="+1">🇺🇸 US/Canada +1</option>
+              <option value="+93">🇦🇫 Afghanistan +93</option>
+              <option value="+355">🇦🇱 Albania +355</option>
+              <option value="+213">🇩🇿 Algeria +213</option>
+              <option value="+376">🇦🇩 Andorra +376</option>
+              <option value="+244">🇦🇴 Angola +244</option>
+              <option value="+297">🇦🇼 Aruba +297</option>
+              <option value="+54">🇦🇷 Argentina +54</option>
+              <option value="+374">🇦🇲 Armenia +374</option>
+              <option value="+61">🇦🇺 Australia +61</option>
+              <option value="+43">🇦🇹 Austria +43</option>
+              <option value="+994">🇦🇿 Azerbaijan +994</option>
+              <option value="+973">🇧🇭 Bahrain +973</option>
+              <option value="+375">🇧🇾 Belarus +375</option>
+              <option value="+32">🇧🇪 Belgium +32</option>
+              <option value="+501">🇧🇿 Belize +501</option>
+              <option value="+229">🇧🇯 Benin +229</option>
+              <option value="+975">🇧🇹 Bhutan +975</option>
+              <option value="+591">🇧🇴 Bolivia +591</option>
+              <option value="+387">🇧🇦 Bosnia +387</option>
+              <option value="+267">🇧🇼 Botswana +267</option>
+              <option value="+55">🇧🇷 Brazil +55</option>
+              <option value="+673">🇧🇳 Brunei +673</option>
+              <option value="+359">🇧🇬 Bulgaria +359</option>
+              <option value="+226">🇧🇫 Burkina Faso +226</option>
+              <option value="+257">🇧🇮 Burundi +257</option>
+              <option value="+855">🇰🇭 Cambodia +855</option>
+              <option value="+237">🇨🇲 Cameroon +237</option>
+              <option value="+238">🇨🇻 Cape Verde +238</option>
+              <option value="+236">🇨🇫 Central African Republic +236</option>
+              <option value="+235">🇹🇩 Chad +235</option>
+              <option value="+56">🇨🇱 Chile +56</option>
+              <option value="+86">🇨🇳 China +86</option>
+              <option value="+57">🇨🇴 Colombia +57</option>
+              <option value="+269">🇰🇲 Comoros +269</option>
+              <option value="+242">🇨🇬 Congo +242</option>
+              <option value="+243">🇨🇩 DR Congo +243</option>
+              <option value="+682">🇨🇰 Cook Islands +682</option>
+              <option value="+506">🇨🇷 Costa Rica +506</option>
+              <option value="+385">🇭🇷 Croatia +385</option>
+              <option value="+53">🇨🇺 Cuba +53</option>
+              <option value="+599">🇨🇼 Curaçao +599</option>
+              <option value="+357">🇨🇾 Cyprus +357</option>
+              <option value="+420">🇨🇿 Czech Republic +420</option>
+              <option value="+45">🇩🇰 Denmark +45</option>
+              <option value="+253">🇩🇯 Djibouti +253</option>
+              <option value="+670">🇹🇱 East Timor +670</option>
+              <option value="+593">🇪🇨 Ecuador +593</option>
+              <option value="+20">🇪🇬 Egypt +20</option>
+              <option value="+503">🇸🇻 El Salvador +503</option>
+              <option value="+240">🇬🇶 Equatorial Guinea +240</option>
+              <option value="+291">🇪🇷 Eritrea +291</option>
+              <option value="+372">🇪🇪 Estonia +372</option>
+              <option value="+251">🇪🇹 Ethiopia +251</option>
+              <option value="+500">🇫🇰 Falkland Islands +500</option>
+              <option value="+298">🇫🇴 Faroe Islands +298</option>
+              <option value="+679">🇫🇯 Fiji +679</option>
+              <option value="+358">🇫🇮 Finland +358</option>
+              <option value="+33">🇫🇷 France +33</option>
+              <option value="+594">🇬🇫 French Guiana +594</option>
+              <option value="+689">🇵🇫 French Polynesia +689</option>
+              <option value="+241">🇬🇦 Gabon +241</option>
+              <option value="+220">🇬🇲 Gambia +220</option>
+              <option value="+995">🇬🇪 Georgia +995</option>
+              <option value="+49">🇩🇪 Germany +49</option>
+              <option value="+233">🇬🇭 Ghana +233</option>
+              <option value="+350">🇬🇮 Gibraltar +350</option>
+              <option value="+30">🇬🇷 Greece +30</option>
+              <option value="+299">🇬🇱 Greenland +299</option>
+              <option value="+590">🇬🇵 Guadeloupe +590</option>
+              <option value="+502">🇬🇹 Guatemala +502</option>
+              <option value="+224">🇬🇳 Guinea +224</option>
+              <option value="+245">🇬🇼 Guinea-Bissau +245</option>
+              <option value="+592">🇬🇾 Guyana +592</option>
+              <option value="+509">🇭🇹 Haiti +509</option>
+              <option value="+504">🇭🇳 Honduras +504</option>
+              <option value="+852">🇭🇰 Hong Kong +852</option>
+              <option value="+36">🇭🇺 Hungary +36</option>
+              <option value="+354">🇮🇸 Iceland +354</option>
+              <option value="+62">🇮🇩 Indonesia +62</option>
+              <option value="+964">🇮🇶 Iraq +964</option>
+              <option value="+353">🇮🇪 Ireland +353</option>
+              <option value="+98">🇮🇷 Iran +98</option>
+              <option value="+39">🇮🇹 Italy +39</option>
+              <option value="+225">🇨🇮 Ivory Coast +225</option>
+              <option value="+81">🇯🇵 Japan +81</option>
+              <option value="+962">🇯🇴 Jordan +962</option>
+              <option value="+254">🇰🇪 Kenya +254</option>
+              <option value="+686">🇰🇮 Kiribati +686</option>
+              <option value="+383">🇽🇰 Kosovo +383</option>
+              <option value="+965">🇰🇼 Kuwait +965</option>
+              <option value="+996">🇰🇬 Kyrgyzstan +996</option>
+              <option value="+856">🇱🇦 Laos +856</option>
+              <option value="+371">🇱🇻 Latvia +371</option>
+              <option value="+961">🇱🇧 Lebanon +961</option>
+              <option value="+266">🇱🇸 Lesotho +266</option>
+              <option value="+231">🇱🇷 Liberia +231</option>
+              <option value="+218">🇱🇾 Libya +218</option>
+              <option value="+423">🇱🇮 Liechtenstein +423</option>
+              <option value="+370">🇱🇹 Lithuania +370</option>
+              <option value="+352">🇱🇺 Luxembourg +352</option>
+              <option value="+853">🇲🇴 Macau +853</option>
+              <option value="+261">🇲🇬 Madagascar +261</option>
+              <option value="+265">🇲🇼 Malawi +265</option>
+              <option value="+60">🇲🇾 Malaysia +60</option>
+              <option value="+960">🇲🇻 Maldives +960</option>
+              <option value="+223">🇲🇱 Mali +223</option>
+              <option value="+356">🇲🇹 Malta +356</option>
+              <option value="+692">🇲🇭 Marshall Islands +692</option>
+              <option value="+596">🇲🇶 Martinique +596</option>
+              <option value="+222">🇲🇷 Mauritania +222</option>
+              <option value="+230">🇲🇺 Mauritius +230</option>
+              <option value="+262">🇷🇪 Mayotte +262</option>
+              <option value="+52">🇲🇽 Mexico +52</option>
+              <option value="+691">🇫🇲 Micronesia +691</option>
+              <option value="+373">🇲🇩 Moldova +373</option>
+              <option value="+377">🇲🇨 Monaco +377</option>
+              <option value="+976">🇲🇳 Mongolia +976</option>
+              <option value="+382">🇲🇪 Montenegro +382</option>
+              <option value="+212">🇲🇦 Morocco +212</option>
+              <option value="+258">🇲🇿 Mozambique +258</option>
+              <option value="+95">🇲🇲 Myanmar +95</option>
+              <option value="+264">🇳🇦 Namibia +264</option>
+              <option value="+674">🇳🇷 Nauru +674</option>
+              <option value="+977">🇳🇵 Nepal +977</option>
+              <option value="+31">🇳🇱 Netherlands +31</option>
+              <option value="+687">🇳🇨 New Caledonia +687</option>
+              <option value="+64">🇳🇿 New Zealand +64</option>
+              <option value="+505">🇳🇮 Nicaragua +505</option>
+              <option value="+227">🇳🇪 Niger +227</option>
+              <option value="+234">🇳🇬 Nigeria +234</option>
+              <option value="+683">🇳🇺 Niue +683</option>
+              <option value="+850">🇰🇵 North Korea +850</option>
+              <option value="+389">🇲🇰 North Macedonia +389</option>
+              <option value="+672">🇳🇫 Norfolk Island +672</option>
+              <option value="+47">🇳🇴 Norway +47</option>
+              <option value="+968">🇴🇲 Oman +968</option>
+              <option value="+680">🇵🇼 Palau +680</option>
+              <option value="+970">🇵🇸 Palestine +970</option>
+              <option value="+507">🇵🇦 Panama +507</option>
+              <option value="+675">🇵🇬 Papua New Guinea +675</option>
+              <option value="+595">🇵🇾 Paraguay +595</option>
+              <option value="+51">🇵🇪 Peru +51</option>
+              <option value="+63">🇵🇭 Philippines +63</option>
+              <option value="+48">🇵🇱 Poland +48</option>
+              <option value="+351">🇵🇹 Portugal +351</option>
+              <option value="+974">🇶🇦 Qatar +974</option>
+              <option value="+262">🇷🇪 Réunion +262</option>
+              <option value="+40">🇷🇴 Romania +40</option>
+              <option value="+7">🇷🇺 Russia +7</option>
+              <option value="+250">🇷🇼 Rwanda +250</option>
+              <option value="+290">🇸🇭 Saint Helena +290</option>
+              <option value="+508">🇵🇲 Saint Pierre & Miquelon +508</option>
+              <option value="+685">🇼🇸 Samoa +685</option>
+              <option value="+378">🇸🇲 San Marino +378</option>
+              <option value="+239">🇸🇹 Sao Tome & Principe +239</option>
+              <option value="+221">🇸🇳 Senegal +221</option>
+              <option value="+381">🇷🇸 Serbia +381</option>
+              <option value="+248">🇸🇨 Seychelles +248</option>
+              <option value="+232">🇸🇱 Sierra Leone +232</option>
+              <option value="+421">🇸🇰 Slovakia +421</option>
+              <option value="+386">🇸🇮 Slovenia +386</option>
+              <option value="+677">🇸🇧 Solomon Islands +677</option>
+              <option value="+252">🇸🇴 Somalia +252</option>
+              <option value="+27">🇿🇦 South Africa +27</option>
+              <option value="+82">🇰🇷 South Korea +82</option>
+              <option value="+34">🇪🇸 Spain +34</option>
+              <option value="+94">🇱🇰 Sri Lanka +94</option>
+              <option value="+249">🇸🇩 Sudan +249</option>
+              <option value="+597">🇸🇷 Suriname +597</option>
+              <option value="+268">🇸🇿 Eswatini +268</option>
+              <option value="+46">🇸🇪 Sweden +46</option>
+              <option value="+41">🇨🇭 Switzerland +41</option>
+              <option value="+963">🇸🇾 Syria +963</option>
+              <option value="+886">🇹🇼 Taiwan +886</option>
+              <option value="+992">🇹🇯 Tajikistan +992</option>
+              <option value="+255">🇹🇿 Tanzania +255</option>
+              <option value="+66">🇹🇭 Thailand +66</option>
+              <option value="+228">🇹🇬 Togo +228</option>
+              <option value="+690">🇹🇰 Tokelau +690</option>
+              <option value="+676">🇹🇴 Tonga +676</option>
+              <option value="+216">🇹🇳 Tunisia +216</option>
+              <option value="+90">🇹🇷 Turkey +90</option>
+              <option value="+993">🇹🇲 Turkmenistan +993</option>
+              <option value="+688">🇹🇻 Tuvalu +688</option>
+              <option value="+256">🇺🇬 Uganda +256</option>
+              <option value="+380">🇺🇦 Ukraine +380</option>
+              <option value="+598">🇺🇾 Uruguay +598</option>
+              <option value="+998">🇺🇿 Uzbekistan +998</option>
+              <option value="+678">🇻🇺 Vanuatu +678</option>
+              <option value="+58">🇻🇪 Venezuela +58</option>
+              <option value="+84">🇻🇳 Vietnam +84</option>
+              <option value="+681">🇼🇫 Wallis & Futuna +681</option>
+              <option value="+967">🇾🇪 Yemen +967</option>
+              <option value="+260">🇿🇲 Zambia +260</option>
+              <option value="+263">🇿🇼 Zimbabwe +263</option>
+            </select>
+            <input type="tel" name="phone" required class="reservation-phone flex-1 px-3 py-2 border border-outline-variant rounded-lg text-sm focus:ring-2 focus:ring-primary focus:border-primary" placeholder="7XXX XXXXXX" oninput="window.validateReservationPhone && window.validateReservationPhone(this)">
+          </div>
+          <p class="reservation-phone-error text-xs text-red-500 mt-0.5 hidden"></p>
+          <p class="reservation-phone-success text-xs text-green-600 mt-0.5 hidden"><span class="material-symbols-outlined text-sm">check_circle</span> Valid</p>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-medium text-on-surface-variant mb-1" for="fl-date">Date *</label>
+            <input id="fl-date" type="date" name="date" required class="w-full px-3 py-2 border border-outline-variant rounded-lg text-sm focus:ring-2 focus:ring-primary" min="<%= new Date().toISOString().split('T')[0] %>">
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-on-surface-variant mb-1" for="fl-time">Time *</label>
+            <input id="fl-time" type="time" name="time" required class="w-full px-3 py-2 border border-outline-variant rounded-lg text-sm focus:ring-2 focus:ring-primary">
+          </div>
+        </div>
+        <button type="submit" class="w-full bg-primary text-on-primary font-semibold py-2.5 rounded-xl text-sm hover:bg-primary-container transition-colors">
+          Claim my FREE Match Call
         </button>
       </form>
-
-      <div id="guideSuccess" class="hidden mt-5 inline-flex items-center gap-2 bg-green-50 border border-green-200 text-green-700 rounded-xl px-5 py-3 text-sm font-medium">
-        <i class="ri-checkbox-circle-fill text-lg"></i>
-        <span>The guide has been sent to your inbox! Check your email (and spam folder).</span>
+      <div id="floatingReservationSuccess" class="hidden text-center py-4">
+        <div class="w-12 h-12 mx-auto mb-3 bg-halal-green/10 rounded-full flex items-center justify-center">
+          <span class="material-symbols-outlined text-2xl text-halal-green" style="font-variation-settings: 'FILL' 1;">check</span>
+        </div>
+        <p class="text-primary font-semibold">Thank You!</p>
+        <p class="text-sm text-on-surface-variant mt-1">We'll contact you soon.</p>
       </div>
-      <div id="guideError" class="hidden mt-5 inline-flex items-center gap-2 bg-red-50 border border-red-200 text-red-600 rounded-xl px-5 py-3 text-sm font-medium">
-        <i class="ri-error-warning-line text-lg"></i>
-        <span id="guideErrorText">Something went wrong. Please try again.</span>
-      </div>
-
-      <p class="text-xs text-gray-400 mt-5">No spam, ever. We respect your privacy.</p>
     </div>
   </div>
-</div> -->
 
-        <!-- Add Review CTA -->
-        <!-- Share Your Experience - Integrated -->
-        <div class="mt-12 relative">
-          <div class="bg-white/60 backdrop-blur-sm rounded-2xl p-8  relative overflow-hidden">
-            <!-- Decorative elements -->
-            <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-blue-400/20 to-purple-500/20 rounded-full -translate-y-8 translate-x-8"></div>
-            <div class="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-purple-400/20 to-blue-500/20 rounded-full translate-y-6 -translate-x-6"></div>
+  <!-- ── Floating WhatsApp Icon ────────────────────────────────────────────── -->
+  <a href="https://chat.whatsapp.com/Kjrn4Lwi54MLhd0NOZLxgl" target="_blank" rel="noopener noreferrer" aria-label="Join our WhatsApp group" class="fixed bottom-24 right-6 z-50 w-14 h-14 bg-halal-green hover:bg-halal-green/90 rounded-full flex items-center justify-center shadow-lg hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300">
+    <span class="material-symbols-outlined text-white text-2xl">chat</span>
+  </a>
 
-            <div class="relative text-center">
-              <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-primary to-secondary rounded-full mb-6 shadow-lg">
-                <i class="ri-heart-add-line text-3xl text-white"></i>
-              </div>
-              <h3 class="text-2xl font-bold text-gray-800 mb-4 font-['Playfair_Display']">Share Your Experience</h3>
-              <p class="text-gray-700 mb-8 text-lg leading-relaxed max-w-xl mx-auto">
-                Help others by sharing your journey with shadiAmour. Your review matters to our growing community!
-              </p>
+  <%- include('partials/reservationPopup', { popupId: 'exitPopup', headingText: "Not finding the right matches? Let our expert marriage consultants help you for free before you go", triggerType: 'exit' }) %>
 
-              <!-- Enhanced CTA Button -->
-              <a href="https://www.google.com/maps/place/D'Amour+Muslim/@51.528607,-0.4312449,60135m/data=!3m1!1e3!4m8!3m7!1s0x61837d7f1b1f36ff:0xd87103e4ee1a219e!8m2!3d51.5286416!4d-0.1015987!9m1!1b1!16s%2Fg%2F11xmnzvdcg?entry=ttu&g_ep=EgoyMDI1MDgxOS4wIKXMDSoASAFQAw%3D%3D" target="_blank" class="group inline-flex items-center gap-3 px-10 py-5 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-bold text-lg rounded-2xl hover:from-blue-700 hover:to-purple-700 hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-300 ripple">
-                <i class="ri-star-line text-2xl group-hover:text-yellow-300 transition-colors duration-300"></i>
-                <span>Write a Review on Google Maps</span>
-                <i class="ri-external-link-line text-xl group-hover:translate-x-1 transition-transform duration-300"></i>
-              </a>
+  <%- include('partials/footer') %>
 
-              <!-- Trust indicators -->
-              <div class="flex items-center justify-center gap-6 mt-8 text-gray-600 text-sm">
-                <div class="flex items-center gap-2">
-                  <i class="ri-time-line text-blue-500"></i>
-                  <span>Takes 2 minutes</span>
-                </div>
-                <div class="flex items-center gap-2">
-                  <i class="ri-shield-check-line text-blue-500"></i>
-                  <span>Verified platform</span>
-                </div>
-                <div class="flex items-center gap-2">
-                  <i class="ri-heart-line text-blue-500"></i>
-                  <span>Help others find love</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div> <!-- Close relative max-w-7xl mx-auto -->
-    </div> <!-- Close reviews-section -->
+  <script id="newsletter-handler">
+    document.addEventListener('DOMContentLoaded', function() {
+      const newsletterForm = document.getElementById('newsletterForm');
+      const submitButton = document.getElementById('newsletter-submit');
+      const successMessage = document.getElementById('newsletter-success');
 
-    <!-- Why Choose Us Section -->
-    <div class="py-20 bg-white">
-      <div class="max-w-6xl mx-auto px-6">
-        <div class="text-center mb-16">
-          <h2 class="text-4xl font-bold text-gray-800 mb-4 font-['Playfair_Display']">Why Muslims Across the UK Choose shadiamour</h2>
-          <p class="text-lg text-gray-600 max-w-2xl mx-auto">The trusted platform for serious, halal marriage seekers</p>
-        </div>
-
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          <!-- Feature 1 -->
-          <div class="bg-gray-50 rounded-2xl p-8 hover:bg-white hover:shadow-xl transition-all duration-300 border border-gray-100">
-            
-            <h3 class="text-xl font-bold text-gray-800 mb-3">Halal Only</h3>
-            <p class="text-gray-600">Serious marriage — never casual dating or socialising. Every connection is purposeful and respectful.</p>
-          </div>
-
-          <!-- Feature 2 -->
-          <div class="bg-gray-50 rounded-2xl p-8 hover:bg-white hover:shadow-xl transition-all duration-300 border border-gray-100">
-           
-            <h3 class="text-xl font-bold text-gray-800 mb-3">UK-Focused</h3>
-            <p class="text-gray-600">Built for British Muslims, not a generic global app. We understand the needs of the UK Muslim community.</p>
-          </div>
-
-          <!-- Feature 3 -->
-          <div class="bg-gray-50 rounded-2xl p-8 hover:bg-white hover:shadow-xl transition-all duration-300 border border-gray-100">
-           
-            <h3 class="text-xl font-bold text-gray-800 mb-3">Verified Profiles</h3>
-            <p class="text-gray-600">Real people with real intentions — moderated and approved. No fake profiles or time wasters.</p>
-          </div>
-
-          <!-- Feature 4 -->
-          <div class="bg-gray-50 rounded-2xl p-8 hover:bg-white hover:shadow-xl transition-all duration-300 border border-gray-100">
-            
-            <h3 class="text-xl font-bold text-gray-800 mb-3">Privacy by Design</h3>
-            <p class="text-gray-600">Your personal details stay protected at every step. Control who sees your profile and information.</p>
-          </div>
-
-          <!-- Feature 5 -->
-          <div class="bg-gray-50 rounded-2xl p-8 hover:bg-white hover:shadow-xl transition-all duration-300 border border-gray-100">
-            
-            <h3 class="text-xl font-bold text-gray-800 mb-3">Personal Support</h3>
-            <p class="text-gray-600">Our team is here if you need guidance along the way. Real humans ready to help you find your naseeb.</p>
-          </div>
-
-          <!-- Feature 6 -->
-          <div class="bg-gray-50 rounded-2xl p-8 hover:bg-white hover:shadow-xl transition-all duration-300 border border-gray-100">
-            
-            <h3 class="text-xl font-bold text-gray-800 mb-3">Free to Join</h3>
-            <p class="text-gray-600">Create your profile and browse matches completely free. No hidden costs to get started.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ── Free Reservation Section ────────────────────────────────────────── -->
-    <div class="py-20 bg-gradient-to-r from-pink-50 via-white to-purple-50">
-      <div class="max-w-4xl mx-auto px-6">
-        <div class="text-center mb-12">
-          <div class="inline-flex items-center justify-center w-16 h-16 mb-6 bg-primary/10 rounded-full">
-            <i class="ri-calendar-check-line text-3xl text-primary"></i>
-          </div>
-          <h2 class="text-4xl font-bold text-gray-800 mb-4 font-['Playfair_Display']">
-            Book a Free Reservation — Get Expert Guidance
-          </h2>
-          <p class="text-lg text-gray-600 max-w-2xl mx-auto">
-            Not sure where to start? Our marriage consultants are here to help you find the right match — <span class="font-semibold text-primary">completely free.</span>
-          </p>
-        </div>
-
-        <div class="grid md:grid-cols-2 gap-10 items-start">
-          <!-- Benefits -->
-          <div class="space-y-6">
-            <div class="flex items-start gap-4">
-              <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                <i class="ri-user-heart-line text-lg text-green-600"></i>
-              </div>
-              <div>
-                <h4 class="font-semibold text-gray-800 mb-1">Personalised Matchmaking Advice</h4>
-                <p class="text-gray-600 text-sm">Get one-on-one guidance from our experienced marriage consultants who understand the UK Muslim community.</p>
-              </div>
-            </div>
-            <div class="flex items-start gap-4">
-              <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                <i class="ri-shield-check-line text-lg text-blue-600"></i>
-              </div>
-              <div>
-                <h4 class="font-semibold text-gray-800 mb-1">Confidential & Halal</h4>
-                <p class="text-gray-600 text-sm">Your information stays private. Every conversation is respectful, purpose-driven, and aligned with Islamic values.</p>
-              </div>
-            </div>
-            <div class="flex items-start gap-4">
-              <div class="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                <i class="ri-star-line text-lg text-purple-600"></i>
-              </div>
-              <div>
-                <h4 class="font-semibold text-gray-800 mb-1">No Cost, No Commitment</h4>
-                <p class="text-gray-600 text-sm">This is a free service to help you get started. There's absolutely no obligation — we're here to help, not to sell.</p>
-              </div>
-            </div>
-          </div>
-
-          <!-- Form Card -->
-          <div class="bg-white rounded-2xl p-8 material-shadow-elevated">
-            <h3 class="text-xl font-bold text-gray-800 mb-6 font-['Playfair_Display'] text-center">Reserve Your Free Call</h3>
-            <form id="homeSectionReservationForm" class="space-y-4">
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Your Name *</label>
-                <input type="text" name="name" required
-                  class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-colors"
-                  placeholder="Enter your full name">
-              </div>
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">
-                  <i class="ri-whatsapp-line text-green-500 mr-1"></i>Phone Number *
-                </label>
-                <div class="flex gap-2">
-                  <select name="countryCode" required class="reservation-country-code px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-colors text-sm" style="width:145px;flex-shrink:0;">
-                    <option value="+44">🇬🇧 UK +44</option>
-                    <option value="+92">🇵🇰 Pakistan +92</option>
-                    <option value="+880">🇧🇩 Bangladesh +880</option>
-                    <option value="+91">🇮🇳 India +91</option>
-                    <option value="+1">🇺🇸 US/Canada +1</option>
-                    <option value="+93">🇦🇫 Afghanistan +93</option>
-                    <option value="+355">🇦🇱 Albania +355</option>
-                    <option value="+213">🇩🇿 Algeria +213</option>
-                    <option value="+376">🇦🇩 Andorra +376</option>
-                    <option value="+244">🇦🇴 Angola +244</option>
-                    <option value="+297">🇦🇼 Aruba +297</option>
-                    <option value="+54">🇦🇷 Argentina +54</option>
-                    <option value="+374">🇦🇲 Armenia +374</option>
-                    <option value="+61">🇦🇺 Australia +61</option>
-                    <option value="+43">🇦🇹 Austria +43</option>
-                    <option value="+994">🇦🇿 Azerbaijan +994</option>
-                    <option value="+973">🇧🇭 Bahrain +973</option>
-                    <option value="+375">🇧🇾 Belarus +375</option>
-                    <option value="+32">🇧🇪 Belgium +32</option>
-                    <option value="+501">🇧🇿 Belize +501</option>
-                    <option value="+229">🇧🇯 Benin +229</option>
-                    <option value="+975">🇧🇹 Bhutan +975</option>
-                    <option value="+591">🇧🇴 Bolivia +591</option>
-                    <option value="+387">🇧🇦 Bosnia +387</option>
-                    <option value="+267">🇧🇼 Botswana +267</option>
-                    <option value="+55">🇧🇷 Brazil +55</option>
-                    <option value="+673">🇧🇳 Brunei +673</option>
-                    <option value="+359">🇧🇬 Bulgaria +359</option>
-                    <option value="+226">🇧🇫 Burkina Faso +226</option>
-                    <option value="+257">🇧🇮 Burundi +257</option>
-                    <option value="+855">🇰🇭 Cambodia +855</option>
-                    <option value="+237">🇨🇲 Cameroon +237</option>
-                    <option value="+238">🇨🇻 Cape Verde +238</option>
-                    <option value="+236">🇨🇫 Central African Republic +236</option>
-                    <option value="+235">🇹🇩 Chad +235</option>
-                    <option value="+56">🇨🇱 Chile +56</option>
-                    <option value="+86">🇨🇳 China +86</option>
-                    <option value="+57">🇨🇴 Colombia +57</option>
-                    <option value="+269">🇰🇲 Comoros +269</option>
-                    <option value="+242">🇨🇬 Congo +242</option>
-                    <option value="+243">🇨🇩 DR Congo +243</option>
-                    <option value="+682">🇨🇰 Cook Islands +682</option>
-                    <option value="+506">🇨🇷 Costa Rica +506</option>
-                    <option value="+385">🇭🇷 Croatia +385</option>
-                    <option value="+53">🇨🇺 Cuba +53</option>
-                    <option value="+599">🇨🇼 Curaçao +599</option>
-                    <option value="+357">🇨🇾 Cyprus +357</option>
-                    <option value="+420">🇨🇿 Czech Republic +420</option>
-                    <option value="+45">🇩🇰 Denmark +45</option>
-                    <option value="+253">🇩🇯 Djibouti +253</option>
-                    <option value="+670">🇹🇱 East Timor +670</option>
-                    <option value="+593">🇪🇨 Ecuador +593</option>
-                    <option value="+20">🇪🇬 Egypt +20</option>
-                    <option value="+503">🇸🇻 El Salvador +503</option>
-                    <option value="+240">🇬🇶 Equatorial Guinea +240</option>
-                    <option value="+291">🇪🇷 Eritrea +291</option>
-                    <option value="+372">🇪🇪 Estonia +372</option>
-                    <option value="+251">🇪🇹 Ethiopia +251</option>
-                    <option value="+500">🇫🇰 Falkland Islands +500</option>
-                    <option value="+298">🇫🇴 Faroe Islands +298</option>
-                    <option value="+679">🇫🇯 Fiji +679</option>
-                    <option value="+358">🇫🇮 Finland +358</option>
-                    <option value="+33">🇫🇷 France +33</option>
-                    <option value="+594">🇬🇫 French Guiana +594</option>
-                    <option value="+689">🇵🇫 French Polynesia +689</option>
-                    <option value="+241">🇬🇦 Gabon +241</option>
-                    <option value="+220">🇬🇲 Gambia +220</option>
-                    <option value="+995">🇬🇪 Georgia +995</option>
-                    <option value="+49">🇩🇪 Germany +49</option>
-                    <option value="+233">🇬🇭 Ghana +233</option>
-                    <option value="+350">🇬🇮 Gibraltar +350</option>
-                    <option value="+30">🇬🇷 Greece +30</option>
-                    <option value="+299">🇬🇱 Greenland +299</option>
-                    <option value="+590">🇬🇵 Guadeloupe +590</option>
-                    <option value="+502">🇬🇹 Guatemala +502</option>
-                    <option value="+224">🇬🇳 Guinea +224</option>
-                    <option value="+245">🇬🇼 Guinea-Bissau +245</option>
-                    <option value="+592">🇬🇾 Guyana +592</option>
-                    <option value="+509">🇭🇹 Haiti +509</option>
-                    <option value="+504">🇭🇳 Honduras +504</option>
-                    <option value="+852">🇭🇰 Hong Kong +852</option>
-                    <option value="+36">🇭🇺 Hungary +36</option>
-                    <option value="+354">🇮🇸 Iceland +354</option>
-                    <option value="+62">🇮🇩 Indonesia +62</option>
-                    <option value="+964">🇮🇶 Iraq +964</option>
-                    <option value="+353">🇮🇪 Ireland +353</option>
-                    <option value="+98">🇮🇷 Iran +98</option>
-                    <option value="+39">🇮🇹 Italy +39</option>
-                    <option value="+225">🇨🇮 Ivory Coast +225</option>
-                    <option value="+81">🇯🇵 Japan +81</option>
-                    <option value="+962">🇯🇴 Jordan +962</option>
-                    <option value="+254">🇰🇪 Kenya +254</option>
-                    <option value="+686">🇰🇮 Kiribati +686</option>
-                    <option value="+383">🇽🇰 Kosovo +383</option>
-                    <option value="+965">🇰🇼 Kuwait +965</option>
-                    <option value="+996">🇰🇬 Kyrgyzstan +996</option>
-                    <option value="+856">🇱🇦 Laos +856</option>
-                    <option value="+371">🇱🇻 Latvia +371</option>
-                    <option value="+961">🇱🇧 Lebanon +961</option>
-                    <option value="+266">🇱🇸 Lesotho +266</option>
-                    <option value="+231">🇱🇷 Liberia +231</option>
-                    <option value="+218">🇱🇾 Libya +218</option>
-                    <option value="+423">🇱🇮 Liechtenstein +423</option>
-                    <option value="+370">🇱🇹 Lithuania +370</option>
-                    <option value="+352">🇱🇺 Luxembourg +352</option>
-                    <option value="+853">🇲🇴 Macau +853</option>
-                    <option value="+261">🇲🇬 Madagascar +261</option>
-                    <option value="+265">🇲🇼 Malawi +265</option>
-                    <option value="+60">🇲🇾 Malaysia +60</option>
-                    <option value="+960">🇲🇻 Maldives +960</option>
-                    <option value="+223">🇲🇱 Mali +223</option>
-                    <option value="+356">🇲🇹 Malta +356</option>
-                    <option value="+692">🇲🇭 Marshall Islands +692</option>
-                    <option value="+596">🇲🇶 Martinique +596</option>
-                    <option value="+222">🇲🇷 Mauritania +222</option>
-                    <option value="+230">🇲🇺 Mauritius +230</option>
-                    <option value="+262">🇷🇪 Mayotte +262</option>
-                    <option value="+52">🇲🇽 Mexico +52</option>
-                    <option value="+691">🇫🇲 Micronesia +691</option>
-                    <option value="+373">🇲🇩 Moldova +373</option>
-                    <option value="+377">🇲🇨 Monaco +377</option>
-                    <option value="+976">🇲🇳 Mongolia +976</option>
-                    <option value="+382">🇲🇪 Montenegro +382</option>
-                    <option value="+212">🇲🇦 Morocco +212</option>
-                    <option value="+258">🇲🇿 Mozambique +258</option>
-                    <option value="+95">🇲🇲 Myanmar +95</option>
-                    <option value="+264">🇳🇦 Namibia +264</option>
-                    <option value="+674">🇳🇷 Nauru +674</option>
-                    <option value="+977">🇳🇵 Nepal +977</option>
-                    <option value="+31">🇳🇱 Netherlands +31</option>
-                    <option value="+687">🇳🇨 New Caledonia +687</option>
-                    <option value="+64">🇳🇿 New Zealand +64</option>
-                    <option value="+505">🇳🇮 Nicaragua +505</option>
-                    <option value="+227">🇳🇪 Niger +227</option>
-                    <option value="+234">🇳🇬 Nigeria +234</option>
-                    <option value="+683">🇳🇺 Niue +683</option>
-                    <option value="+850">🇰🇵 North Korea +850</option>
-                    <option value="+389">🇲🇰 North Macedonia +389</option>
-                    <option value="+672">🇳🇫 Norfolk Island +672</option>
-                    <option value="+47">🇳🇴 Norway +47</option>
-                    <option value="+968">🇴🇲 Oman +968</option>
-                    <option value="+680">🇵🇼 Palau +680</option>
-                    <option value="+970">🇵🇸 Palestine +970</option>
-                    <option value="+507">🇵🇦 Panama +507</option>
-                    <option value="+675">🇵🇬 Papua New Guinea +675</option>
-                    <option value="+595">🇵🇾 Paraguay +595</option>
-                    <option value="+51">🇵🇪 Peru +51</option>
-                    <option value="+63">🇵🇭 Philippines +63</option>
-                    <option value="+48">🇵🇱 Poland +48</option>
-                    <option value="+351">🇵🇹 Portugal +351</option>
-                    <option value="+974">🇶🇦 Qatar +974</option>
-                    <option value="+262">🇷🇪 Réunion +262</option>
-                    <option value="+40">🇷🇴 Romania +40</option>
-                    <option value="+7">🇷🇺 Russia +7</option>
-                    <option value="+250">🇷🇼 Rwanda +250</option>
-                    <option value="+290">🇸🇭 Saint Helena +290</option>
-                    <option value="+508">🇵🇲 Saint Pierre & Miquelon +508</option>
-                    <option value="+685">🇼🇸 Samoa +685</option>
-                    <option value="+378">🇸🇲 San Marino +378</option>
-                    <option value="+239">🇸🇹 Sao Tome & Principe +239</option>
-                    <option value="+221">🇸🇳 Senegal +221</option>
-                    <option value="+381">🇷🇸 Serbia +381</option>
-                    <option value="+248">🇸🇨 Seychelles +248</option>
-                    <option value="+232">🇸🇱 Sierra Leone +232</option>
-                    <option value="+421">🇸🇰 Slovakia +421</option>
-                    <option value="+386">🇸🇮 Slovenia +386</option>
-                    <option value="+677">🇸🇧 Solomon Islands +677</option>
-                    <option value="+252">🇸🇴 Somalia +252</option>
-                    <option value="+27">🇿🇦 South Africa +27</option>
-                    <option value="+82">🇰🇷 South Korea +82</option>
-                    <option value="+34">🇪🇸 Spain +34</option>
-                    <option value="+94">🇱🇰 Sri Lanka +94</option>
-                    <option value="+249">🇸🇩 Sudan +249</option>
-                    <option value="+597">🇸🇷 Suriname +597</option>
-                    <option value="+268">🇸🇿 Eswatini +268</option>
-                    <option value="+46">🇸🇪 Sweden +46</option>
-                    <option value="+41">🇨🇭 Switzerland +41</option>
-                    <option value="+963">🇸🇾 Syria +963</option>
-                    <option value="+886">🇹🇼 Taiwan +886</option>
-                    <option value="+992">🇹🇯 Tajikistan +992</option>
-                    <option value="+255">🇹🇿 Tanzania +255</option>
-                    <option value="+66">🇹🇭 Thailand +66</option>
-                    <option value="+228">🇹🇬 Togo +228</option>
-                    <option value="+690">🇹🇰 Tokelau +690</option>
-                    <option value="+676">🇹🇴 Tonga +676</option>
-                    <option value="+216">🇹🇳 Tunisia +216</option>
-                    <option value="+90">🇹🇷 Turkey +90</option>
-                    <option value="+993">🇹🇲 Turkmenistan +993</option>
-                    <option value="+688">🇹🇻 Tuvalu +688</option>
-                    <option value="+256">🇺🇬 Uganda +256</option>
-                    <option value="+380">🇺🇦 Ukraine +380</option>
-                    <option value="+598">🇺🇾 Uruguay +598</option>
-                    <option value="+998">🇺🇿 Uzbekistan +998</option>
-                    <option value="+678">🇻🇺 Vanuatu +678</option>
-                    <option value="+58">🇻🇪 Venezuela +58</option>
-                    <option value="+84">🇻🇳 Vietnam +84</option>
-                    <option value="+681">🇼🇫 Wallis & Futuna +681</option>
-                    <option value="+967">🇾🇪 Yemen +967</option>
-                    <option value="+260">🇿🇲 Zambia +260</option>
-                    <option value="+263">🇿🇼 Zimbabwe +263</option>
-                  </select>
-                  <input type="tel" name="phone" required
-                    class="reservation-phone flex-1 px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-colors"
-                    placeholder="7XXX XXXXXX"
-                    oninput="window.validateReservationPhone && window.validateReservationPhone(this)">
-                </div>
-                <p class="reservation-phone-error text-xs text-red-500 mt-1 hidden"></p>
-                <p class="reservation-phone-success text-xs text-green-600 mt-1 hidden">
-                  <i class="ri-checkbox-circle-line"></i> Valid phone number
-                </p>
-              </div>
-              <div class="grid grid-cols-2 gap-4">
-                <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-1">Preferred Date *</label>
-                  <input type="date" name="date" required
-                    class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-colors"
-                    min="<%= new Date().toISOString().split('T')[0] %>">
-                </div>
-                <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-1">Preferred Time *</label>
-                  <input type="time" name="time" required
-                    class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-colors">
-                </div>
-              </div>
-              <button type="submit"
-                class="w-full gradient-bg text-white font-semibold py-3 rounded-xl hover:opacity-90 transition-opacity duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
-                <i class="ri-calendar-check-line mr-2"></i>Book Now — It's Free
-              </button>
-            </form>
-            <div id="homeSectionReservationSuccess" class="hidden text-center py-6">
-              <div class="w-14 h-14 mx-auto mb-4 bg-green-100 rounded-full flex items-center justify-center">
-                <i class="ri-check-line text-2xl text-green-600"></i>
-              </div>
-              <h4 class="text-lg font-bold text-gray-800">Reservation Booked!</h4>
-              <p class="text-sm text-gray-600 mt-1">We'll contact you soon to confirm your free consultation.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <script>
-      (function () {
-        const form = document.getElementById('homeSectionReservationForm');
-        const success = document.getElementById('homeSectionReservationSuccess');
-        if (!form) return;
-
-        form.addEventListener('submit', async function (e) {
+      if (newsletterForm) {
+        newsletterForm.addEventListener('submit', async function(e) {
           e.preventDefault();
-
-          // Validate phone before submission
-          const phoneInput = form.querySelector('.reservation-phone');
-          if (phoneInput && !window.validateReservationPhone(phoneInput)) {
-            alert('Please enter a valid phone number.');
-            return;
-          }
-
-          const formData = new FormData(form);
+          const formData = new FormData(this);
           const data = Object.fromEntries(formData.entries());
-          data.source = 'home_section';
-          data.pageUrl = window.location.href;
-
-          const submitBtn = form.querySelector('button[type="submit"]');
-          const originalText = submitBtn.innerHTML;
-          submitBtn.innerHTML = '<i class="ri-loader-4-line animate-spin mr-2"></i>Booking...';
-          submitBtn.disabled = true;
-
+          const originalText = submitButton.innerHTML;
+          submitButton.innerHTML = 'Subscribing...';
+          submitButton.disabled = true;
           try {
-            const response = await fetch('/api/reservations/book', {
+            const response = await fetch('/api/newsletter/subscribe', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify(data)
             });
             const result = await response.json();
             if (result.success) {
-              form.classList.add('hidden');
-              success.classList.remove('hidden');
+              newsletterForm.style.display = 'none';
+              successMessage.classList.remove('hidden');
+              successMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
             } else {
-              alert(result.error || 'Something went wrong. Please try again.');
-              submitBtn.innerHTML = originalText;
-              submitBtn.disabled = false;
+              alert(result.error || 'Failed to subscribe. Please try again.');
             }
-          } catch (err) {
-            console.error('Home section reservation error:', err);
-            alert('Network error. Please try again.');
+          } catch (error) {
+            console.error('Newsletter subscription error:', error);
+            alert('Failed to subscribe. Please check your connection and try again.');
+          } finally {
+            submitButton.innerHTML = originalText;
+            submitButton.disabled = false;
+          }
+        });
+      }
+    });
+  </script>
+
+  <script id="home-reservation-handler">
+    (function () {
+      const form = document.getElementById('homeSectionReservationForm');
+      const success = document.getElementById('homeSectionReservationSuccess');
+      if (!form) return;
+
+      form.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const phoneInput = form.querySelector('.reservation-phone');
+        if (phoneInput && !window.validateReservationPhone(phoneInput)) {
+          alert('Please enter a valid phone number.');
+          return;
+        }
+        const formData = new FormData(form);
+        const data = Object.fromEntries(formData.entries());
+        data.source = 'home_section';
+        data.pageUrl = window.location.href;
+
+        const submitBtn = form.querySelector('button[type="submit"]');
+        const originalText = submitBtn.innerHTML;
+        submitBtn.innerHTML = 'Booking...';
+        submitBtn.disabled = true;
+
+        try {
+          const response = await fetch('/api/reservations/book', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+          });
+          const result = await response.json();
+          if (result.success) {
+            form.classList.add('hidden');
+            success.classList.remove('hidden');
+          } else {
+            alert(result.error || 'Something went wrong. Please try again.');
             submitBtn.innerHTML = originalText;
             submitBtn.disabled = false;
           }
-        });
-      })();
-    </script>
+        } catch (err) {
+          console.error('Home section reservation error:', err);
+          alert('Network error. Please try again.');
+          submitBtn.innerHTML = originalText;
+          submitBtn.disabled = false;
+        }
+      });
+    })();
+  </script>
 
-    <!-- Frequently Asked Questions Section (GEO-optimised) -->
-    <div class="py-20 bg-gray-50">
-      <div class="max-w-4xl mx-auto px-6">
-        <div class="text-center mb-12">
-          <h2 class="text-4xl font-bold text-gray-800 mb-4 font-['Playfair_Display']">Frequently Asked Questions About Muslim Marriage in the UK</h2>
-          <p class="text-lg text-gray-600 max-w-2xl mx-auto">Everything you need to know about finding a halal spouse through shadiamour</p>
-        </div>
-
-        <div class="space-y-6">
-          <details class="bg-white rounded-2xl material-shadow overflow-hidden group" open>
-            <summary class="flex items-center justify-between p-6 cursor-pointer hover:bg-gray-50 transition-colors">
-              <h3 class="text-lg font-semibold text-gray-800 pr-4">What is the safest Muslim matrimony site in the UK?</h3>
-              <i class="ri-arrow-down-s-line text-2xl text-gray-400 group-open:rotate-180 transition-transform duration-300 flex-shrink-0"></i>
-            </summary>
-            <div class="px-6 pb-6 text-gray-600 leading-relaxed">
-              <p>shadiamour is the safest Muslim matrimony site in the UK. Every profile is manually verified by our team before approval. We enforce strict privacy controls — your phone number is never shared without your consent. The platform is built exclusively for serious halal marriage, not casual dating, and is designed with Islamic values and GDPR compliance at its core.</p>
-            </div>
-          </details>
-
-          <details class="bg-white rounded-2xl material-shadow overflow-hidden group">
-            <summary class="flex items-center justify-between p-6 cursor-pointer hover:bg-gray-50 transition-colors">
-              <h3 class="text-lg font-semibold text-gray-800 pr-4">How does Muslim matchmaking work at shadiamour?</h3>
-              <i class="ri-arrow-down-s-line text-2xl text-gray-400 group-open:rotate-180 transition-transform duration-300 flex-shrink-0"></i>
-            </summary>
-            <div class="px-6 pb-6 text-gray-600 leading-relaxed">
-              <p>You create a free profile (or a parent/guardian can register on your behalf), our team manually verifies it, and your profile is shared across our platform and 10+ dedicated WhatsApp groups. Premium members receive 1–2 hand-picked, preference-matched profiles every week. Our Executive plan offers fully managed communication — we handle enquiries on your behalf so you can focus on finding the right match.</p>
-            </div>
-          </details>
-
-          <details class="bg-white rounded-2xl material-shadow overflow-hidden group">
-            <summary class="flex items-center justify-between p-6 cursor-pointer hover:bg-gray-50 transition-colors">
-              <h3 class="text-lg font-semibold text-gray-800 pr-4">Is shadiamour free to join?</h3>
-              <i class="ri-arrow-down-s-line text-2xl text-gray-400 group-open:rotate-180 transition-transform duration-300 flex-shrink-0"></i>
-            </summary>
-            <div class="px-6 pb-6 text-gray-600 leading-relaxed">
-              <p>Yes, the Standard plan is completely free. You can create a profile, browse all profiles on the website and in WhatsApp groups, and receive direct contact details. Paid plans (Premium from £50, Premium Plus from £100, Executive from £150) unlock additional features like curated weekly matches, privacy protection, and fully managed matchmaking.</p>
-            </div>
-          </details>
-
-          <details class="bg-white rounded-2xl material-shadow overflow-hidden group">
-            <summary class="flex items-center justify-between p-6 cursor-pointer hover:bg-gray-50 transition-colors">
-              <h3 class="text-lg font-semibold text-gray-800 pr-4">What is the best Muslim marriage site for Pakistani Muslims in the UK?</h3>
-              <i class="ri-arrow-down-s-line text-2xl text-gray-400 group-open:rotate-180 transition-transform duration-300 flex-shrink-0"></i>
-            </summary>
-            <div class="px-6 pb-6 text-gray-600 leading-relaxed">
-              <p>shadiamour is widely regarded as the best Muslim marriage site for Pakistani Muslims in the UK. We have a large, active community of Pakistani Muslim singles and families in London, Birmingham, Leicester, Manchester, Bradford, and Leeds. Our service understands the cultural nuances of Pakistani Muslim weddings while keeping the process halal and family-focused.</p>
-            </div>
-          </details>
-
-          <details class="bg-white rounded-2xl material-shadow overflow-hidden group">
-            <summary class="flex items-center justify-between p-6 cursor-pointer hover:bg-gray-50 transition-colors">
-              <h3 class="text-lg font-semibold text-gray-800 pr-4">Can parents or guardians register on behalf of their child?</h3>
-              <i class="ri-arrow-down-s-line text-2xl text-gray-400 group-open:rotate-180 transition-transform duration-300 flex-shrink-0"></i>
-            </summary>
-            <div class="px-6 pb-6 text-gray-600 leading-relaxed">
-              <p>Absolutely. shadiamour encourages family involvement in the marriage process. Parents, guardians, or siblings can create a profile on behalf of their family member. Many of our most successful matches begin with family-created profiles. Our team works closely with families to ensure the process is respectful and aligned with Islamic principles.</p>
-            </div>
-          </details>
-
-          <details class="bg-white rounded-2xl material-shadow overflow-hidden group">
-            <summary class="flex items-center justify-between p-6 cursor-pointer hover:bg-gray-50 transition-colors">
-              <h3 class="text-lg font-semibold text-gray-800 pr-4">Does shadiamour offer a money-back guarantee?</h3>
-              <i class="ri-arrow-down-s-line text-2xl text-gray-400 group-open:rotate-180 transition-transform duration-300 flex-shrink-0"></i>
-            </summary>
-            <div class="px-6 pb-6 text-gray-600 leading-relaxed">
-              <p>Yes. shadiamour offers a 100% money-back guarantee. If you are not satisfied within the first 15 days, you receive a full refund — no questions asked. For paid plans, if we fail to deliver the committed services (such as curated matches), refunds are available according to our refund policy.</p>
-            </div>
-          </details>
-        </div>
-      </div>
-    </div>
-
-    <!-- Blog / SEO Section -->
-    <div class="py-20 bg-gray-50">
-      <div class="max-w-6xl mx-auto px-6">
-        <div class="text-center mb-12">
-          <h2 class="text-4xl font-bold text-gray-800 mb-4 font-['Playfair_Display']">Muslim Marriage Advice &amp; Guides</h2>
-          <p class="text-lg text-gray-600 max-w-2xl mx-auto">Read our latest guides on halal marriage, rishta advice, and Islamic matrimony tips for UK Muslims.</p>
-        </div>
-
-        <div class="grid md:grid-cols-3 gap-8">
-          <!-- Blog 1 -->
-          <a href="/blog/uk-rishta-whatsapp-group" class="bg-white rounded-2xl material-shadow hover:material-shadow-hover transition-all duration-300 group overflow-hidden block">
-            <div class="p-6">
-              <div class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mb-4">
-                <i class="ri-whatsapp-line text-2xl text-primary"></i>
-              </div>
-              <h3 class="text-lg font-bold text-gray-800 mb-2 group-hover:text-primary transition-colors duration-300">UK Rishta WhatsApp Groups — What You Need to Know</h3>
-              <p class="text-gray-600 text-sm leading-relaxed">Find out everything about rishta WhatsApp groups for UK Muslims — benefits, risks, and a better alternative for serious marriage seekers.</p>
-              <div class="flex items-center gap-2 mt-4 text-primary text-sm font-medium">
-                <span>Read Guide</span><i class="ri-arrow-right-line group-hover:translate-x-1 transition-transform duration-300"></i>
-              </div>
-            </div>
-          </a>
-
-          <!-- Blog 2 -->
-          <a href="/blog/how-to-find-a-muslim-spouse-in-the-uk-simple-real-guide" class="bg-white rounded-2xl material-shadow hover:material-shadow-hover transition-all duration-300 group overflow-hidden block">
-            <div class="p-6">
-              <div class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mb-4">
-                <i class="ri-search-heart-line text-2xl text-primary"></i>
-              </div>
-              <h3 class="text-lg font-bold text-gray-800 mb-2 group-hover:text-primary transition-colors duration-300">How To Find a Muslim Spouse in the UK — Simple, Real Guide</h3>
-              <p class="text-gray-600 text-sm leading-relaxed">A practical, no-nonsense guide for UK Muslims on how to find a spouse the halal way — from mindset and family to the right platforms.</p>
-              <div class="flex items-center gap-2 mt-4 text-primary text-sm font-medium">
-                <span>Read Guide</span><i class="ri-arrow-right-line group-hover:translate-x-1 transition-transform duration-300"></i>
-              </div>
-            </div>
-          </a>
-
-          <!-- Blog 3 -->
-          <a href="/blog/benefits-of-halal-matchmaking-services-uk-muslim-marriage-rishta-guide" class="bg-white rounded-2xl material-shadow hover:material-shadow-hover transition-all duration-300 group overflow-hidden block">
-            <div class="p-6">
-              <div class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mb-4">
-                <i class="ri-heart-2-line text-2xl text-primary"></i>
-              </div>
-              <h3 class="text-lg font-bold text-gray-800 mb-2 group-hover:text-primary transition-colors duration-300">Benefits of Halal Matchmaking Services — UK Muslim Marriage Guide</h3>
-              <p class="text-gray-600 text-sm leading-relaxed">Discover why halal matchmaking is the trusted choice for serious UK Muslims seeking rishta and marriage — with real benefits explained.</p>
-              <div class="flex items-center gap-2 mt-4 text-primary text-sm font-medium">
-                <span>Read Guide</span><i class="ri-arrow-right-line group-hover:translate-x-1 transition-transform duration-300"></i>
-              </div>
-            </div>
-          </a>
-        </div>
-
-        <div class="text-center mt-10">
-          <a href="/blog" class="inline-flex items-center gap-2 gradient-bg text-white font-semibold py-3 px-8 rounded-button hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
-            <i class="ri-article-line"></i>
-            <span>View All Guides &amp; Advice</span>
-            <i class="ri-arrow-right-line"></i>
-          </a>
-        </div>
-      </div>
-    </div>
-
-    <!-- CTA Section -->
-    <div class="py-20 gradient-bg relative overflow-hidden">
-      <!-- Background decorative elements -->
-      <div class="absolute inset-0 opacity-10">
-        <div class="absolute top-10 left-10 w-32 h-32 border-2 border-white rounded-full"></div>
-        <div class="absolute bottom-10 right-10 w-48 h-48 border-2 border-white rounded-full"></div>
-        <div class="absolute top-1/2 left-1/4 w-24 h-24 border border-white rounded-full"></div>
-      </div>
-
-      <div class="relative max-w-4xl mx-auto px-6 text-center">
-        <h2 class="text-4xl md:text-5xl font-bold text-white mb-6 font-['Playfair_Display']">
-          Start Your Halal Marriage Journey Today — It's Free
-        </h2>
-        <p class="text-xl text-white/90 mb-10 max-w-2xl mx-auto">
-          Join thousands of UK Muslims already on their path to naseeb.
-        </p>
-
-        <div class="flex flex-wrap items-center justify-center gap-4">
-          <a href="/register" class="bg-white text-primary font-bold py-4 px-10 rounded-button hover:bg-gray-100 hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 text-lg ripple">
-            <i class="ri-user-add-line mr-2"></i>Register Now Free
-          </a>
-          <a href="https://chat.whatsapp.com/Kjrn4Lwi54MLhd0NOZLxgl" target="_blank" class="bg-green-500 hover:bg-green-600 text-white font-bold py-4 px-10 rounded-button hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 text-lg ripple">
-            <i class="ri-whatsapp-fill mr-2"></i>Join Free WhatsApp Group
-          </a>
-        </div>
-      </div>
-    </div>
-
-    <!-- Newsletter Section -->
-    <div class="relative overflow-hidden">
-      <!-- Background Pattern -->
-      <div class="absolute inset-0 bg-gradient-to-br from-primary/5 via-secondary/5 to-primary/10"></div>
-      <div class="absolute inset-0 opacity-30" style="background-image: radial-gradient(circle at 25% 25%, rgba(233, 30, 99, 0.1) 0%, transparent 50%), radial-gradient(circle at 75% 75%, rgba(103, 58, 183, 0.1) 0%, transparent 50%);"></div>
-
-      <div class="relative max-w-4xl mx-auto px-6 py-16">
-        <div class="text-center mb-12">
-          <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-primary to-secondary rounded-full mb-6 animate-pulse">
-            <i class="ri-mail-heart-line text-3xl text-white"></i>
-          </div>
-          <!-- Updated Newsletter Section -->
-          <h2 class="text-4xl font-bold text-gray-800 mb-4 font-['Playfair_Display']">
-            Never Miss Your Perfect Muslim Match - Join Our Halal Rishta Community
-          </h2>
-          <p class="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
-            Subscribe for exclusive access to new verified Muslim singles, halal dating tips, and success stories from our Muslim matchmaking community. Connect with single Muslim men and women across London, Birmingham, Manchester, and Leicester seeking serious Muslim marriage and modern Nikkah partnerships.
-          </p>
-        </div>
-
-        <!-- Newsletter Form -->
-        <form id="newsletterForm" class="max-w-xl mx-auto">
-          <div class="bg-white rounded-2xl p-8 material-shadow-elevated border border-primary/10">
-            <div class="space-y-4">
-              <!-- Name Field -->
-              <div>
-                <label for="newsletter-name" class="block text-sm font-semibold text-gray-700 mb-2">
-                  Full Name <span class="text-primary">*</span>
-                </label>
-                <input type="text" id="newsletter-name" name="name" required class="w-full px-4 py-3 border-2 border-gray-200 rounded-button focus:border-primary focus:ring-0 transition-colors duration-300 text-gray-900 placeholder-gray-400" placeholder="Enter your full name">
-              </div>
-
-              <!-- Email Field -->
-              <div>
-                <label for="newsletter-email" class="block text-sm font-semibold text-gray-700 mb-2">
-                  Email Address <span class="text-primary">*</span>
-                </label>
-                <input type="email" id="newsletter-email" name="email" required class="w-full px-4 py-3 border-2 border-gray-200 rounded-button focus:border-primary focus:ring-0 transition-colors duration-300 text-gray-900 placeholder-gray-400" placeholder="Enter your email address">
-              </div>
-
-              <!-- Gender Field -->
-              <div>
-                <label for="newsletter-gender" class="block text-sm font-semibold text-gray-700 mb-2">
-                  I'm seeking a Muslim partner <span class="text-primary">*</span>
-                </label>
-                <select id="newsletter-gender" name="interestedIn" required class="w-full px-4 py-3 border-2 border-gray-200 rounded-button focus:border-primary focus:ring-0 transition-colors duration-300 text-gray-900">
-                  <option value="">Select your preference</option>
-                  <option value="male">Single Muslim Men</option>
-                  <option value="female">Single Muslim Women</option>
-                </select>
-              </div>
-
-              <!-- Age Range Field -->
-              <div>
-                <label for="newsletter-age" class="block text-sm font-semibold text-gray-700 mb-2">
-                  Preferred Age for Muslim Marriage
-                </label>
-                <select id="newsletter-age" name="preferredAgeRange" class="w-full px-4 py-3 border-2 border-gray-200 rounded-button focus:border-primary focus:ring-0 transition-colors duration-300 text-gray-900">
-                  <option value="">Any age</option>
-                  <option value="18-25">18-25 years</option>
-                  <option value="26-30">26-30 years</option>
-                  <option value="31-35">31-35 years</option>
-                  <option value="36-40">36-40 years</option>
-                  <option value="41+">41+ years</option>
-                </select>
-              </div>
-
-              <!-- Submit Button -->
-              <button type="submit" id="newsletter-submit" class="w-full gradient-bg text-white font-bold py-4 px-6 rounded-button hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 ripple text-lg">
-                <i class="ri-heart-line mr-2"></i>
-                <span>Join Halal Muslim Matchmaking Community</span>
-              </button>
-            </div>
-
-            <!-- Privacy Notice -->
-            <p class="text-xs text-gray-500 mt-4 text-center leading-relaxed">
-              By subscribing, you'll receive updates about new Muslim singles, halal matchmaking tips, and Muslim marriage success stories.
-              We protect your privacy and follow Islamic principles. Unsubscribe anytime from our halal dating communications.
-            </p>
-          </div>
-        </form>
-
-        <!-- Success Message (Hidden by default) -->
-        <div id="newsletter-success" class="hidden max-w-xl mx-auto mt-6">
-          <div class="bg-green-50 border border-green-200 rounded-2xl p-6 text-center">
-            <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <i class="ri-check-line text-2xl text-green-600"></i>
-            </div>
-            <!-- Updated Success Message -->
-            <h3 class="text-xl font-bold text-green-800 mb-2">Welcome to the UK's Top Muslim Marriage Community!</h3>
-            <p class="text-green-700">
-              JazakAllah for joining! You'll soon receive personalized Muslim match suggestions and halal dating guidance to help you find your perfect Muslim spouse.
-            </p>
-          </div>
-        </div>
-
-        <!-- Trust Indicators -->
-        <div class="flex items-center justify-center gap-8 mt-12 text-gray-500 text-sm">
-          <div class="flex items-center gap-2">
-            <i class="ri-shield-check-line text-primary"></i>
-            <span>Halal Dating Privacy Protected</span>
-          </div>
-          <div class="flex items-center gap-2">
-            <i class="ri-spam-2-line text-primary"></i>
-            <span>No Spam - Islamic Values Respected</span>
-          </div>
-          <div class="flex items-center gap-2">
-            <i class="ri-mail-unread-line text-primary"></i>
-            <span>Easy Unsubscribe from Muslim Matchmaking Updates</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-  </main>
-
-  <!-- ── Floating Reservation Button ──────────────────────────────────────── -->
-  <div id="floatingReservation" style="bottom: 100px;" class="fixed right-6 z-[50]">
-    <!-- Collapsed: Pill Button -->
-    <button id="reservationToggle" class="gradient-bg text-white font-semibold px-5 py-3 rounded-full shadow-xl hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 flex items-center gap-2 animate-bounce-slow whitespace-nowrap">
-      <i class="ri-calendar-check-line text-xl"></i>
-      <span class="text-sm">Book Free Consultation Today</span>
-      <i id="reservationArrow" class="ri-arrow-up-s-line text-lg transition-transform duration-300"></i>
-    </button>
-
-    <!-- Expanded: Form Card -->
-    <div id="reservationFormCard" style="bottom:100%" class="hidden absolute right-0 mb-4 w-80 bg-white rounded-2xl p-6 material-shadow-elevated">
-      <div class="flex items-center justify-between mb-4">
-        <h4 class="text-lg font-bold text-gray-800 font-['Playfair_Display']">Book Free Consultation</h4>
-        <button id="reservationClose" class="p-1 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-full transition-colors">
-          <i class="ri-close-line text-lg"></i>
-        </button>
-      </div>
-
-      <form id="floatingReservationForm" class="space-y-3">
-        <div>
-          <label class="block text-xs font-medium text-gray-700 mb-1">Your Name *</label>
-          <input type="text" name="name" required
-            class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary focus:border-primary"
-            placeholder="Full name">
-        </div>
-        <div>
-          <label class="block text-xs font-medium text-gray-700 mb-1">
-            <i class="ri-whatsapp-line text-green-500 mr-1"></i>Phone Number *
-          </label>
-          <div class="flex gap-2">
-            <select name="countryCode" required class="reservation-country-code px-2 py-2 border border-gray-300 rounded-lg text-xs focus:ring-2 focus:ring-primary focus:border-primary" style="width:115px;flex-shrink:0;">
-              <option value="+44">🇬🇧 +44</option>
-              <option value="+92">🇵🇰 +92</option>
-              <option value="+880">🇧🇩 +880</option>
-              <option value="+91">🇮🇳 +91</option>
-              <option value="+1">🇺🇸 +1</option>
-              <option value="+93">🇦🇫 +93</option>
-              <option value="+355">🇦🇱 +355</option>
-              <option value="+213">🇩🇿 +213</option>
-              <option value="+376">🇦🇩 +376</option>
-              <option value="+244">🇦🇴 +244</option>
-              <option value="+297">🇦🇼 +297</option>
-              <option value="+54">🇦🇷 +54</option>
-              <option value="+374">🇦🇲 +374</option>
-              <option value="+61">🇦🇺 +61</option>
-              <option value="+43">🇦🇹 +43</option>
-              <option value="+994">🇦🇿 +994</option>
-              <option value="+973">🇧🇭 +973</option>
-              <option value="+375">🇧🇾 +375</option>
-              <option value="+32">🇧🇪 +32</option>
-              <option value="+501">🇧🇿 +501</option>
-              <option value="+229">🇧🇯 +229</option>
-              <option value="+975">🇧🇹 +975</option>
-              <option value="+591">🇧🇴 +591</option>
-              <option value="+387">🇧🇦 +387</option>
-              <option value="+267">🇧🇼 +267</option>
-              <option value="+55">🇧🇷 +55</option>
-              <option value="+673">🇧🇳 +673</option>
-              <option value="+359">🇧🇬 +359</option>
-              <option value="+226">🇧🇫 +226</option>
-              <option value="+257">🇧🇮 +257</option>
-              <option value="+855">🇰🇭 +855</option>
-              <option value="+237">🇨🇲 +237</option>
-              <option value="+238">🇨🇻 +238</option>
-              <option value="+236">🇨🇫 +236</option>
-              <option value="+235">🇹🇩 +235</option>
-              <option value="+56">🇨🇱 +56</option>
-              <option value="+86">🇨🇳 +86</option>
-              <option value="+57">🇨🇴 +57</option>
-              <option value="+269">🇰🇲 +269</option>
-              <option value="+242">🇨🇬 +242</option>
-              <option value="+243">🇨🇩 +243</option>
-              <option value="+682">🇨🇰 +682</option>
-              <option value="+506">🇨🇷 +506</option>
-              <option value="+385">🇭🇷 +385</option>
-              <option value="+53">🇨🇺 +53</option>
-              <option value="+599">🇨🇼 +599</option>
-              <option value="+357">🇨🇾 +357</option>
-              <option value="+420">🇨🇿 +420</option>
-              <option value="+45">🇩🇰 +45</option>
-              <option value="+253">🇩🇯 +253</option>
-              <option value="+670">🇹🇱 +670</option>
-              <option value="+593">🇪🇨 +593</option>
-              <option value="+20">🇪🇬 +20</option>
-              <option value="+503">🇸🇻 +503</option>
-              <option value="+240">🇬🇶 +240</option>
-              <option value="+291">🇪🇷 +291</option>
-              <option value="+372">🇪🇪 +372</option>
-              <option value="+251">🇪🇹 +251</option>
-              <option value="+500">🇫🇰 +500</option>
-              <option value="+298">🇫🇴 +298</option>
-              <option value="+679">🇫🇯 +679</option>
-              <option value="+358">🇫🇮 +358</option>
-              <option value="+33">🇫🇷 +33</option>
-              <option value="+594">🇬🇫 +594</option>
-              <option value="+689">🇵🇫 +689</option>
-              <option value="+241">🇬🇦 +241</option>
-              <option value="+220">🇬🇲 +220</option>
-              <option value="+995">🇬🇪 +995</option>
-              <option value="+49">🇩🇪 +49</option>
-              <option value="+233">🇬🇭 +233</option>
-              <option value="+350">🇬🇮 +350</option>
-              <option value="+30">🇬🇷 +30</option>
-              <option value="+299">🇬🇱 +299</option>
-              <option value="+590">🇬🇵 +590</option>
-              <option value="+502">🇬🇹 +502</option>
-              <option value="+224">🇬🇳 +224</option>
-              <option value="+245">🇬🇼 +245</option>
-              <option value="+592">🇬🇾 +592</option>
-              <option value="+509">🇭🇹 +509</option>
-              <option value="+504">🇭🇳 +504</option>
-              <option value="+852">🇭🇰 +852</option>
-              <option value="+36">🇭🇺 +36</option>
-              <option value="+354">🇮🇸 +354</option>
-              <option value="+62">🇮🇩 +62</option>
-              <option value="+964">🇮🇶 +964</option>
-              <option value="+353">🇮🇪 +353</option>
-              <option value="+98">🇮🇷 +98</option>
-              <option value="+39">🇮🇹 +39</option>
-              <option value="+225">🇨🇮 +225</option>
-              <option value="+81">🇯🇵 +81</option>
-              <option value="+962">🇯🇴 +962</option>
-              <option value="+254">🇰🇪 +254</option>
-              <option value="+686">🇰🇮 +686</option>
-              <option value="+383">🇽🇰 +383</option>
-              <option value="+965">🇰🇼 +965</option>
-              <option value="+996">🇰🇬 +996</option>
-              <option value="+856">🇱🇦 +856</option>
-              <option value="+371">🇱🇻 +371</option>
-              <option value="+961">🇱🇧 +961</option>
-              <option value="+266">🇱🇸 +266</option>
-              <option value="+231">🇱🇷 +231</option>
-              <option value="+218">🇱🇾 +218</option>
-              <option value="+423">🇱🇮 +423</option>
-              <option value="+370">🇱🇹 +370</option>
-              <option value="+352">🇱🇺 +352</option>
-              <option value="+853">🇲🇴 +853</option>
-              <option value="+261">🇲🇬 +261</option>
-              <option value="+265">🇲🇼 +265</option>
-              <option value="+60">🇲🇾 +60</option>
-              <option value="+960">🇲🇻 +960</option>
-              <option value="+223">🇲🇱 +223</option>
-              <option value="+356">🇲🇹 +356</option>
-              <option value="+692">🇲🇭 +692</option>
-              <option value="+596">🇲🇶 +596</option>
-              <option value="+222">🇲🇷 +222</option>
-              <option value="+230">🇲🇺 +230</option>
-              <option value="+262">🇷🇪 +262</option>
-              <option value="+52">🇲🇽 +52</option>
-              <option value="+691">🇫🇲 +691</option>
-              <option value="+373">🇲🇩 +373</option>
-              <option value="+377">🇲🇨 +377</option>
-              <option value="+976">🇲🇳 +976</option>
-              <option value="+382">🇲🇪 +382</option>
-              <option value="+212">🇲🇦 +212</option>
-              <option value="+258">🇲🇿 +258</option>
-              <option value="+95">🇲🇲 +95</option>
-              <option value="+264">🇳🇦 +264</option>
-              <option value="+674">🇳🇷 +674</option>
-              <option value="+977">🇳🇵 +977</option>
-              <option value="+31">🇳🇱 +31</option>
-              <option value="+687">🇳🇨 +687</option>
-              <option value="+64">🇳🇿 +64</option>
-              <option value="+505">🇳🇮 +505</option>
-              <option value="+227">🇳🇪 +227</option>
-              <option value="+234">🇳🇬 +234</option>
-              <option value="+683">🇳🇺 +683</option>
-              <option value="+850">🇰🇵 +850</option>
-              <option value="+389">🇲🇰 +389</option>
-              <option value="+672">🇳🇫 +672</option>
-              <option value="+47">🇳🇴 +47</option>
-              <option value="+968">🇴🇲 +968</option>
-              <option value="+680">🇵🇼 +680</option>
-              <option value="+970">🇵🇸 +970</option>
-              <option value="+507">🇵🇦 +507</option>
-              <option value="+675">🇵🇬 +675</option>
-              <option value="+595">🇵🇾 +595</option>
-              <option value="+51">🇵🇪 +51</option>
-              <option value="+63">🇵🇭 +63</option>
-              <option value="+48">🇵🇱 +48</option>
-              <option value="+351">🇵🇹 +351</option>
-              <option value="+974">🇶🇦 +974</option>
-              <option value="+262">🇷🇪 +262</option>
-              <option value="+40">🇷🇴 +40</option>
-              <option value="+7">🇷🇺 +7</option>
-              <option value="+250">🇷🇼 +250</option>
-              <option value="+290">🇸🇭 +290</option>
-              <option value="+508">🇵🇲 +508</option>
-              <option value="+685">🇼🇸 +685</option>
-              <option value="+378">🇸🇲 +378</option>
-              <option value="+239">🇸🇹 +239</option>
-              <option value="+221">🇸🇳 +221</option>
-              <option value="+381">🇷🇸 +381</option>
-              <option value="+248">🇸🇨 +248</option>
-              <option value="+232">🇸🇱 +232</option>
-              <option value="+421">🇸🇰 +421</option>
-              <option value="+386">🇸🇮 +386</option>
-              <option value="+677">🇸🇧 +677</option>
-              <option value="+252">🇸🇴 +252</option>
-              <option value="+27">🇿🇦 +27</option>
-              <option value="+82">🇰🇷 +82</option>
-              <option value="+34">🇪🇸 +34</option>
-              <option value="+94">🇱🇰 +94</option>
-              <option value="+249">🇸🇩 +249</option>
-              <option value="+597">🇸🇷 +597</option>
-              <option value="+268">🇸🇿 +268</option>
-              <option value="+46">🇸🇪 +46</option>
-              <option value="+41">🇨🇭 +41</option>
-              <option value="+963">🇸🇾 +963</option>
-              <option value="+886">🇹🇼 +886</option>
-              <option value="+992">🇹🇯 +992</option>
-              <option value="+255">🇹🇿 +255</option>
-              <option value="+66">🇹🇭 +66</option>
-              <option value="+228">🇹🇬 +228</option>
-              <option value="+690">🇹🇰 +690</option>
-              <option value="+676">🇹🇴 +676</option>
-              <option value="+216">🇹🇳 +216</option>
-              <option value="+90">🇹🇷 +90</option>
-              <option value="+993">🇹🇲 +993</option>
-              <option value="+688">🇹🇻 +688</option>
-              <option value="+256">🇺🇬 +256</option>
-              <option value="+380">🇺🇦 +380</option>
-              <option value="+598">🇺🇾 +598</option>
-              <option value="+998">🇺🇿 +998</option>
-              <option value="+678">🇻🇺 +678</option>
-              <option value="+58">🇻🇪 +58</option>
-              <option value="+84">🇻🇳 +84</option>
-              <option value="+681">🇼🇫 +681</option>
-              <option value="+967">🇾🇪 +967</option>
-              <option value="+260">🇿🇲 +260</option>
-              <option value="+263">🇿🇼 +263</option>
-            </select>
-            <input type="tel" name="phone" required
-              class="reservation-phone flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary focus:border-primary"
-              placeholder="7XXX XXXXXX"
-              oninput="window.validateReservationPhone && window.validateReservationPhone(this)">
-          </div>
-          <p class="reservation-phone-error text-xs text-red-500 mt-0.5 hidden"></p>
-          <p class="reservation-phone-success text-xs text-green-600 mt-0.5 hidden">
-            <i class="ri-checkbox-circle-line"></i> Valid
-          </p>
-        </div>
-        <div class="grid grid-cols-2 gap-3">
-          <div>
-            <label class="block text-xs font-medium text-gray-700 mb-1">Date *</label>
-            <input type="date" name="date" required
-              class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary focus:border-primary"
-              min="<%= new Date().toISOString().split('T')[0] %>">
-          </div>
-          <div>
-            <label class="block text-xs font-medium text-gray-700 mb-1">Time *</label>
-            <input type="time" name="time" required
-              class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary focus:border-primary">
-          </div>
-        </div>
-        <button type="submit"
-          class="w-full gradient-bg text-white font-semibold py-2.5 rounded-xl text-sm hover:opacity-90 transition-opacity">
-          <i class="ri-calendar-check-line mr-1"></i>Claim my FREE Match Call
-        </button>
-      </form>
-
-      <!-- Success Message -->
-      <div id="floatingReservationSuccess" class="hidden text-center py-4">
-        <div class="w-12 h-12 mx-auto mb-3 bg-green-100 rounded-full flex items-center justify-center">
-          <i class="ri-check-line text-2xl text-green-600"></i>
-        </div>
-        <p class="text-gray-800 font-semibold">Thank You!</p>
-        <p class="text-sm text-gray-600 mt-1">We'll contact you soon.</p>
-      </div>
-    </div>
-  </div>
-
-  <script>
+  <script id="floating-reservation-handler">
     (function () {
       const toggle = document.getElementById('reservationToggle');
       const card = document.getElementById('reservationFormCard');
@@ -1831,33 +1473,22 @@
         card.classList.remove('hidden');
         arrow.style.transform = 'rotate(180deg)';
       }
-
       function closeCard() {
         isOpen = false;
         card.classList.add('hidden');
         arrow.style.transform = 'rotate(0deg)';
       }
-
-      toggle.addEventListener('click', function () {
-        if (isOpen) { closeCard(); } else { openCard(); }
-      });
-
-      close.addEventListener('click', function (e) {
-        e.stopPropagation();
-        closeCard();
-      });
+      if (toggle) toggle.addEventListener('click', function () { if (isOpen) { closeCard(); } else { openCard(); } });
+      if (close) close.addEventListener('click', function (e) { e.stopPropagation(); closeCard(); });
 
       if (form) {
         form.addEventListener('submit', async function (e) {
           e.preventDefault();
-
-          // Validate phone before submission
           const phoneInput = form.querySelector('.reservation-phone');
           if (phoneInput && !window.validateReservationPhone(phoneInput)) {
             alert('Please enter a valid phone number.');
             return;
           }
-
           const formData = new FormData(form);
           const data = Object.fromEntries(formData.entries());
           data.source = 'floating_button';
@@ -1865,7 +1496,7 @@
 
           const submitBtn = form.querySelector('button[type="submit"]');
           const originalText = submitBtn.innerHTML;
-          submitBtn.innerHTML = '<i class="ri-loader-4-line animate-spin mr-1"></i>Booking...';
+          submitBtn.innerHTML = 'Booking...';
           submitBtn.disabled = true;
 
           try {
@@ -1893,160 +1524,6 @@
         });
       }
     })();
-  </script>
-
-  <!-- ── Floating WhatsApp Icon ─────────────────────────────────────────────── -->
-  <a href="https://chat.whatsapp.com/Kjrn4Lwi54MLhd0NOZLxgl" target="_blank" rel="noopener noreferrer" aria-label="Join our WhatsApp group" class="fixed bottom-6 right-6 z-50 w-14 h-14 bg-green-500 hover:bg-green-600 rounded-full flex items-center justify-center shadow-lg hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 animate-bounce-slow">
-    <i class="ri-whatsapp-fill text-white text-2xl"></i>
-  </a>
-  <style>
-    @keyframes bounce-slow {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-6px); }
-    }
-    .animate-bounce-slow {
-      animation: bounce-slow 2.5s ease-in-out infinite;
-    }
-    .animate-bounce-slow:hover {
-      animation: none;
-    }
-  </style>
-
-  <%- include('partials/reservationPopup', { popupId: 'exitPopup', headingText: "Not finding the right matches? Let our expert marriage consultants help you for free before you go", triggerType: 'exit' }) %>
-
-  <%- include('partials/footer') %>
-
-  <script id="ripple-effects">
-    document.addEventListener('DOMContentLoaded', function() {
-      const rippleButtons = document.querySelectorAll('.ripple');
-
-      rippleButtons.forEach(button => {
-        button.addEventListener('click', function(e) {
-          const ripple = document.createElement('span');
-          const rect = this.getBoundingClientRect();
-          const size = Math.max(rect.width, rect.height);
-          const x = e.clientX - rect.left - size / 2;
-          const y = e.clientY - rect.top - size / 2;
-
-          ripple.style.width = ripple.style.height = size + 'px';
-          ripple.style.left = x + 'px';
-          ripple.style.top = y + 'px';
-          ripple.classList.add('absolute', 'bg-white', 'bg-opacity-30', 'rounded-full', 'animate-ping');
-
-          this.appendChild(ripple);
-
-          setTimeout(() => {
-            ripple.remove();
-          }, 600);
-        });
-      });
-    });
-  </script>
-  <script id="newsletter-handler">
-    document.addEventListener('DOMContentLoaded', function() {
-      const newsletterForm = document.getElementById('newsletterForm');
-      const submitButton = document.getElementById('newsletter-submit');
-      const successMessage = document.getElementById('newsletter-success');
-
-      if (newsletterForm) {
-        newsletterForm.addEventListener('submit', async function(e) {
-          e.preventDefault();
-
-          // Get form data
-          const formData = new FormData(this);
-          const data = Object.fromEntries(formData.entries());
-
-          // Update button state
-          const originalText = submitButton.innerHTML;
-          submitButton.innerHTML = '<i class="ri-loader-4-line animate-spin mr-2"></i>Subscribing...';
-          submitButton.disabled = true;
-
-          try {
-            const response = await fetch('/api/newsletter/subscribe', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify(data)
-            });
-
-            const result = await response.json();
-
-            if (result.success) {
-              // Hide form and show success message
-              newsletterForm.style.display = 'none';
-              successMessage.classList.remove('hidden');
-
-              // Scroll to success message
-              successMessage.scrollIntoView({
-                behavior: 'smooth',
-                block: 'center'
-              });
-            } else {
-              alert(result.error || 'Failed to subscribe. Please try again.');
-            }
-          } catch (error) {
-            console.error('Newsletter subscription error:', error);
-            alert('Failed to subscribe. Please check your connection and try again.');
-          } finally {
-            // Reset button state
-            submitButton.innerHTML = originalText;
-            submitButton.disabled = false;
-          }
-        });
-      }
-    });
-  </script>
-  <script id="guide-download-handler">
-    document.addEventListener('DOMContentLoaded', function () {
-      const guideForm = document.getElementById('guideDownloadForm');
-      if (!guideForm) return;
-
-      guideForm.addEventListener('submit', async function (e) {
-        e.preventDefault();
-        const emailInput = document.getElementById('guideEmail');
-        const submitBtn = document.getElementById('guideSubmitBtn');
-        const successEl = document.getElementById('guideSuccess');
-        const errorEl = document.getElementById('guideError');
-        const errorText = document.getElementById('guideErrorText');
-
-        const email = emailInput.value.trim();
-        if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-          errorText.textContent = 'Please enter a valid email address.';
-          errorEl.classList.remove('hidden');
-          successEl.classList.add('hidden');
-          return;
-        }
-
-        const originalLabel = submitBtn.innerHTML;
-        submitBtn.innerHTML = '<i class="ri-loader-4-line" style="animation:spin 1s linear infinite;display:inline-block;"></i> Sending...';
-        submitBtn.disabled = true;
-        successEl.classList.add('hidden');
-        errorEl.classList.add('hidden');
-
-        try {
-          const response = await fetch('/api/guide/download', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email })
-          });
-          const result = await response.json();
-          if (result.success) {
-            successEl.classList.remove('hidden');
-            guideForm.reset();
-          } else {
-            errorText.textContent = result.error || 'Something went wrong. Please try again.';
-            errorEl.classList.remove('hidden');
-          }
-        } catch (err) {
-          errorText.textContent = 'Network error. Please check your connection and try again.';
-          errorEl.classList.remove('hidden');
-        } finally {
-          submitBtn.innerHTML = originalLabel;
-          submitBtn.disabled = false;
-        }
-      });
-    });
   </script>
 
   <!-- Phone Validation for Reservation Forms -->
@@ -2168,13 +1645,11 @@
       };
 
       window.validateReservationPhone = function(inputEl) {
-        // Find the closest form container to get the right country code select
         const container = inputEl.closest('form, div');
         const countryCode = container.querySelector('.reservation-country-code').value;
         const phoneDigits = inputEl.value.replace(/\D/g, '');
         const errorEl = container.querySelector('.reservation-phone-error');
         const successEl = container.querySelector('.reservation-phone-success');
-
         const rule = phoneRules[countryCode];
 
         if (!rule) {
@@ -2183,14 +1658,12 @@
           inputEl.classList.remove('border-red-500', 'border-green-500');
           return true;
         }
-
         if (phoneDigits.length === 0) {
           if (errorEl) errorEl.classList.add('hidden');
           if (successEl) successEl.classList.add('hidden');
           inputEl.classList.remove('border-red-500', 'border-green-500');
           return false;
         }
-
         if (phoneDigits.length < rule.min) {
           if (errorEl) { errorEl.textContent = rule.name + ' phone needs ' + rule.min + ' digits (have ' + phoneDigits.length + '). e.g. ' + rule.example; errorEl.classList.remove('hidden'); }
           if (successEl) successEl.classList.add('hidden');
@@ -2198,7 +1671,6 @@
           inputEl.classList.remove('border-green-500');
           return false;
         }
-
         if (phoneDigits.length > rule.max) {
           if (errorEl) { errorEl.textContent = rule.name + ' phone max ' + rule.max + ' digits (have ' + phoneDigits.length + ')'; errorEl.classList.remove('hidden'); }
           if (successEl) successEl.classList.add('hidden');
@@ -2206,7 +1678,6 @@
           inputEl.classList.remove('border-green-500');
           return false;
         }
-
         if (errorEl) errorEl.classList.add('hidden');
         if (successEl) successEl.classList.remove('hidden');
         inputEl.classList.remove('border-red-500');
@@ -2214,7 +1685,6 @@
         return true;
       };
 
-      // Update placeholder and re-validate on country code change
       document.addEventListener('change', function(e) {
         if (e.target.classList.contains('reservation-country-code')) {
           const container = e.target.closest('form, div');
@@ -2229,6 +1699,18 @@
         }
       });
     })();
+  </script>
+
+  <!-- Simple micro-interaction for navbar transparency shift on scroll -->
+  <script>
+    window.addEventListener('scroll', function() {
+      const nav = document.querySelector('header');
+      if (nav && window.scrollY > 50) {
+        nav.classList.add('bg-white/95', 'backdrop-blur-md');
+      } else if (nav) {
+        nav.classList.remove('bg-white/95', 'backdrop-blur-md');
+      }
+    });
   </script>
 </body>
 

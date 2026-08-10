@@ -15,7 +15,7 @@
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
   <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
   <link rel="manifest" href="/images/site.webmanifest">
-  <meta name="theme-color" content="#00113a">
+  <meta name="theme-color" content="#E91E63">
   <link rel="stylesheet" href="/css/output.css" />
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css" />
@@ -24,38 +24,34 @@
   <%- include('../partials/analytics') %>
 </head>
 
-<body class="bg-background text-on-background font-body-md antialiased flex flex-col min-h-screen">
+<body class="bg-gray-50 font-['Roboto']">
   <%- include('../partials/header') %>
 
-  <main class="flex-grow pt-[92px]">
-    <!-- Blog Header -->
-    <section class="py-section-padding px-margin-x max-w-container-max mx-auto text-center flex flex-col items-center">
-      <div class="inline-flex items-center gap-2 px-4 py-1.5 bg-secondary-container/20 border border-secondary-container/40 rounded-full text-secondary font-label-md text-sm font-medium mb-6">
-        <i class="ri-article-line"></i>
-        <span>Blog & Guides</span>
+  <main class="pt-24 min-h-screen">
+    <div class="max-w-6xl mx-auto px-6">
+      <!-- Blog Header -->
+      <div class="text-center mb-12">
+        <h1 class="text-4xl font-bold text-gray-800 mb-4 font-['Playfair_Display']">
+          shadiAmour Blog
+        </h1>
+        <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+          Expert advice on Muslim matchmaking, wedding planning, and building
+          meaningful relationships rooted in Islamic values.
+        </p>
       </div>
-      <h1 class="text-display-lg-mobile md:text-display-lg font-display-lg-mobile md:font-display-lg text-primary mb-6 leading-tight">
-        shadiAmour Blog
-      </h1>
-      <p class="text-body-lg font-body-lg text-on-surface-variant max-w-2xl mx-auto">
-        Expert advice on Muslim matchmaking, wedding planning, and building
-        meaningful relationships rooted in Islamic values.
-      </p>
-    </section>
 
-    <!-- Blog Posts Grid -->
-    <section class="px-margin-x max-w-container-max mx-auto pb-section-padding">
-      <div class="grid lg:grid-cols-3 md:grid-cols-2 gap-gutter">
+      <!-- Blog Posts Grid -->
+      <div class="grid lg:grid-cols-3 md:grid-cols-2 gap-8">
         <% posts.forEach(post => { %>
-        <article class="bg-surface-white rounded-xl border border-outline-variant/30 shadow-[0px_4px_20px_rgba(0,35,102,0.05)] transition-all duration-300 overflow-hidden group hover:-translate-y-1 hover:shadow-[0px_8px_28px_rgba(0,35,102,0.12)]">
-          <div class="p-6 flex flex-col h-full">
+        <article class="bg-white rounded-2xl material-shadow hover:material-shadow-hover transition-all duration-300 overflow-hidden group">
+          <div class="p-6">
             <!-- Featured Image -->
-            <div class="aspect-video bg-gradient-to-br from-primary-container/10 to-secondary-container/10 relative overflow-hidden rounded-xl mb-4">
+            <div class="aspect-video bg-gradient-to-br from-primary/10 to-secondary/10 relative overflow-hidden rounded-xl mb-4">
               <% if (post.featuredImage && post.featuredImage.url) { %>
               <img src="<%= post.featuredImage.url %>" alt="<%= post.featuredImage.alt || post.title %>" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy" />
               <% } else { %>
               <div class="absolute inset-0 flex items-center justify-center">
-                <span class="material-symbols-outlined text-5xl text-primary-container/40">article</span>
+                <i class="ri-article-line text-6xl text-primary/30"></i>
               </div>
               <% } %>
 
@@ -64,8 +60,8 @@
             </div>
 
             <!-- Category & Date -->
-            <div class="flex items-center justify-between text-sm text-on-surface-variant mb-3">
-              <span class="px-3 py-1 bg-secondary-container/20 text-secondary rounded-full text-xs font-medium">
+            <div class="flex items-center justify-between text-sm text-gray-500 mb-3">
+              <span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-xs font-medium">
                 <%= post.category %>
               </span>
               <time datetime="<%= post.publishedAt %>">
@@ -75,19 +71,19 @@
             </div>
 
             <!-- Title -->
-            <h2 class="text-xl font-bold text-on-surface mb-3 font-headline-md group-hover:text-primary transition-colors duration-300 line-clamp-2">
+            <h2 class="text-xl font-bold text-gray-800 mb-3 font-['Playfair_Display'] group-hover:text-primary transition-colors duration-300 line-clamp-2">
               <a href="/blog/<%= post.slug %>" class="hover:text-primary">
                 <%= post.title %>
               </a>
             </h2>
 
             <!-- Excerpt -->
-            <p class="text-on-surface-variant mb-4 line-clamp-3">
+            <p class="text-gray-600 mb-4 line-clamp-3">
               <%= post.excerpt || post.content.substring(0, 150) + '...' %>
             </p>
 
             <!-- Meta Info -->
-            <div class="flex items-center justify-between text-sm text-on-surface-variant mb-4">
+            <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
               <span class="flex items-center gap-1">
                 <i class="ri-time-line"></i>
                 5 min read
@@ -100,16 +96,16 @@
 
             <!-- Read More Button -->
             <div class="mt-auto">
-              <a href="/blog/<%= post.slug %>" class="inline-flex items-center gap-2 text-primary font-medium transition-colors duration-300">
+              <a href="/blog/<%= post.slug %>" class="inline-flex items-center gap-2 text-primary hover:text-pink-600 font-medium transition-colors duration-300">
                 Read Full Article
-                <span class="material-symbols-outlined text-lg group-hover:translate-x-1 transition-transform duration-300">arrow_forward</span>
+                <i class="ri-arrow-right-line group-hover:translate-x-1 transition-transform duration-300"></i>
               </a>
             </div>
           </div>
         </article>
         <% }) %>
       </div>
-    </section>
+    </div>
   </main>
   <br />
 <%- include('../partials/reservationPopup', { popupId: 'scrollPopup', headingText: "Ready to take the next step? Book a free, confidential call with a matchmaker.", triggerType: 'scroll' }) %>
@@ -129,6 +125,14 @@
       -webkit-line-clamp: 3;
       -webkit-box-orient: vertical;
       overflow: hidden;
+    }
+
+    .material-shadow {
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .material-shadow-hover {
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
     }
   </style>
 </body>

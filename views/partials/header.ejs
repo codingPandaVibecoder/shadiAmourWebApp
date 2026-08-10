@@ -10,7 +10,7 @@
     left: 0;
     right: 0;
     z-index: 60;
-    background: #000;
+    background: #00113a;
     color: #fff;
     height: 28px;
     overflow: hidden;
@@ -56,11 +56,11 @@
   </div>
 </div>
 
-<header class="fixed top-0 left-0 right-0 bg-white material-shadow z-50">
+<header class="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md shadow-[0px_4px_20px_rgba(0,35,102,0.05)]">
   <div class="flex items-center justify-between px-2 h-16 lg:px-6">
     <div class="flex items-center gap-3">
       <!-- Mobile hamburger -->
-      <button id="openMobileNav" class="p-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors" aria-label="Open menu">
+      <button id="openMobileNav" class="p-2 text-on-surface-variant hover:bg-primary/5 rounded-lg transition-colors" aria-label="Open menu">
         <i class="ri-menu-line text-xl"></i>
       </button>
       <a href="/" class="hover:opacity-80 transition-opacity duration-300 cursor-pointer flex items-center">
@@ -68,27 +68,27 @@
       </a>
     </div>
     <nav class="hidden md:flex items-center gap-8">
-      <a href="/profiles?gender=male" data-track="true" data-event-name="nav_browse_men" data-category="navigation" data-label="Nav Browse Men" class="flex items-center gap-2 px-4 py-2 text-gray-700 hover:text-primary transition-all duration-300 font-medium">
+      <a href="/profiles?gender=male" data-track="true" data-event-name="nav_browse_men" data-category="navigation" data-label="Nav Browse Men" class="flex items-center gap-2 px-4 py-2 text-on-surface-variant hover:text-primary transition-all duration-300 font-medium text-label-md">
         <i class="ri-user-line"></i>
         <span>Men</span>
       </a>
-      <a href="/profiles?gender=female" data-track="true" data-event-name="nav_browse_women" data-category="navigation" data-label="Nav Browse Women" class="flex items-center gap-2 px-4 py-2 text-gray-700 hover:text-primary transition-all duration-300 font-medium">
+      <a href="/profiles?gender=female" data-track="true" data-event-name="nav_browse_women" data-category="navigation" data-label="Nav Browse Women" class="flex items-center gap-2 px-4 py-2 text-on-surface-variant hover:text-primary transition-all duration-300 font-medium text-label-md">
         <i class="ri-user-3-line"></i>
         <span>Women</span>
       </a>
-      <a href="/matches" data-track="true" data-event-name="nav_matches" data-category="navigation" data-label="Nav Your Matches" class="flex items-center gap-2 px-4 py-2 text-gray-700 hover:text-primary transition-all duration-300 font-medium">
+      <a href="/matches" data-track="true" data-event-name="nav_matches" data-category="navigation" data-label="Nav Your Matches" class="flex items-center gap-2 px-4 py-2 text-on-surface-variant hover:text-primary transition-all duration-300 font-medium text-label-md">
         <i class="ri-heart-line"></i>
         <span>Your Matches</span>
       </a>
-      <a href="/blog" class="flex items-center gap-2 px-4 py-2 text-gray-700 hover:text-primary transition-all duration-300 font-medium">
+      <a href="/blog" class="flex items-center gap-2 px-4 py-2 text-on-surface-variant hover:text-primary transition-all duration-300 font-medium text-label-md">
         <i class="ri-article-line"></i>
         <span>Blog</span>
       </a>
-      <a href="/podcasts" class="flex items-center gap-2 px-4 py-2 text-gray-700 hover:text-primary transition-all duration-300 font-medium">
+      <a href="/podcasts" class="flex items-center gap-2 px-4 py-2 text-on-surface-variant hover:text-primary transition-all duration-300 font-medium text-label-md">
         <i class="ri-mic-line"></i>
         <span>Podcasts</span>
       </a>
-      <a href="/islamic-faqs" class="flex items-center gap-2 px-4 py-2 text-gray-700 hover:text-primary transition-all duration-300 font-medium">
+      <a href="/islamic-faqs" class="flex items-center gap-2 px-4 py-2 text-on-surface-variant hover:text-primary transition-all duration-300 font-medium text-label-md">
         <i class="ri-question-answer-line"></i>
         <span>Islamic FAQs</span>
       </a>
@@ -142,7 +142,7 @@
         <div id="notificationBackdrop" class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden transition-opacity duration-300"></div>
       </div>
       <div class="relative">
-        <button id="accountDropdown" class="flex items-center gap-2 px-4 py-2 text-gray-700 hover:text-primary transition-all duration-300">
+        <button id="accountDropdown" class="flex items-center gap-2 px-4 py-2 text-on-surface-variant hover:text-primary transition-all duration-300">
           <i class="ri-user-line"></i>
           <span class="hidden sm:inline">Account</span>
           <i class="ri-arrow-down-s-line"></i>
@@ -180,7 +180,7 @@
       <!-- Not logged in - show login/signup buttons -->
       <!-- Account dropdown for mobile -->
       <div class="relative">
-        <button id="accountDropdown" class="flex items-center gap-2 px-4 py-2 text-gray-700 hover:text-primary transition-all duration-300">
+        <button id="accountDropdown" class="flex items-center gap-2 px-4 py-2 text-on-surface-variant hover:text-primary transition-all duration-300">
           <i class="ri-user-line"></i>
           <span>Account</span>
           <i class="ri-arrow-down-s-line"></i>
@@ -198,11 +198,11 @@
       </div>
 
       <!-- Login/Signup buttons for desktop -->
-      <a href="/login" data-track="true" data-event-name="nav_login_click" data-category="navigation" data-label="Nav Login" class="hidden md:inline-block px-6 py-2 border-2 border-primary text-primary hover:bg-primary hover:text-white transition-all duration-300 !rounded-button whitespace-nowrap ripple">
+      <a href="/login" data-track="true" data-event-name="nav_login_click" data-category="navigation" data-label="Nav Login" class="hidden md:inline-block text-primary font-bold text-label-md hover:opacity-70 transition-opacity whitespace-nowrap">
         Login
       </a>
-      <a href="/register" data-track="true" data-event-name="nav_signup_click" data-category="navigation" data-label="Nav Sign Up" class="hidden md:inline-block px-6 py-2 bg-primary text-white hover:bg-pink-600 transition-all duration-300 !rounded-button whitespace-nowrap ripple material-shadow">
-        Sign Up
+      <a href="/register" data-track="true" data-event-name="nav_signup_click" data-category="navigation" data-label="Nav Sign Up" class="hidden md:inline-block bg-primary text-on-primary px-6 py-3 rounded-lg font-bold text-label-md shadow-md hover:scale-105 active:scale-95 transition-all whitespace-nowrap">
+        Sign Up Free
       </a>
       <% } %>
     </div>
@@ -226,27 +226,27 @@
 
   <!-- Nav Links -->
   <nav class="flex-1 px-4 py-5 space-y-1">
-    <a href="/profiles?gender=male" class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-pink-50 hover:text-primary rounded-xl transition-colors font-medium" onclick="closeMobileNav()">
+    <a href="/profiles?gender=male" class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-primary/5 hover:text-primary rounded-xl transition-colors font-medium" onclick="closeMobileNav()">
       <i class="ri-user-line text-lg"></i>
       <span>Browse Men</span>
     </a>
-    <a href="/profiles?gender=female" class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-pink-50 hover:text-primary rounded-xl transition-colors font-medium" onclick="closeMobileNav()">
+    <a href="/profiles?gender=female" class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-primary/5 hover:text-primary rounded-xl transition-colors font-medium" onclick="closeMobileNav()">
       <i class="ri-user-3-line text-lg"></i>
       <span>Browse Women</span>
     </a>
-    <a href="/matches" class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-pink-50 hover:text-primary rounded-xl transition-colors font-medium" onclick="closeMobileNav()">
+    <a href="/matches" class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-primary/5 hover:text-primary rounded-xl transition-colors font-medium" onclick="closeMobileNav()">
       <i class="ri-heart-line text-lg"></i>
       <span>Your Matches</span>
     </a>
-    <a href="/blog" class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-pink-50 hover:text-primary rounded-xl transition-colors font-medium" onclick="closeMobileNav()">
+    <a href="/blog" class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-primary/5 hover:text-primary rounded-xl transition-colors font-medium" onclick="closeMobileNav()">
       <i class="ri-article-line text-lg"></i>
       <span>Blog</span>
     </a>
-    <a href="/podcasts" class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-pink-50 hover:text-primary rounded-xl transition-colors font-medium" onclick="closeMobileNav()">
+    <a href="/podcasts" class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-primary/5 hover:text-primary rounded-xl transition-colors font-medium" onclick="closeMobileNav()">
       <i class="ri-mic-line text-lg"></i>
       <span>Podcasts</span>
     </a>
-    <a href="/islamic-faqs" class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-pink-50 hover:text-primary rounded-xl transition-colors font-medium" onclick="closeMobileNav()">
+    <a href="/islamic-faqs" class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-primary/5 hover:text-primary rounded-xl transition-colors font-medium" onclick="closeMobileNav()">
       <i class="ri-question-answer-line text-lg"></i>
       <span>Islamic FAQs</span>
     </a>
@@ -268,10 +268,10 @@
       <span class="font-medium">Logout</span>
     </a>
     <% } else { %>
-    <a href="/login" class="block w-full text-center px-6 py-3 border-2 border-primary text-primary hover:bg-primary hover:text-white transition-all rounded-button font-medium" onclick="closeMobileNav()">
+    <a href="/login" class="block w-full text-center px-6 py-3 border-2 border-primary text-primary hover:bg-primary hover:text-white transition-all rounded-lg font-medium" onclick="closeMobileNav()">
       Login
     </a>
-    <a href="/register" class="block w-full text-center px-6 py-3 bg-primary text-white hover:bg-pink-600 transition-all rounded-button font-medium material-shadow" onclick="closeMobileNav()">
+    <a href="/register" class="block w-full text-center px-6 py-3 bg-primary text-on-primary hover:bg-primary-container transition-all rounded-lg font-medium shadow-md" onclick="closeMobileNav()">
       Sign Up Free
     </a>
     <% } %>

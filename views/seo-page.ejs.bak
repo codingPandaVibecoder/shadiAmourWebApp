@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= pageTitle %> | shadiamour</title>
+  <meta name="description" content="<%= metaDescription %>">
+  <meta name="keywords" content="<%= keywords %>">
+  <meta name="author" content="shadiamour">
+  <link rel="canonical" href="https://shadiamour.com<%= canonicalPath %>">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+  <link rel="manifest" href="/images/site.webmanifest">
+  <meta name="theme-color" content="#E91E63">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://shadiamour.com<%= canonicalPath %>">
+  <meta property="og:title" content="<%= pageTitle %> | shadiamour">
+  <meta property="og:description" content="<%= metaDescription %>">
+  <meta property="og:image" content="https://shadiamour.com/images/homepageman.jpg">
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://shadiamour.com<%= canonicalPath %>">
+  <meta property="twitter:title" content="<%= pageTitle %> | shadiamour">
+  <meta property="twitter:description" content="<%= metaDescription %>">
+  <meta property="twitter:image" content="https://shadiamour.com/images/homepageman.jpg">
+
+  <link rel="stylesheet" href="/css/output.css">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+  <style>
+    .gradient-bg { background: linear-gradient(135deg, #E91E63 0%, #673AB7 100%); }
+    .material-shadow { box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    .material-shadow-hover { box-shadow: 0 4px 16px rgba(0,0,0,0.15); }
+    .ripple { position: relative; overflow: hidden; }
+    .ripple::before { content:''; position:absolute; top:50%; left:50%; width:0; height:0; border-radius:50%; background:rgba(255,255,255,0.3); transform:translate(-50%,-50%); transition:width 0.6s, height 0.6s; }
+    .ripple:active::before { width:300px; height:300px; }
+  </style>
+
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "name": "<%= h1 %>",
+    "description": "<%= metaDescription %>",
+    "provider": {
+      "@type": "Organization",
+      "name": "shadiamour",
+      "url": "https://shadiamour.com"
+    },
+    "url": "https://shadiamour.com<%= canonicalPath %>",
+    "serviceType": "Muslim Marriage and Matchmaking",
+    "areaServed": ["United Kingdom", "Pakistan", "Global"]
+  }
+  </script>
+  <% if (typeof pageFaqSchema !== 'undefined' && pageFaqSchema && pageFaqSchema.length > 0) { %>
+  <script type="application/ld+json"><%- JSON.stringify({ "@context": "https://schema.org", "@type": "FAQPage", "mainEntity": pageFaqSchema.map(function(faq){ return { "@type": "Question", "name": faq.q, "acceptedAnswer": { "@type": "Answer", "text": faq.a } }; }) }) %></script>
+  <% } else { %>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Is this service halal?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. shadiamour is a marriage-focused platform. We do not allow casual dating or socialising. All interactions are guided by the intention of Nikah."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is it free to join?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, creating a profile and browsing matches is completely free. No payment is required to get started."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Are profiles verified?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. Every profile is reviewed and approved by our moderation team before becoming visible on the platform."
+        }
+      }
+    ]
+  }
+  </script>
+  <% } %>
+  <%- include('partials/clarity') %>
+  <%- include('partials/thirdparty') %>
+  <%- include('partials/analytics') %>
+</head>
+
+<body class="bg-gray-50 font-['Roboto']">
+  <%- include('partials/header') %>
+
+  <main class="pt-24 min-h-screen">
+
+    <!-- Hero Banner -->
+    <div class="gradient-bg py-16 px-6">
+      <div class="max-w-4xl mx-auto text-center">
+        <h1 class="text-4xl md:text-5xl font-bold text-white mb-4 font-['Playfair_Display']"><%= h1 %></h1>
+        <p class="text-lg text-white/90 max-w-2xl mx-auto"><%= heroSubtitle %></p>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="py-16 bg-white">
+      <div class="max-w-4xl mx-auto px-6">
+        <%- bodyContent %>
+      </div>
+    </div>
+
+    <!-- FAQ Section -->
+    <div class="py-16 bg-gray-50">
+      <div class="max-w-4xl mx-auto px-6">
+        <h2 class="text-3xl font-bold text-gray-800 mb-8 font-['Playfair_Display'] text-center">Frequently Asked Questions</h2>
+        <div class="space-y-4">
+          <% if (typeof pageFaqs !== 'undefined' && pageFaqs && pageFaqs.length > 0) { %>
+            <% pageFaqs.forEach(function(faq) { %>
+            <div class="bg-white rounded-2xl p-6 material-shadow">
+              <h3 class="font-bold text-gray-800 mb-2"><%= faq.q %></h3>
+              <p class="text-gray-600"><%= faq.a %></p>
+            </div>
+            <% }); %>
+          <% } else { %>
+          <div class="bg-white rounded-2xl p-6 material-shadow">
+            <h3 class="font-bold text-gray-800 mb-2">Is this service halal?</h3>
+            <p class="text-gray-600">Yes. shadiamour is a marriage-focused platform. We do not allow casual dating or socialising. All interactions are guided by the intention of Nikah.</p>
+          </div>
+          <div class="bg-white rounded-2xl p-6 material-shadow">
+            <h3 class="font-bold text-gray-800 mb-2">Is it free to join?</h3>
+            <p class="text-gray-600">Yes, creating a profile and browsing matches is completely free. No payment is required to get started.</p>
+          </div>
+          <div class="bg-white rounded-2xl p-6 material-shadow">
+            <h3 class="font-bold text-gray-800 mb-2">Are profiles verified?</h3>
+            <p class="text-gray-600">Yes. Every profile is reviewed and approved by our moderation team before becoming visible on the platform.</p>
+          </div>
+          <% } %>
+        </div>
+      </div>
+    </div>
+
+    <!-- Internal Links -->
+    <div class="py-16 bg-white">
+      <div class="max-w-4xl mx-auto px-6">
+        <h2 class="text-2xl font-bold text-gray-800 mb-6 font-['Playfair_Display'] text-center">Explore More</h2>
+        <div class="flex flex-wrap gap-3 justify-center">
+          <a href="/" class="px-4 py-2 bg-primary/10 text-primary rounded-full text-sm font-medium hover:bg-primary hover:text-white transition-all duration-300">Homepage</a>
+          <% relatedLinks.forEach(function(link) { %>
+            <a href="<%= link.url %>" class="px-4 py-2 bg-primary/10 text-primary rounded-full text-sm font-medium hover:bg-primary hover:text-white transition-all duration-300"><%= link.label %></a>
+          <% }); %>
+          <a href="/blog" class="px-4 py-2 bg-primary/10 text-primary rounded-full text-sm font-medium hover:bg-primary hover:text-white transition-all duration-300">Marriage Guides &amp; Blog</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="py-16 gradient-bg">
+      <div class="max-w-4xl mx-auto px-6 text-center">
+        <h2 class="text-3xl font-bold text-white mb-4 font-['Playfair_Display']"><%= ctaHeading %></h2>
+        <p class="text-white/90 mb-8 text-lg"><%= ctaSubtext %></p>
+        <div class="flex flex-wrap items-center justify-center gap-4">
+          <a href="/register" class="bg-white text-primary font-bold py-4 px-10 rounded-button hover:bg-gray-100 hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 text-lg ripple">
+            <i class="ri-user-add-line mr-2"></i>Create Your Free Profile
+          </a>
+          <a href="/profiles" class="border-2 border-white text-white font-bold py-4 px-10 rounded-button hover:bg-white hover:text-primary transition-all duration-300 text-lg">
+            <i class="ri-search-line mr-2"></i>Browse Profiles
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <%- include('partials/footer') %>
+</body>
+</html>

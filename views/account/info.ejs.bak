@@ -1,0 +1,2344 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+  <link rel="manifest" href="/images/site.webmanifest">
+  <meta name="theme-color" content="#E91E63">
+  <title>shadiamour - Edit User</title>
+  <link rel="stylesheet" href="/css/output.css">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+  <style>
+    :where([class^="ri-"])::before {
+      content: "\f3c2";
+    }
+
+    .material-shadow {
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .material-shadow-hover {
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    }
+
+    .material-shadow-elevated {
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    }
+
+    .ripple {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .ripple::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.3);
+      transform: translate(-50%, -50%);
+      transition: width 0.6s, height 0.6s;
+    }
+
+    .ripple:active::before {
+      width: 300px;
+      height: 300px;
+    }
+
+    .gradient-bg {
+      background: linear-gradient(135deg, #E91E63 0%, #673AB7 100%);
+    }
+
+    .tab-active {
+      background-color: #E91E63 !important;
+      color: white !important;
+    }
+
+    .child-item,
+    .education-item {
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 12px;
+    }
+
+    .main-nav-active {
+      background-color: #E91E63 !important;
+      color: white !important;
+    }
+
+    .main-section {
+      display: block;
+    }
+
+    .main-section.hidden {
+      display: none;
+    }
+
+    .hover-overlay {
+      position: relative;
+    }
+
+    .hover-overlay:hover .absolute {
+      opacity: 1 !important;
+    }
+
+    /* Upload preview styles */
+    .upload-preview {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .upload-preview img {
+      transition: all 0.3s ease;
+    }
+
+    .upload-preview:hover img {
+      transform: scale(1.05);
+    }
+
+    /* File input styling */
+    .file-input-wrapper {
+      position: relative;
+      cursor: pointer;
+    }
+
+    .scrollbar-hide {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    .scrollbar-hide::-webkit-scrollbar {
+      display: none;
+    }
+
+    /* Smooth scroll behavior */
+    .overflow-x-auto {
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    /* Ensure minimum button width on mobile */
+    @media (max-width: 768px) {
+
+      .main-nav-btn,
+      .tab-btn {
+        min-width: 120px;
+        flex-shrink: 0;
+      }
+    }
+
+    .char-counter {
+      font-size: 0.875rem;
+      margin-top: 0.25rem;
+      transition: color 0.3s ease;
+      display: flex;
+      align-items: center;
+    }
+
+    .char-counter i {
+      font-size: 0.75rem;
+    }
+  </style>
+  <%- include('../partials/clarity') %>
+  <%- include('../partials/thirdparty') %>
+  <%- include('../partials/analytics') %>
+</head>
+
+<body class="bg-gray-50 font-['Roboto']">
+  <!-- Profile Completion Dialog -->
+  <div id="completionDialog" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+    <div class="bg-white rounded-2xl p-8 max-w-md mx-4 material-shadow-elevated">
+      <div class="text-center mb-6">
+        <div class="w-16 h-16 bg-gradient-to-r from-primary to-secondary rounded-full flex items-center justify-center mx-auto mb-4">
+          <i class="ri-user-settings-line text-2xl text-white"></i>
+        </div>
+        <h3 class="text-xl font-bold text-gray-900 mb-2">Profile Setup</h3>
+        <p class="text-gray-600">Your profile is <span id="completionPercentage" class="font-semibold text-primary">12</span>% complete </p>
+      </div>
+
+      <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+        <div class="flex items-start">
+          <i class="ri-lightbulb-line text-blue-500 text-xl mr-3 mt-0.5"></i>
+          <div>
+            <p class="text-blue-800 font-medium mb-1">Boost Your Success Rate!</p>
+            <p class="text-blue-700 text-sm">Adding more information about yourself can increase your success rate of getting proposals by up to 4 times.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="space-y-3">
+        <button id="addMoreInfoBtn" data-track="true" data-event-name="profile_completion_add_info" data-category="engagement" data-label="Add More Profile Information" class="w-full px-6 py-3 bg-primary text-white hover:bg-pink-600 transition-all duration-300 rounded-button ripple material-shadow">
+          <i class="ri-add-circle-line mr-2"></i>
+          Yes, add more information!
+        </button>
+        <button id="browseProfilesBtn" data-track="true" data-event-name="profile_completion_browse" data-category="engagement" data-label="Browse Profiles from Completion Dialog" class="w-full px-6 py-3 border-2 border-gray-300 text-gray-700 hover:border-primary hover:text-primary transition-all duration-300 rounded-button ripple">
+          <i class="ri-group-line mr-2"></i>
+          No, browse profiles
+        </button>
+      </div>
+    </div>
+  </div>
+  <%- include('../partials/header') %>
+
+  <main class="pt-24 pb-16 min-h-screen">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="text-center mb-8">
+        <h2 class="text-3xl font-bold text-gray-800 mb-3 font-['Playfair_Display']">My Account</h2>
+        <p class="text-gray-600">Manage your profile and requests</p>
+      </div>
+
+      <div class="bg-white rounded-2xl overflow-hidden material-shadow mb-8">
+        <!-- Cover Photo -->
+        <div class="aspect-[5/2] relative overflow-hidden cursor-pointer hover-overlay" id="coverPhotoContainer">
+          <% if (accountInfo.coverPhoto && accountInfo.coverPhoto.url) { %>
+          <img id="coverPhotoImg" src="<%= accountInfo.coverPhoto.url %>" class="w-full h-full object-cover" alt="Cover Photo">
+          <% } else { %>
+          <!-- Default cover image -->
+          <% if (accountInfo.gender === 'male') { %>
+          <img id="coverPhotoImg" src="https://ui-avatars.com/api/?name=<%= encodeURIComponent(accountInfo.name || accountInfo.username) %>&background=0077be&color=fff&size=800&rounded=false&bold=true&format=png" class="w-full h-full object-cover" alt="Cover Photo">
+          <% } else { %>
+          <img id="coverPhotoImg" src="https://ui-avatars.com/api/?name=<%= encodeURIComponent(accountInfo.name || accountInfo.username) %>&background=e91e63&color=fff&size=800&rounded=false&bold=true&format=png" class="w-full h-full object-cover" alt="Cover Photo">
+          <% } %>
+          <% } %>
+
+          <!-- Hover overlay -->
+          <div class="absolute inset-0 bg-black bg-opacity-0 hover:bg-opacity-50 transition-all duration-300 flex items-center justify-center opacity-0 hover:opacity-100">
+            <div class="text-white text-center">
+              <i class="ri-camera-line text-4xl mb-2"></i>
+              <p class="font-medium">Change Cover Photo</p>
+            </div>
+          </div>
+
+          <div class="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-black/60 to-transparent"></div>
+        </div>
+
+        <!-- Profile Content -->
+        <div class="relative -mt-24 px-8 pb-8">
+          <!-- Profile Picture -->
+          <div class="w-48 h-48 rounded-full overflow-hidden border-4 border-white material-shadow mx-auto mb-6 cursor-pointer hover-overlay relative" id="profilePicContainer">
+            <% if (accountInfo.profilePic && accountInfo.profilePic.url) { %>
+            <img id="profilePicImg" src="<%= accountInfo.profilePic.url %>" class="w-full h-full object-cover" alt="Profile Picture">
+            <% } else { %>
+            <!-- Default avatar based on gender -->
+            <% if (accountInfo.gender === 'male') { %>
+            <img id="profilePicImg" src="https://ui-avatars.com/api/?name=<%= encodeURIComponent(accountInfo.name || accountInfo.username) %>&background=0077be&color=fff&size=400&rounded=false&bold=true&format=png" class="w-full h-full object-cover" alt="Profile Picture">
+            <% } else { %>
+            <img id="profilePicImg" src="https://ui-avatars.com/api/?name=<%= encodeURIComponent(accountInfo.name || accountInfo.username) %>&background=e91e63&color=fff&size=400&rounded=false&bold=true&format=png" class="w-full h-full object-cover" alt="Profile Picture">
+            <% } %>
+            <% } %>
+
+            <!-- Hover overlay for profile pic -->
+            <div class="absolute inset-0 bg-black bg-opacity-0 hover:bg-opacity-50 transition-all duration-300 flex items-center justify-center opacity-0 hover:opacity-100 rounded-full">
+              <div class="text-white text-center">
+                <i class="ri-camera-line text-2xl mb-1"></i>
+                <p class="text-sm font-medium">Change</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Name and Username -->
+          <div class="text-center mb-6">
+            <h3 class="text-2xl font-bold text-gray-900 mb-2 font-['Playfair_Display']">
+              <%= accountInfo.name || accountInfo.username %>
+            </h3>
+            <p class="text-gray-600 flex items-center justify-center gap-2">
+              <i class="ri-verified-badge-fill text-primary"></i>
+              <span>@<%= accountInfo.username %></span>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hidden file inputs -->
+      <input type="file" id="coverPhotoInput" accept="image/*" style="display: none;">
+      <input type="file" id="profilePicInput" accept="image/*" style="display: none;">
+
+      <div class="bg-white rounded-2xl p-2 material-shadow mb-8">
+        <div class="flex flex-wrap gap-2">
+          <button class="main-nav-btn main-nav-active flex-1 py-2.5 px-4 text-center transition-all duration-300 !rounded-button whitespace-nowrap ripple" data-section="account">
+            <i class="ri-user-settings-line mr-2"></i>Edit Account
+          </button>
+          <button class="main-nav-btn flex-1 py-2.5 px-4 text-gray-500 hover:text-primary transition-all duration-300 !rounded-button whitespace-nowrap ripple" data-section="sent">
+            <i class="ri-send-plane-line mr-2"></i>Your Requests
+          </button>
+          <button class="main-nav-btn flex-1 py-2.5 px-4 text-gray-500 hover:text-primary transition-all duration-300 !rounded-button whitespace-nowrap ripple" data-section="received">
+            <i class="ri-inbox-line mr-2"></i>Received Requests
+          </button>
+        </div>
+      </div>
+      <!-- Tab Navigation -->
+      <div id="account-section" class="main-section">
+        <div class="bg-white rounded-2xl p-2 material-shadow mb-8">
+          <div class="flex flex-wrap gap-2">
+            <button class="tab-btn tab-active flex-1 py-2.5 px-4 text-center transition-all duration-300 !rounded-button whitespace-nowrap ripple" data-tab="basic">
+              <i class="ri-user-line mr-2"></i>Basic Info
+            </button>
+            <button class="tab-btn flex-1 py-2.5 px-4 text-gray-500 hover:text-primary transition-all duration-300 !rounded-button whitespace-nowrap ripple" data-tab="contact">
+              <i class="ri-contacts-line mr-2"></i>Contact & Location
+            </button>
+            <button class="tab-btn flex-1 py-2.5 px-4 text-gray-500 hover:text-primary transition-all duration-300 !rounded-button whitespace-nowrap ripple" data-tab="appearance">
+              <i class="ri-user-heart-line mr-2"></i>Physical Appearance
+            </button>
+            <button class="tab-btn flex-1 py-2.5 px-4 text-gray-500 hover:text-primary transition-all duration-300 !rounded-button whitespace-nowrap ripple" data-tab="religion">
+              <i class="ri-church-line mr-2"></i>Religion & Faith
+            </button>
+            <button class="tab-btn flex-1 py-2.5 px-4 text-gray-500 hover:text-primary transition-all duration-300 !rounded-button whitespace-nowrap ripple" data-tab="family">
+              <i class="ri-group-line mr-2"></i>Family & Background
+            </button>
+            <button class="tab-btn flex-1 py-2.5 px-4 text-gray-500 hover:text-primary transition-all duration-300 !rounded-button whitespace-nowrap ripple" data-tab="preferences">
+              <i class="ri-heart-line mr-2"></i>Partner Preferences
+            </button>
+          </div>
+        </div>
+
+        <!-- Tab Content -->
+        <div class="bg-white rounded-2xl p-8 material-shadow">
+          <!-- Basic Info Tab -->
+          <div id="basic-tab" class="tab-content">
+            <h3 class="text-xl font-semibold text-gray-900 mb-6 font-['Playfair_Display']">Basic Information</h3>
+            <form class="space-y-6">
+              <div class="grid md:grid-cols-2 gap-6">
+                <!-- <div class="space-y-2">
+                  <label for="username" class="block text-sm font-medium text-gray-700">Username *</label>
+                  <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <i class="ri-user-line text-gray-400"></i>
+                    </div>
+                    <input type="text" disabled id="username" name="username" required class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="Enter username">
+                  </div>
+                </div> -->
+                <div class="space-y-2">
+                  <label for="username" class="block text-sm font-medium text-gray-700">Username *</label>
+                  <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <i class="ri-user-line text-gray-400"></i>
+                    </div>
+                    <input type="text" disabled id="username" name="username" required class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="Enter username">
+                  </div>
+                </div>
+
+                <!-- **NEW**: Email Field, verification will be added here after everything goes right wih smtp server -->
+
+                <div class="space-y-2">
+                  <label for="email" class="block text-sm font-medium text-gray-700">Email Address <span class="text-gray-400 text-xs">(Cannot be changed)</span></label>
+                  <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <i class="ri-mail-line text-gray-400"></i>
+                    </div>
+                    <input type="email" id="email" name="email" class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-button text-gray-900 placeholder-gray-400 bg-gray-100 cursor-not-allowed" placeholder="Enter your email address" disabled readonly>
+                  </div>
+
+                  <!-- Email Status Display -->
+                  <div id="email-verification-status" class="mt-2">
+                    <% if (accountInfo.email) { %>
+                    <% if (accountInfo.isEmailVerified) { %>
+                    <!-- Verified Email -->
+                    <div class="flex items-center gap-2 text-green-600 text-sm">
+                      <i class="ri-checkbox-circle-fill"></i>
+                      <span>Email verified</span>
+                    </div>
+                    <% } else { %>
+                    <!-- Unverified Email -->
+                    <div class="flex items-center gap-2 text-red-600 text-sm mb-2">
+                      <i class="ri-error-warning-fill"></i>
+                      <span>Email unverified</span>
+                    </div>
+                    <button type="button" id="verify-email-btn" class="px-4 py-2 bg-secondary text-white text-sm rounded-button hover:bg-purple-600 transition-all duration-300">
+                      Verify Email
+                    </button>
+                    <% } %>
+                    <% } else { %>
+                    <!-- No Email Set -->
+                    <button type="button" id="add-email-btn" class="hidden px-4 py-2 bg-secondary text-white text-sm rounded-button hover:bg-purple-600 transition-all duration-300">
+                      Send Email Verification Code
+                    </button>
+                    <% } %>
+                  </div>
+
+                  <!-- Verification Code Input (Hidden by default) -->
+                  <div id="verification-section" class="hidden mt-3">
+                    <label for="verification-code" class="block text-sm font-medium text-gray-700 mb-2">
+                      Enter 4-digit verification code
+                    </label>
+                    <div class="flex gap-2">
+                      <input type="text" id="verification-code" maxlength="4" pattern="[0-9]{4}" class="flex-1 px-3 py-2 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 text-center text-lg font-mono" placeholder="0000">
+                      <button type="button" id="verify-code-btn" class="px-4 py-2 bg-green-600 text-white text-sm rounded-button hover:bg-green-700 transition-all duration-300">
+                        Verify
+                      </button>
+                    </div>
+                    <p class="text-xs text-gray-500 mt-1">Check your email for the verification code</p>
+                  </div>
+
+                  <!-- Status Messages -->
+                  <div id="email-status" class="hidden text-sm mt-2"></div>
+
+                </div>
+                <div class="space-y-2">
+                  <label for="name" class="block text-sm font-medium text-gray-700">Full Name</label>
+                  <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <i class="ri-user-3-line text-gray-400"></i>
+                    </div>
+                    <input type="text" id="name" name="name" class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="Enter full name">
+                  </div>
+                </div>
+              </div>
+
+              <div class="grid md:grid-cols-2 gap-6">
+                <div class="space-y-2">
+                  <label for="age" class="block text-sm font-medium text-gray-700">Age</label>
+                  <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <i class="ri-calendar-line text-gray-400"></i>
+                    </div>
+                    <input type="number" id="age" name="age" min="18" max="100" class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="Enter age">
+                  </div>
+                </div>
+                <div class="space-y-2">
+                  <label for="gender" class="block text-sm font-medium text-gray-700">Gender</label>
+                  <select id="gender" disabled name="gender" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 bg-white">
+                    <option value="">Select Gender</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="grid md:grid-cols-2 gap-6">
+                <div class="space-y-2">
+                  <label for="maritalStatus" class="block text-sm font-medium text-gray-700">Marital Status</label>
+                  <select id="maritalStatus" name="maritalStatus" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 bg-white">
+                    <% 
+                      const standardStatuses = ['nevermarried', 'divorced', 'widowed', 'annulled'];
+                      const currentStatus = accountInfo.maritalStatus || '';
+                      const isNonStandard = currentStatus && !standardStatuses.includes(currentStatus.toLowerCase());
+                    %>
+                    <% if (isNonStandard) { %>
+                    <option value="<%= currentStatus %>" selected><%= currentStatus.charAt(0).toUpperCase() + currentStatus.slice(1) %></option>
+                    <% } %>
+                    <option value="nevermarried" <%= (currentStatus.toLowerCase() === 'nevermarried') ? 'selected' : '' %>>Never Married</option>
+                    <option value="divorced" <%= (currentStatus.toLowerCase() === 'divorced') ? 'selected' : '' %>>Divorced</option>
+                    <option value="widowed" <%= (currentStatus.toLowerCase() === 'widowed') ? 'selected' : '' %>>Widowed</option>
+                    <option value="annulled" <%= (currentStatus.toLowerCase() === 'annulled') ? 'selected' : '' %>>Annulled</option>
+                  </select>
+                </div>
+                <div class="space-y-2">
+                  <label for="work" class="block text-sm font-medium text-gray-700">Profession/Work</label>
+                  <input type="text" id="work" name="work" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="Enter profession">
+                </div>
+              </div>
+
+              <div class="space-y-2">
+                <label for="aboutMe" class="block text-sm font-medium text-gray-700">About Me</label>
+                <textarea id="aboutMe" name="aboutMe" rows="4" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="Tell us about yourself..."></textarea>
+              </div>
+
+              <div class="space-y-2">
+                <label for="hobbies" class="block text-sm font-medium text-gray-700">Hobbies (comma separated)</label>
+                <input type="text" id="hobbies" name="hobbies" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="e.g., Reading, Swimming, Cooking">
+              </div>
+            </form>
+          </div>
+
+          <!-- Contact & Location Tab -->
+          <div id="contact-tab" class="tab-content hidden">
+            <h3 class="text-xl font-semibold text-gray-900 mb-6 font-['Playfair_Display']">Contact & Location Information</h3>
+            <form class="space-y-6">
+              <div class="grid md:grid-cols-2 gap-6">
+                <div class="space-y-2">
+                  <label for="contact" class="block text-sm font-medium text-gray-700">Contact Number</label>
+                  <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <i class="ri-phone-line text-gray-400"></i>
+                    </div>
+                    <input type="tel" id="contact" name="contact" class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="Enter contact number">
+                  </div>
+                </div>
+                <div class="space-y-2">
+                  <label for="waliMyContactDetails" class="block text-sm font-medium text-gray-700">Wali Contact Details</label>
+                  <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <i class="ri-contacts-line text-gray-400"></i>
+                    </div>
+                    <input type="text" id="waliMyContactDetails" name="waliMyContactDetails" class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="Enter wali contact details">
+                  </div>
+                </div>
+              </div>
+
+              <div class="space-y-2">
+                <label for="adress" class="block text-sm font-medium text-gray-700">Address</label>
+                <div class="relative">
+                  <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <i class="ri-map-pin-line text-gray-400"></i>
+                  </div>
+                  <input type="text" id="adress" name="adress" class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="Enter address">
+                </div>
+              </div>
+
+              <div class="grid md:grid-cols-2 gap-6">
+                <div class="space-y-2">
+                  <label for="city" class="block text-sm font-medium text-gray-700">City</label>
+                  <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <i class="ri-building-line text-gray-400"></i>
+                    </div>
+                    <input type="text" id="city" name="city" class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="Enter city">
+                  </div>
+                </div>
+                <div class="space-y-2">
+                  <label for="state" class="block text-sm font-medium text-gray-700">State/Province</label>
+                  <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <i class="ri-map-2-line text-gray-400"></i>
+                    </div>
+                    <input type="text" id="state" name="state" class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="Enter state/province">
+                  </div>
+                </div>
+              </div>
+
+              <div class="grid md:grid-cols-2 gap-6">
+                <div class="space-y-2">
+                  <label for="country" class="block text-sm font-medium text-gray-700">Country</label>
+                  <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <i class="ri-earth-line text-gray-400"></i>
+                    </div>
+                    <input type="text" id="country" name="country" class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="Enter country">
+                  </div>
+                </div>
+                <div class="space-y-2">
+                  <label for="nationality" class="block text-sm font-medium text-gray-700">Nationality</label>
+                  <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <i class="ri-flag-line text-gray-400"></i>
+                    </div>
+                    <input type="text" id="nationality" name="nationality" class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="Enter nationality">
+                  </div>
+                </div>
+              </div>
+
+              <div class="grid md:grid-cols-2 gap-6">
+                <div class="space-y-2">
+                  <label for="birthPlace" class="block text-sm font-medium text-gray-700">Birth Place</label>
+                  <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <i class="ri-map-pin-2-line text-gray-400"></i>
+                    </div>
+                    <input type="text" id="birthPlace" name="birthPlace" class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="Enter birth place">
+                  </div>
+                </div>
+                <div class="space-y-2">
+                  <label for="willingToRelocate" class="block text-sm font-medium text-gray-700">Willing to Relocate</label>
+                  <input type="text" id="willingToRelocate" name="willingToRelocate" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="Enter willingness to relocate" value="<%= accountInfo.willingToRelocate || '' %>">
+                </div>
+              </div>
+
+              <div class="space-y-2">
+                <label for="languagesSpoken" class="block text-sm font-medium text-gray-700">Languages Spoken (comma separated)</label>
+                <input type="text" id="languagesSpoken" name="languagesSpoken" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="e.g., English, Arabic, Urdu">
+              </div>
+            </form>
+          </div>
+
+          <!-- Physical Appearance Tab -->
+          <div id="appearance-tab" class="tab-content hidden">
+            <h3 class="text-xl font-semibold text-gray-900 mb-6 font-['Playfair_Display']">Physical Appearance</h3>
+            <form class="space-y-6">
+              <div class="grid md:grid-cols-2 gap-6">
+                <div class="space-y-2">
+                  <label for="height" class="block text-sm font-medium text-gray-700">Height</label>
+                  <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <i class="ri-ruler-line text-gray-400"></i>
+                    </div>
+                    <select id="height" name="height" class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 bg-white">
+                      <option value="">Select Height</option>
+                      <option value="122">4'0" - 122cm</option>
+                      <option value="124">4'1" - 124cm</option>
+                      <option value="127">4'2" - 127cm</option>
+                      <option value="130">4'3" - 130cm</option>
+                      <option value="132">4'4" - 132cm</option>
+                      <option value="135">4'5" - 135cm</option>
+                      <option value="137">4'6" - 137cm</option>
+                      <option value="140">4'7" - 140cm</option>
+                      <option value="142">4'8" - 142cm</option>
+                      <option value="145">4'9" - 145cm</option>
+                      <option value="147">4'10" - 147cm</option>
+                      <option value="150">4'11" - 150cm</option>
+                      <option value="152">5'0" - 152cm</option>
+                      <option value="155">5'1" - 155cm</option>
+                      <option value="157">5'2" - 157cm</option>
+                      <option value="160">5'3" - 160cm</option>
+                      <option value="163">5'4" - 163cm</option>
+                      <option value="165">5'5" - 165cm</option>
+                      <option value="168">5'6" - 168cm</option>
+                      <option value="170">5'7" - 170cm</option>
+                      <option value="173">5'8" - 173cm</option>
+                      <option value="175">5'9" - 175cm</option>
+                      <option value="178">5'10" - 178cm</option>
+                      <option value="180">5'11" - 180cm</option>
+                      <option value="183">6'0" - 183cm</option>
+                      <option value="185">6'1" - 185cm</option>
+                      <option value="188">6'2" - 188cm</option>
+                      <option value="191">6'3" - 191cm</option>
+                      <option value="193">6'4" - 193cm</option>
+                      <option value="196">6'5" - 196cm</option>
+                      <option value="198">6'6" - 198cm</option>
+                      <option value="201">6'7" - 201cm</option>
+                      <option value="203">6'8" - 203cm</option>
+                      <option value="206">6'9" - 206cm</option>
+                      <option value="208">6'10" - 208cm</option>
+                      <option value="211">6'11" - 211cm</option>
+                      <option value="213">7'0" - 213cm</option>
+                      <option value="216">7'1" - 216cm</option>
+                      <option value="218">7'2" - 218cm</option>
+                      <option value="221">7'3" - 221cm</option>
+                      <option value="224">7'4" - 224cm</option>
+                      <option value="226">7'5" - 226cm</option>
+                      <option value="229">7'6" - 229cm</option>
+                      <option value="231">7'7" - 231cm</option>
+                      <option value="234">7'8" - 234cm</option>
+                      <option value="236">7'9" - 236cm</option>
+                      <option value="239">7'10" - 239cm</option>
+                      <option value="241">7'11" - 241cm</option>
+                      <option value="244">8'0" - 244cm</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="space-y-2">
+                  <label for="build" class="block text-sm font-medium text-gray-700">Build</label>
+                  <select id="build" name="build" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 bg-white">
+                    <option value="slim" <%= (accountInfo.build === 'slim') ? 'selected' : '' %>>Slim</option>
+                    <option value="average" <%= (accountInfo.build === 'average') ? 'selected' : '' %>>Average</option>
+                    <option value="athletic" <%= (accountInfo.build === 'athletic') ? 'selected' : '' %>>Athletic</option>
+                    <option value="heavy" <%= (accountInfo.build === 'heavy') ? 'selected' : '' %>>Heavy</option>
+                    <option value="N/A" <%= (!accountInfo.build || accountInfo.build === 'N/A') ? 'selected' : '' %>>N/A</option>
+                  </select>
+                </div>
+                <% if (accountInfo.gender === 'female') { %>
+                <div id="hijabContainer" class="space-y-2">
+                  <label for="wearHijab" class="block text-sm font-medium text-gray-700">Do you wear hijab?</label>
+                  <select id="wearHijab" name="wearHijab" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 bg-white">
+                    <option value="yes" <%= (accountInfo.wearHijab === 'yes') ? 'selected' : '' %>>Yes</option>
+                    <option value="no" <%= (accountInfo.wearHijab === 'no') ? 'selected' : '' %>>No</option>
+                  </select>
+                </div>
+                <% } else { %>
+                <div id="beardContainer" class="space-y-2">
+                  <label for="beard" class="block text-sm font-medium text-gray-700">Do you have a beard?</label>
+                  <select id="beard" name="beard" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 bg-white">
+                    <option value="no" <%= (accountInfo.beard === 'no') ? 'selected' : '' %>>No</option>
+                    <option value="short" <%= (accountInfo.beard === 'short') ? 'selected' : '' %>>Short</option>
+                    <option value="medium" <%= (accountInfo.beard === 'medium') ? 'selected' : '' %>>Medium</option>
+                    <option value="long" <%= (accountInfo.beard === 'long') ? 'selected' : '' %>>Long</option>
+                    <option value="N/A" <%= (accountInfo.beard === 'N/A') ? 'selected' : '' %>>N/A</option>
+                  </select>
+                </div>
+                <% } %>
+              </div>
+
+              <div class="grid md:grid-cols-2 gap-6">
+                <div class="space-y-2">
+                  <label for="eyeColor" class="block text-sm font-medium text-gray-700">Eye Color</label>
+                  <select id="eyeColor" name="eyeColor" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 bg-white">
+                    <option value="black" <%= (accountInfo.eyeColor === 'black') ? 'selected' : '' %>>Black</option>
+                    <option value="brown" <%= (accountInfo.eyeColor === 'brown') ? 'selected' : '' %>>Brown</option>
+                    <option value="grey" <%= (accountInfo.eyeColor === 'grey') ? 'selected' : '' %>>Grey</option>
+                    <option value="other" <%= (accountInfo.eyeColor === 'other') ? 'selected' : '' %>>Other</option>
+                    <option value="N/A" <%= (!accountInfo.eyeColor || accountInfo.eyeColor === 'N/A') ? 'selected' : '' %>>N/A</option>
+                  </select>
+                </div>
+                <div class="space-y-2">
+                  <label for="hairColor" class="block text-sm font-medium text-gray-700">Hair Color</label>
+                  <select id="hairColor" name="hairColor" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 bg-white">
+                    <option value="black" <%= (accountInfo.hairColor === 'black') ? 'selected' : '' %>>Black</option>
+                    <option value="brown" <%= (accountInfo.hairColor === 'brown') ? 'selected' : '' %>>Brown</option>
+                    <option value="blonde" <%= (accountInfo.hairColor === 'blonde') ? 'selected' : '' %>>Blonde</option>
+                    <option value="N/A" <%= (!accountInfo.hairColor || accountInfo.hairColor === 'N/A') ? 'selected' : '' %>>N/A</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="grid md:grid-cols-2 gap-6">
+                <div class="space-y-2">
+                  <label for="complexion" class="block text-sm font-medium text-gray-700">Complexion</label>
+                  <select id="complexion" name="complexion" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 bg-white">
+                    <option value="fair" <%= (accountInfo.complexion === 'fair') ? 'selected' : '' %>>Fair</option>
+                    <option value="wheatish" <%= (accountInfo.complexion === 'wheatish') ? 'selected' : '' %>>Wheatish</option>
+                    <option value="dark" <%= (accountInfo.complexion === 'dark') ? 'selected' : '' %>>Dark</option>
+                    <option value="N/A" <%= (!accountInfo.complexion || accountInfo.complexion === 'N/A') ? 'selected' : '' %>>N/A</option>
+                  </select>
+                </div>
+                <div class="space-y-2">
+                  <label for="ethnicity" class="block text-sm font-medium text-gray-700">Ethnicity</label>
+                  <select id="ethnicity" name="ethnicity" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 bg-white">
+                    <option value="bangladeshi" <%= (accountInfo.ethnicity === 'bangladeshi') ? 'selected' : '' %>>Bangladeshi</option>
+                    <option value="pakistani" <%= (accountInfo.ethnicity === 'pakistani') ? 'selected' : '' %>>Pakistani</option>
+                    <option value="indian" <%= (accountInfo.ethnicity === 'indian') ? 'selected' : '' %>>Indian</option>
+                    <option value="british" <%= (accountInfo.ethnicity === 'british') ? 'selected' : '' %>>British</option>
+                    <option value="other" <%= (accountInfo.ethnicity === 'other') ? 'selected' : '' %>>Other</option>
+                    <option value="N/A" <%= (!accountInfo.ethnicity || accountInfo.ethnicity === 'N/A') ? 'selected' : '' %>>N/A</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="grid md:grid-cols-2 gap-6">
+                <div class="space-y-2">
+                  <label for="disability" class="block text-sm font-medium text-gray-700">Disability</label>
+                  <input type="text" id="disability" name="disability" value="no" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="Enter disability status">
+                </div>
+                <div class="space-y-2">
+                  <label for="smoker" class="block text-sm font-medium text-gray-700">Smoker</label>
+                  <select id="smoker" name="smoker" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 bg-white">
+                    <option value="true" <%= (accountInfo.smoker === true) ? 'selected' : '' %>>Yes</option>
+                    <option value="false" <%= (accountInfo.smoker === false) ? 'selected' : '' %>>No</option>
+                    <option value="N/A" <%= (accountInfo.smoker === undefined || accountInfo.smoker === null) ? 'selected' : '' %>>N/A</option>
+                  </select>
+                </div>
+              </div>
+            </form>
+          </div>
+
+          <!-- Religion & Faith Tab -->
+          <div id="religion-tab" class="tab-content hidden">
+            <h3 class="text-xl font-semibold text-gray-900 mb-6 font-['Playfair_Display']">Religion & Faith</h3>
+            <form class="space-y-6">
+              <div class="grid md:grid-cols-2 gap-6">
+                <div class="space-y-2">
+                  <label for="religion" class="block text-sm font-medium text-gray-700">Religion</label>
+                  <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <i class="ri-church-line text-gray-400"></i>
+                  </div>
+                  <input type="text" id="religion" name="religion" disabled class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="Enter religion">
+                </div>
+                <div class="space-y-2">
+                  <label for="caste" class="block text-sm font-medium text-gray-700">Caste</label>
+                  <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <i class="ri-group-line text-gray-400"></i>
+                  </div>
+                  <input type="text" id="caste" name="caste" class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="Enter caste">
+                </div>
+              </div>
+
+              <div class="grid md:grid-cols-2 gap-6">
+                <div class="space-y-2">
+                  <label for="islamicSect" class="block text-sm font-medium text-gray-700">Islamic Sect</label>
+                  <input type="text" id="islamicSect" name="islamicSect" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="Enter Islamic sect">
+                </div>
+                <div class="space-y-2">
+                  <label for="bornMuslim" class="block text-sm font-medium text-gray-700">Born Muslim</label>
+                  <select id="bornMuslim" name="bornMuslim" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 bg-white">
+                    <option value="true" <%= (accountInfo.bornMuslim === true) ? 'selected' : '' %>>Yes</option>
+                    <option value="false" <%= (accountInfo.bornMuslim === false) ? 'selected' : '' %>>No</option>
+                    <option value="N/A" <%= (accountInfo.bornMuslim === undefined || accountInfo.bornMuslim === null) ? 'selected' : '' %>>N/A</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="grid md:grid-cols-2 gap-6">
+                <div class="space-y-2">
+                  <label for="prays" class="block text-sm font-medium text-gray-700">Prays Regularly</label>
+                  <select id="prays" name="prays" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 bg-white">
+                    <option value="true" <%= (accountInfo.prays === true) ? 'selected' : '' %>>Yes</option>
+                    <option value="false" <%= (accountInfo.prays === false) ? 'selected' : '' %>>No</option>
+                    <option value="N/A" <%= (accountInfo.prays === undefined || accountInfo.prays === null) ? 'selected' : '' %>>N/A</option>
+                  </select>
+                </div>
+                <div class="space-y-2">
+                  <label for="celebratesMilaad" class="block text-sm font-medium text-gray-700">Celebrates Milaad</label>
+                  <select id="celebratesMilaad" name="celebratesMilaad" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 bg-white">
+                    <option value="true" <%= (accountInfo.celebratesMilaad === true) ? 'selected' : '' %>>Yes</option>
+                    <option value="false" <%= (accountInfo.celebratesMilaad === false) ? 'selected' : '' %>>No</option>
+                    <option value="N/A" <%= (accountInfo.celebratesMilaad === undefined || accountInfo.celebratesMilaad === null) ? 'selected' : '' %>>N/A</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="grid md:grid-cols-2 gap-6">
+                <div class="space-y-2">
+                  <label for="celebrateKhatams" class="block text-sm font-medium text-gray-700">Celebrates Khatams</label>
+                  <select id="celebrateKhatams" name="celebrateKhatams" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 bg-white">
+                    <option value="true" <%= (accountInfo.celebrateKhatams === true) ? 'selected' : '' %>>Yes</option>
+                    <option value="false" <%= (accountInfo.celebrateKhatams === false) ? 'selected' : '' %>>No</option>
+                    <option value="N/A" <%= (accountInfo.celebrateKhatams === undefined || accountInfo.celebrateKhatams === null) ? 'selected' : '' %>>N/A</option>
+                  </select>
+                </div>
+
+                <div class="space-y-2">
+                  <label for="islamIsImportantToMeInfo" class="block text-sm font-medium text-gray-700">How important is Islam to you?</label>
+                  <textarea id="islamIsImportantToMeInfo" name="islamIsImportantToMeInfo" rows="3" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="Describe the importance of Islam in your life"></textarea>
+                </div>
+              </div>
+            </form>
+          </div>
+
+          <!-- Family & Background Tab -->
+          <div id="family-tab" class="tab-content hidden">
+            <h3 class="text-xl font-semibold text-gray-900 mb-6 font-['Playfair_Display']">Family & Background</h3>
+            <form class="space-y-6">
+              <div class="grid md:grid-cols-2 gap-6">
+                <div class="space-y-2">
+                  <label for="fatherName" class="block text-sm font-medium text-gray-700">Father's Name</label>
+                  <input type="text" id="fatherName" name="fatherName" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="Enter father's name">
+                </div>
+                <div class="space-y-2">
+                  <label for="motherName" class="block text-sm font-medium text-gray-700">Mother's Name</label>
+                  <input type="text" id="motherName" name="motherName" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="Enter mother's name">
+                </div>
+              </div>
+
+              <div class="grid md:grid-cols-2 gap-6">
+                <div class="space-y-2">
+                  <label for="fatherProfession" class="block text-sm font-medium text-gray-700">Father's Profession</label>
+                  <input type="text" id="fatherProfession" name="fatherProfession" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="Enter father's profession">
+                </div>
+                <div class="space-y-2">
+                  <label for="siblings" class="block text-sm font-medium text-gray-700">Number of Siblings</label>
+                  <input type="number" id="siblings" name="siblings" min="0" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="Enter number of siblings">
+                </div>
+              </div>
+
+              <div class="grid md:grid-cols-2 gap-6">
+                <div class="space-y-2">
+                  <label for="livingArrangementsAfterMarriage" class="block text-sm font-medium text-gray-700">Living Arrangements After Marriage</label>
+                  <input type="text" id="livingArrangementsAfterMarriage" name="livingArrangementsAfterMarriage" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="Enter living arrangements after marriage" value="<%= accountInfo.livingArrangementsAfterMarriage || '' %>">
+                </div>
+                <div class="space-y-2">
+                  <label for="futurePlans" class="block text-sm font-medium text-gray-700">Future Plans</label>
+                  <input type="text" id="futurePlans" name="futurePlans" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="Enter future plans" value="<%= accountInfo.futurePlans || '' %>">
+                </div>
+              </div>
+
+              <div class="space-y-2">
+                <label for="whoCompletedProfile" class="block text-sm font-medium text-gray-700">Who Completed Profile</label>
+                <input type="text" id="whoCompletedProfile" name="whoCompletedProfile" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="e.g., Self, Family member">
+              </div>
+
+              <!-- Education Section -->
+              <div class="space-y-4">
+                <div class="flex items-center justify-between">
+                  <label class="block text-sm font-medium text-gray-700">Education</label>
+                  <button type="button" id="addEducation" class="px-4 py-2 bg-secondary text-white hover:bg-purple-700 transition-all duration-300 !rounded-button text-sm ripple">
+                    <i class="ri-add-line mr-1"></i>Add Education
+                  </button>
+                </div>
+                <!-- Highest Education (new primary field) -->
+                <div class="grid md:grid-cols-2 gap-6">
+                  <div class="space-y-2">
+                    <label for="highestEducation" class="block text-sm font-medium text-gray-700">Highest Education</label>
+                    <select id="highestEducation" name="highestEducation" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 bg-white">
+                      <option value="" <%= !accountInfo.highestEducation ? 'selected' : '' %> >Select education level</option>
+                      <option value="High School" <%= accountInfo.highestEducation === 'High School' ? 'selected' : '' %> >High School / Secondary</option>
+                      <option value="Diploma" <%= accountInfo.highestEducation === 'Diploma' ? 'selected' : '' %> >Diploma / Certificate</option>
+                      <option value="Bachelor's Degree" <%= accountInfo.highestEducation === "Bachelor's Degree" ? 'selected' : '' %> >Bachelor's Degree</option>
+                      <option value="Master's Degree" <%= accountInfo.highestEducation === "Master's Degree" ? 'selected' : '' %> >Master's Degree</option>
+                      <option value="Doctorate / PhD" <%= accountInfo.highestEducation === 'Doctorate / PhD' ? 'selected' : '' %> >Doctorate / PhD</option>
+                      <option value="Professional Degree" <%= accountInfo.highestEducation === 'Professional Degree' ? 'selected' : '' %> >Professional Degree (MBBS, LLB, etc.)</option>
+                      <option value="Islamic Studies" <%= accountInfo.highestEducation === 'Islamic Studies' ? 'selected' : '' %> >Islamic Studies / Alim</option>
+                      <option value="Hafiz-e-Quran" <%= accountInfo.highestEducation === 'Hafiz-e-Quran' ? 'selected' : '' %> >Hafiz-e-Quran</option>
+                      <option value="Other" <%= accountInfo.highestEducation === 'Other' ? 'selected' : '' %> >Other</option>
+                    </select>
+                  </div>
+                  <div class="space-y-2">
+                    <label for="work" class="block text-sm font-medium text-gray-700">Profession/Work</label>
+                    <input type="text" id="work" name="work" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="Enter profession" value="<%= accountInfo.work || '' %>">
+                  </div>
+                </div>
+                <div id="educationContainer" class="space-y-4">
+                  <!-- Education items will be added here -->
+                </div>
+              </div>
+
+              <!-- Children Section -->
+              <div class="space-y-4">
+                <div class="flex items-center justify-between">
+                  <label class="block text-sm font-medium text-gray-700">Children</label>
+                  <button type="button" id="addChild" class="px-4 py-2 bg-secondary text-white hover:bg-purple-700 transition-all duration-300 !rounded-button text-sm ripple">
+                    <i class="ri-add-line mr-1"></i>Add Child
+                  </button>
+                </div>
+                <div id="childrenContainer" class="space-y-4">
+                  <!-- Children items will be added here -->
+                </div>
+              </div>
+
+              <div class="space-y-2">
+                <label for="describeNature" class="block text-sm font-medium text-gray-700">Describe Your Nature</label>
+                <textarea id="describeNature" name="describeNature" rows="3" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="Describe your nature and personality"></textarea>
+              </div>
+
+              <div class="space-y-2">
+                <label for="QualitiesThatYouCanBringToYourMarriage" class="block text-sm font-medium text-gray-700">Qualities You Can Bring to Marriage (comma separated)</label>
+                <input type="text" id="QualitiesThatYouCanBringToYourMarriage" name="QualitiesThatYouCanBringToYourMarriage" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="e.g., Loyalty, Compassion, Understanding">
+              </div>
+
+              <div class="space-y-2">
+                <label for="anySpecialInformationPeopleShouldKnow" class="block text-sm font-medium text-gray-700">Any Special Information People Should Know</label>
+                <textarea id="anySpecialInformationPeopleShouldKnow" name="anySpecialInformationPeopleShouldKnow" rows="3" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="Any special information you'd like to share"></textarea>
+              </div>
+            </form>
+          </div>
+
+          <!-- Partner Preferences Tab -->
+          <div id="preferences-tab" class="tab-content hidden">
+            <h3 class="text-xl font-semibold text-gray-900 mb-6 font-['Playfair_Display']">Partner Preferences</h3>
+            <form class="space-y-6">
+              <div class="grid md:grid-cols-2 gap-6">
+                <div class="space-y-2">
+                  <label for="preferredAgeRange" class="block text-sm font-medium text-gray-700">Preferred Age Range</label>
+                  <input type="text" id="preferredAgeRange" name="preferredAgeRange" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="e.g., 25-30">
+                </div>
+                <div class="space-y-2">
+                  <label for="preferredHeightRange" class="block text-sm font-medium text-gray-700">Preferred Height Range</label>
+                  <input type="text" id="preferredHeightRange" name="preferredHeightRange" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="e.g., 160-180 cm">
+                </div>
+              </div>
+
+              <div class="grid md:grid-cols-2 gap-6">
+                <div class="space-y-2">
+                  <label for="preferredCaste" class="block text-sm font-medium text-gray-700">Preferred Caste</label>
+                  <input type="text" id="preferredCaste" name="preferredCaste" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="Enter preferred caste">
+                </div>
+                <div class="space-y-2">
+                  <label for="preferredEthnicity" class="block text-sm font-medium text-gray-700">Preferred Ethnicity</label>
+                  <input type="text" id="preferredEthnicity" name="preferredEthnicity" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="Enter preferred ethnicity">
+                </div>
+              </div>
+
+              <div class="grid md:grid-cols-2 gap-6">
+                <div class="space-y-2">
+                  <label for="preferredIslamicSect" class="block text-sm font-medium text-gray-700">Preferred Islamic Sect</label>
+                  <select id="preferredIslamicSect" name="preferredIslamicSect" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 bg-white">
+                    <option value="" <%= (!accountInfo.preferredIslamicSect) ? 'selected' : '' %>>-- Select --</option>
+                    <option value="Sunni" <%= (accountInfo.preferredIslamicSect === 'Sunni') ? 'selected' : '' %>>Sunni</option>
+                    <option value="Shia" <%= (accountInfo.preferredIslamicSect === 'Shia') ? 'selected' : '' %>>Shia</option>
+                    <option value="Ibadi" <%= (accountInfo.preferredIslamicSect === 'Ibadi') ? 'selected' : '' %>>Ibadi</option>
+                    <option value="Sufi" <%= (accountInfo.preferredIslamicSect === 'Sufi') ? 'selected' : '' %>>Sufi</option>
+                    <option value="Ahmadiyya" <%= (accountInfo.preferredIslamicSect === 'Ahmadiyya') ? 'selected' : '' %>>Ahmadiyya</option>
+                    <option value="Hanafi" <%= (accountInfo.preferredIslamicSect === 'Hanafi') ? 'selected' : '' %>>Hanafi</option>
+                    <option value="Maliki" <%= (accountInfo.preferredIslamicSect === 'Maliki') ? 'selected' : '' %>>Maliki</option>
+                    <option value="Shafi'i" <%= (accountInfo.preferredIslamicSect === "Shafi'i") ? 'selected' : '' %>>Shafi'i</option>
+                    <option value="Hanbali" <%= (accountInfo.preferredIslamicSect === 'Hanbali') ? 'selected' : '' %>>Hanbali</option>
+                    <option value="Zahiri" <%= (accountInfo.preferredIslamicSect === 'Zahiri') ? 'selected' : '' %>>Zahiri</option>
+                    <option value="Twelver (Jafari)" <%= (accountInfo.preferredIslamicSect === 'Twelver (Jafari)') ? 'selected' : '' %>>Twelver (Jafari)</option>
+                    <option value="Ismaili" <%= (accountInfo.preferredIslamicSect === 'Ismaili') ? 'selected' : '' %>>Ismaili</option>
+                    <option value="Zaydi" <%= (accountInfo.preferredIslamicSect === 'Zaydi') ? 'selected' : '' %>>Zaydi</option>
+                    <option value="Alawite" <%= (accountInfo.preferredIslamicSect === 'Alawite') ? 'selected' : '' %>>Alawite</option>
+                    <option value="Alevi" <%= (accountInfo.preferredIslamicSect === 'Alevi') ? 'selected' : '' %>>Alevi</option>
+                    <option value="Druze" <%= (accountInfo.preferredIslamicSect === 'Druze') ? 'selected' : '' %>>Druze</option>
+                    <option value="Ash'ari" <%= (accountInfo.preferredIslamicSect === "Ash'ari") ? 'selected' : '' %>>Ash'ari</option>
+                    <option value="Maturidi" <%= (accountInfo.preferredIslamicSect === 'Maturidi') ? 'selected' : '' %>>Maturidi</option>
+                    <option value="Athari" <%= (accountInfo.preferredIslamicSect === 'Athari') ? 'selected' : '' %>>Athari</option>
+                    <option value="Mu'tazila" <%= (accountInfo.preferredIslamicSect === "Mu'tazila") ? 'selected' : '' %>>Mu'tazila</option>
+                    <option value="Murji'ah" <%= (accountInfo.preferredIslamicSect === "Murji'ah") ? 'selected' : '' %>>Murji'ah</option>
+                    <option value="Kharijite" <%= (accountInfo.preferredIslamicSect === 'Kharijite') ? 'selected' : '' %>>Kharijite</option>
+                    <option value="Salafi" <%= (accountInfo.preferredIslamicSect === 'Salafi') ? 'selected' : '' %>>Salafi</option>
+                    <option value="Wahhabi" <%= (accountInfo.preferredIslamicSect === 'Wahhabi') ? 'selected' : '' %>>Wahhabi</option>
+                    <option value="Deobandi" <%= (accountInfo.preferredIslamicSect === 'Deobandi') ? 'selected' : '' %>>Deobandi</option>
+                    <option value="Barelvi" <%= (accountInfo.preferredIslamicSect === 'Barelvi') ? 'selected' : '' %>>Barelvi</option>
+                    <option value="Ahle Hadith" <%= (accountInfo.preferredIslamicSect === 'Ahle Hadith') ? 'selected' : '' %>>Ahle Hadith</option>
+                    <option value="Quranist" <%= (accountInfo.preferredIslamicSect === 'Quranist') ? 'selected' : '' %>>Quranist</option>
+                    <option value="Mahdavia" <%= (accountInfo.preferredIslamicSect === 'Mahdavia') ? 'selected' : '' %>>Mahdavia</option>
+                    <option value="Nation of Islam" <%= (accountInfo.preferredIslamicSect === 'Nation of Islam') ? 'selected' : '' %>>Nation of Islam</option>
+                    <option value="Moorish Science Temple" <%= (accountInfo.preferredIslamicSect === 'Moorish Science Temple') ? 'selected' : '' %>>Moorish Science Temple</option>
+                    <option value="Non-denominational" <%= (accountInfo.preferredIslamicSect === 'Non-denominational') ? 'selected' : '' %>>Non-denominational</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="grid md:grid-cols-2 gap-6">
+                <div class="space-y-2">
+                  <label for="allowParnterToWork" class="block text-sm font-medium text-gray-700">Allow Partner to Work</label>
+                  <select id="allowParnterToWork" name="allowParnterToWork" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 bg-white">
+                    <option value="true" <%= (accountInfo.allowParnterToWork === true) ? 'selected' : '' %>>Yes</option>
+                    <option value="false" <%= (accountInfo.allowParnterToWork === false) ? 'selected' : '' %>>No</option>
+                    <option value="N/A" <%= (accountInfo.allowParnterToWork === undefined || accountInfo.allowParnterToWork === null) ? 'selected' : '' %>>N/A</option>
+                  </select>
+                </div>
+                <div class="space-y-2">
+                  <label for="allowPartnerToStudy" class="block text-sm font-medium text-gray-700">Allow Partner to Study</label>
+                  <select id="allowPartnerToStudy" name="allowPartnerToStudy" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 bg-white">
+                    <option value="true" <%= (accountInfo.allowPartnerToStudy === true) ? 'selected' : '' %>>Yes</option>
+                    <option value="false" <%= (accountInfo.allowPartnerToStudy === false) ? 'selected' : '' %>>No</option>
+                    <option value="N/A" <%= (accountInfo.allowPartnerToStudy === undefined || accountInfo.allowPartnerToStudy === null) ? 'selected' : '' %>>N/A</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Acceptance Preferences -->
+              <div class="grid md:grid-cols-2 gap-6">
+                <div class="space-y-2">
+                  <label for="acceptSomeoneWithChildren" class="block text-sm font-medium text-gray-700">Accept Someone with Children</label>
+                  <select id="acceptSomeoneWithChildren" name="acceptSomeoneWithChildren" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 bg-white">
+                    <option value="true" <%= (accountInfo.acceptSomeoneWithChildren === true) ? 'selected' : '' %>>Yes</option>
+                    <option value="false" <%= (accountInfo.acceptSomeoneWithChildren === false) ? 'selected' : '' %>>No</option>
+                    <option value="N/A" <%= (accountInfo.acceptSomeoneWithChildren === undefined || accountInfo.acceptSomeoneWithChildren === null) ? 'selected' : '' %>>N/A</option>
+                  </select>
+                </div>
+                <div class="space-y-2">
+                  <label for="acceptADivorcedPerson" class="block text-sm font-medium text-gray-700">Accept a Divorced Person</label>
+                  <select id="acceptADivorcedPerson" name="acceptADivorcedPerson" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 bg-white">
+                    <option value="true" <%= (accountInfo.acceptADivorcedPerson === true) ? 'selected' : '' %>>Yes</option>
+                    <option value="false" <%= (accountInfo.acceptADivorcedPerson === false) ? 'selected' : '' %>>No</option>
+                    <option value="N/A" <%= (accountInfo.acceptADivorcedPerson === undefined || accountInfo.acceptADivorcedPerson === null) ? 'selected' : '' %>>N/A</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="grid md:grid-cols-2 gap-6">
+                <div class="space-y-2">
+                  <label for="acceptAWidow" class="block text-sm font-medium text-gray-700">Accept a Widow</label>
+                  <select id="acceptAWidow" name="acceptAWidow" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 bg-white">
+                    <option value="true" <%= (accountInfo.acceptAWidow === true) ? 'selected' : '' %>>Yes</option>
+                    <option value="false" <%= (accountInfo.acceptAWidow === false) ? 'selected' : '' %>>No</option>
+                    <option value="N/A" <%= (accountInfo.acceptAWidow === undefined || accountInfo.acceptAWidow === null) ? 'selected' : '' %>>N/A</option>
+                  </select>
+                </div>
+                <div class="space-y-2">
+                  <label for="agreesWithPolygamy" class="block text-sm font-medium text-gray-700">Agrees with Polygamy</label>
+                  <select id="agreesWithPolygamy" name="agreesWithPolygamy" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 bg-white">
+                    <option value="true" <%= (accountInfo.agreesWithPolygamy === true) ? 'selected' : '' %>>Yes</option>
+                    <option value="false" <%= (accountInfo.agreesWithPolygamy === false) ? 'selected' : '' %>>No</option>
+                    <option value="N/A" <%= (accountInfo.agreesWithPolygamy === undefined || accountInfo.agreesWithPolygamy === null) ? 'selected' : '' %>>N/A</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="grid md:grid-cols-2 gap-6">
+                <div class="space-y-2">
+                  <label for="AcceptSomeoneWithBeard" class="block text-sm font-medium text-gray-700">Accept Someone with Beard</label>
+                  <select id="AcceptSomeoneWithBeard" name="AcceptSomeoneWithBeard" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 bg-white">
+                    <option value="true" <%= (accountInfo.AcceptSomeoneWithBeard === true) ? 'selected' : '' %>>Yes</option>
+                    <option value="false" <%= (accountInfo.AcceptSomeoneWithBeard === false) ? 'selected' : '' %>>No</option>
+                    <option value="N/A" <%= (accountInfo.AcceptSomeoneWithBeard === undefined || accountInfo.AcceptSomeoneWithBeard === null) ? 'selected' : '' %>>N/A</option>
+                  </select>
+                </div>
+                <div class="space-y-2">
+                  <label for="AcceptSomeoneWithHijab" class="block text-sm font-medium text-gray-700">Accept Someone with Hijab</label>
+                  <select id="AcceptSomeoneWithHijab" name="AcceptSomeoneWithHijab" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 bg-white">
+                    <option value="true" <%= (accountInfo.AcceptSomeoneWithHijab === true) ? 'selected' : '' %>>Yes</option>
+                    <option value="false" <%= (accountInfo.AcceptSomeoneWithHijab === false) ? 'selected' : '' %>>No</option>
+                    <option value="N/A" <%= (accountInfo.AcceptSomeoneWithHijab === undefined || accountInfo.AcceptSomeoneWithHijab === null) ? 'selected' : '' %>>N/A</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="grid md:grid-cols-2 gap-6">
+                <div class="space-y-2">
+                  <label for="ConsiderARevert" class="block text-sm font-medium text-gray-700">Consider a Revert</label>
+                  <select id="ConsiderARevert" name="ConsiderARevert" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 bg-white">
+                    <option value="true" <%= (accountInfo.ConsiderARevert === true) ? 'selected' : '' %>>Yes</option>
+                    <option value="false" <%= (accountInfo.ConsiderARevert === false) ? 'selected' : '' %>>No</option>
+                    <option value="N/A" <%= (accountInfo.ConsiderARevert === undefined || accountInfo.ConsiderARevert === null) ? 'selected' : '' %>>N/A</option>
+                  </select>
+                </div>
+                <div class="space-y-2">
+                  <label for="acceptSomeoneInOtherCountry" class="block text-sm font-medium text-gray-700">Accecpt some one in other country</label>
+                  <input type="text" id="acceptSomeoneInOtherCountry" name="acceptSomeoneInOtherCountry" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="accept someone in other country ..." value="<%= accountInfo.acceptSomeoneInOtherCountry|| '' %>">
+                </div>
+              </div>
+
+              <div class="grid md:grid-cols-2 gap-6">
+                <div class="space-y-2">
+                  <label for="willingToSharePhotosUponRequest" class="block text-sm font-medium text-gray-700">Willing to Share Photos Upon Request</label>
+                  <input type="text" id="willingToSharePhotosUponRequest" name="willingToSharePhotosUponRequest" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" value="<%= accountInfo.willingToSharePhotosUponRequest || '' %>" placeholder="Enter willingness to share photos">
+                </div>
+                <div class="space-y-2">
+                  <label for="willingToMeetUpOutside" class="block text-sm font-medium text-gray-700">Willing to Meet Up Outside</label>
+                  <input type="text" id="willingToMeetUpOutside" name="willingToMeetUpOutside" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 bg-white" value="<%= accountInfo.willingToMeetUpOutside || '' %>" placeholder="Enter willingness to meet up outside">
+                </div>
+              </div>
+
+              <div class="grid md:grid-cols-2 gap-6">
+                <div class="space-y-2">
+                  <label for="willingToConsiderANonUkCitizen" class="block text-sm font-medium text-gray-700">Willing to Consider a Non-UK Citizen</label>
+                  <input type="text" id="willingToConsiderANonUkCitizen" name="willingToConsiderANonUkCitizen" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="Enter willingness..." value="<%= accountInfo.willingToConsiderANonUkCitizen || '' %>">
+                </div>
+              </div>
+
+              <div class="space-y-2">
+                <label for="lookingForASpouseThatIs" class="block text-sm font-medium text-gray-700">Looking for a Spouse That Is</label>
+                <input type="text" id="lookingForASpouseThatIs" name="lookingForASpouseThatIs" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="e.g., Educated, Religious, Career-oriented" value="<%= accountInfo.lookingForASpouseThatIs || '' %>">
+              </div>
+
+              <div class="space-y-2">
+                <label for="qualitiesYouNeedInYourPartner" class="block text-sm font-medium text-gray-700">Qualities You Need in Your Partner (comma separated)</label>
+                <input type="text" id="qualitiesYouNeedInYourPartner" name="qualitiesYouNeedInYourPartner" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white" placeholder="e.g., Honesty, Kindness, Intelligence" value="<%= accountInfo.qualitiesYouNeedInYourPartner || '' %>">
+              </div>
+            </form>
+          </div>
+
+          <!-- Save Button -->
+          <div class="flex justify-end pt-6 border-t border-gray-200 mt-8">
+            <button type="submit" data-track="true" data-event-name="save_profile_changes" data-category="engagement" data-label="Save Profile Changes" class="px-8 py-2.5 bg-primary text-white hover:bg-pink-600 transition-all duration-300 !rounded-button whitespace-nowrap ripple material-shadow">
+              <i class="ri-save-line mr-2"></i>Save Changes
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div id="sent-section" class="main-section hidden">
+        <div class="bg-white rounded-2xl p-8 material-shadow">
+          <h3 class="text-xl font-semibold text-gray-900 mb-6 font-['Playfair_Display']">Your Sent Requests</h3>
+          <div id="sentRequestsContainer">
+            <!-- Sent requests will be loaded here -->
+            <div class="text-center py-8">
+              <i class="ri-loader-4-line animate-spin text-3xl text-gray-400 mb-4"></i>
+              <p class="text-gray-500">Loading your requests...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="received-section" class="main-section hidden">
+        <div class="bg-white rounded-2xl p-8 material-shadow">
+          <h3 class="text-xl font-semibold text-gray-900 mb-6 font-['Playfair_Display']">Received Requests</h3>
+          <div id="receivedRequestsContainer">
+            <!-- Received requests will be loaded here -->
+            <div class="text-center py-8">
+              <i class="ri-loader-4-line animate-spin text-3xl text-gray-400 mb-4"></i>
+              <p class="text-gray-500">Loading received requests...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <%- include('../partials/footer') %>
+
+
+  <!-- filepath: c:\Users\Kami\Desktop\marriageWeb\views\account\info.ejs -->
+  <!-- ...existing code... -->
+
+  <script src="/js/ripple.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Initialize dropdown functionality
+
+      // Tab functionality
+      const tabButtons = document.querySelectorAll('.tab-btn');
+      const tabContents = document.querySelectorAll('.tab-content');
+      const mainNavButtons = document.querySelectorAll('.main-nav-btn');
+      const mainSections = document.querySelectorAll('.main-section');
+      const tabs = ['basic', 'contact', 'appearance', 'religion', 'family', 'preferences'];
+      let currentTabIndex = 0;
+
+      function showTab(index) {
+        // Hide all tabs
+        tabContents.forEach(content => content.classList.add('hidden'));
+        tabButtons.forEach(btn => {
+          btn.classList.remove('tab-active');
+          btn.classList.add('text-gray-500');
+        });
+
+        // Show current tab
+        document.getElementById(tabs[index] + '-tab').classList.remove('hidden');
+        const activeButton = document.querySelector(`[data-tab="${tabs[index]}"]`);
+        if (activeButton) {
+          activeButton.classList.add('tab-active');
+          activeButton.classList.remove('text-gray-500');
+        }
+      }
+
+      function showMainSection(sectionName) {
+        // Hide all main sections
+        mainSections.forEach(section => section.classList.add('hidden'));
+        mainNavButtons.forEach(btn => {
+          btn.classList.remove('main-nav-active');
+          btn.classList.add('text-gray-500');
+        });
+
+        // Show selected section
+        const targetSection = document.getElementById(sectionName + '-section');
+        if (targetSection) {
+          targetSection.classList.remove('hidden');
+        }
+
+        const activeMainButton = document.querySelector(`[data-section="${sectionName}"]`);
+        if (activeMainButton) {
+          activeMainButton.classList.add('main-nav-active');
+          activeMainButton.classList.remove('text-gray-500');
+        }
+
+        // Load data based on section
+        if (sectionName === 'sent') {
+          loadSentRequests();
+        } else if (sectionName === 'received') {
+          loadReceivedRequests();
+        }
+      }
+
+      // Tab button clicks
+      tabButtons.forEach((button) => {
+        button.addEventListener('click', function() {
+          const tabName = this.getAttribute('data-tab');
+          currentTabIndex = tabs.indexOf(tabName);
+          showTab(currentTabIndex);
+        });
+      });
+
+      // Main navigation clicks
+      mainNavButtons.forEach(button => {
+        button.addEventListener('click', function() {
+          const section = this.getAttribute('data-section');
+          showMainSection(section);
+        });
+      });
+
+      // Dynamic sections
+      let educationCount = 0;
+      let childrenCount = 0;
+
+      // Add Education
+      const addEducationBtn = document.getElementById('addEducation');
+      if (addEducationBtn) {
+        addEducationBtn.addEventListener('click', function() {
+          educationCount++;
+          const educationHtml = `
+            <div class="education-item" data-index="${educationCount}">
+              <div class="flex justify-between items-center mb-4">
+                <h4 class="font-medium text-gray-900">Education ${educationCount}</h4>
+                <button type="button" class="remove-education text-red-500 hover:text-red-700">
+                  <i class="ri-delete-bin-line"></i>
+                </button>
+              </div>
+              <div class="grid md:grid-cols-3 gap-4">
+                <input type="text" name="education[${educationCount}][title]" placeholder="Degree/Title" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white">
+                <input type="text" name="education[${educationCount}][institute]" placeholder="Institute/University" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white">
+                <input type="text" name="education[${educationCount}][year]" placeholder="Year" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white">
+              </div>
+            </div>
+          `;
+          document.getElementById('educationContainer').insertAdjacentHTML('beforeend', educationHtml);
+        });
+      }
+
+      // Add Child
+      const addChildBtn = document.getElementById('addChild');
+      if (addChildBtn) {
+        addChildBtn.addEventListener('click', function() {
+          childrenCount++;
+          const childHtml = `
+            <div class="child-item" data-index="${childrenCount}">
+              <div class="flex justify-between items-center mb-4">
+                <h4 class="font-medium text-gray-900">Child ${childrenCount}</h4>
+                <button type="button" class="remove-child text-red-500 hover:text-red-700">
+                  <i class="ri-delete-bin-line"></i>
+                </button>
+              </div>
+              <div class="grid md:grid-cols-3 gap-4">
+                <input type="text" name="children[${childrenCount}][name]" placeholder="Child's Name" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white">
+                <input type="number" name="children[${childrenCount}][age]" placeholder="Age" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white">
+                <input type="text" name="children[${childrenCount}][livingLocation]" placeholder="Living Location" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white">
+              </div>
+            </div>
+          `;
+          document.getElementById('childrenContainer').insertAdjacentHTML('beforeend', childHtml);
+        });
+      }
+
+      // Remove education/children
+      document.addEventListener('click', function(e) {
+        if (e.target.closest('.remove-education')) {
+          e.target.closest('.education-item').remove();
+        }
+        if (e.target.closest('.remove-child')) {
+          e.target.closest('.child-item').remove();
+        }
+      });
+
+      // Load existing user data and populate fields
+      function loadUserData() {
+        <% if (accountInfo) { %>
+        const userDataRaw = <%- JSON.stringify(accountInfo) %>;
+
+        // Wait for DOM to be fully ready
+        setTimeout(() => {
+          // Populate all form fields
+          Object.keys(userDataRaw).forEach(key => {
+            const field = document.querySelector(`[name="${key}"]`);
+            if (field && userDataRaw[key] !== undefined && userDataRaw[key] !== null) {
+              if (field.tagName === 'SELECT') {
+                // Handle boolean values properly
+                if (typeof userDataRaw[key] === 'boolean') {
+                  field.value = userDataRaw[key].toString();
+                } else {
+                  field.value = userDataRaw[key];
+                }
+              } else if (field.type === 'checkbox') {
+                field.checked = userDataRaw[key] === true || userDataRaw[key] === 'true';
+              } else {
+                // Handle arrays for comma-separated fields
+                if (Array.isArray(userDataRaw[key])) {
+                  field.value = userDataRaw[key].join(', ');
+                } else {
+                  field.value = userDataRaw[key];
+                }
+              }
+            }
+          });
+          if (emailField && userDataRaw.email) {
+            emailField.value = userDataRaw.email;
+            currentEmail = userDataRaw.email;
+          }
+          // Populate education
+          if (userDataRaw.education && Array.isArray(userDataRaw.education)) {
+            userDataRaw.education.forEach((edu, index) => {
+              educationCount++;
+              if (index > 0) {
+                // Add new education section
+                const educationHtml = `
+                  <div class="education-item" data-index="${educationCount}">
+                    <div class="flex justify-between items-center mb-4">
+                      <h4 class="font-medium text-gray-900">Education ${educationCount}</h4>
+                      <button type="button" class="remove-education text-red-500 hover:text-red-700">
+                        <i class="ri-delete-bin-line"></i>
+                      </button>
+                    </div>
+                    <div class="grid md:grid-cols-3 gap-4">
+                      <input type="text" name="education[${educationCount}][title]" placeholder="Degree/Title" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white">
+                      <input type="text" name="education[${educationCount}][institute]" placeholder="Institute/University" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white">
+                      <input type="text" name="education[${educationCount}][year]" placeholder="Year" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white">
+                    </div>
+                  </div>
+                `;
+                document.getElementById('educationContainer').insertAdjacentHTML('beforeend', educationHtml);
+              }
+
+              // Populate the education fields
+              setTimeout(() => {
+                const titleField = document.querySelector(`[name="education[${educationCount}][title]"]`);
+                const instituteField = document.querySelector(`[name="education[${educationCount}][institute]"]`);
+                const yearField = document.querySelector(`[name="education[${educationCount}][year]"]`);
+
+                if (titleField && edu.title) titleField.value = edu.title;
+                if (instituteField && edu.institute) instituteField.value = edu.institute;
+                if (yearField && edu.year) yearField.value = edu.year;
+              }, 50);
+            });
+          }
+
+          // Populate children
+          if (userDataRaw.children && Array.isArray(userDataRaw.children)) {
+            userDataRaw.children.forEach((child, index) => {
+              childrenCount++;
+              const childHtml = `
+                <div class="child-item" data-index="${childrenCount}">
+                  <div class="flex justify-between items-center mb-4">
+                    <h4 class="font-medium text-gray-900">Child ${childrenCount}</h4>
+                    <button type="button" class="remove-child text-red-500 hover:text-red-700">
+                      <i class="ri-delete-bin-line"></i>
+                    </button>
+                  </div>
+                  <div class="grid md:grid-cols-3 gap-4">
+                    <input type="text" name="children[${childrenCount}][name]" placeholder="Child's Name" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white">
+                    <input type="number" name="children[${childrenCount}][age]" placeholder="Age" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white">
+                    <input type="text" name="children[${childrenCount}][livingLocation]" placeholder="Living Location" class="block w-full px-3 py-2.5 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 placeholder-gray-400 bg-white">
+                  </div>
+                </div>
+              `;
+              document.getElementById('childrenContainer').insertAdjacentHTML('beforeend', childHtml);
+
+              // Populate the children fields
+              setTimeout(() => {
+                const nameField = document.querySelector(`[name="children[${childrenCount}][name]"]`);
+                const ageField = document.querySelector(`[name="children[${childrenCount}][age]"]`);
+                const locationField = document.querySelector(`[name="children[${childrenCount}][livingLocation]"]`);
+
+                if (nameField && child.name) nameField.value = child.name;
+                if (ageField && child.age) ageField.value = child.age;
+                if (locationField && child.livingLocation) locationField.value = child.livingLocation;
+              }, 50);
+            });
+          }
+        }, 200);
+        <% } %>
+      }
+
+      // Form submission handling
+      const saveButton = document.querySelector('button[type="submit"]');
+      // Update the save button handler to include photo uploads
+      if (saveButton) {
+        saveButton.addEventListener('click', function(e) {
+          e.preventDefault();
+
+          const submitBtn = this;
+          const originalText = submitBtn.textContent;
+
+          submitBtn.disabled = true;
+          submitBtn.innerHTML = '<i class="ri-loader-4-line animate-spin mr-2"></i>Saving Changes...';
+          // **NEW**: Validate minimum character fields
+          const minCharFields = {
+            'aboutMe': 5,
+            'islamIsImportantToMeInfo': 30,
+            'describeNature': 5,
+            'lookingForASpouseThatIs': 5
+          };
+
+          for (const [field, minLength] of Object.entries(minCharFields)) {
+            const fieldElement = document.getElementById(field);
+            if (fieldElement) {
+              const value = fieldElement.value;
+              if (value && value.trim().length < minLength) {
+                showNotification('Validation Error', `${field.replace(/([A-Z])/g, ' $1').toLowerCase()} must be at least ${minLength} characters long`, 'error');
+
+                // **RESET BUTTON STATE**
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="ri-save-line mr-2"></i>Save Changes';
+                return;
+              }
+            }
+          }
+          // Check if we have files to upload
+          const hasFiles = (coverPhotoInput.files[0] || profilePicInput.files[0]);
+
+          if (hasFiles) {
+            // Use FormData for file uploads
+            const formData = new FormData();
+            formData.append('userId', '<%= accountInfo._id %>');
+
+            // Add files
+            if (coverPhotoInput.files[0]) {
+              formData.append('coverPhoto', coverPhotoInput.files[0]);
+            }
+
+            if (profilePicInput.files[0]) {
+              formData.append('profilePic', profilePicInput.files[0]);
+            }
+
+            // Collect and add text data
+            const allForms = document.querySelectorAll('.tab-content form');
+            const userData = {};
+
+            allForms.forEach(form => {
+              const formDataFields = new FormData(form);
+              for (let [key, value] of formDataFields.entries()) {
+                if (value.trim() === "") {
+                  continue;
+                }
+
+                if (key.includes('[') && key.includes(']')) {
+                  const match = key.match(/(\w+)\[(\d+)\]\[(\w+)\]/);
+                  if (match) {
+                    const [, field, index, subfield] = match;
+                    if (!userData[field]) userData[field] = [];
+                    if (!userData[field][index]) userData[field][index] = {};
+                    userData[field][index][subfield] = value.trim();
+                  }
+                } else if (['hobbies', 'languagesSpoken', 'QualitiesThatYouCanBringToYourMarriage', 'qualitiesYouNeedInYourPartner'].includes(key)) {
+                  userData[key] = value.trim();
+                } else {
+                  userData[key] = value.trim();
+                }
+              }
+            });
+
+            // Clean up arrays
+            if (userData.education) {
+              userData.education = userData.education.filter(item =>
+                item && Object.values(item).some(val => val && val.trim())
+              );
+              if (userData.education.length === 0) delete userData.education;
+            }
+
+            if (userData.children) {
+              userData.children = userData.children.filter(item =>
+                item && Object.values(item).some(val => val && val.trim())
+              );
+              if (userData.children.length === 0) delete userData.children;
+            }
+
+            formData.append('userData', JSON.stringify(userData));
+
+
+            // Send FormData
+            fetch('/admin/user/update', {
+                method: 'POST',
+                body: formData // Don't set Content-Type for FormData
+              })
+              .then(response => response.json())
+              .then(data => {
+                if (data.success) {
+                  showNotification('Profile Updated', 'Your profile has been updated successfully!', 'success');
+                  // Clear file inputs
+                  coverPhotoInput.value = '';
+                  profilePicInput.value = '';
+                } else {
+                  console.error('Backend error:', data.error);
+                  showNotification('Error', data.error || 'Failed to update profile', 'error');
+                }
+              })
+              .catch(error => {
+                console.error('Request error:', error);
+                showNotification('Error', 'Failed to update profile. Please try again.', 'error');
+              })
+              .finally(() => {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalText;
+              });
+
+          } else {
+            // No files, use JSON for text-only updates
+            const allForms = document.querySelectorAll('.tab-content form');
+            const userData = {};
+            userData.userId = '<%= accountInfo._id %>';
+
+            allForms.forEach(form => {
+              const formData = new FormData(form);
+              for (let [key, value] of formData.entries()) {
+                if (value.trim() === "") {
+                  continue;
+                }
+
+                if (key.includes('[') && key.includes(']')) {
+                  const match = key.match(/(\w+)\[(\d+)\]\[(\w+)\]/);
+                  if (match) {
+                    const [, field, index, subfield] = match;
+                    if (!userData[field]) userData[field] = [];
+                    if (!userData[field][index]) userData[field][index] = {};
+                    userData[field][index][subfield] = value.trim();
+                  }
+                } else if (['hobbies', 'languagesSpoken', 'QualitiesThatYouCanBringToYourMarriage', 'qualitiesYouNeedInYourPartner'].includes(key)) {
+                  userData[key] = value.trim();
+                } else {
+                  userData[key] = value.trim();
+                }
+              }
+            });
+
+            // Clean up arrays
+            if (userData.education) {
+              userData.education = userData.education.filter(item =>
+                item && Object.values(item).some(val => val && val.trim())
+              );
+              if (userData.education.length === 0) delete userData.education;
+            }
+
+            if (userData.children) {
+              userData.children = userData.children.filter(item =>
+                item && Object.values(item).some(val => val && val.trim())
+              );
+              if (userData.children.length === 0) delete userData.children;
+            }
+
+
+            // Send JSON
+            fetch('/admin/user/update', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(userData)
+              })
+              .then(response => response.json())
+              .then(data => {
+                if (data.success) {
+                  showNotification('Profile Updated', 'Your profile has been updated successfully!', 'success');
+                } else {
+                  console.error('Backend error:', data.error);
+                  showNotification('Error', data.error || 'Failed to update profile', 'error');
+                }
+              })
+              .catch(error => {
+                console.error('Request error:', error);
+                showNotification('Error', 'Failed to update profile. Please try again.', 'error');
+              })
+              .finally(() => {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalText;
+              });
+          }
+        });
+      }
+
+      // Load sent requests
+      function loadSentRequests() {
+        const container = document.getElementById('sentRequestsContainer');
+        container.innerHTML = '<div class="text-center py-8"><i class="ri-loader-4-line animate-spin text-3xl text-gray-400 mb-4"></i><p class="text-gray-500">Loading your requests...</p></div>';
+
+        fetch('/api/requests/sent')
+          .then(response => response.json())
+          .then(data => {
+            if (data.success) {
+              displaySentRequests(data.requests);
+            } else {
+              container.innerHTML = '<div class="text-center py-8"><p class="text-red-500">Failed to load requests</p></div>';
+            }
+          })
+          .catch(error => {
+            console.error('Error loading sent requests:', error);
+            container.innerHTML = '<div class="text-center py-8"><p class="text-red-500">Failed to load requests</p></div>';
+          });
+      }
+
+      // Load received requests
+      function loadReceivedRequests() {
+        const container = document.getElementById('receivedRequestsContainer');
+        container.innerHTML = '<div class="text-center py-8"><i class="ri-loader-4-line animate-spin text-3xl text-gray-400 mb-4"></i><p class="text-gray-500">Loading received requests...</p></div>';
+
+        fetch('/api/requests/received')
+          .then(response => response.json())
+          .then(data => {
+            if (data.success) {
+              displayReceivedRequests(data.requests);
+            } else {
+              container.innerHTML = '<div class="text-center py-8"><p class="text-red-500">Failed to load requests</p></div>';
+            }
+          })
+          .catch(error => {
+            console.error('Error loading received requests:', error);
+            container.innerHTML = '<div class="text-center py-8"><p class="text-red-500">Failed to load requests</p></div>';
+          });
+      }
+
+      // Display sent requests
+      // Find the displaySentRequests function (around line 1030) and replace it with this updated version
+
+    // Find the displaySentRequests function and update it
+
+function displaySentRequests(requests) {
+  const container = document.getElementById('sentRequestsContainer');
+
+  if (requests.length === 0) {
+    container.innerHTML = `
+      <div class="mb-4 flex items-center justify-between">
+        <h3 class="text-lg font-semibold text-gray-900">Your Sent Requests</h3>
+        <span class="px-3 py-1 rounded-full text-sm font-medium bg-gray-100 text-gray-800">0 / 5</span>
+      </div>
+      <div class="text-center py-8">
+        <i class="ri-inbox-line text-3xl text-gray-400 mb-4"></i>
+        <p class="text-gray-500">No requests sent yet</p>
+      </div>
+    `;
+    return;
+  }
+
+  const headerHtml = `
+    <div class="mb-4 flex items-center justify-between">
+      <h3 class="text-lg font-semibold text-gray-900">Your Sent Requests</h3>
+      <span class="px-3 py-1 rounded-full text-sm font-medium ${
+        requests.length >= 5 ? 'bg-red-100 text-red-800' : 
+        'bg-green-100 text-green-800'
+      }">
+        ${requests.length} / 5
+      </span>
+    </div>
+  `;
+
+  const requestsHtml = requests.map(request => `
+    <div class="border border-gray-200 rounded-lg p-6 mb-4">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center">
+          <div class="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center mr-4">
+            <i class="ri-user-line text-gray-500"></i>
+          </div>
+          <div>
+            <h4 class="font-medium text-gray-900">${request.to.username}</h4>
+            <p class="text-sm text-gray-500">${request.to.city || ''}, ${request.to.state || ''}</p>
+            <p class="text-xs text-gray-400">Sent: ${new Date(request.createdAt).toLocaleDateString()}</p>
+          </div>
+        </div>
+        <div class="flex items-center">
+          <span class="px-3 py-1 rounded-full text-xs font-medium ${
+            request.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
+            request.status === 'accepted' ? 'bg-green-100 text-green-800' :
+            request.status === 'revoked' ? 'bg-gray-100 text-gray-800' :
+            'bg-red-100 text-red-800'
+          }">${request.status}</span>
+          ${request.status === 'pending' ? `
+            <button onclick="cancelRequest('${request._id}')" class="ml-3 px-3 py-1 bg-red-500 text-white text-xs rounded hover:bg-red-600">
+              Cancel
+            </button>
+          ` : request.status === 'accepted' ? `
+            <button onclick="revokeAccess('${request._id}')" class="ml-3 px-3 py-1 bg-orange-500 text-white text-xs rounded hover:bg-orange-600">
+              Revoke Access
+            </button>
+          ` : ''}
+        </div>
+      </div>
+    </div>
+  `).join('');
+
+  container.innerHTML = headerHtml + requestsHtml;
+}
+
+      // Display received requests
+      // Find the displayReceivedRequests function and update it
+
+function displayReceivedRequests(requests) {
+  const container = document.getElementById('receivedRequestsContainer');
+
+  if (requests.length === 0) {
+    container.innerHTML = '<div class="text-center py-8"><i class="ri-inbox-line text-3xl text-gray-400 mb-4"></i><p class="text-gray-500">No requests received yet</p></div>';
+    return;
+  }
+
+  const requestsHtml = requests.map(request => `
+    <div class="border border-gray-200 rounded-lg p-6 mb-4">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center">
+          <div class="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center mr-4">
+            <i class="ri-user-line text-gray-500"></i>
+          </div>
+          <div>
+            <h4 class="font-medium text-gray-900">${request.from.username}</h4>
+            <p class="text-sm text-gray-500">${request.from.city || ''}</p>
+            <p class="text-xs text-gray-400">Received: ${new Date(request.createdAt).toLocaleDateString()}</p>
+          </div>
+        </div>
+        <div class="flex items-center">
+          <span class="px-3 py-1 rounded-full text-xs font-medium ${
+            request.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
+            request.status === 'accepted' ? 'bg-green-100 text-green-800' :
+            request.status === 'revoked' ? 'bg-gray-100 text-gray-800' :
+            'bg-red-100 text-red-800'
+          }">${request.status}</span>
+          ${request.status === 'pending' ? `
+            <button onclick="respondToRequest('${request._id}', 'accept')" class="ml-3 px-3 py-1 bg-green-500 text-white text-xs rounded hover:bg-green-600">
+              Accept
+            </button>
+            <button onclick="respondToRequest('${request._id}', 'reject')" class="ml-2 px-3 py-1 bg-red-500 text-white text-xs rounded hover:bg-red-600">
+              Reject
+            </button>
+          ` : request.status === 'accepted' ? `
+            <button onclick="revokeAccess('${request._id}')" class="ml-3 px-3 py-1 bg-orange-500 text-white text-xs rounded hover:bg-orange-600">
+              Revoke Access
+            </button>
+          ` : ''}
+        </div>
+      </div>
+    </div>
+  `).join('');
+
+  container.innerHTML = requestsHtml;
+}
+
+      // Global functions for request actions
+      window.cancelRequest = function(requestId) {
+        if (confirm('Are you sure you want to cancel this request?')) {
+          fetch(`/api/requests/${requestId}/cancel`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              }
+            })
+            .then(response => response.json())
+            .then(data => {
+              if (data.success) {
+                showNotification('Request Cancelled', 'Request has been cancelled successfully', 'success');
+                loadSentRequests();
+              } else {
+                showNotification('Error', data.error || 'Failed to cancel request', 'error');
+              }
+            })
+            .catch(error => {
+              console.error('Error cancelling request:', error);
+              showNotification('Error', 'Failed to cancel request', 'error');
+            });
+        }
+      };
+
+      window.respondToRequest = function(requestId, action) {
+        const actionText = action === 'accept' ? 'accept' : 'reject';
+        if (confirm(`Are you sure you want to ${actionText} this request?`)) {
+          fetch(`/api/requests/${requestId}/respond`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                action
+              })
+            })
+            .then(response => response.json())
+            .then(data => {
+              if (data.success) {
+                showNotification('Request Updated', `Request has been ${action} successfully`, 'success');
+                loadReceivedRequests();
+              } else {
+                showNotification('Error', data.error || 'Failed to update request', 'error');
+              }
+            })
+            .catch(error => {
+              console.error('Error responding to request:', error);
+              showNotification('Error', 'Failed to update request', 'error');
+            });
+        }
+      };
+      // Add after the respondToRequest function
+
+window.revokeAccess = function(requestId) {
+  if (confirm('Are you sure you want to revoke access? You will both become strangers and lose access to each other\'s full profiles.')) {
+    fetch(`/api/requests/${requestId}/revoke`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          showNotification('Access Revoked', data.message, 'success');
+          // Reload both sections since the request could be in either
+          loadSentRequests();
+          loadReceivedRequests();
+        } else {
+          showNotification('Error', data.error || 'Failed to revoke access', 'error');
+        }
+      })
+      .catch(error => {
+        console.error('Error revoking access:', error);
+        showNotification('Error', 'Failed to revoke access', 'error');
+      });
+  }
+};
+
+      // Notification function
+      function showNotification(title, message, type = 'info') {
+        const notification = document.createElement('div');
+        const bgColor = type === 'success' ? 'bg-green-500' : type === 'info' ? 'bg-blue-500' : 'bg-red-500';
+        const icon = type === 'success' ? 'ri-checkbox-circle-line' : type === 'info' ? 'ri-information-line' : 'ri-error-warning-line';
+
+        notification.className = `fixed bottom-4 right-4 ${bgColor} text-white rounded-xl p-4 material-shadow-elevated flex items-center gap-3 transform translate-y-0 opacity-100 transition-all duration-300 z-50`;
+        notification.innerHTML = `
+          <i class="${icon} text-xl"></i>
+          <div>
+            <p class="font-medium">${title}</p>
+            <p class="text-sm opacity-90">${message}</p>
+          </div>
+        `;
+
+        document.body.appendChild(notification);
+
+        setTimeout(() => {
+          notification.style.transform = 'translateY(100%)';
+          notification.style.opacity = '0';
+          setTimeout(() => notification.remove(), 300);
+        }, 3000);
+      }
+
+      // Initialize the form
+      showTab(0);
+      showMainSection('account');
+      loadUserData();
+
+
+
+      // Initialize the form
+      showTab(0);
+      showMainSection('account');
+      loadUserData();
+
+      // ADD THIS PHOTO UPLOAD FUNCTIONALITY HERE
+      // Photo upload functionality
+      const coverPhotoContainer = document.getElementById('coverPhotoContainer');
+      const profilePicContainer = document.getElementById('profilePicContainer');
+      const coverPhotoInput = document.getElementById('coverPhotoInput');
+      const profilePicInput = document.getElementById('profilePicInput');
+      const coverPhotoImg = document.getElementById('coverPhotoImg');
+      const profilePicImg = document.getElementById('profilePicImg');
+
+      // Cover photo upload
+      // ...existing code...
+
+      // Cover photo upload
+      if (coverPhotoContainer && coverPhotoInput) {
+        coverPhotoContainer.addEventListener('click', function() {
+          coverPhotoInput.click();
+        });
+
+        coverPhotoInput.addEventListener('change', function(e) {
+          const file = e.target.files[0];
+          if (file) {
+            // Validate file type
+            if (!file.type.startsWith('image/')) {
+              showNotification('Invalid File', 'Please select a valid image file', 'error');
+              return;
+            }
+
+            // Validate file size (5MB limit)
+            if (file.size > 5 * 1024 * 1024) {
+              showNotification('File Too Large', 'Please select an image smaller than 5MB', 'error');
+              return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+              // **USE EXACT SAME LOGIC AS PROFILE PIC - just update src**
+              coverPhotoImg.src = e.target.result;
+              showNotification('Preview Updated', 'Cover photo preview updated. Click "Save Changes" to upload.', 'success');
+            };
+            reader.readAsDataURL(file);
+          }
+        });
+      }
+
+      // ...existing code...
+
+      // Profile picture upload
+      if (profilePicContainer && profilePicInput) {
+        profilePicContainer.addEventListener('click', function() {
+          profilePicInput.click();
+        });
+
+        profilePicInput.addEventListener('change', function(e) {
+          const file = e.target.files[0];
+          if (file) {
+            // Validate file type
+            if (!file.type.startsWith('image/')) {
+              showNotification('Invalid File', 'Please select a valid image file', 'error');
+              return;
+            }
+
+            // Validate file size (5MB limit)
+            if (file.size > 5 * 1024 * 1024) {
+              showNotification('File Too Large', 'Please select an image smaller than 5MB', 'error');
+              return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+              profilePicImg.src = e.target.result;
+              showNotification('Preview Updated', 'Profile picture preview updated. Click "Save Changes" to upload.', 'success');
+            };
+            reader.readAsDataURL(file);
+          }
+        });
+      }
+
+      // Update the save button handler to include photo uploads
+      const originalSaveHandler = saveButton.querySelector('button[type="submit"]');
+      if (originalSaveHandler) {
+        // Remove existing event listener and add new one that includes photo upload
+        const newSaveButton = originalSaveHandler.cloneNode(true);
+        originalSaveHandler.parentNode.replaceChild(newSaveButton, originalSaveHandler);
+
+        newSaveButton.addEventListener('click', function(e) {
+          e.preventDefault();
+
+          const submitBtn = this;
+          const originalText = submitBtn.textContent;
+
+          submitBtn.disabled = true;
+          submitBtn.innerHTML = '<i class="ri-loader-4-line animate-spin mr-2"></i>Saving Changes...';
+
+          // Create FormData for file uploads
+          const formData = new FormData();
+          formData.append('userId', '<%= accountInfo._id %>');
+
+          // Add cover photo if selected
+          if (coverPhotoInput.files[0]) {
+            formData.append('coverPhoto', coverPhotoInput.files[0]);
+          }
+
+          // Add profile picture if selected
+          if (profilePicInput.files[0]) {
+            formData.append('profilePic', profilePicInput.files[0]);
+          }
+
+          // Collect regular form data
+          const allForms = document.querySelectorAll('.tab-content form');
+          const userData = {};
+
+          allForms.forEach(form => {
+            const formDataFields = new FormData(form);
+            for (let [key, value] of formDataFields.entries()) {
+              if (value.trim() === "") {
+                continue;
+              }
+
+              if (key.includes('[') && key.includes(']')) {
+                const match = key.match(/(\w+)\[(\d+)\]\[(\w+)\]/);
+                if (match) {
+                  const [, field, index, subfield] = match;
+                  if (!userData[field]) userData[field] = [];
+                  if (!userData[field][index]) userData[field][index] = {};
+                  userData[field][index][subfield] = value.trim();
+                }
+              } else if (key === 'hobbies' || key === 'languagesSpoken' || key === 'QualitiesThatYouCanBringToYourMarriage' || key === 'qualitiesYouNeedInYourPartner') {
+                userData[key] = value.trim();
+              } else {
+                userData[key] = value.trim();
+              }
+            }
+          });
+
+          // Clean up arrays
+          if (userData.education) {
+            userData.education = userData.education.filter(item =>
+              item && Object.values(item).some(val => val && val.trim())
+            );
+            if (userData.education.length === 0) delete userData.education;
+          }
+
+          if (userData.children) {
+            userData.children = userData.children.filter(item =>
+              item && Object.values(item).some(val => val && val.trim())
+            );
+            if (userData.children.length === 0) delete userData.children;
+          }
+
+          // Add text data to FormData
+          formData.append('userData', JSON.stringify(userData));
+
+
+          // Send to backend with FormData (multipart/form-data)
+          fetch('/admin/user/update', {
+              method: 'POST',
+              body: formData // Don't set Content-Type, browser will set it with boundary
+            })
+            .then(response => response.json())
+            .then(data => {
+              if (data.success) {
+                showNotification('Profile Updated', 'Your profile has been updated successfully!', 'success');
+                // Clear file inputs after successful upload
+                coverPhotoInput.value = '';
+                profilePicInput.value = '';
+              } else {
+                console.error('Backend error:', data.error);
+                showNotification('Error', data.error || 'Failed to update profile', 'error');
+              }
+            })
+            .catch(error => {
+              console.error('Request error:', error);
+              showNotification('Error', 'Failed to update profile. Please try again.', 'error');
+            })
+            .finally(() => {
+              submitBtn.disabled = false;
+              submitBtn.innerHTML = originalText;
+            });
+        });
+      }
+
+    });
+    // **NEW**: Character counter for minimum length fields
+    const fieldsWithMinLength = {
+      'aboutMe': 5,
+      'islamIsImportantToMeInfo': 30,
+      'describeNature': 5,
+      'lookingForASpouseThatIs': 5
+    };
+
+    Object.entries(fieldsWithMinLength).forEach(([fieldId, minLength]) => {
+      const textarea = document.getElementById(fieldId);
+      if (textarea) {
+        const counter = document.createElement('div');
+        counter.className = 'char-counter text-sm mt-1';
+        counter.style.color = '#6b7280';
+        textarea.parentNode.appendChild(counter);
+
+        function updateCounter() {
+          const length = textarea.value.trim().length;
+          counter.textContent = `${length}/${minLength} characters minimum`;
+
+          if (length < minLength) {
+            counter.style.color = '#ef4444';
+            counter.innerHTML = `<i class="ri-error-warning-line mr-1"></i>${length}/${minLength} characters minimum`;
+          } else {
+            counter.style.color = '#10b981';
+            counter.innerHTML = `<i class="ri-check-line mr-1"></i>${length}/${minLength} characters minimum`;
+          }
+        }
+
+        textarea.addEventListener('input', updateCounter);
+        updateCounter(); // Initial update
+      }
+    });
+
+    function showNotification(title, message, type = 'info') {
+      const notification = document.createElement('div');
+      const bgColor = type === 'success' ? 'bg-green-500' : type === 'info' ? 'bg-blue-500' : type === 'warning' ? 'bg-yellow-500' : 'bg-red-500';
+      const icon = type === 'success' ? 'ri-checkbox-circle-line' : type === 'info' ? 'ri-information-line' : type === 'warning' ? 'ri-alert-line' : 'ri-error-warning-line';
+
+      notification.className = `fixed bottom-4 right-4 ${bgColor} text-white rounded-xl p-4 material-shadow-elevated flex items-center gap-3 transform translate-y-0 opacity-100 transition-all duration-300 z-50`;
+      notification.innerHTML = `
+    <i class="${icon} text-xl"></i>
+    <div>
+      <p class="font-medium">${title}</p>
+      <p class="text-sm opacity-90">${message}</p>
+    </div>
+  `;
+
+      document.body.appendChild(notification);
+
+      setTimeout(() => {
+        notification.style.transform = 'translateY(100%)';
+        notification.style.opacity = '0';
+        setTimeout(() => notification.remove(), 300);
+      }, 3000);
+    }
+    // **NEW**: Email verification functionality for info page
+    const emailField = document.getElementById('email');
+    const verifyEmailBtn = document.getElementById('verify-email-btn');
+    const addEmailBtn = document.getElementById('add-email-btn');
+    const verificationSection = document.getElementById('verification-section');
+    const verificationCodeInput = document.getElementById('verification-code');
+    const verifyCodeBtn = document.getElementById('verify-code-btn');
+    const emailStatus = document.getElementById('email-status');
+    const emailVerificationStatus = document.getElementById('email-verification-status');
+
+    let isEmailVerified = <%= accountInfo.isEmailVerified ? 'true' : 'false' %>;
+    let currentEmail = '<%= accountInfo.email || "" %>';
+
+    // Show add email button when valid email is entered (if no email exists)
+    if (emailField && addEmailBtn) {
+      emailField.addEventListener('input', function() {
+        const email = this.value.trim();
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        // Only show add button if no email is currently set and new email is valid
+        if (!currentEmail && emailRegex.test(email)) {
+          addEmailBtn.classList.remove('hidden');
+        } else {
+          addEmailBtn.classList.add('hidden');
+          verificationSection.classList.add('hidden');
+          hideEmailStatus();
+        }
+      });
+    }
+
+    // Handle verify email button click (for existing unverified email)
+    if (verifyEmailBtn) {
+      verifyEmailBtn.addEventListener('click', async function() {
+        const email = emailField.value.trim() || currentEmail;
+        const username = '<%= accountInfo.username %>';
+
+        if (!email) {
+          showEmailStatus('No email address found', 'error');
+          return;
+        }
+
+        await sendVerificationCode(email, username, this);
+      });
+    }
+
+    // Handle add email button click (for new email)
+    if (addEmailBtn) {
+      addEmailBtn.addEventListener('click', async function() {
+        const email = emailField.value.trim();
+        const username = '<%= accountInfo.username %>';
+
+        if (!email) {
+          showEmailStatus('Please enter an email address first', 'error');
+          return;
+        }
+
+        await sendVerificationCode(email, username, this);
+      });
+    }
+
+    // Send verification code function
+    async function sendVerificationCode(email, username, button) {
+      // Disable button and show loading
+      button.disabled = true;
+      const originalText = button.innerHTML;
+      button.innerHTML = '<i class="ri-loader-4-line animate-spin mr-2"></i>Sending...';
+
+      try {
+        const response = await fetch('/api/send-verification-code', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            email,
+            username
+          })
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+          verificationSection.classList.remove('hidden');
+          showEmailStatus(data.message, 'success');
+          verificationCodeInput.focus();
+
+          // Update the email verification status display
+          emailVerificationStatus.innerHTML = `
+        <div class="flex items-center gap-2 text-orange-600 text-sm">
+          <i class="ri-time-line"></i>
+          <span>Verification code sent - check your email</span>
+        </div>
+      `;
+        } else {
+          showEmailStatus(data.error, 'error');
+        }
+      } catch (error) {
+        showEmailStatus('Failed to send verification code', 'error');
+      } finally {
+        button.disabled = false;
+        button.innerHTML = originalText;
+      }
+    }
+
+    // Verify code button click
+    if (verifyCodeBtn) {
+      verifyCodeBtn.addEventListener('click', async function() {
+        const code = verificationCodeInput.value.trim();
+
+        if (code.length !== 4) {
+          showEmailStatus('Please enter a 4-digit code', 'error');
+          return;
+        }
+
+        this.disabled = true;
+        this.innerHTML = '<i class="ri-loader-4-line animate-spin mr-2"></i>Verifying...';
+
+        try {
+          const response = await fetch('/api/verify-email-code', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              code
+            })
+          });
+
+          const data = await response.json();
+
+          if (data.success) {
+            isEmailVerified = true;
+            hideEmailStatus();
+            showEmailStatus(data.message + ' ✓', 'success');
+            verificationSection.classList.add('hidden');
+            const emailToVerify = emailField.value.trim();
+            fetch('/api/save-email-verification', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                  email: emailToVerify
+                })
+              })
+              .then(response => response.json())
+              .then(saveData => {
+                if (saveData.success) {
+                  console.log('Email verification saved to database successfully');
+                  showNotification('Email Verified', 'Your email has been verified and saved!', 'success');
+                } else {
+                  console.error('Failed to save email verification:', saveData.error);
+                  showNotification('Warning', 'Email verified but failed to save. Please refresh and try again.', 'warning');
+                }
+              })
+              .catch(error => {
+                console.error('Error saving email verification:', error);
+                showNotification('Warning', 'Email verified but failed to save. Please refresh and try again.', 'warning');
+              });
+            // Update the email verification status display
+            emailVerificationStatus.innerHTML = `
+          <div class="flex items-center gap-2 text-green-600 text-sm">
+            <i class="ri-checkbox-circle-fill"></i>
+            <span>Email verified</span>
+          </div>
+        `;
+
+            // Hide verify button if it exists
+            if (verifyEmailBtn) verifyEmailBtn.classList.add('hidden');
+            if (addEmailBtn) addEmailBtn.classList.add('hidden');
+
+            // Update current email
+            currentEmail = emailToVerify;
+
+            showNotification('Email Verified', 'Your email has been verified successfully! Remember to save your changes.', 'success');
+          } else {
+            showEmailStatus(data.error, 'error');
+            verificationCodeInput.value = '';
+          }
+        } catch (error) {
+          showEmailStatus('Failed to verify code', 'error');
+        } finally {
+          this.disabled = false;
+          this.innerHTML = 'Verify';
+        }
+      });
+    }
+
+    // Helper functions for email status
+    function showEmailStatus(message, type) {
+      emailStatus.textContent = message;
+      emailStatus.className = `text-sm mt-2 ${type === 'error' ? 'text-red-600' : 'text-green-600'}`;
+      emailStatus.classList.remove('hidden');
+    }
+
+    function hideEmailStatus() {
+      emailStatus.classList.add('hidden');
+    }
+  </script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Check if user just completed onboarding
+      const urlParams = new URLSearchParams(window.location.search);
+      const fromOnboarding = urlParams.get('from') === 'onboarding';
+
+      if (fromOnboarding) {
+        // Remove the parameter from URL
+        window.history.replaceState({}, document.title, window.location.pathname);
+
+        // Show completion dialog
+        showCompletionDialog();
+      }
+
+      async function showCompletionDialog() {
+        try {
+          // Fetch profile completion data
+          const response = await fetch('/api/profile-completion');
+          const data = await response.json();
+
+          if (data.success) {
+            const {
+              completed,
+              total,
+              percentage
+            } = data.completion;
+
+            // Update dialog content
+            document.getElementById('completionPercentage').textContent = percentage;
+
+            // Show dialog
+            document.getElementById('completionDialog').classList.remove('hidden');
+          }
+        } catch (error) {
+          console.error('Error fetching profile completion:', error);
+        }
+      }
+
+      // Dialog button handlers
+      document.getElementById('addMoreInfoBtn').addEventListener('click', function() {
+        // Hide dialog and stay on info page
+        document.getElementById('completionDialog').classList.add('hidden');
+
+        // Show success message
+        showNotification('Great Choice!', 'You can now add more information to improve your profile.', 'success');
+      });
+
+      document.getElementById('browseProfilesBtn').addEventListener('click', function() {
+        // Redirect to profiles page
+        window.location.href = '/profiles';
+      });
+
+      // Close dialog on outside click
+      document.getElementById('completionDialog').addEventListener('click', function(e) {
+        if (e.target === this) {
+          this.classList.add('hidden');
+        }
+      });
+
+      // Your existing JavaScript code continues here...
+    });
+  </script>
+</body>
+
+</html>
+
+<!-- ...existing code... -->

@@ -198,6 +198,14 @@ async function bulkSubmitAllPublicUrls() {
   ];
   allUrls.push(...pakistanCityPaths);
 
+  // ---- Static blog posts (hardcoded in sitemap) ----
+  const staticBlogs = [
+    "/blog/muslim-wedding-planner-guide",
+    "/blog/uk-rishta-whatsapp-group",
+    "/blog/uk-muslim-rishta-service-charges",
+  ];
+  allUrls.push(...staticBlogs);
+
   // ---- Published Blog Posts from DB ----
   try {
     const blogs = await Blog.find({ isPublished: true }, "slug");

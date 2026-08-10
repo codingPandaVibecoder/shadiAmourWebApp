@@ -35,90 +35,11 @@
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
   <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
   <link rel="manifest" href="/images/site.webmanifest">
-  <meta name="theme-color" content="#00113a">
+  <meta name="theme-color" content="#E91E63">
 
   <link rel="stylesheet" href="/css/output.css">
   <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css"></noscript>
-
-  <style>
-    :where([class^="ri-"])::before {
-      content: "\f3c2";
-    }
-
-    /* Article body content — remap the DB-stored HTML onto the new theme */
-    .cat-body h1 {
-      font-family: 'Manrope', sans-serif;
-      font-size: 28px;
-      line-height: 36px;
-      font-weight: 700;
-      color: #00113a;
-      margin: 2rem 0 1rem;
-    }
-    .cat-body p {
-      font-size: 16px;
-      line-height: 28px;
-      color: #444650;
-      margin-bottom: 1rem;
-    }
-    .cat-body h2 {
-      font-family: 'Manrope', sans-serif;
-      font-size: 24px;
-      line-height: 32px;
-      font-weight: 700;
-      color: #00113a;
-      margin: 2rem 0 1rem;
-    }
-    .cat-body h3 {
-      font-family: 'Manrope', sans-serif;
-      font-size: 20px;
-      line-height: 28px;
-      font-weight: 600;
-      color: #00113a;
-      margin: 1.5rem 0 0.75rem;
-    }
-    .cat-body ul,
-    .cat-body ol {
-      margin-bottom: 1rem;
-      padding-left: 1.5rem;
-      color: #444650;
-    }
-    .cat-body ul {
-      list-style: disc;
-    }
-    .cat-body ol {
-      list-style: decimal;
-    }
-    .cat-body li {
-      margin-bottom: 0.25rem;
-    }
-    .cat-body a {
-      color: #002366;
-      text-decoration: underline;
-    }
-    .cat-body a:hover {
-      color: #003399;
-    }
-    .cat-body blockquote {
-      border-left: 4px solid #C5A059;
-      padding-left: 1rem;
-      font-style: italic;
-      color: #444650;
-      margin: 1rem 0;
-    }
-    .cat-body strong {
-      font-weight: 700;
-      color: #1a1b20;
-    }
-    .cat-body img {
-      max-width: 100%;
-      height: auto;
-      border-radius: 0.5rem;
-    }
-    .cat-body iframe {
-      max-width: 100%;
-    }
-  </style>
 
   <%- include('partials/clarity') %>
   <%- include('partials/thirdparty') %>
@@ -167,7 +88,7 @@
         "name": <%- JSON.stringify(faq.question) %>,
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": <%- JSON.stringify((faq.excerpt || (faq.answer || '').replace(/<[^>]*>/g, '')).substring(0, 500)) %>
+          "text": <%- JSON.stringify((faq.excerpt || faq.answer.replace(/<[^>]*>/g, '')).substring(0, 500)) %>
         }
       }<%= i < faqs.length - 1 ? ',' : '' %>
       <% }) %>
@@ -177,75 +98,82 @@
   <% } %>
 </head>
 
-<body class="bg-background text-on-background font-body-md antialiased flex flex-col min-h-screen">
+<body class="bg-gray-50 font-['Roboto']">
   <%- include('partials/header') %>
 
-  <main class="flex-grow pt-[92px] pb-section-padding">
-    <div class="max-w-3xl mx-auto px-margin-x py-section-padding">
+  <main class="pt-24 pb-16 min-h-screen">
+    <div class="max-w-3xl mx-auto px-6">
 
       <!-- Breadcrumb -->
-      <nav class="flex flex-wrap items-center gap-2 text-sm text-outline font-medium mb-8" aria-label="Breadcrumb">
+      <nav class="flex items-center gap-2 text-sm text-gray-500 mb-8 flex-wrap" aria-label="Breadcrumb">
         <a href="/" class="hover:text-primary transition-colors">Home</a>
-        <span class="material-symbols-outlined text-[16px]">chevron_right</span>
-        <span class="capitalize text-on-surface-variant"><%= page.categorySlug.replace(/-/g, ' ') %></span>
-        <span class="material-symbols-outlined text-[16px]">chevron_right</span>
-        <span class="text-primary font-semibold truncate max-w-xs"><%= page.title %></span>
+        <i class="ri-arrow-right-s-line"></i>
+        <span class="text-gray-500 capitalize"><%= page.categorySlug.replace(/-/g, ' ') %></span>
+        <i class="ri-arrow-right-s-line"></i>
+        <span class="text-gray-800 font-medium truncate max-w-xs"><%= page.title %></span>
       </nav>
 
-      <!-- Article card -->
-      <article class="bg-surface-white rounded-xl border border-outline-variant p-6 md:p-10 mb-10" style="box-shadow: 0px 4px 20px rgba(0, 35, 102, 0.05);">
-        <h1 class="text-display-lg-mobile md:text-display-lg font-display-lg-mobile md:font-display-lg text-primary mb-4 leading-tight">
+      <!-- Page content -->
+      <article class="bg-white rounded-2xl p-8 shadow-sm border border-gray-100 mb-10">
+
+        <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4 font-['Playfair_Display'] leading-tight">
           <%= page.title %>
         </h1>
 
         <% if (page.excerpt) { %>
-        <p class="text-body-lg font-body-lg text-on-surface-variant mb-6 leading-relaxed border-l-4 border-premium-gold pl-4">
+        <p class="text-lg text-gray-600 mb-6 leading-relaxed border-l-4 border-primary pl-4">
           <%= page.excerpt %>
         </p>
         <% } %>
 
-        <div class="cat-body max-w-none">
+        <div class="prose prose-gray max-w-none text-gray-700 leading-relaxed
+          [&_h2]:text-2xl [&_h2]:font-bold [&_h2]:text-gray-900 [&_h2]:mt-8 [&_h2]:mb-4 [&_h2]:font-['Playfair_Display']
+          [&_h3]:text-xl [&_h3]:font-semibold [&_h3]:text-gray-800 [&_h3]:mt-6 [&_h3]:mb-3
+          [&_p]:mb-4 [&_ul]:mb-4 [&_ol]:mb-4 [&_li]:mb-1
+          [&_a]:text-primary [&_a]:underline [&_a]:hover:text-pink-700
+          [&_blockquote]:border-l-4 [&_blockquote]:border-primary [&_blockquote]:pl-4 [&_blockquote]:italic [&_blockquote]:text-gray-600 [&_blockquote]:my-4">
           <%- page.content %>
         </div>
+
       </article>
 
-      <!-- Related Islamic FAQs -->
+      <!-- Islamic FAQs section -->
       <% if (faqs && faqs.length > 0) { %>
       <section aria-labelledby="faqs-heading">
         <div class="flex items-center gap-3 mb-6">
-          <div class="w-1 h-8 bg-primary-container rounded-full"></div>
-          <h2 id="faqs-heading" class="text-headline-lg font-headline-lg text-primary">Related Islamic Guidance</h2>
+          <div class="w-1 h-8 bg-primary rounded-full"></div>
+          <h2 id="faqs-heading" class="text-2xl font-bold text-gray-900 font-['Playfair_Display']">Related Islamic Guidance</h2>
         </div>
 
         <div class="space-y-4">
           <% faqs.forEach(faq => { %>
-          <a href="/islamic-faqs/<%= faq.slug %>" class="block bg-surface-white rounded-xl p-5 border border-outline-variant hover:border-primary hover:shadow-md transition-all duration-200 group">
+          <a href="/islamic-faqs/<%= faq.slug %>" class="block bg-white rounded-xl p-5 border border-gray-200 hover:border-primary hover:shadow-md transition-all duration-200 group">
             <div class="flex items-start gap-4">
-              <div class="w-10 h-10 rounded-full bg-secondary-container/20 flex items-center justify-center flex-shrink-0 mt-0.5 group-hover:bg-secondary-container/30 transition-colors">
-                <i class="ri-question-line text-secondary"></i>
+              <div class="w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center flex-shrink-0 mt-0.5 group-hover:bg-amber-200 transition-colors">
+                <i class="ri-question-line text-amber-700"></i>
               </div>
               <div class="flex-1 min-w-0">
-                <p class="font-semibold text-on-surface group-hover:text-primary transition-colors leading-snug mb-1">
+                <p class="font-semibold text-gray-900 group-hover:text-primary transition-colors leading-snug mb-1">
                   <%= faq.question %>
                 </p>
                 <% if (faq.excerpt) { %>
-                <p class="text-sm text-on-surface-variant line-clamp-2"><%= faq.excerpt %></p>
+                <p class="text-sm text-gray-500 line-clamp-2"><%= faq.excerpt %></p>
                 <% } %>
                 <div class="flex items-center gap-3 mt-2">
-                  <span class="inline-block px-2.5 py-0.5 bg-secondary-container/20 text-secondary rounded-full text-xs font-medium"><%= faq.category %></span>
+                  <span class="inline-block px-2.5 py-0.5 bg-amber-100 text-amber-800 rounded-full text-xs font-medium"><%= faq.category %></span>
                   <% if (faq.scholar) { %>
-                  <span class="text-xs text-outline">— <%= faq.scholar %></span>
+                  <span class="text-xs text-gray-400">— <%= faq.scholar %></span>
                   <% } %>
                 </div>
               </div>
-              <i class="ri-arrow-right-s-line text-outline group-hover:text-primary text-xl flex-shrink-0 mt-1 transition-colors"></i>
+              <i class="ri-arrow-right-s-line text-gray-300 group-hover:text-primary text-xl flex-shrink-0 mt-1 transition-colors"></i>
             </div>
           </a>
           <% }) %>
         </div>
 
         <div class="mt-6 text-center">
-          <a href="/islamic-faqs" class="inline-flex items-center gap-2 px-6 py-3 bg-primary-container text-on-primary rounded-full hover:bg-trust-blue transition-all duration-300 font-medium text-sm">
+          <a href="/islamic-faqs" class="inline-flex items-center gap-2 px-6 py-3 border-2 border-primary text-primary rounded-full hover:bg-primary hover:text-white transition-all duration-300 font-medium text-sm">
             <i class="ri-question-answer-line"></i>
             Browse All Islamic FAQs
           </a>

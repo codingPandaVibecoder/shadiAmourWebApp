@@ -14,7 +14,7 @@
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
   <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
   <link rel="manifest" href="/images/site.webmanifest">
-  <meta name="theme-color" content="#E91E63">
+  <meta name="theme-color" content="#00113a">
 
   <!-- Open Graph -->
   <meta property="og:type" content="website">
@@ -34,12 +34,61 @@
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
   <style>
-    .gradient-bg { background: linear-gradient(135deg, #E91E63 0%, #673AB7 100%); }
-    .material-shadow { box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
-    .material-shadow-hover { box-shadow: 0 4px 16px rgba(0,0,0,0.15); }
-    .ripple { position: relative; overflow: hidden; }
-    .ripple::before { content:''; position:absolute; top:50%; left:50%; width:0; height:0; border-radius:50%; background:rgba(255,255,255,0.3); transform:translate(-50%,-50%); transition:width 0.6s, height 0.6s; }
-    .ripple:active::before { width:300px; height:300px; }
+    :where([class^="ri-"])::before {
+      content: "\f3c2";
+    }
+
+    /* Article body content — remap the legacy content classes onto the new theme */
+    .seo-body p {
+      font-size: 16px;
+      line-height: 28px;
+      color: #444650;
+      margin-bottom: 1rem;
+    }
+    .seo-body .text-lg {
+      font-size: 18px;
+      line-height: 28px;
+    }
+    .seo-body .text-gray-700,
+    .seo-body .text-gray-600 {
+      color: #444650;
+    }
+    .seo-body .text-gray-800 {
+      color: #1a1b20;
+    }
+    .seo-body .text-primary {
+      color: #C5A059;
+    }
+    .seo-body h2 {
+      font-family: 'Manrope', sans-serif;
+      font-size: 24px;
+      line-height: 32px;
+      font-weight: 700;
+      color: #00113a;
+      margin: 2rem 0 1rem;
+    }
+    .seo-body h2.text-gray-800 {
+      color: #00113a;
+    }
+    .seo-body h2.font-\[\'Playfair_Display\'\] {
+      font-family: 'Manrope', sans-serif;
+    }
+    .seo-body ul {
+      list-style: none;
+      padding-left: 0;
+    }
+    .seo-body li {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      margin-bottom: 0.75rem;
+    }
+    .seo-body .bg-primary\/5 {
+      background-color: rgba(0, 35, 102, 0.06);
+    }
+    .seo-body .border-primary\/10 {
+      border-color: rgba(0, 35, 102, 0.12);
+    }
   </style>
 
   <!-- Structured Data -->
@@ -100,88 +149,132 @@
   <%- include('partials/analytics') %>
 </head>
 
-<body class="bg-gray-50 font-['Roboto']">
+<body class="bg-background text-on-background font-body-md antialiased flex flex-col min-h-screen">
   <%- include('partials/header') %>
 
-  <main class="pt-24 min-h-screen">
-
-    <!-- Hero Banner -->
-    <div class="gradient-bg py-16 px-6">
-      <div class="max-w-4xl mx-auto text-center">
-        <h1 class="text-4xl md:text-5xl font-bold text-white mb-4 font-['Playfair_Display']"><%= h1 %></h1>
-        <p class="text-lg text-white/90 max-w-2xl mx-auto"><%= heroSubtitle %></p>
+  <main class="flex-grow pt-[92px]">
+    <!-- Hero Section -->
+    <section class="bg-neutral-gray py-section-padding px-margin-x text-center">
+      <div class="max-w-container-max mx-auto">
+        <h1 class="text-display-lg-mobile md:text-display-lg font-display-lg-mobile md:font-display-lg text-primary mb-element-gap"><%= h1 %></h1>
+        <p class="text-body-lg font-body-lg text-on-surface-variant max-w-2xl mx-auto"><%= heroSubtitle %></p>
       </div>
-    </div>
+    </section>
 
-    <!-- Main Content -->
-    <div class="py-16 bg-white">
-      <div class="max-w-4xl mx-auto px-6">
-        <%- bodyContent %>
+    <!-- Article Body -->
+    <section class="max-w-container-max mx-auto px-margin-x py-section-padding">
+      <div class="bg-surface-white rounded-xl border border-outline-variant p-6 md:p-10" style="box-shadow: 0px 4px 20px rgba(0, 35, 102, 0.05);">
+        <div class="seo-body max-w-none">
+          <%- bodyContent %>
+        </div>
       </div>
-    </div>
+    </section>
 
     <!-- FAQ Section -->
-    <div class="py-16 bg-gray-50">
-      <div class="max-w-4xl mx-auto px-6">
-        <h2 class="text-3xl font-bold text-gray-800 mb-8 font-['Playfair_Display'] text-center">Frequently Asked Questions</h2>
-        <div class="space-y-4">
+    <section class="bg-neutral-gray py-section-padding px-margin-x">
+      <div class="max-w-container-max mx-auto">
+        <h2 class="text-headline-lg font-headline-lg text-primary text-center mb-12">Frequently Asked Questions</h2>
+        <div class="max-w-3xl mx-auto space-y-4">
           <% if (typeof pageFaqs !== 'undefined' && pageFaqs && pageFaqs.length > 0) { %>
-            <% pageFaqs.forEach(function(faq) { %>
-            <div class="bg-white rounded-2xl p-6 material-shadow">
-              <h3 class="font-bold text-gray-800 mb-2"><%= faq.q %></h3>
-              <p class="text-gray-600"><%= faq.a %></p>
+            <% pageFaqs.forEach(function(faq, idx) { %>
+            <div class="faq-card bg-surface-white rounded-xl border border-outline-variant shadow-sm">
+              <button type="button" class="faq-toggle w-full flex items-center justify-between gap-4 p-5 text-left">
+                <span class="text-headline-md font-headline-md text-primary"><%= faq.q %></span>
+                <span class="faq-chevron material-symbols-outlined text-primary-container transition-transform duration-200 <%= idx === 0 ? 'rotate-180' : '' %>">expand_more</span>
+              </button>
+              <div class="faq-answer <%= idx === 0 ? '' : 'hidden' %> px-5 pb-5">
+                <p class="text-body-md font-body-md text-on-surface-variant"><%= faq.a %></p>
+              </div>
             </div>
             <% }); %>
           <% } else { %>
-          <div class="bg-white rounded-2xl p-6 material-shadow">
-            <h3 class="font-bold text-gray-800 mb-2">Is this service halal?</h3>
-            <p class="text-gray-600">Yes. shadiamour is a marriage-focused platform. We do not allow casual dating or socialising. All interactions are guided by the intention of Nikah.</p>
+          <div class="faq-card bg-surface-white rounded-xl border border-outline-variant shadow-sm">
+            <button type="button" class="faq-toggle w-full flex items-center justify-between gap-4 p-5 text-left">
+              <span class="text-headline-md font-headline-md text-primary">Is this service halal?</span>
+              <span class="faq-chevron material-symbols-outlined text-primary-container transition-transform duration-200 rotate-180">expand_more</span>
+            </button>
+            <div class="faq-answer px-5 pb-5">
+              <p class="text-body-md font-body-md text-on-surface-variant">Yes. shadiamour is a marriage-focused platform. We do not allow casual dating or socialising. All interactions are guided by the intention of Nikah.</p>
+            </div>
           </div>
-          <div class="bg-white rounded-2xl p-6 material-shadow">
-            <h3 class="font-bold text-gray-800 mb-2">Is it free to join?</h3>
-            <p class="text-gray-600">Yes, creating a profile and browsing matches is completely free. No payment is required to get started.</p>
+          <div class="faq-card bg-surface-white rounded-xl border border-outline-variant shadow-sm">
+            <button type="button" class="faq-toggle w-full flex items-center justify-between gap-4 p-5 text-left">
+              <span class="text-headline-md font-headline-md text-primary">Is it free to join?</span>
+              <span class="faq-chevron material-symbols-outlined text-primary-container transition-transform duration-200">expand_more</span>
+            </button>
+            <div class="faq-answer hidden px-5 pb-5">
+              <p class="text-body-md font-body-md text-on-surface-variant">Yes, creating a profile and browsing matches is completely free. No payment is required to get started.</p>
+            </div>
           </div>
-          <div class="bg-white rounded-2xl p-6 material-shadow">
-            <h3 class="font-bold text-gray-800 mb-2">Are profiles verified?</h3>
-            <p class="text-gray-600">Yes. Every profile is reviewed and approved by our moderation team before becoming visible on the platform.</p>
+          <div class="faq-card bg-surface-white rounded-xl border border-outline-variant shadow-sm">
+            <button type="button" class="faq-toggle w-full flex items-center justify-between gap-4 p-5 text-left">
+              <span class="text-headline-md font-headline-md text-primary">Are profiles verified?</span>
+              <span class="faq-chevron material-symbols-outlined text-primary-container transition-transform duration-200">expand_more</span>
+            </button>
+            <div class="faq-answer hidden px-5 pb-5">
+              <p class="text-body-md font-body-md text-on-surface-variant">Yes. Every profile is reviewed and approved by our moderation team before becoming visible on the platform.</p>
+            </div>
           </div>
           <% } %>
         </div>
       </div>
-    </div>
+    </section>
 
     <!-- Internal Links -->
-    <div class="py-16 bg-white">
-      <div class="max-w-4xl mx-auto px-6">
-        <h2 class="text-2xl font-bold text-gray-800 mb-6 font-['Playfair_Display'] text-center">Explore More</h2>
+    <section class="py-section-padding px-margin-x">
+      <div class="max-w-container-max mx-auto text-center">
+        <h2 class="text-headline-lg font-headline-lg text-primary mb-8">Explore More</h2>
         <div class="flex flex-wrap gap-3 justify-center">
-          <a href="/" class="px-4 py-2 bg-primary/10 text-primary rounded-full text-sm font-medium hover:bg-primary hover:text-white transition-all duration-300">Homepage</a>
+          <a href="/" class="inline-flex items-center gap-2 px-5 py-2.5 bg-surface border border-outline-variant rounded-full text-label-md font-label-md text-on-surface-variant hover:border-primary hover:text-primary transition-all">Homepage</a>
           <% relatedLinks.forEach(function(link) { %>
-            <a href="<%= link.url %>" class="px-4 py-2 bg-primary/10 text-primary rounded-full text-sm font-medium hover:bg-primary hover:text-white transition-all duration-300"><%= link.label %></a>
+            <a href="<%= link.url %>" class="inline-flex items-center gap-2 px-5 py-2.5 bg-surface border border-outline-variant rounded-full text-label-md font-label-md text-on-surface-variant hover:border-primary hover:text-primary transition-all"><%= link.label %></a>
           <% }); %>
-          <a href="/blog" class="px-4 py-2 bg-primary/10 text-primary rounded-full text-sm font-medium hover:bg-primary hover:text-white transition-all duration-300">Marriage Guides &amp; Blog</a>
+          <a href="/blog" class="inline-flex items-center gap-2 px-5 py-2.5 bg-surface border border-outline-variant rounded-full text-label-md font-label-md text-on-surface-variant hover:border-primary hover:text-primary transition-all">Marriage Guides &amp; Blog</a>
         </div>
       </div>
-    </div>
+    </section>
 
     <!-- CTA -->
-    <div class="py-16 gradient-bg">
-      <div class="max-w-4xl mx-auto px-6 text-center">
-        <h2 class="text-3xl font-bold text-white mb-4 font-['Playfair_Display']"><%= ctaHeading %></h2>
-        <p class="text-white/90 mb-8 text-lg"><%= ctaSubtext %></p>
-        <div class="flex flex-wrap items-center justify-center gap-4">
-          <a href="/register" class="bg-white text-primary font-bold py-4 px-10 rounded-button hover:bg-gray-100 hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 text-lg ripple">
-            <i class="ri-user-add-line mr-2"></i>Create Your Free Profile
+    <section class="px-margin-x pb-section-padding">
+      <div class="max-w-container-max mx-auto bg-primary-container rounded-2xl p-8 md:p-12 text-center relative overflow-hidden">
+        <div class="absolute -top-24 -right-24 w-64 h-64 bg-premium-gold/10 rounded-full blur-3xl"></div>
+        <div class="absolute -bottom-24 -left-24 w-64 h-64 bg-surface-white/5 rounded-full blur-3xl"></div>
+        <h2 class="text-headline-lg font-headline-lg text-on-primary relative z-10 mb-4"><%= ctaHeading %></h2>
+        <p class="text-body-lg font-body-lg text-on-primary/90 relative z-10 mb-8 max-w-2xl mx-auto"><%= ctaSubtext %></p>
+        <div class="flex flex-wrap items-center justify-center gap-4 relative z-10">
+          <a href="/register" class="inline-flex items-center gap-2 bg-premium-gold text-on-primary font-label-md text-label-md py-4 px-8 rounded-lg hover:bg-premium-gold/90 transition-all">
+            <span class="material-symbols-outlined">person_add</span> Create Your Free Profile
           </a>
-          <a href="/profiles" class="border-2 border-white text-white font-bold py-4 px-10 rounded-button hover:bg-white hover:text-primary transition-all duration-300 text-lg">
-            <i class="ri-search-line mr-2"></i>Browse Profiles
+          <a href="/profiles" class="inline-flex items-center gap-2 border border-on-primary/30 text-on-primary font-label-md text-label-md py-4 px-8 rounded-lg hover:bg-on-primary/10 transition-all">
+            <span class="material-symbols-outlined">search</span> Browse Profiles
           </a>
         </div>
       </div>
-    </div>
-
+    </section>
   </main>
 
   <%- include('partials/footer') %>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      document.querySelectorAll('.faq-toggle').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          var card = this.closest('.faq-card');
+          if (!card) return;
+          var answer = card.querySelector('.faq-answer');
+          var chevron = this.querySelector('.faq-chevron');
+          if (!answer || !chevron) return;
+          if (answer.classList.contains('hidden')) {
+            answer.classList.remove('hidden');
+            chevron.classList.add('rotate-180');
+          } else {
+            answer.classList.add('hidden');
+            chevron.classList.remove('rotate-180');
+          }
+        });
+      });
+    });
+  </script>
 </body>
+
 </html>

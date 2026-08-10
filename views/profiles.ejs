@@ -8,7 +8,7 @@
   let pageTitle = globalSeoSettings && globalSeoSettings.profilesPageMetaTitle ? globalSeoSettings.profilesPageMetaTitle : "Muslim Matrimony UK | Browse 500+ Verified Profiles | shadiamour";
   let metaDescription = globalSeoSettings && globalSeoSettings.profilesPageMetaDescription ? globalSeoSettings.profilesPageMetaDescription : "Find your perfect Muslim matrimony partner for Islamic wedding and Nikkah ceremony. Browse verified Muslim couples, Pakistani marriage profiles in London, Manchester. UK's leading halal marriage site.";
   let keywords = "Muslim matrimony, Islamic wedding, Nikkah wedding ceremony, Pakistani marriage, Shaadi London, Nikkah London, halal marriage site UK, Pakistani couple, Muslim couple, Sunni Muslim marriage, Muslim marriage services, Islam love marriage, Muslim matrimonial, Muslim marriage Manchester, Pakistani wedding London";
-  
+
   // Determine if this is a filtered/paginated view (non-indexable)
   const hasNonGenderFilters = filters && (filters.minAge || filters.maxAge || filters.minHeight || filters.maxHeight || filters.city || filters.country || filters.nationality);
   const isDeepPagination = page > 1;
@@ -44,7 +44,7 @@
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
   <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
   <link rel="manifest" href="/images/site.webmanifest">
-  <meta name="theme-color" content="#E91E63">
+  <meta name="theme-color" content="#00113a">
 
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
@@ -113,18 +113,6 @@
       content: "\f3c2";
     }
 
-    .material-shadow {
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    .material-shadow-hover {
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
-    }
-
-    .material-shadow-elevated {
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
-    }
-
     #mobileFilterPanel {
       box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
     }
@@ -138,59 +126,6 @@
     #mobileFilterOverlay,
     #mobileFilterPanel {
       will-change: transform, opacity;
-    }
-
-    .ripple {
-      position: relative;
-      overflow: hidden;
-    }
-
-    .ripple::before {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 0;
-      height: 0;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.3);
-      transform: translate(-50%, -50%);
-      transition: width 0.6s, height 0.6s;
-    }
-
-    .ripple:active::before {
-      width: 300px;
-      height: 300px;
-    }
-
-    .gradient-bg {
-      background: linear-gradient(135deg, #E91E63 0%, #673AB7 100%);
-    }
-
-    .featured-badge {
-      background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
-      box-shadow: 0 2px 8px rgba(255, 215, 0, 0.3);
-    }
-
-    .featured-profile-card {
-      border: 2px solid transparent;
-      background: linear-gradient(white, white) padding-box,
-        linear-gradient(135deg, #ffd700, #ffed4e) border-box;
-    }
-
-    .featured-profile-card:hover {
-      box-shadow: 0 8px 25px rgba(255, 215, 0, 0.2);
-    }
-
-    /* Progressive image loading */
-    img {
-      opacity: 0;
-      transition: opacity 0.3s ease;
-    }
-
-    img.loaded,
-    img[src*="ui-avatars"] {
-      opacity: 1;
     }
 
     /* Compatibility score circle overlay on profile cards */
@@ -234,41 +169,32 @@
       background: none;
       animation: none;
     }
-    /* Mobile profile card adjustments */
-@media (max-width: 640px) {
-  /* Reduce padding on mobile */
-  #profileGrid .p-4 {
-    padding: 0.75rem;
-  }
-  
-  /* Smaller text on mobile */
-  #profileGrid h3 {
-    font-size: 0.875rem;
-  }
-  
-  #profileGrid .text-gray-600 {
-    font-size: 0.75rem;
-  }
-  
-  /* Adjust icon sizes */
-  #profileGrid i {
-    font-size: 0.875rem;
-  }
-}
-/* Prevent horizontal overflow */
-body {
-  overflow-x: hidden;
-}
 
-html {
-  overflow-x: hidden;
-}
+    /* Progressive image loading */
+    img {
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
 
-/* Ensure pagination stays within viewport */
-.pagination-container {
-  max-width: 100%;
-  overflow-x: auto;
-}
+    img.loaded,
+    img[src*="ui-avatars"] {
+      opacity: 1;
+    }
+
+    /* Prevent horizontal overflow */
+    body {
+      overflow-x: hidden;
+    }
+
+    html {
+      overflow-x: hidden;
+    }
+
+    /* Ensure pagination stays within viewport */
+    .pagination-container {
+      max-width: 100%;
+      overflow-x: auto;
+    }
   </style>
   <!-- **ENHANCED**: Structured Data for SEO -->
   <script type="application/ld+json">
@@ -360,577 +286,536 @@ html {
   <%- include('partials/analytics') %>
 </head>
 
-<body class="bg-gray-50 font-['Roboto']">
+<body class="bg-background text-on-background font-body-md antialiased min-h-screen flex flex-col">
   <%- include('partials/header') %>
-  <main class="pt-24 pb-16 min-h-screen">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6">
-      <!-- Pending Approval Notice for Current User -->
-      <% if (currentUserProfile && !currentUserProfile.isApproved) { %>
-      <div class="mb-6 bg-amber-50 border border-amber-200 rounded-xl p-4 sm:p-5">
-        <div class="flex flex-col sm:flex-row sm:items-start gap-3 sm:gap-4">
-          <div class="flex-shrink-0 self-center sm:self-start">
-            
-          </div>
-          <div class="flex-1 text-center sm:text-left">
-            <h3 class="text-base sm:text-lg font-semibold text-amber-800 mb-1 sm:mb-2">Your Profile is Pending Approval</h3>
-            <p class="text-sm sm:text-base text-amber-700 mb-3">
-              Your profile is currently only visible to yourself. Once our team reviews and approves your profile, other users will be able to see it and connect with you.
-            </p>
-            <div class="bg-white rounded-lg p-3 sm:p-4 border border-amber-200">
-              <p class="text-xs sm:text-sm text-gray-700 mb-2">
-                <i class="ri-lightbulb-line text-amber-500 mr-1"></i>
-                <strong>Tip:</strong> Complete as many fields as possible to increase your chances of approval!
+
+  <main class="flex-grow pt-[92px]">
+    <!-- Page Header -->
+    <section class="px-margin-x pt-8 pb-10 max-w-container-max mx-auto text-center md:text-left">
+      <h1 class="text-3xl md:text-display-lg-mobile lg:text-display-lg font-display-lg text-primary mb-4 leading-tight">
+        <% if (filters && filters.gender === 'male') { %>
+        Muslim Men for Halal Marriage UK | Find Single Muslim Grooms for Modern Nikkah
+        <% } else if (filters && filters.gender === 'female') { %>
+        Muslim Women for Islamic Wedding | Single Muslim Brides Seeking Halal Marriage UK
+        <% } else { %>
+        Muslim Matrimony UK | Halal Muslim Matchmaking for Young Singles & Islamic Wedding Partners
+        <% } %>
+      </h1>
+      <p class="text-body-lg font-body-lg text-on-surface-variant max-w-3xl leading-relaxed">
+        <% if (filters && filters.gender === 'male') { %>
+        Discover verified <strong>Muslim men for halal marriage</strong> across London, Manchester, Birmingham &amp; Leicester.
+        Connect with <strong>single Muslim grooms</strong> seeking <strong>Islamic wedding</strong>, <strong>modern Nikkah ceremony</strong>
+        and blessed <strong>Muslim matrimony</strong> through our trusted <strong>halal Muslim matchmaking platform</strong>.
+        Find your perfect <strong>Muslim soulmate</strong> among professional <strong>young Muslim men</strong> ready for <strong>single Muslim marriage</strong>.
+        <% } else if (filters && filters.gender === 'female') { %>
+        Browse authentic profiles of <strong>Muslim women for Islamic wedding</strong> and <strong>halal Muslim marriage</strong>
+        across major UK cities. Our <strong>Muslim matrimonial platform</strong> features <strong>single Muslim brides</strong>
+        seeking <strong>modern Nikkah partnerships</strong>, <strong>Muslim shaadi</strong> and meaningful <strong>halal relationships</strong>.
+        Connect with <strong>young Muslim women</strong> ready for <strong>Muslim love</strong> and blessed matrimony.
+        <% } else { %>
+        The UK's leading <strong>Muslim matrimonial platform</strong> connecting hearts for <strong>halal Muslim marriage</strong>,
+        <strong>Islamic wedding</strong> and <strong>modern Nikkah ceremony</strong>. Discover thousands of verified
+        <strong>Muslim singles UK</strong> seeking <strong>halal matchmaking</strong>, <strong>young Muslim marriage</strong>
+        and blessed <strong>Muslim relationships</strong> across London, Manchester, Birmingham and nationwide.
+        <% } %>
+      </p>
+    </section>
+
+    <section class="px-margin-x pb-section-padding max-w-container-max mx-auto flex flex-col lg:flex-row gap-gutter">
+      <!-- Sidebar Filter (desktop only — mobile uses slide-in drawer) -->
+      <aside class="hidden lg:block w-full lg:w-1/4">
+        <%- include('partials/profilesFilter') %>
+      </aside>
+
+      <!-- Main Content -->
+      <div class="w-full lg:w-3/4">
+        <!-- Pending Approval Notice for Current User -->
+        <% if (currentUserProfile && !currentUserProfile.isApproved) { %>
+        <div class="mb-6 bg-amber-50 border border-amber-200 rounded-xl p-4 sm:p-5">
+          <div class="flex flex-col sm:flex-row sm:items-start gap-3 sm:gap-4">
+            <div class="flex-1 text-center sm:text-left">
+              <h3 class="text-base sm:text-lg font-semibold text-amber-800 mb-1 sm:mb-2">Your Profile is Pending Approval</h3>
+              <p class="text-sm sm:text-base text-amber-700 mb-3">
+                Your profile is currently only visible to yourself. Once our team reviews and approves your profile, other users will be able to see it and connect with you.
               </p>
-              <a href="/account/info" data-track="true" data-event-name="complete_profile_from_profiles" data-category="engagement" data-label="Complete Your Profile" class="inline-flex items-center gap-2 text-primary hover:text-pink-600 font-medium text-sm transition-colors">
-                <i class="ri-edit-line"></i>
-                Complete Your Profile
-              </a>
+              <div class="bg-white rounded-lg p-3 sm:p-4 border border-amber-200">
+                <p class="text-xs sm:text-sm text-gray-700 mb-2">
+                  <span class="material-symbols-outlined text-sm text-amber-500 mr-1">lightbulb</span>
+                  <strong>Tip:</strong> Complete as many fields as possible to increase your chances of approval!
+                </p>
+                <a href="/account/info" data-track="true" data-event-name="complete_profile_from_profiles" data-category="engagement" data-label="Complete Your Profile" class="inline-flex items-center gap-2 text-primary hover:text-primary/70 font-medium text-sm transition-colors">
+                  <span class="material-symbols-outlined text-base">edit</span>
+                  Complete Your Profile
+                </a>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <% } %>
+        <% } %>
 
-      <div class="flex gap-8">
-        <!-- Filter Sidebar -->
-        <div class="w-80 flex-shrink-0 hidden lg:block">
-          <%- include('partials/profilesFilter') %>
-        </div>
-
-        <!-- Main Content -->
-        <div class="flex-1">
-          <!-- Breadcrumb Navigation - ADD THIS -->
-          <nav class="flex py-3 px-2 mb-4 bg-gray-50 rounded-lg text-sm text-gray-600" aria-label="Breadcrumb">
-            <ol class="flex flex-wrap items-center">
-              <li class="flex items-center">
-                <a href="/" class="hover:text-primary transition-colors">Home</a>
-                <i class="ri-arrow-right-s-line mx-2"></i>
-              </li>
-              <li class="flex items-center">
-                <a href="/profiles" class="hover:text-primary transition-colors">Profiles</a>
-                <% if (filters && filters.gender) { %>
-                <i class="ri-arrow-right-s-line mx-2"></i>
-              </li>
-              <li class="text-primary font-medium truncate">
-                <%= filters.gender === 'male' ? 'Male' : 'Female' %> Profiles
-                <% } %>
-              </li>
-            </ol>
-          </nav>
-          <!-- Page Heading -->
-          <div class="mb-6 text-center md:text-left">
-            <!-- Replace the existing pageTitle H1 with SEO-optimized version -->
-            <h1 class="text-3xl md:text-4xl font-bold text-gray-800 font-['Playfair_Display']">
-              <% if (filters && filters.gender === 'male') { %>
-              Muslim Men for Halal Marriage UK | Find Single Muslim Grooms for Modern Nikkah
-              <% } else if (filters && filters.gender === 'female') { %>
-              Muslim Women for Islamic Wedding | Single Muslim Brides Seeking Halal Marriage UK
-              <% } else { %>
-              Muslim Matrimony UK | Halal Muslim Matchmaking for Young Singles & Islamic Wedding Partners
+        <!-- Breadcrumb Navigation -->
+        <nav class="flex py-3 px-4 mb-6 bg-neutral-gray rounded-lg text-sm text-on-surface-variant border border-outline-variant/30" aria-label="Breadcrumb">
+          <ol class="flex flex-wrap items-center">
+            <li class="flex items-center">
+              <a href="/" class="hover:text-primary transition-colors">Home</a>
+              <span class="material-symbols-outlined text-base mx-2">chevron_right</span>
+            </li>
+            <li class="flex items-center">
+              <a href="/profiles" class="hover:text-primary transition-colors">Profiles</a>
+              <% if (filters && filters.gender) { %>
+              <span class="material-symbols-outlined text-base mx-2">chevron_right</span>
+            </li>
+            <li class="text-primary font-medium truncate">
+              <%= filters.gender === 'male' ? 'Male' : 'Female' %> Profiles
               <% } %>
-            </h1>
-          </div>
-          <!-- Add this descriptive paragraph after the H1 heading -->
-          <div class="mb-8 text-center">
-            <p class="text-lg text-gray-600 max-w-4xl mx-auto leading-relaxed">
-              <% if (filters && filters.gender === 'male') { %>
-              Discover verified <strong>Muslim men for halal marriage</strong> across London, Manchester, Birmingham & Leicester.
-              Connect with <strong>single Muslim grooms</strong> seeking <strong>Islamic wedding</strong>, <strong>modern Nikkah ceremony</strong>
-              and blessed <strong>Muslim matrimony</strong> through our trusted <strong>halal Muslim matchmaking platform</strong>.
-              Find your perfect <strong>Muslim soulmate</strong> among professional <strong>young Muslim men</strong> ready for <strong>single Muslim marriage</strong>.
-              <% } else if (filters && filters.gender === 'female') { %>
-              Browse authentic profiles of <strong>Muslim women for Islamic wedding</strong> and <strong>halal Muslim marriage</strong>
-              across major UK cities. Our <strong>Muslim matrimonial platform</strong> features <strong>single Muslim brides</strong>
-              seeking <strong>modern Nikkah partnerships</strong>, <strong>Muslim shaadi</strong> and meaningful <strong>halal relationships</strong>.
-              Connect with <strong>young Muslim women</strong> ready for <strong>Muslim love</strong> and blessed matrimony.
-              <% } else { %>
-              The UK's leading <strong>Muslim matrimonial platform</strong> connecting hearts for <strong>halal Muslim marriage</strong>,
-              <strong>Islamic wedding</strong> and <strong>modern Nikkah ceremony</strong>. Discover thousands of verified
-              <strong>Muslim singles UK</strong> seeking <strong>halal matchmaking</strong>, <strong>young Muslim marriage</strong>
-              and blessed <strong>Muslim relationships</strong> across London, Manchester, Birmingham and nationwide.
-              <% } %>
-            </p>
-          </div>
+            </li>
+          </ol>
+        </nav>
 
-          <!-- Grid Controls -->
-          <div class="flex justify-between items-center mb-8">
-            <!-- Mobile Filter Button -->
-            <button id="mobileFilterBtn" data-track="true" data-event-name="mobile_filter_open" data-category="engagement" data-label="Open Filters" class="lg:hidden px-4 py-2 bg-primary text-white rounded-button hover:bg-pink-600 hover:shadow-md transition-all duration-300">
-              <i class="ri-filter-line mr-2"></i>Filters
-            </button>
+        <!-- Grid Controls -->
+        <div class="flex flex-wrap justify-between items-center mb-8 gap-4">
+          <!-- Mobile Filter Button -->
+          <button id="mobileFilterBtn" data-track="true" data-event-name="mobile_filter_open" data-category="engagement" data-label="Open Filters" class="lg:hidden px-5 py-2.5 bg-primary text-on-primary rounded-lg hover:bg-primary-container transition-colors inline-flex items-center gap-2">
+            <span class="material-symbols-outlined text-lg">filter_list</span>Filters
+          </button>
 
-            <!-- Results Count and Active Filters - RESPONSIVE VERSION -->
-            <div class="flex-1 min-w-0">
-              <% if (totalProfiles > 0) { %>
-
-              <!-- Active Filters Display - MOBILE OPTIMIZED -->
-              <% if (filters && Object.values(filters).some(f => f)) { %>
-              <div class="mb-4">
-                <!-- Mobile: Stack filters vertically with proper spacing -->
-                <div class="flex ml-3 flex-wrap gap-1.5 sm:gap-2">
-                  <% if (filters.gender) { %>
-                  <span class="inline-flex items-center gap-1 px-2 py-1 bg-primary bg-opacity-10 text-primary rounded text-xs sm:text-sm border border-primary border-opacity-20 whitespace-nowrap">
-                    <span class="hidden sm:inline">Gender: </span><%= filters.gender.charAt(0).toUpperCase() + filters.gender.slice(1) %>
-                    <button onclick="removeFilter('gender')" class="ml-1 text-red-500 hover:text-red-700 transition-colors flex-shrink-0">
-                      <i class="ri-close-line text-xs"></i>
-                    </button>
-                  </span>
-                  <% } %>
-
-                  <% if (filters.minAge) { %>
-                  <span class="inline-flex items-center gap-1 px-2 py-1 bg-primary bg-opacity-10 text-primary rounded text-xs sm:text-sm border border-primary border-opacity-20 whitespace-nowrap">
-                    <span class="hidden sm:inline">Min Age: </span><%= filters.minAge %>+
-                    <button onclick="removeFilter('minAge')" class="ml-1 text-red-500 hover:text-red-700 transition-colors flex-shrink-0">
-                      <i class="ri-close-line text-xs"></i>
-                    </button>
-                  </span>
-                  <% } %>
-
-                  <% if (filters.maxAge) { %>
-                  <span class="inline-flex items-center gap-1 px-2 py-1 bg-primary bg-opacity-10 text-primary rounded text-xs sm:text-sm border border-primary border-opacity-20 whitespace-nowrap">
-                    <span class="hidden sm:inline">Max Age: </span><%= filters.maxAge %>
-                    <button onclick="removeFilter('maxAge')" class="ml-1 text-red-500 hover:text-red-700 transition-colors flex-shrink-0">
-                      <i class="ri-close-line text-xs"></i>
-                    </button>
-                  </span>
-                  <% } %>
-
-                  <% if (filters.minHeight) { %>
-                  <span class="inline-flex items-center gap-1 px-2 py-1 bg-primary bg-opacity-10 text-primary rounded text-xs sm:text-sm border border-primary border-opacity-20 whitespace-nowrap">
-                    <span class="hidden sm:inline">Min: </span><%= 
-                      filters.minHeight == 152 ? "5'0\"" :
-                      filters.minHeight == 155 ? "5'1\"" :
-                      filters.minHeight == 157 ? "5'2\"" :
-                      filters.minHeight == 160 ? "5'3\"" :
-                      filters.minHeight == 163 ? "5'4\"" :
-                      filters.minHeight == 165 ? "5'5\"" :
-                      filters.minHeight == 168 ? "5'6\"" :
-                      filters.minHeight == 170 ? "5'7\"" :
-                      filters.minHeight == 173 ? "5'8\"" :
-                      filters.minHeight == 175 ? "5'9\"" :
-                      filters.minHeight == 178 ? "5'10\"" :
-                      filters.minHeight == 180 ? "5'11\"" :
-                      filters.minHeight == 183 ? "6'0\"" :
-                      filters.minHeight == 185 ? "6'1\"" :
-                      filters.minHeight == 188 ? "6'2\"" :
-                      filters.minHeight == 191 ? "6'3\"" :
-                      filters.minHeight == 193 ? "6'4\"" :
-                      filters.minHeight == 196 ? "6'5\"" :
-                      filters.minHeight == 198 ? "6'6\"" :
-                      filters.minHeight == 201 ? "6'7\"" :
-                      filters.minHeight + "cm"
-                    %>
-                    <button onclick="removeFilter('minHeight')" class="ml-1 text-red-500 hover:text-red-700 transition-colors flex-shrink-0">
-                      <i class="ri-close-line text-xs"></i>
-                    </button>
-                  </span>
-                  <% } %>
-
-                  <% if (filters.maxHeight) { %>
-                  <span class="inline-flex items-center gap-1 px-2 py-1 bg-primary bg-opacity-10 text-primary rounded text-xs sm:text-sm border border-primary border-opacity-20 whitespace-nowrap">
-                    <span class="hidden sm:inline">Max: </span><%= 
-                      filters.maxHeight == 152 ? "5'0\"" :
-                      filters.maxHeight == 155 ? "5'1\"" :
-                      filters.maxHeight == 157 ? "5'2\"" :
-                      filters.maxHeight == 160 ? "5'3\"" :
-                      filters.maxHeight == 163 ? "5'4\"" :
-                      filters.maxHeight == 165 ? "5'5\"" :
-                      filters.maxHeight == 168 ? "5'6\"" :
-                      filters.maxHeight == 170 ? "5'7\"" :
-                      filters.maxHeight == 173 ? "5'8\"" :
-                      filters.maxHeight == 175 ? "5'9\"" :
-                      filters.maxHeight == 178 ? "5'10\"" :
-                      filters.maxHeight == 180 ? "5'11\"" :
-                      filters.maxHeight == 183 ? "6'0\"" :
-                      filters.maxHeight == 185 ? "6'1\"" :
-                      filters.maxHeight == 188 ? "6'2\"" :
-                      filters.maxHeight == 191 ? "6'3\"" :
-                      filters.maxHeight == 193 ? "6'4\"" :
-                      filters.maxHeight == 196 ? "6'5\"" :
-                      filters.maxHeight == 198 ? "6'6\"" :
-                      filters.maxHeight == 201 ? "6'7\"" :
-                      filters.maxHeight + "cm"
-                    %>
-                    <button onclick="removeFilter('maxHeight')" class="ml-1 text-red-500 hover:text-red-700 transition-colors flex-shrink-0">
-                      <i class="ri-close-line text-xs"></i>
-                    </button>
-                  </span>
-                  <% } %>
-
-                  <% if (filters.city) { %>
-                  <span class="inline-flex items-center gap-1 px-2 py-1 bg-primary bg-opacity-10 text-primary rounded text-xs sm:text-sm border border-primary border-opacity-20 max-w-xs">
-                    <span class="hidden sm:inline">Location: </span>
-                    <span class="truncate"><%= filters.city %></span>
-                    <button onclick="removeFilter('city')" class="ml-1 text-red-500 hover:text-red-700 transition-colors flex-shrink-0">
-                      <i class="ri-close-line text-xs"></i>
-                    </button>
-                  </span>
-                  <% } %>
-
-                  <% if (filters.nationality) { %>
-                  <span class="inline-flex items-center gap-1 px-2 py-1 bg-primary bg-opacity-10 text-primary rounded text-xs sm:text-sm border border-primary border-opacity-20 max-w-xs">
-                    <span class="hidden sm:inline">Nationality: </span>
-                    <span class="truncate"><%= filters.nationality %></span>
-                    <button onclick="removeFilter('nationality')" class="ml-1 text-red-500 hover:text-red-700 transition-colors flex-shrink-0">
-                      <i class="ri-close-line text-xs"></i>
-                    </button>
-                  </span>
-                  <% } %>
-
-                  <!-- Clear All Filters Button - Mobile Optimized -->
-                  <button onclick="clearAllFilters()" class="inline-flex items-center gap-1 px-2 py-1 bg-red-50 text-red-600 hover:bg-red-100 rounded text-xs sm:text-sm border border-red-200 transition-colors whitespace-nowrap">
-                    <i class="ri-close-circle-line"></i>
-                    <span class="hidden sm:inline">Clear All</span>
-                    <span class="sm:hidden">Clear</span>
+          <!-- Results Count and Active Filters -->
+          <div class="flex-1 min-w-0">
+            <% if (totalProfiles > 0) { %>
+            <% if (filters && Object.values(filters).some(f => f)) { %>
+            <div class="mb-4">
+              <div class="flex ml-3 flex-wrap gap-1.5 sm:gap-2">
+                <% if (filters.gender) { %>
+                <span class="inline-flex items-center gap-1 px-2 py-1 bg-primary bg-opacity-10 text-primary rounded text-xs sm:text-sm border border-primary border-opacity-20 whitespace-nowrap">
+                  <span class="hidden sm:inline">Gender: </span><%= filters.gender.charAt(0).toUpperCase() + filters.gender.slice(1) %>
+                  <button onclick="removeFilter('gender')" class="ml-1 text-red-500 hover:text-red-700 transition-colors flex-shrink-0" aria-label="Remove gender filter">
+                    <span class="material-symbols-outlined text-sm">close</span>
                   </button>
-                </div>
-              </div>
-              <% } %>
-              <% } %>
-            </div>
+                </span>
+                <% } %>
 
-            <!-- Grid Layout Controls -->
-            <div class="hidden md:flex gap-2">
-              <button id="threeCol" class="w-10 h-10 flex items-center justify-center rounded-button border-2 border-gray-300 text-gray-500 hover:border-primary hover:text-primary transition-all duration-300 relative group">
-                <i class="ri-layout-row-line text-lg"></i>
-                <div class="absolute bottom-12 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap">
-                  Large Cards
-                </div>
-              </button>
-              <button id="fourCol" class="w-10 h-10 flex items-center justify-center rounded-button border-2 border-primary text-primary hover:bg-primary hover:text-white transition-all duration-300 active relative group">
-                <i class="ri-layout-grid-line text-lg"></i>
-                <div class="absolute bottom-12 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap">
-                  Compact Cards
-                </div>
-              </button>
-            </div>
-          </div>
-          <!-- **NEW**: Featured Profiles Section -->
-          <% if (featuredProfiles && featuredProfiles.length > 0) { %>
-          <div class="mb-12">
-            <div class="flex items-center justify-center mb-8">
-              <div class="flex items-center">
-                <i class="ri-star-fill text-2xl text-yellow-500 mr-3"></i>
-                <h2 class="text-3xl font-bold text-gray-800 font-['Playfair_Display']">Featured Muslim Matrimony Profiles</h2>
-                <i class="ri-star-fill text-2xl text-yellow-500 ml-3"></i>
-              </div>
-            </div>
-            <p class="text-center text-gray-600 mb-8 max-w-2xl mx-auto">
-              Discover highlighted Muslim singles ready for Islamic wedding and Nikkah ceremony. These verified profiles represent our most active members seeking Pakistani marriage and halal matrimony.
-            </p>
+                <% if (filters.minAge) { %>
+                <span class="inline-flex items-center gap-1 px-2 py-1 bg-primary bg-opacity-10 text-primary rounded text-xs sm:text-sm border border-primary border-opacity-20 whitespace-nowrap">
+                  <span class="hidden sm:inline">Min Age: </span><%= filters.minAge %>+
+                  <button onclick="removeFilter('minAge')" class="ml-1 text-red-500 hover:text-red-700 transition-colors flex-shrink-0" aria-label="Remove min age filter">
+                    <span class="material-symbols-outlined text-sm">close</span>
+                  </button>
+                </span>
+                <% } %>
 
-            <!-- Featured Profiles Grid -->
-            <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-8">
-              <% featuredProfiles.forEach(profile => { %>
-              <div class="bg-white rounded-2xl overflow-hidden material-shadow hover:material-shadow-hover transition-all duration-300 group relative">
-                <!-- Featured Badge -->
-                <div class="absolute top-3 right-3 z-10">
-                  <div class="bg-yellow-500 text-white px-2 py-1 rounded-full text-xs font-semibold flex items-center">
-                    <i class="ri-star-fill mr-1"></i>
-                    Featured
-                  </div>
-                </div>
+                <% if (filters.maxAge) { %>
+                <span class="inline-flex items-center gap-1 px-2 py-1 bg-primary bg-opacity-10 text-primary rounded text-xs sm:text-sm border border-primary border-opacity-20 whitespace-nowrap">
+                  <span class="hidden sm:inline">Max Age: </span><%= filters.maxAge %>
+                  <button onclick="removeFilter('maxAge')" class="ml-1 text-red-500 hover:text-red-700 transition-colors flex-shrink-0" aria-label="Remove max age filter">
+                    <span class="material-symbols-outlined text-sm">close</span>
+                  </button>
+                </span>
+                <% } %>
 
-                <!-- Compatibility score badge (logged-in only, below featured badge) -->
-                <% if (typeof user !== 'undefined' && user) { %>
-                  <% 
-                    const fmScore = profile.matchScore != null ? profile.matchScore : 0;
-                    let fmClass = 'match-score-low';
-                    if (fmScore >= 70) fmClass = 'match-score-high';
-                    else if (fmScore >= 50) fmClass = 'match-score-mid';
+                <% if (filters.minHeight) { %>
+                <span class="inline-flex items-center gap-1 px-2 py-1 bg-primary bg-opacity-10 text-primary rounded text-xs sm:text-sm border border-primary border-opacity-20 whitespace-nowrap">
+                  <span class="hidden sm:inline">Min: </span><%= 
+                    filters.minHeight == 152 ? "5'0\"" :
+                    filters.minHeight == 155 ? "5'1\"" :
+                    filters.minHeight == 157 ? "5'2\"" :
+                    filters.minHeight == 160 ? "5'3\"" :
+                    filters.minHeight == 163 ? "5'4\"" :
+                    filters.minHeight == 165 ? "5'5\"" :
+                    filters.minHeight == 168 ? "5'6\"" :
+                    filters.minHeight == 170 ? "5'7\"" :
+                    filters.minHeight == 173 ? "5'8\"" :
+                    filters.minHeight == 175 ? "5'9\"" :
+                    filters.minHeight == 178 ? "5'10\"" :
+                    filters.minHeight == 180 ? "5'11\"" :
+                    filters.minHeight == 183 ? "6'0\"" :
+                    filters.minHeight == 185 ? "6'1\"" :
+                    filters.minHeight == 188 ? "6'2\"" :
+                    filters.minHeight == 191 ? "6'3\"" :
+                    filters.minHeight == 193 ? "6'4\"" :
+                    filters.minHeight == 196 ? "6'5\"" :
+                    filters.minHeight == 198 ? "6'6\"" :
+                    filters.minHeight == 201 ? "6'7\"" :
+                    filters.minHeight + "cm"
                   %>
-                  <div class="match-score-badge <%= fmClass %>" style="top: 44px; right: 8px;" title="Compatibility Score">
-                    <%= fmScore %>%
-                  </div>
+                  <button onclick="removeFilter('minHeight')" class="ml-1 text-red-500 hover:text-red-700 transition-colors flex-shrink-0" aria-label="Remove min height filter">
+                    <span class="material-symbols-outlined text-sm">close</span>
+                  </button>
+                </span>
                 <% } %>
 
-                <!-- Profile Image -->
-                <div class="aspect-[4/5] overflow-hidden relative">
-                  <% if (profile.profilePic && profile.profilePic.url) { %>
-                  <img src="<%= profile.profilePic.url.replace('/upload/', '/upload/c_fill,w_300,h_400,q_auto,f_auto/') %>" srcset="<%= profile.profilePic.url.replace('/upload/', '/upload/c_fill,w_200,h_267,q_auto,f_auto/') %> 200w, <%= profile.profilePic.url.replace('/upload/', '/upload/c_fill,w_300,h_400,q_auto,f_auto/') %> 300w, <%= profile.profilePic.url.replace('/upload/', '/upload/c_fill,w_400,h_533,q_auto,f_auto/') %> 400w" sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 300px" alt="<%= profile.name || profile.username %><%= profile.age ? ', ' + profile.age + ' year old' : '' %><%= profile.work ? ' ' + profile.work : '' %> - Muslim matrimony profile<%= profile.city ? ' in ' + profile.city : '' %>" class="w-full h-full object-cover transition-transform duration-300 hover:scale-105" loading="lazy" width="300" height="400" onerror="this.src='https://ui-avatars.com/api/?name=<%= encodeURIComponent(profile.name || profile.username) %>&background=<%= profile.gender === 'male' ? '0077be' : 'e91e63' %>&color=fff&size=300&format=png'">
-                  <% } else { %>
-                  <!-- Default avatar based on gender -->
-                  <img src="https://ui-avatars.com/api/?name=<%= encodeURIComponent(profile.name || profile.username) %>&background=<%= profile.gender === 'male' ? '0077be' : 'e91e63' %>&color=fff&size=300&format=png" alt="<%= profile.name || profile.username %>" class="w-full h-full object-cover" loading="lazy">
-                  <% } %>
-                </div>
+                <% if (filters.maxHeight) { %>
+                <span class="inline-flex items-center gap-1 px-2 py-1 bg-primary bg-opacity-10 text-primary rounded text-xs sm:text-sm border border-primary border-opacity-20 whitespace-nowrap">
+                  <span class="hidden sm:inline">Max: </span><%= 
+                    filters.maxHeight == 152 ? "5'0\"" :
+                    filters.maxHeight == 155 ? "5'1\"" :
+                    filters.maxHeight == 157 ? "5'2\"" :
+                    filters.maxHeight == 160 ? "5'3\"" :
+                    filters.maxHeight == 163 ? "5'4\"" :
+                    filters.maxHeight == 165 ? "5'5\"" :
+                    filters.maxHeight == 168 ? "5'6\"" :
+                    filters.maxHeight == 170 ? "5'7\"" :
+                    filters.maxHeight == 173 ? "5'8\"" :
+                    filters.maxHeight == 175 ? "5'9\"" :
+                    filters.maxHeight == 178 ? "5'10\"" :
+                    filters.maxHeight == 180 ? "5'11\"" :
+                    filters.maxHeight == 183 ? "6'0\"" :
+                    filters.maxHeight == 185 ? "6'1\"" :
+                    filters.maxHeight == 188 ? "6'2\"" :
+                    filters.maxHeight == 191 ? "6'3\"" :
+                    filters.maxHeight == 193 ? "6'4\"" :
+                    filters.maxHeight == 196 ? "6'5\"" :
+                    filters.maxHeight == 198 ? "6'6\"" :
+                    filters.maxHeight == 201 ? "6'7\"" :
+                    filters.maxHeight + "cm"
+                  %>
+                  <button onclick="removeFilter('maxHeight')" class="ml-1 text-red-500 hover:text-red-700 transition-colors flex-shrink-0" aria-label="Remove max height filter">
+                    <span class="material-symbols-outlined text-sm">close</span>
+                  </button>
+                </span>
+                <% } %>
 
-                <!-- Profile Info -->
-                <div class="p-4">
-                  <div class="flex items-center justify-between mb-2">
-                    <h3 class="text-lg font-semibold text-gray-900 truncate">
-                      <%= profile.username %>
-                    </h3>
-                    <% if (profile.age) { %>
-                    <span class="text-sm text-gray-500 bg-gray-100 px-2 py-1 rounded-full">
-                      <%= profile.age %>
-                    </span>
-                    <% } %>
-                  </div>
+                <% if (filters.city) { %>
+                <span class="inline-flex items-center gap-1 px-2 py-1 bg-primary bg-opacity-10 text-primary rounded text-xs sm:text-sm border border-primary border-opacity-20 max-w-xs">
+                  <span class="hidden sm:inline">Location: </span>
+                  <span class="truncate"><%= filters.city %></span>
+                  <button onclick="removeFilter('city')" class="ml-1 text-red-500 hover:text-red-700 transition-colors flex-shrink-0" aria-label="Remove city filter">
+                    <span class="material-symbols-outlined text-sm">close</span>
+                  </button>
+                </span>
+                <% } %>
 
-                  <!-- Location -->
-                  <div class="flex items-center text-gray-600 mb-3 text-sm">
-                    <i class="ri-map-pin-line mr-2"></i>
-                    <span class="truncate">
-                      <% if (profile.city && profile.country) { %>
-                      <%= profile.city %>, <%= profile.country %>
-                      <% } else if (profile.city) { %>
-                      <%= profile.city %>
-                      <% } else if (profile.country) { %>
-                      <%= profile.country %>
-                      <% } else { %>
-                      Location not specified
-                      <% } %>
-                    </span>
-                  </div>
+                <% if (filters.nationality) { %>
+                <span class="inline-flex items-center gap-1 px-2 py-1 bg-primary bg-opacity-10 text-primary rounded text-xs sm:text-sm border border-primary border-opacity-20 max-w-xs">
+                  <span class="hidden sm:inline">Nationality: </span>
+                  <span class="truncate"><%= filters.nationality %></span>
+                  <button onclick="removeFilter('nationality')" class="ml-1 text-red-500 hover:text-red-700 transition-colors flex-shrink-0" aria-label="Remove nationality filter">
+                    <span class="material-symbols-outlined text-sm">close</span>
+                  </button>
+                </span>
+                <% } %>
 
-                  <!-- View Profile Button -->
-                  <a href="/profiles/<%= profile.profileSlug || profile._id %>" data-track="true" data-event-name="featured_profile_click" data-category="engagement" data-label="<%= profile.username %>" class="w-full bg-gradient-to-r from-primary to-secondary text-white py-2 px-4 rounded-button hover:shadow-lg transform hover:-translate-y-1 transition-all duration-300 text-center inline-block font-medium">
-                    <i class="ri-eye-line mr-2"></i>
-                    View Profile
-                  </a>
-                </div>
+                <!-- Clear All Filters Button -->
+                <button onclick="clearAllFilters()" class="inline-flex items-center gap-1 px-2 py-1 bg-red-50 text-red-600 hover:bg-red-100 rounded text-xs sm:text-sm border border-red-200 transition-colors whitespace-nowrap">
+                  <span class="material-symbols-outlined text-sm">close</span>
+                  <span class="hidden sm:inline">Clear All</span>
+                  <span class="sm:hidden">Clear</span>
+                </button>
               </div>
-              <% }) %>
+            </div>
+            <% } %>
+            <% } %>
+          </div>
+
+          <!-- Grid Layout Controls -->
+          <div class="hidden md:flex gap-2">
+            <button id="threeCol" class="w-10 h-10 flex items-center justify-center rounded-lg border-2 border-primary text-primary hover:bg-primary hover:text-on-primary transition-all duration-300 active relative group" aria-label="Large Cards">
+              <span class="material-symbols-outlined text-lg">grid_view</span>
+              <div class="absolute bottom-12 left-1/2 transform -translate-x-1/2 bg-on-surface text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap">
+                Large Cards
+              </div>
+            </button>
+            <button id="fourCol" class="w-10 h-10 flex items-center justify-center rounded-lg border-2 border-outline-variant text-on-surface-variant hover:border-primary hover:text-primary transition-all duration-300 relative group" aria-label="Compact Cards">
+              <span class="material-symbols-outlined text-lg">calendar_view_month</span>
+              <div class="absolute bottom-12 left-1/2 transform -translate-x-1/2 bg-on-surface text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap">
+                Compact Cards
+              </div>
+            </button>
+          </div>
+        </div>
+
+        <!-- Featured Profiles Section -->
+        <% if (featuredProfiles && featuredProfiles.length > 0) { %>
+        <div class="mb-12">
+          <div class="flex items-center justify-center mb-8">
+            <div class="flex items-center">
+              <span class="material-symbols-outlined text-2xl text-premium-gold mr-3" style="font-variation-settings: 'FILL' 1;">star</span>
+              <h2 class="text-headline-lg font-headline-lg text-primary">Featured Muslim Matrimony Profiles</h2>
+              <span class="material-symbols-outlined text-2xl text-premium-gold ml-3" style="font-variation-settings: 'FILL' 1;">star</span>
             </div>
           </div>
-          <% } %>
+          <p class="text-center text-on-surface-variant mb-8 max-w-2xl mx-auto">
+            Discover highlighted Muslim singles ready for Islamic wedding and Nikkah ceremony. These verified profiles represent our most active members seeking Pakistani marriage and halal matrimony.
+          </p>
 
-          <!-- **UPDATED**: Other Profiles Section -->
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-8 gap-4">
-            <div>
-              <h2 class="text-3xl font-bold text-gray-800 font-['Playfair_Display'] mb-2">
-                <% if (featuredProfiles && featuredProfiles.length > 0) { %>
-                More Muslim Matrimony Profiles
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-element-gap mb-8">
+            <% featuredProfiles.forEach(profile => { %>
+            <a href="/profiles/<%= profile.profileSlug || profile._id %>" data-track="true" data-event-name="featured_profile_click" data-category="engagement" data-label="<%= profile.username %>" class="bg-surface-white rounded-[16px] overflow-hidden shadow-[0px_4px_20px_rgba(0,35,102,0.05)] border border-outline-variant/20 hover:-translate-y-1 transition-transform duration-300 flex flex-col h-full block relative group">
+              <!-- Featured Badge -->
+              <div class="absolute top-3 right-3 z-10">
+                <div class="bg-premium-gold text-white px-2 py-1 rounded-full text-xs font-semibold flex items-center">
+                  <span class="material-symbols-outlined text-sm mr-1" style="font-variation-settings: 'FILL' 1;">star</span>
+                  Featured
+                </div>
+              </div>
+              <!-- Staff Verified badge (staff-added only) -->
+              <% if (profile.registrationSource === 'admin') { %>
+              <div class="absolute top-3 left-3 z-10 bg-white/90 backdrop-blur-sm px-2.5 py-1 rounded-full flex items-center gap-1 shadow-sm border border-premium-gold/30">
+                <span class="material-symbols-outlined text-halal-green text-[16px]" style="font-variation-settings: 'FILL' 1;">verified</span>
+                <span class="text-[10px] font-label-md text-primary tracking-wider uppercase">Staff Verified</span>
+              </div>
+              <% } %>
+              <!-- Compatibility score badge (logged-in only) -->
+              <% if (typeof user !== 'undefined' && user) { %>
+                <%
+                  const fmScore = profile.matchScore != null ? profile.matchScore : 0;
+                  let fmClass = 'match-score-low';
+                  if (fmScore >= 70) fmClass = 'match-score-high';
+                  else if (fmScore >= 50) fmClass = 'match-score-mid';
+                %>
+                <div class="match-score-badge <%= fmClass %>" style="top: 44px; right: 8px;" title="Compatibility Score"><%= fmScore %>%</div>
+              <% } %>
+              <div class="relative h-64 w-full overflow-hidden">
+                <% if (profile.profilePic && profile.profilePic.url) { %>
+                <img src="<%= profile.profilePic.url.replace('/upload/', '/upload/c_fill,w_300,h_400,q_auto,f_auto/') %>" srcset="<%= profile.profilePic.url.replace('/upload/', '/upload/c_fill,w_200,h_267,q_auto,f_auto/') %> 200w, <%= profile.profilePic.url.replace('/upload/', '/upload/c_fill,w_300,h_400,q_auto,f_auto/') %> 300w, <%= profile.profilePic.url.replace('/upload/', '/upload/c_fill,w_400,h_533,q_auto,f_auto/') %> 400w" sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 300px" alt="<%= profile.name || profile.username %><%= profile.age ? ', ' + profile.age + ' year old' : '' %><%= profile.work ? ' ' + profile.work : '' %> - Muslim matrimony profile<%= profile.city ? ' in ' + profile.city : '' %>" class="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500" loading="lazy" width="300" height="400" onerror="this.src='https://ui-avatars.com/api/?name=<%= encodeURIComponent(profile.name || profile.username) %>&background=<%= profile.gender === 'male' ? '0077be' : 'e91e63' %>&color=fff&size=300&format=png'">
                 <% } else { %>
-                All Muslim Matrimony Profiles
+                <img src="https://ui-avatars.com/api/?name=<%= encodeURIComponent(profile.name || profile.username) %>&background=<%= profile.gender === 'male' ? '0077be' : 'e91e63' %>&color=fff&size=300&format=png" alt="<%= profile.name || profile.username %>" class="w-full h-full object-cover" loading="lazy">
                 <% } %>
-              </h2>
-            </div>
-
-            <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-              <!-- Sort By Dropdown -->
-              <div class="flex items-center gap-2">
-                <label class="text-sm font-medium text-gray-700 whitespace-nowrap">Sort by:</label>
-                <!-- <select id="sortBySelect" class="px-3 py-2 border border-gray-300 rounded-button focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary text-sm bg-white">
-                  <% if (typeof user !== 'undefined' && user) { %>
-                  <option value="top-matches" <%= (!sortBy || sortBy === 'top-matches') ? 'selected' : '' %>>Top Matches</option>
+              </div>
+              <div class="p-5 flex flex-col flex-grow">
+                <div class="flex items-center justify-between mb-2">
+                  <h3 class="text-[20px] font-headline-md text-primary leading-tight truncate"><%= profile.username %></h3>
+                  <% if (profile.age) { %>
+                  <span class="text-sm text-on-surface-variant bg-surface-container-low px-2 py-1 rounded-full flex-shrink-0"><%= profile.age %></span>
                   <% } %>
-                  <option value="newly-created" <%= sortBy === 'newly-created' ? 'selected' : '' %>>Newly Created</option>
-                  <option value="random" <%= sortBy === 'random' ? 'selected' : '' %>>Random</option>
-                </select> -->
-                <select id="sortBySelect" ...>
-  <% if (typeof user !== 'undefined' && user && !isSameGenderBrowse) { %>
-  <option value="top-matches" <%= (!sortBy || sortBy === 'top-matches') ? 'selected' : '' %>>Top Matches</option>
-  <% } %>
-  <option value="newly-created" <%= (sortBy === 'newly-created' || isSameGenderBrowse) ? 'selected' : '' %>>Newly Created</option>
-  <option value="random" <%= sortBy === 'random' ? 'selected' : '' %>>Random</option>
-</select>
-              </div>
-
-              <!-- Results Count -->
-              <div class="text-sm text-gray-600 whitespace-nowrap">
-                <% if (filters) { %>
-                Showing <%= profiles.length %> filtered results
-                <% } else { %>
-                Showing <%= profiles.length %> of <%= totalProfiles %> profiles
-                <% } %>
-              </div>
-            </div>
-          </div>
-          <!-- Profiles Grid -->
-          <div id="profileGrid" class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
-            <!-- Show user's own profile card if not approved -->
-            <% if (currentUserProfile && !currentUserProfile.isApproved) { %>
-            <a href="/profiles/<%= currentUserProfile.profileSlug || currentUserProfile._id %>" data-track="true" data-event-name="own_profile_view" data-category="engagement" data-label="Your Pending Profile" class="bg-white rounded-2xl overflow-hidden material-shadow hover:material-shadow-hover transition-all duration-300 block relative border-2 border-amber-300">
-              <div class="absolute top-2 left-2 z-10 bg-amber-500 text-white px-2 py-1 rounded-full text-xs font-medium flex items-center gap-1">
-                <i class="ri-eye-off-line"></i>
-                Your Profile (Pending)
-              </div>
-              <div class="aspect-[4/5] overflow-hidden">
-                <% if (currentUserProfile.profilePic && currentUserProfile.profilePic.url) { %>
-                <img src="<%= currentUserProfile.profilePic.url.replace('/upload/', '/upload/c_fill,w_300,h_400,q_auto,f_auto/') %>" alt="<%= currentUserProfile.name || currentUserProfile.username %>" class="w-full h-full object-cover transition-transform duration-300 hover:scale-105" loading="lazy" onload="this.classList.add('loaded')">
-                <% } else { %>
-                <img src="https://ui-avatars.com/api/?name=<%= encodeURIComponent(currentUserProfile.name || currentUserProfile.username) %>&background=<%= currentUserProfile.gender === 'male' ? '0077be' : 'e91e63' %>&color=fff&size=300&format=png" alt="<%= currentUserProfile.name || currentUserProfile.username %>" class="w-full h-full object-cover" loading="lazy">
-                <% } %>
-              </div>
-              <div class="p-4">
-                <h3 class="text-lg font-semibold text-gray-900 mb-1">
-                  <%= currentUserProfile.username %>
-                </h3>
-                <div class="flex items-center text-gray-600 mb-2">
-                  <i class="ri-map-pin-line mr-2"></i>
-                  <span>
-                    <% if (currentUserProfile.city && currentUserProfile.country) { %>
-                    <%= currentUserProfile.city %>, <%= currentUserProfile.country %>
-                    <% } else if (currentUserProfile.city) { %>
-                    <%= currentUserProfile.city %>
-                    <% } else if (currentUserProfile.country) { %>
-                    <%= currentUserProfile.country %>
-                    <% } else { %>
-                    Location not specified
-                    <% } %>
-                  </span>
                 </div>
-                <% if (currentUserProfile.age) { %>
-                <div class="flex items-center text-gray-600 mb-2">
-                  <i class="ri-calendar-line mr-2"></i>
-                  <span><%= currentUserProfile.age %> years old</span>
+                <p class="text-on-surface-variant text-body-md font-body-md mb-2 truncate">
+                  <% if (profile.city && profile.country) { %><%= profile.city %>, <%= profile.country %><% } else if (profile.city) { %><%= profile.city %><% } else if (profile.country) { %><%= profile.country %><% } else { %>Location not specified<% } %>
+                </p>
+                <div class="mt-auto pt-3">
+                  <span class="w-full py-2.5 border border-primary text-primary font-label-md text-label-md rounded-lg hover:bg-primary/5 transition-colors text-center block">View Profile</span>
                 </div>
-                <% } %>
               </div>
             </a>
-            <% } %>
-            
-            <% if (profiles && profiles.length > 0) { %>
-            <% profiles.forEach(profile => { %>
-            <a href="/profiles/<%= profile.profileSlug || profile._id %>" data-track="true" data-event-name="profile_card_click" data-category="engagement" data-label="<%= profile.username %>" class="bg-white rounded-2xl overflow-hidden material-shadow hover:material-shadow-hover transition-all duration-300 block relative">
+            <% }) %>
+          </div>
+        </div>
+        <% } %>
+
+        <!-- Other Profiles Section -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-8 gap-4">
+          <div>
+            <h2 class="text-headline-lg font-headline-lg text-primary mb-2">
+              <% if (featuredProfiles && featuredProfiles.length > 0) { %>
+              More Muslim Matrimony Profiles
+              <% } else { %>
+              All Muslim Matrimony Profiles
+              <% } %>
+            </h2>
+          </div>
+
+          <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+            <!-- Sort By Dropdown -->
+            <div class="flex items-center gap-2">
+              <label class="text-sm font-medium text-on-surface-variant whitespace-nowrap">Sort by:</label>
+              <select id="sortBySelect" class="px-3 py-2.5 border border-outline-variant rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-on-surface bg-white text-sm">
+                <% if (typeof user !== 'undefined' && user && !isSameGenderBrowse) { %>
+                <option value="top-matches" <%= (!sortBy || sortBy === 'top-matches') ? 'selected' : '' %>>Top Matches</option>
+                <% } %>
+                <option value="newly-created" <%= (sortBy === 'newly-created' || isSameGenderBrowse) ? 'selected' : '' %>>Newly Created</option>
+                <option value="random" <%= sortBy === 'random' ? 'selected' : '' %>>Random</option>
+              </select>
+            </div>
+
+            <!-- Results Count -->
+            <div class="text-sm text-on-surface-variant whitespace-nowrap">
+              <% if (filters) { %>
+              Showing <%= profiles.length %> filtered results
+              <% } else { %>
+              Showing <%= profiles.length %> of <%= totalProfiles %> profiles
+              <% } %>
+            </div>
+          </div>
+        </div>
+
+        <!-- Profiles Grid -->
+        <div id="profileGrid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-element-gap">
+          <!-- Show user's own profile card if not approved -->
+          <% if (currentUserProfile && !currentUserProfile.isApproved) { %>
+          <a href="/profiles/<%= currentUserProfile.profileSlug || currentUserProfile._id %>" data-track="true" data-event-name="own_profile_view" data-category="engagement" data-label="Your Pending Profile" class="bg-surface-white rounded-[16px] overflow-hidden shadow-[0px_4px_20px_rgba(0,35,102,0.05)] border-2 border-amber-300 hover:-translate-y-1 transition-transform duration-300 flex flex-col h-full block relative">
+            <div class="absolute top-3 left-3 z-10 bg-amber-500 text-white px-2 py-1 rounded-full text-xs font-medium flex items-center gap-1">
+              <span class="material-symbols-outlined text-sm">visibility_off</span>
+              Your Profile (Pending)
+            </div>
+            <div class="relative h-64 w-full overflow-hidden">
+              <% if (currentUserProfile.profilePic && currentUserProfile.profilePic.url) { %>
+              <img src="<%= currentUserProfile.profilePic.url.replace('/upload/', '/upload/c_fill,w_300,h_400,q_auto,f_auto/') %>" alt="<%= currentUserProfile.name || currentUserProfile.username %>" class="w-full h-full object-cover object-top" loading="lazy" onload="this.classList.add('loaded')">
+              <% } else { %>
+              <img src="https://ui-avatars.com/api/?name=<%= encodeURIComponent(currentUserProfile.name || currentUserProfile.username) %>&background=<%= currentUserProfile.gender === 'male' ? '0077be' : 'e91e63' %>&color=fff&size=300&format=png" alt="<%= currentUserProfile.name || currentUserProfile.username %>" class="w-full h-full object-cover" loading="lazy">
+              <% } %>
+            </div>
+            <div class="p-5 flex flex-col flex-grow">
+              <h3 class="text-[20px] font-headline-md text-primary leading-tight mb-1"><%= currentUserProfile.username %></h3>
+              <p class="text-on-surface-variant text-body-md font-body-md mb-1">
+                <% if (currentUserProfile.city && currentUserProfile.country) { %><%= currentUserProfile.city %>, <%= currentUserProfile.country %><% } else if (currentUserProfile.city) { %><%= currentUserProfile.city %><% } else if (currentUserProfile.country) { %><%= currentUserProfile.country %><% } else { %>Location not specified<% } %>
+              </p>
+              <% if (currentUserProfile.age) { %>
+              <p class="text-on-surface-variant text-body-md font-body-md"><%= currentUserProfile.age %> years old</p>
+              <% } %>
+            </div>
+          </a>
+          <% } %>
+
+          <% if (profiles && profiles.length > 0) { %>
+          <% profiles.forEach(profile => { %>
+          <%
+            let locText = 'Location not specified';
+            if (profile.city && profile.country) locText = profile.city + ', ' + profile.country;
+            else if (profile.city) locText = profile.city;
+            else if (profile.country) locText = profile.country;
+
+            let workIcon = 'work';
+            const w = (profile.work || '').toLowerCase();
+            if (/doctor|nurse|medic|pharma|dental|health/.test(w)) workIcon = 'medical_services';
+            else if (/student|phd|ph\.?d|research|scholar/.test(w)) workIcon = 'school';
+            else if (/software|engineer|developer|tech|computer|data/.test(w)) workIcon = 'laptop_mac';
+            else if (/architect/.test(w)) workIcon = 'architecture';
+            else if (/teacher|lecturer|professor|education|tutor/.test(w)) workIcon = 'school';
+            else if (/lawyer|legal|solicitor|barrister/.test(w)) workIcon = 'balance';
+            else if (/account|finance|bank|audit/.test(w)) workIcon = 'account_balance';
+            else if (/business|manager|management|ceo|director|executive|admin/.test(w)) workIcon = 'business_center';
+          %>
+          <a href="/profiles/<%= profile.profileSlug || profile._id %>" data-track="true" data-event-name="profile_card_click" data-category="engagement" data-label="<%= profile.username %>" class="bg-surface-white rounded-[16px] overflow-hidden shadow-[0px_4px_20px_rgba(0,35,102,0.05)] border border-outline-variant/20 hover:-translate-y-1 transition-transform duration-300 flex flex-col h-full block relative group">
+            <div class="relative h-64 w-full overflow-hidden">
+              <% if (profile.profilePic && profile.profilePic.url) { %>
+              <img src="<%= profile.profilePic.url.replace('/upload/', '/upload/c_fill,w_300,h_400,q_auto,f_auto/') %>" srcset="<%= profile.profilePic.url.replace('/upload/', '/upload/c_fill,w_200,h_267,q_auto,f_auto/') %> 200w, <%= profile.profilePic.url.replace('/upload/', '/upload/c_fill,w_300,h_400,q_auto,f_auto/') %> 300w, <%= profile.profilePic.url.replace('/upload/', '/upload/c_fill,w_400,h_533,q_auto,f_auto/') %> 400w" sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 300px" alt="<%= profile.name || profile.username %><%= profile.age ? ', ' + profile.age + ' year old' : '' %><%= profile.work ? ' ' + profile.work : '' %> - Muslim marriage profile<%= profile.city ? ' in ' + profile.city : '' %>" class="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500" loading="lazy" width="300" height="400" onerror="this.src='https://ui-avatars.com/api/?name=<%= encodeURIComponent(profile.name || profile.username) %>&background=<%= profile.gender === 'male' ? '0077be' : 'e91e63' %>&color=fff&size=300&format=png'">
+              <% } else { %>
+              <img src="https://ui-avatars.com/api/?name=<%= encodeURIComponent(profile.name || profile.username) %>&background=<%= profile.gender === 'male' ? '0077be' : 'e91e63' %>&color=fff&size=300&format=png" alt="<%= profile.name || profile.username %><%= profile.age ? ', ' + profile.age + ' year old' : '' %><%= profile.work ? ' ' + profile.work : '' %> - Muslim marriage profile<%= profile.city ? ' in ' + profile.city : '' %>" class="w-full h-full object-cover" loading="lazy">
+              <% } %>
+              <!-- Staff Verified badge (staff-added only) -->
+              <% if (profile.registrationSource === 'admin') { %>
+              <div class="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-full flex items-center gap-1.5 shadow-sm border border-premium-gold/30">
+                <span class="material-symbols-outlined text-halal-green text-[18px]" style="font-variation-settings: 'FILL' 1;">verified</span>
+                <span class="text-[12px] font-label-md text-primary tracking-wider uppercase">Staff Verified</span>
+              </div>
+              <% } %>
               <!-- Compatibility score badge (logged-in users only) -->
               <% if (typeof user !== 'undefined' && user) { %>
-                <% 
+                <%
                   const mScore = profile.matchScore != null ? profile.matchScore : 0;
                   let mClass = 'match-score-low';
                   if (mScore >= 70) mClass = 'match-score-high';
                   else if (mScore >= 50) mClass = 'match-score-mid';
                 %>
-                <div class="match-score-badge <%= mClass %>" title="Compatibility Score">
-                  <%= mScore %>%
-                </div>
+                <div class="match-score-badge <%= mClass %>" title="Compatibility Score"><%= mScore %>%</div>
               <% } %>
-              <div class="aspect-[4/5] overflow-hidden">
-                <!-- Default placeholder based on gender -->
-                <img src="https://ui-avatars.com/api/?name=<%= encodeURIComponent(profile.name || profile.username) %>&background=<%= profile.gender === 'male' ? '0077be' : 'e91e63' %>&color=fff&size=300&format=png" alt="<%= profile.name || profile.username %><%= profile.age ? ', ' + profile.age + ' year old' : '' %><%= profile.work ? ' ' + profile.work : '' %> - Muslim marriage profile<%= profile.city ? ' in ' + profile.city : '' %>" class="w-full h-full object-cover" loading="lazy" width="300" height="300">
-                
-              </div>
-              <div class="p-4">
-                <h3 class="text-lg font-semibold text-gray-900 mb-1">
-                  <%= profile.username %>
-                </h3>
-                <div class="flex items-center text-gray-600 mb-2">
-                  <i class="ri-map-pin-line mr-2"></i>
-                  <span>
-                    <% if (profile.city && profile.country) { %>
-                    <%= profile.city %>, <%= profile.country %>
-                    <% } else if (profile.city) { %>
-                    <%= profile.city %>
-                    <% } else if (profile.country) { %>
-                    <%= profile.country %>
-                    <% } else { %>
-                    Location not specified
-                    <% } %>
-                  </span>
-                </div>
-                <% if (profile.age) { %>
-                <div class="flex items-center text-gray-600 mb-2">
-                  <i class="ri-calendar-line mr-2"></i>
-                  <span><%= profile.age %> years old</span>
-                </div>
-                <% } %>
-              </div>
-            </a>
-            <% }) %>
-            <% } else { %>
-            <!-- No profiles found message -->
-            <div class="col-span-3 text-center py-16">
-              <div class="max-w-md mx-auto">
-                <div class="mb-4">
-                  <i class="ri-user-search-line text-6xl text-gray-300"></i>
-                </div>
-                <h3 class="text-xl font-semibold text-gray-600 mb-2">No Profiles Found</h3>
-                <p class="text-gray-500 mb-6">
-                  <% if (filters) { %>
-                  No profiles match your current filters. Try adjusting your search criteria.
-                  <% } else { %>
-                  There are currently no profiles to display.
-                  <% } %>
+            </div>
+            <div class="p-5 flex flex-col flex-grow">
+              <div class="mb-2">
+                <h3 class="text-[20px] font-headline-md text-primary leading-tight truncate"><%= profile.username %></h3>
+                <p class="text-on-surface-variant text-body-md font-body-md">
+                  <%= profile.age ? profile.age + ' • ' : '' %><%= locText %>
                 </p>
-                <% if (filters) { %>
-                <a href="/profiles" class="inline-flex items-center gap-2 px-6 py-2 bg-primary text-white rounded-button hover:bg-pink-600 transition-all duration-300">
-                  <i class="ri-refresh-line"></i>
-                  <span>Clear Filters</span>
-                </a>
-                <% } %>
+              </div>
+              <% if (profile.work) { %>
+              <p class="text-body-md font-body-md text-on-surface mb-6 flex-grow flex items-center gap-2">
+                <span class="material-symbols-outlined text-outline text-[20px]"><%= workIcon %></span>
+                <%= profile.work %>
+              </p>
+              <% } else { %>
+              <div class="mb-6 flex-grow"></div>
+              <% } %>
+              <div class="mt-auto">
+                <span class="w-full py-2.5 border border-primary text-primary font-label-md text-label-md rounded-lg hover:bg-primary/5 transition-colors text-center block">View Profile</span>
               </div>
             </div>
-            <% } %>
-          </div>
-
-          <!-- Pagination -->
-          <% if (profiles && profiles.length > 0 && totalPages > 1) { %>
-          <div class="flex justify-center items-center gap-2 sm:gap-4 mt-12 overflow-x-auto pb-2">
-            <% if (page > 1) { %>
-            <a href="/profiles?page=<%= page - 1 %><% if (filters) { %><% Object.keys(filters).forEach(key => { if (filters[key]) { %>&<%= key %>=<%= encodeURIComponent(filters[key]) %><% } }) %><% } %><% if (sortBy && sortBy !== 'newly-created') { %>&sortBy=<%= sortBy %><% } %>" data-track="true" data-event-name="pagination_prev" data-category="engagement" data-label="Previous Page" class="flex items-center gap-1 sm:gap-2 px-2 sm:px-4 py-2 border border-gray-300 rounded-button text-gray-600 hover:border-primary hover:text-primary transition-all duration-300 whitespace-nowrap flex-shrink-0">
-              <i class="ri-arrow-left-line"></i>
-              <span class="sm:hidden">Prev</span>
-            </a>
-            <% } %>
-
-            <div class="flex items-center gap-1 sm:gap-2 flex-shrink-0">
-              <% for (let i = Math.max(1, page - 2); i <= Math.min(totalPages, page + 2); i++) { %>
-              <% if (i === page) { %>
-              <span class="w-10 h-10 flex items-center justify-center bg-primary text-white rounded-button">
-                <%= i %>
-              </span>
-              <% } else { %>
-              <a href="/profiles?page=<%= i %><% if (filters) { %><% Object.keys(filters).forEach(key => { if (filters[key]) { %>&<%= key %>=<%= encodeURIComponent(filters[key]) %><% } }) %><% } %><% if (sortBy && sortBy !== 'newly-created') { %>&sortBy=<%= sortBy %><% } %>" data-track="true" data-event-name="pagination_page" data-category="engagement" data-label="Page <%= i %>" class="w-10 h-10 flex items-center justify-center border border-gray-300 rounded-button text-gray-600 hover:border-primary hover:text-primary transition-all duration-300">
-                <%= i %>
+          </a>
+          <% }) %>
+          <% } else { %>
+          <!-- No profiles found message -->
+          <div class="col-span-full text-center py-16">
+            <div class="max-w-md mx-auto">
+              <div class="mb-4">
+                <span class="material-symbols-outlined text-6xl text-outline/40">person_search</span>
+              </div>
+              <h3 class="text-xl font-semibold text-on-surface-variant mb-2">No Profiles Found</h3>
+              <p class="text-on-surface-variant mb-6">
+                <% if (filters) { %>
+                No profiles match your current filters. Try adjusting your search criteria.
+                <% } else { %>
+                There are currently no profiles to display.
+                <% } %>
+              </p>
+              <% if (filters) { %>
+              <a href="/profiles" class="inline-flex items-center gap-2 px-6 py-2.5 bg-primary text-on-primary rounded-lg hover:bg-primary-container transition-colors">
+                <span class="material-symbols-outlined text-lg">refresh</span>
+                <span>Clear Filters</span>
               </a>
               <% } %>
-              <% } %>
             </div>
-
-            <% if (page < totalPages) { %>
-            <a href="/profiles?page=<%= page + 1 %><% if (filters) { %><% Object.keys(filters).forEach(key => { if (filters[key]) { %>&<%= key %>=<%= encodeURIComponent(filters[key]) %><% } }) %><% } %><% if (sortBy && sortBy !== 'newly-created') { %>&sortBy=<%= sortBy %><% } %>" data-track="true" data-event-name="pagination_next" data-category="engagement" data-label="Next Page" class="flex items-center gap-1 sm:gap-2 px-2 sm:px-4 py-2 border border-gray-300 rounded-button text-gray-600 hover:border-primary hover:text-primary transition-all duration-300 whitespace-nowrap flex-shrink-0">
-              <span class="hidden sm:inline">Next</span>
-              <span class="sm:hidden">Next</span>
-              <i class="ri-arrow-right-line"></i>
-            </a>
-            <% } %>
           </div>
           <% } %>
         </div>
+
+        <!-- Pagination -->
+        <% if (profiles && profiles.length > 0 && totalPages > 1) { %>
+        <div class="pagination-container flex justify-center items-center gap-2 sm:gap-4 mt-12 overflow-x-auto pb-2">
+          <% if (page > 1) { %>
+          <a href="/profiles?page=<%= page - 1 %><% if (filters) { %><% Object.keys(filters).forEach(key => { if (filters[key]) { %>&<%= key %>=<%= encodeURIComponent(filters[key]) %><% } }) %><% } %><% if (sortBy && sortBy !== 'newly-created') { %>&sortBy=<%= sortBy %><% } %>" data-track="true" data-event-name="pagination_prev" data-category="engagement" data-label="Previous Page" class="flex items-center gap-1 sm:gap-2 px-2 sm:px-4 py-2 border border-outline-variant rounded-lg text-on-surface-variant hover:border-primary hover:text-primary transition-all duration-300 whitespace-nowrap flex-shrink-0">
+            <span class="material-symbols-outlined text-lg">chevron_left</span>
+            <span class="sm:hidden">Prev</span>
+          </a>
+          <% } %>
+
+          <div class="flex items-center gap-1 sm:gap-2 flex-shrink-0">
+            <% for (let i = Math.max(1, page - 2); i <= Math.min(totalPages, page + 2); i++) { %>
+            <% if (i === page) { %>
+            <span class="w-10 h-10 flex items-center justify-center bg-primary text-on-primary rounded-lg"><%= i %></span>
+            <% } else { %>
+            <a href="/profiles?page=<%= i %><% if (filters) { %><% Object.keys(filters).forEach(key => { if (filters[key]) { %>&<%= key %>=<%= encodeURIComponent(filters[key]) %><% } }) %><% } %><% if (sortBy && sortBy !== 'newly-created') { %>&sortBy=<%= sortBy %><% } %>" data-track="true" data-event-name="pagination_page" data-category="engagement" data-label="Page <%= i %>" class="w-10 h-10 flex items-center justify-center border border-outline-variant rounded-lg text-on-surface-variant hover:border-primary hover:text-primary transition-all duration-300"><%= i %></a>
+            <% } %>
+            <% } %>
+          </div>
+
+          <% if (page < totalPages) { %>
+          <a href="/profiles?page=<%= page + 1 %><% if (filters) { %><% Object.keys(filters).forEach(key => { if (filters[key]) { %>&<%= key %>=<%= encodeURIComponent(filters[key]) %><% } }) %><% } %><% if (sortBy && sortBy !== 'newly-created') { %>&sortBy=<%= sortBy %><% } %>" data-track="true" data-event-name="pagination_next" data-category="engagement" data-label="Next Page" class="flex items-center gap-1 sm:gap-2 px-2 sm:px-4 py-2 border border-outline-variant rounded-lg text-on-surface-variant hover:border-primary hover:text-primary transition-all duration-300 whitespace-nowrap flex-shrink-0">
+            <span class="hidden sm:inline">Next</span>
+            <span class="sm:hidden">Next</span>
+            <span class="material-symbols-outlined text-lg">chevron_right</span>
+          </a>
+          <% } %>
+        </div>
+        <% } %>
       </div>
-    </div>
+    </section>
   </main>
 
   <!-- Mobile Filter Overlay -->
-  <!-- Mobile Filter Overlay - Replace the existing one -->
   <div id="mobileFilterOverlay" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden lg:hidden transition-opacity duration-300 opacity-0">
-    <div id="mobileFilterPanel" class="fixed left-0 top-0 h-full w-80 bg-white overflow-y-auto transform -translate-x-full transition-transform duration-300 ease-in-out">
+    <div id="mobileFilterPanel" class="fixed left-0 top-0 h-full w-80 bg-surface-white overflow-y-auto transform -translate-x-full transition-transform duration-300 ease-in-out">
       <div class="p-6">
         <div class="flex items-center justify-between mb-6">
-          <h3 class="text-lg font-semibold text-gray-900 font-['Playfair_Display']">Filter Profiles</h3>
-          <button id="closeMobileFilter" class="text-gray-500 hover:text-gray-700 transition-colors duration-200">
-            <i class="ri-close-line text-xl"></i>
+          <h3 class="text-headline-md font-headline-md text-primary">Filter Profiles</h3>
+          <button id="closeMobileFilter" class="text-on-surface-variant hover:text-primary transition-colors duration-200" aria-label="Close filters">
+            <span class="material-symbols-outlined text-xl">close</span>
           </button>
         </div>
-        <!-- Include the same filter content -->
-        <div class="bg-white rounded-2xl p-6">
+        <div class="bg-neutral-gray rounded-xl p-6">
           <form id="mobileFilterForm" class="space-y-6">
             <!-- Gender Filter -->
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-3">Gender</label>
+              <label class="block text-label-md font-label-md text-on-surface-variant mb-3 uppercase tracking-wider">Gender</label>
               <div class="space-y-2">
                 <label class="flex items-center cursor-pointer">
-                  <input type="radio" name="gender" value="" class="h-4 w-4 text-primary focus:ring-primary border-gray-300" <%= !filters?.gender ? 'checked' : '' %>>
-                  <span class="ml-2 text-sm text-gray-700">All</span>
+                  <input type="radio" name="gender" value="" class="h-4 w-4 text-primary focus:ring-primary border-outline-variant" <%= !filters?.gender ? 'checked' : '' %>>
+                  <span class="ml-3 text-body-md text-on-surface">All</span>
                 </label>
                 <label class="flex items-center cursor-pointer">
-                  <input type="radio" name="gender" value="male" class="h-4 w-4 text-primary focus:ring-primary border-gray-300" <%= filters?.gender === 'male' ? 'checked' : '' %>>
-                  <span class="ml-2 text-sm text-gray-700">Male</span>
+                  <input type="radio" name="gender" value="male" class="h-4 w-4 text-primary focus:ring-primary border-outline-variant" <%= filters?.gender === 'male' ? 'checked' : '' %>>
+                  <span class="ml-3 text-body-md text-on-surface">Male</span>
                 </label>
                 <label class="flex items-center cursor-pointer">
-                  <input type="radio" name="gender" value="female" class="h-4 w-4 text-primary focus:ring-primary border-gray-300" <%= filters?.gender === 'female' ? 'checked' : '' %>>
-                  <span class="ml-2 text-sm text-gray-700">Female</span>
+                  <input type="radio" name="gender" value="female" class="h-4 w-4 text-primary focus:ring-primary border-outline-variant" <%= filters?.gender === 'female' ? 'checked' : '' %>>
+                  <span class="ml-3 text-body-md text-on-surface">Female</span>
                 </label>
               </div>
             </div>
 
             <!-- Age Range Filter (selects) -->
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-3">Age Range</label>
+              <label class="block text-label-md font-label-md text-on-surface-variant mb-3 uppercase tracking-wider">Age Range</label>
               <div class="grid grid-cols-2 gap-3">
                 <div>
-                  <select name="minAge" id="mobileMinAgeSelect" class="block w-full px-3 py-2 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 bg-white text-sm">
+                  <select name="minAge" id="mobileMinAgeSelect" class="block w-full px-3 py-2.5 border border-outline-variant rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-on-surface bg-white text-sm">
                     <option value="">Min Age</option>
                     <% for (let a = 18; a <= 70; a++) { %>
                       <option value="<%= a %>" <%= (filters?.minAge && Number(filters.minAge) === a) ? 'selected' : '' %>><%= a %></option>
@@ -938,7 +823,7 @@ html {
                   </select>
                 </div>
                 <div>
-                  <select name="maxAge" id="mobileMaxAgeSelect" class="block w-full px-3 py-2 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 bg-white text-sm">
+                  <select name="maxAge" id="mobileMaxAgeSelect" class="block w-full px-3 py-2.5 border border-outline-variant rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-on-surface bg-white text-sm">
                     <option value="">Max Age</option>
                     <% for (let a = 18; a <= 70; a++) { %>
                       <option value="<%= a %>" <%= (filters?.maxAge && Number(filters.maxAge) === a) ? 'selected' : '' %>><%= a %></option>
@@ -950,12 +835,12 @@ html {
 
             <!-- Height Range Filter -->
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-3">Height Range</label>
+              <label class="block text-label-md font-label-md text-on-surface-variant mb-3 uppercase tracking-wider">Height Range</label>
               <div class="grid grid-cols-2 gap-3">
                 <div>
-                  <select name="minHeight" id="mobileMinHeight" class="block w-full px-3 py-2 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 bg-white text-sm">
+                  <select name="minHeight" id="mobileMinHeight" class="block w-full px-3 py-2.5 border border-outline-variant rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-on-surface bg-white text-sm">
                     <option value="">Min Height</option>
-                    <% 
+                    <%
                     const mobileHeights = [
                       { cm: 152, display: "5'0\"" },
                       { cm: 155, display: "5'1\"" },
@@ -987,7 +872,7 @@ html {
                   </select>
                 </div>
                 <div>
-                  <select name="maxHeight" id="mobileMaxHeight" class="block w-full px-3 py-2 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 bg-white text-sm">
+                  <select name="maxHeight" id="mobileMaxHeight" class="block w-full px-3 py-2.5 border border-outline-variant rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-on-surface bg-white text-sm">
                     <option value="">Max Height</option>
                     <% mobileHeights.forEach(height => { %>
                     <option value="<%= height.cm %>" <%= filters?.maxHeight == height.cm ? 'selected' : '' %>>
@@ -1001,13 +886,13 @@ html {
 
             <!-- Location Filter: Country & City Selects -->
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-3">Location</label>
+              <label class="block text-label-md font-label-md text-on-surface-variant mb-3 uppercase tracking-wider">Location</label>
               <div class="space-y-3">
                 <div class="relative">
                   <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <i class="ri-earth-line text-gray-400"></i>
+                    <span class="material-symbols-outlined text-base text-on-surface-variant">public</span>
                   </div>
-                  <select name="country" id="mobileFilterCountry" class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 bg-white text-sm appearance-none">
+                  <select name="country" id="mobileFilterCountry" class="block w-full pl-10 pr-3 py-2.5 border border-outline-variant rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-on-surface bg-white text-sm appearance-none">
                     <% if (typeof geoFilterUI !== 'undefined' && geoFilterUI) { %>
                       <!-- Geo-restricted: show only allowed countries -->
                       <option value="">All Cities</option>
@@ -1036,9 +921,9 @@ html {
                 </div>
                 <div class="relative">
                   <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <i class="ri-map-pin-line text-gray-400"></i>
+                    <span class="material-symbols-outlined text-base text-on-surface-variant">location_on</span>
                   </div>
-                  <select name="city" id="mobileFilterCity" class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-gray-900 bg-white text-sm appearance-none" disabled>
+                  <select name="city" id="mobileFilterCity" class="block w-full pl-10 pr-3 py-2.5 border border-outline-variant rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-on-surface bg-white text-sm appearance-none" disabled>
                     <option value="">Select City</option>
                   </select>
                 </div>
@@ -1046,13 +931,13 @@ html {
             </div>
 
             <!-- Apply Filters Button -->
-            <button type="submit" class="w-full py-2.5 px-4 bg-primary text-white hover:bg-pink-600 transition-all duration-300 !rounded-button ripple material-shadow">
-              <i class="ri-search-line mr-2"></i>Apply Filters
+            <button type="submit" class="w-full bg-primary-container text-on-primary font-label-md text-label-md py-3 rounded-lg hover:bg-trust-blue transition-colors flex items-center justify-center gap-2">
+              <span class="material-symbols-outlined text-lg">search</span>Apply Filters
             </button>
 
             <!-- Clear Filters Button -->
-            <button type="button" id="mobileClearFilters" class="w-full py-2.5 px-4 border-2 border-gray-300 text-gray-500 hover:border-primary hover:text-primary transition-all duration-300 !rounded-button">
-              <i class="ri-refresh-line mr-2"></i>Clear All Filters
+            <button type="button" id="mobileClearFilters" class="w-full py-3 px-4 border-2 border-outline-variant text-on-surface-variant hover:border-primary hover:text-primary transition-all duration-300 rounded-lg">
+              <span class="material-symbols-outlined text-lg mr-1">refresh</span>Clear All Filters
             </button>
           </form>
         </div>
@@ -1060,31 +945,10 @@ html {
     </div>
   </div>
 
-<%- include('partials/reservationPopup', { popupId: 'exitPopup', headingText: "Not finding the right matches? Let our expert marriage consultants help you for free before you go", triggerType: 'exit' }) %>
+  <%- include('partials/reservationPopup', { popupId: 'exitPopup', headingText: "Not finding the right matches? Let our expert marriage consultants help you for free before you go", triggerType: 'exit' }) %>
 
   <%- include('partials/footer') %>
-  <script id="ripple-effects">
-    document.addEventListener('DOMContentLoaded', function() {
-      const rippleButtons = document.querySelectorAll('.ripple');
-      rippleButtons.forEach(button => {
-        button.addEventListener('click', function(e) {
-          const ripple = document.createElement('span');
-          const rect = this.getBoundingClientRect();
-          const size = Math.max(rect.width, rect.height);
-          const x = e.clientX - rect.left - size / 2;
-          const y = e.clientY - rect.top - size / 2;
-          ripple.style.width = ripple.style.height = size + 'px';
-          ripple.style.left = x + 'px';
-          ripple.style.top = y + 'px';
-          ripple.classList.add('absolute', 'bg-white', 'bg-opacity-30', 'rounded-full', 'animate-ping');
-          this.appendChild(ripple);
-          setTimeout(() => {
-            ripple.remove();
-          }, 600);
-        });
-      });
-    });
-  </script>
+
   <script id="grid-interactions">
     document.addEventListener('DOMContentLoaded', function() {
       const threeColBtn = document.getElementById('threeCol');
@@ -1107,47 +971,38 @@ html {
 
         // Helper function to update button states
         function updateButtonStates(activeBtn, inactiveBtn) {
-          // Active button
-          activeBtn.classList.remove('border-gray-300', 'text-gray-500');
+          activeBtn.classList.remove('border-outline-variant', 'text-on-surface-variant');
           activeBtn.classList.add('border-primary', 'text-primary', 'active');
 
-          // Inactive button
           inactiveBtn.classList.remove('border-primary', 'text-primary', 'active');
-          inactiveBtn.classList.add('border-gray-300', 'text-gray-500');
+          inactiveBtn.classList.add('border-outline-variant', 'text-on-surface-variant');
         }
 
-        // Set initial state (4-column active)
-        if (fourColBtn && threeColBtn) {
-          updateButtonStates(fourColBtn, threeColBtn);
+        // Set initial state (3-column active — new design default)
+        if (threeColBtn && fourColBtn) {
+          updateButtonStates(threeColBtn, fourColBtn);
 
-          // 3-column layout (Large cards)
+          // 3-column layout (Large cards) — default
           threeColBtn.addEventListener('click', function() {
             resetGridClasses();
-
-            // Add classes for large cards (fewer per row)
             profileGrid.classList.add(
-              'grid-cols-1', // 1 column on mobile
-              'md:grid-cols-2', // 2 columns on medium screens
-              'lg:grid-cols-2', // 2 columns on large screens (with sidebar)
-              'xl:grid-cols-3' // 3 columns on extra large screens
+              'grid-cols-1',
+              'md:grid-cols-2',
+              'lg:grid-cols-2',
+              'xl:grid-cols-3'
             );
-
             updateButtonStates(threeColBtn, fourColBtn);
-
           });
 
           // 4-column layout (Compact cards)
           fourColBtn.addEventListener('click', function() {
             resetGridClasses();
-
-            // Add classes for compact cards (more per row)
             profileGrid.classList.add(
-              'grid-cols-1', // 1 column on mobile
-              'md:grid-cols-2', // 2 columns on medium screens
-              'lg:grid-cols-3', // 3 columns on large screens (with sidebar)
-              'xl:grid-cols-4' // 4 columns on extra large screens
+              'grid-cols-1',
+              'md:grid-cols-2',
+              'lg:grid-cols-3',
+              'xl:grid-cols-4'
             );
-
             updateButtonStates(fourColBtn, threeColBtn);
           });
         }
@@ -1155,8 +1010,7 @@ html {
 
       // Handle window resize
       window.addEventListener('resize', function() {
-        if (window.innerWidth < 768) {
-          // On small screens, ensure single column
+        if (window.innerWidth < 768 && profileGrid) {
           profileGrid.className = profileGrid.className.replace(/md:grid-cols-\d+|lg:grid-cols-\d+|xl:grid-cols-\d+/g, '');
           profileGrid.classList.add('grid-cols-1');
         }
@@ -1164,55 +1018,41 @@ html {
     });
   </script>
 
-  <!-- Add mobile filter functionality script -->
+  <!-- Mobile filter functionality script -->
   <script id="mobile-filter-interactions">
     document.addEventListener('DOMContentLoaded', function() {
       const mobileFilterBtn = document.getElementById('mobileFilterBtn');
       const mobileFilterOverlay = document.getElementById('mobileFilterOverlay');
       const mobileFilterPanel = document.getElementById('mobileFilterPanel');
-      const closeMobileFilterBtn = document.getElementById('closeMobileFilter'); // Renamed variable
+      const closeMobileFilterBtn = document.getElementById('closeMobileFilter');
       const mobileFilterForm = document.getElementById('mobileFilterForm');
       const mobileClearFilters = document.getElementById('mobileClearFilters');
 
       // Function to open mobile filter with animation
-      function openMobileFilterPanel() { // Renamed function
+      function openMobileFilterPanel() {
         if (mobileFilterOverlay && mobileFilterPanel) {
-
-          // Show overlay
           mobileFilterOverlay.classList.remove('hidden');
-
-          // Force reflow to ensure the element is rendered
           mobileFilterOverlay.offsetHeight;
-
-          // Start animations
           setTimeout(() => {
             mobileFilterOverlay.classList.remove('opacity-0');
             mobileFilterOverlay.classList.add('opacity-100');
             mobileFilterPanel.classList.remove('-translate-x-full');
             mobileFilterPanel.classList.add('translate-x-0');
           }, 10);
-
-          // Prevent background scrolling
           document.body.style.overflow = 'hidden';
-        } else {}
+        }
       }
 
       // Function to close mobile filter with animation
-      function closeMobileFilterPanel() { // Renamed function
+      function closeMobileFilterPanel() {
         if (mobileFilterOverlay && mobileFilterPanel) {
-
-          // Start closing animations
           mobileFilterOverlay.classList.remove('opacity-100');
           mobileFilterOverlay.classList.add('opacity-0');
           mobileFilterPanel.classList.remove('translate-x-0');
           mobileFilterPanel.classList.add('-translate-x-full');
-
-          // Hide overlay after animation completes
           setTimeout(() => {
             mobileFilterOverlay.classList.add('hidden');
-          }, 300); // Match the transition duration
-
-          // Restore scrolling
+          }, 300);
           document.body.style.overflow = '';
         }
       }
@@ -1223,8 +1063,6 @@ html {
           e.preventDefault();
           openMobileFilterPanel();
         });
-      } else {
-        console.log('Mobile filter button NOT found'); // Debug log
       }
 
       // Close mobile filter button
@@ -1233,8 +1071,6 @@ html {
           e.preventDefault();
           closeMobileFilterPanel();
         });
-      } else {
-        console.log('Close mobile filter button NOT found'); // Debug log
       }
 
       // Close on backdrop click
@@ -1250,25 +1086,19 @@ html {
       if (mobileFilterForm) {
         mobileFilterForm.addEventListener('submit', function(e) {
           e.preventDefault();
-
           const formData = new FormData(mobileFilterForm);
           const params = new URLSearchParams();
-
-          // Build query parameters
           for (let [key, value] of formData.entries()) {
             if (value.trim() !== '') {
               params.append(key, value);
             }
           }
-
-          // Close overlay with animation and redirect
           closeMobileFilterPanel();
-
           setTimeout(() => {
             const currentPath = window.location.pathname;
             const newUrl = `${currentPath}?${params.toString()}`;
             window.location.href = newUrl;
-          }, 300); // Wait for animation to complete
+          }, 300);
         });
       }
 
@@ -1277,17 +1107,16 @@ html {
         mobileClearFilters.addEventListener('click', function(e) {
           e.preventDefault();
           closeMobileFilterPanel();
-
           setTimeout(() => {
             const currentPath = window.location.pathname;
             window.location.href = currentPath;
-          }, 300); // Wait for animation to complete
+          }, 300);
         });
       }
 
       // Close on escape key
       document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape' && !mobileFilterOverlay.classList.contains('hidden')) {
+        if (e.key === 'Escape' && mobileFilterOverlay && !mobileFilterOverlay.classList.contains('hidden')) {
           closeMobileFilterPanel();
         }
       });
@@ -1348,7 +1177,6 @@ html {
         if (mobileFilterCountry.value) {
           const evt = new Event('change');
           mobileFilterCountry.dispatchEvent(evt);
-          // If a city filter exists, set it
           const urlParams = new URLSearchParams(window.location.search);
           const currentCity = urlParams.get('city');
           if (currentCity) {
@@ -1362,6 +1190,7 @@ html {
       }
     });
   </script>
+
   <script id="active-filters">
     // Remove individual filter
     function removeFilter(param) {
@@ -1378,6 +1207,7 @@ html {
       window.location.href = currentPath;
     }
   </script>
+
   <script id="sort-functionality">
     document.addEventListener('DOMContentLoaded', function() {
       const sortBySelect = document.getElementById('sortBySelect');
@@ -1385,28 +1215,21 @@ html {
       if (sortBySelect) {
         sortBySelect.addEventListener('change', function() {
           const selectedSort = this.value;
-
-          // Get current URL parameters
           const urlParams = new URLSearchParams(window.location.search);
-
-          // Update or add sortBy parameter
           if (selectedSort === 'top-matches') {
-            urlParams.delete('sortBy'); // Default, so remove parameter
+            urlParams.delete('sortBy');
           } else {
             urlParams.set('sortBy', selectedSort);
           }
-
-          // Keep current page as 1 when changing sort
           urlParams.set('page', '1');
-
-          // Redirect with new parameters
           const newUrl = window.location.pathname + '?' + urlParams.toString();
           window.location.href = newUrl;
         });
       }
     });
   </script>
-  <script>
+
+  <script id="progressive-images">
     document.addEventListener('DOMContentLoaded', function() {
       // Progressive image loading
       const images = document.querySelectorAll('img[loading="lazy"]');
@@ -1417,18 +1240,14 @@ html {
           entries.forEach(entry => {
             if (entry.isIntersecting) {
               const img = entry.target;
-
-              // Add loading state
               img.addEventListener('load', function() {
                 this.classList.add('loaded');
-                // Stop animation on parent
                 const parent = this.closest('.aspect-\\[4\\/5\\]');
                 if (parent) {
                   parent.style.animation = 'none';
                   parent.style.background = 'none';
                 }
               });
-
               observer.unobserve(img);
             }
           });
@@ -1436,7 +1255,6 @@ html {
 
         images.forEach(img => imageObserver.observe(img));
       } else {
-        // Fallback for browsers without IntersectionObserver
         images.forEach(img => {
           img.addEventListener('load', function() {
             this.classList.add('loaded');

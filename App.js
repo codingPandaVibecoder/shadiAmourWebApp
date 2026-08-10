@@ -420,10 +420,18 @@ app.get(["/", "/home"], requireOnboardingComplete, async (req, res) => {
       .select("name age city profilePic profileSlug username gender work")
       .lean();
 
+    // Fetch 3 most recent published blog posts for the homepage
+    const homeBlogs = await Blog.find({ isPublished: true })
+      .sort({ publishedAt: -1 })
+      .limit(3)
+      .select("title excerpt slug category featuredImage publishedAt author")
+      .lean();
+
     res.render("home", {
       user: req.session.user || null,
-    
+
       staffAddedProfiles: staffAddedProfiles || [],
+      homeBlogs: homeBlogs || [],
     });
   } catch (error) {
     console.error("Error fetching homepage data:", error);
@@ -431,6 +439,7 @@ app.get(["/", "/home"], requireOnboardingComplete, async (req, res) => {
       user: req.session.user || null,
       randomProfiles: [],
       staffAddedProfiles: [],
+      homeBlogs: [],
     });
   }
 });
@@ -2738,7 +2747,7 @@ app.get("/profiles", requireOnboardingComplete, async (req, res) => {
     let profiles;
     if (isScoreSort) {
       const allFiltered = await User.find(filter)
-        .select("name username age height gender country city nationality ethnicity highestEducation profileSlug profilePic isFeatured featuredDate maritalStatus islamicSect preferredIslamicSect prays bornMuslim preferredAgeRange preferredHeightRange willingToConsiderANonUkCitizen acceptSomeoneWithChildren acceptADivorcedPerson acceptAWidow children profileCompletenessTier isApproved approvalStatus isDeactivated")
+        .select("name username age height gender country city nationality ethnicity highestEducation work registrationSource profileSlug profilePic isFeatured featuredDate maritalStatus islamicSect preferredIslamicSect prays bornMuslim preferredAgeRange preferredHeightRange willingToConsiderANonUkCitizen acceptSomeoneWithChildren acceptADivorcedPerson acceptAWidow children profileCompletenessTier isApproved approvalStatus isDeactivated")
         .lean();
 
       const { runHardFilters, computeScore } = require("./services/matchScoringService");
@@ -7500,52 +7509,6 @@ app.get("/blog",requireOnboardingComplete, async (req, res) => {
   try {
     const { category, tag } = req.query;
 
-    // **NEW**: Define static blogs that were previously hardcoded
-    const staticBlogs = [
-      {
-        title: "Ultimate Guide to Hiring a Muslim Wedding Planner: Everything You Need to Know",
-        excerpt: "Planning a wedding is exciting — but for Muslim couples, it also comes with additional values, traditions, and sensitivities. Learn everything you need to know about hiring the right Muslim wedding planner.",
-        author: { name: "shadiamour Team" },
-        publishedAt: new Date("2025-01-11"),
-        category: "Wedding Planning",
-        tags: ["wedding", "planning", "muslim", "guide"],
-        slug: "muslim-wedding-planner-guide",
-        featuredImage: {
-          url: "https://res.cloudinary.com/dhuc2plh0/image/upload/f_auto,q_auto:eco,w_800,h_450,c_fill,g_auto/v1760870954/jubair-ahmed-himu-5b0jgXvfimE-unsplash_tmjkew.jpg",
-          alt: "Muslim Wedding Planning Guide"
-        },
-        isStatic: true // Flag to identify static blogs
-      },
-      {
-        title: "UK Rishta WhatsApp Group: Your Gateway to Halal Marriage",
-        excerpt: "Join our verified UK rishta WhatsApp group where serious Muslims connect for halal marriage. Discover how to find your perfect match through our trusted, moderated community across London, Leicester and the UK.",
-        author: { name: "shadiamour Team" },
-        publishedAt: new Date("2025-01-15"),
-        category: "Muslim Rishta",
-        tags: ["rishta", "whatsapp", "uk", "halal", "marriage"],
-        slug: "uk-rishta-whatsapp-group",
-        featuredImage: {
-          url: "https://res.cloudinary.com/dhuc2plh0/image/upload/f_auto,q_auto:eco,w_800,h_450,c_fill,g_auto/v1760870946/brett-jordan-dMUeHGE8Dio-unsplash_eozw9p.jpg",
-          alt: "UK Rishta WhatsApp Group"
-        },
-        isStatic: true
-      },
-      {
-        title: "UK Muslim Rishta Service: Affordable Registration Fees & Matchmaking Charges (2025)",
-        excerpt: "Discover transparent pricing for shadiamour's rishta service with four flexible plans: Standard (Free), Premium (£50), Premium Plus (£100+£200), and Executive (£150+£450). 100% money-back guarantee included.",
-        author: { name: "shadiamour Team" },
-        publishedAt: new Date("2025-01-20"),
-        category: "Rishta Services",
-        tags: ["pricing", "rishta", "service", "uk", "charges"],
-        slug: "uk-muslim-rishta-service-charges",
-        featuredImage: {
-          url: "https://res.cloudinary.com/dhuc2plh0/image/upload/f_auto,q_auto:eco,w_800,h_450,c_fill,g_auto/v1760870921/jubair-ahmed-himu-XILfo8IMMjc-unsplash_qffxew.jpg",
-          alt: "UK Muslim Rishta Service Pricing"
-        },
-        isStatic: true
-      }
-    ];
-
     // Build query for published blogs only
     let query = { isPublished: true };
 
@@ -7557,34 +7520,14 @@ app.get("/blog",requireOnboardingComplete, async (req, res) => {
       query.tags = { $in: [tag] };
     }
 
-    // Get database blogs
-    const databaseBlogs = await Blog.find(query)
+    // Get published blogs from the database
+    const sortedBlogs = await Blog.find(query)
       .sort({ publishedAt: -1 })
       .select('title excerpt slug category tags publishedAt author featuredImage');
 
-    // **NEW**: Filter static blogs based on query parameters
-    let filteredStaticBlogs = staticBlogs;
-
-    if (category) {
-      filteredStaticBlogs = staticBlogs.filter(blog =>
-        blog.category.toLowerCase() === category.toLowerCase()
-      );
-    }
-
-    if (tag) {
-      filteredStaticBlogs = filteredStaticBlogs.filter(blog =>
-        blog.tags.some(blogTag => blogTag.toLowerCase() === tag.toLowerCase())
-      );
-    }
-
-    // **NEW**: Combine database and static blogs, then sort by publishedAt
-    const allBlogs = [...databaseBlogs, ...filteredStaticBlogs];
-    const sortedBlogs = allBlogs.sort((a, b) =>
-      new Date(b.publishedAt) - new Date(a.publishedAt)
-    );
-
-    // Get all categories and tags for filters (including static blogs)
-    const allBlogsForFilters = [...databaseBlogs, ...staticBlogs];
+    // Get all categories and tags for filters
+    const allBlogsForFilters = await Blog.find({ isPublished: true })
+      .select('category tags');
     const categories = [...new Set(allBlogsForFilters.map(blog => blog.category))];
     const allTags = allBlogsForFilters.reduce((tags, blog) => {
       if (blog.tags && Array.isArray(blog.tags)) {
@@ -7595,7 +7538,7 @@ app.get("/blog",requireOnboardingComplete, async (req, res) => {
 
     res.render("blog/index", {
       title: "Blog - shadiAmour",
-      posts: sortedBlogs, // Combined and sorted blogs
+      posts: sortedBlogs,
       categories,
       tags: Array.from(allTags),
       currentCategory: category || null,
@@ -7616,27 +7559,13 @@ app.get("/blog",requireOnboardingComplete, async (req, res) => {
   }
 });
 
-// 301 Redirects for duplicate "WhatsApp Group" blog posts → canonical URL
-const whatsappBlogRedirects = [
-  "/blog/join-genuine-muslim-marriage-whatsapp-groups-for-nikah",
-  "/blog/join-whatsapp-based-rishta-groups-by-muslim-matrimonial-uk",
-  "/blog/muslim-marriage-whatsapp-groups-find-genuine-halal-rishta-online",
-];
-whatsappBlogRedirects.forEach((oldPath) => {
-  app.get(oldPath, (req, res) => {
-    res.redirect(301, "/blog/uk-rishta-whatsapp-group");
-  });
-});
-
 // Public individual blog page
 
 app.get("/blog/:slug",requireOnboardingComplete, async (req, res) => {
   try {
     const { slug } = req.params;
 
-    // **NEW**: Check for static blog templates first
-
-    // **EXISTING**: Check database for dynamic blogs
+    // Check database for published blog
     const blog = await Blog.findOne({
       slug: slug,
       isPublished: true
@@ -7707,18 +7636,24 @@ app.get('/marriage-profile-registration-form', (req, res) => {
   const googleFormUrl = process.env.marriageProfileGoogleFormUrl;
 res.redirect(301, googleFormUrl);
 });
-// Update the sitemap.xml route to include static blogs
 app.get("/sitemap.xml", async (req, res) => {
   try {
     // Individual profile URLs are intentionally excluded — profiles default to noindex.
     const blogs = await Blog.find({ isPublished: true }).select("slug updatedAt publishedAt");
     const categoryPageDocs = await CategoryPage.find({ isPublished: true, noIndex: { $ne: true } }).select("categorySlug pageSlug updatedAt createdAt");
 
-    // **NEW**: Static blog slugs
-    const staticBlogs = [
-      { slug: "muslim-wedding-planner-guide", lastmod: "2025-01-11" },
-      { slug: "uk-rishta-whatsapp-group", lastmod: "2025-01-15" },
-      { slug: "uk-muslim-rishta-service-charges", lastmod: "2025-01-20" }
+    // City hub + Pakistan city pages (referenced by the sitemap builders below)
+    const cityHubPages = [
+      { city: "Sheffield", slug: "muslim-matrimony-sheffield" },
+      { city: "Coventry", slug: "muslim-matrimony-coventry" },
+      { city: "Luton", slug: "muslim-matrimony-luton" },
+      { city: "Glasgow", slug: "muslim-matrimony-glasgow" },
+      { city: "Nottingham", slug: "muslim-matrimony-nottingham" },
+    ];
+    const pakistanCityPages = [
+      { slug: "rishta-islamabad" },
+      { slug: "rishta-rawalpindi" },
+      { slug: "rishta-faisalabad" },
     ];
 
     let sitemap = `<?xml version="1.0" encoding="UTF-8"?>

@@ -10,7 +10,7 @@
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
   <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
   <link rel="manifest" href="/images/site.webmanifest">
-  <meta name="theme-color" content="#00113a">
+  <meta name="theme-color" content="#E91E63">
   <link rel="stylesheet" href="/css/output.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
   <meta name="robots" content="index, follow">
@@ -32,35 +32,35 @@
       font-size: 14px;
       flex-shrink: 0;
     }
-    .score-high { background: #dcfce7; color: #2E7D32; border: 2px solid #2E7D32; }
-    .score-mid { background: #fef3c7; color: #B45309; border: 2px solid #B45309; }
-    .score-low { background: #f4f3f9; color: #757682; border: 2px solid #757682; }
+    .score-high { background: #dcfce7; color: #16a34a; border: 2px solid #16a34a; }
+    .score-mid { background: #fef3c7; color: #d97706; border: 2px solid #d97706; }
+    .score-low { background: #f1f5f9; color: #94a3b8; border: 2px solid #94a3b8; }
   </style>
   <%- include('partials/clarity') %>
   <%- include('partials/thirdparty') %>
   <%- include('partials/analytics') %>
 </head>
 
-<body class="bg-background text-on-background font-body-md antialiased flex flex-col min-h-screen">
+<body class="bg-gray-50 font-['Roboto']">
   <%- include('partials/header') %>
 
-  <main class="flex-grow pt-[92px] pb-16">
+  <main class="pt-24 pb-16 min-h-screen">
     <div class="max-w-5xl mx-auto px-4 sm:px-6">
       
       <% if (!user) { %>
       <!-- Not logged in -->
       <div class="text-center py-16">
-        <div class="w-20 h-20 bg-primary-fixed rounded-full flex items-center justify-center mx-auto mb-6">
-          <i class="ri-heart-line text-4xl text-primary-container"></i>
+        <div class="w-20 h-20 bg-pink-50 rounded-full flex items-center justify-center mx-auto mb-6">
+          <i class="ri-heart-line text-4xl text-pink-500"></i>
         </div>
-        <h1 class="text-display-lg-mobile md:text-display-lg font-display-lg-mobile md:font-display-lg text-primary mb-4">Your Matches</h1>
-        <p class="text-on-surface-variant text-lg mb-2">Sign up to see your potential matches</p>
-        <p class="text-outline text-sm mb-8">This is completely free. Login and sign up are completely free. We never ask for any charges.</p>
+        <h1 class="text-3xl font-bold text-gray-800 font-['Playfair_Display'] mb-4">Your Matches</h1>
+        <p class="text-gray-600 text-lg mb-2">Sign up to see your potential matches</p>
+        <p class="text-gray-500 text-sm mb-8">This is completely free. Login and sign up are completely free. We never ask for any charges.</p>
         <div class="flex items-center justify-center gap-4">
-          <a href="/login" class="px-6 py-3 border-2 border-primary text-primary hover:bg-primary hover:text-on-primary transition-all duration-300 rounded-xl font-medium">
+          <a href="/login" class="px-6 py-3 border-2 border-primary text-primary hover:bg-primary hover:text-white transition-all duration-300 rounded-xl font-medium">
             Login
           </a>
-          <a href="/register" class="px-6 py-3 bg-primary text-on-primary hover:bg-primary-container transition-all duration-300 rounded-xl font-medium shadow-[0px_4px_20px_rgba(0,35,102,0.15)]">
+          <a href="/register" class="px-6 py-3 bg-primary text-white hover:bg-pink-600 transition-all duration-300 rounded-xl font-medium material-shadow">
             Sign Up Free
           </a>
         </div>
@@ -70,8 +70,8 @@
       <!-- Logged in -->
       <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-4">
         <div>
-          <h1 class="text-headline-lg font-headline-lg text-primary mb-1">Your Matches</h1>
-          <p class="text-on-surface-variant text-sm">
+          <h1 class="text-3xl font-bold text-gray-800 font-['Playfair_Display'] mb-1">Your Matches</h1>
+          <p class="text-gray-600 text-sm">
             <% if (currentUser && currentUser.profileCompletenessTier === 'B') { %>
               <span class="text-amber-600 font-medium">Complete your profile to improve match accuracy.</span>
             <% } else { %>
@@ -80,8 +80,8 @@
           </p>
         </div>
         <div class="flex items-center gap-2">
-          <label class="text-sm text-on-surface-variant whitespace-nowrap">Sort by:</label>
-          <select id="matchesSortSelect" class="text-sm border border-outline-variant rounded-lg px-3 py-1.5 bg-surface-white text-on-surface focus:border-primary focus:outline-none" onchange="window.location.href='/matches?sortBy='+this.value">
+          <label class="text-sm text-gray-600 whitespace-nowrap">Sort by:</label>
+          <select id="matchesSortSelect" class="text-sm border border-gray-300 rounded-lg px-3 py-1.5 bg-white" onchange="window.location.href='/matches?sortBy='+this.value">
             <option value="top-matches" <%= (!sortBy || sortBy === 'top-matches') ? 'selected' : '' %>>Top Matches</option>
             <option value="newly-created" <%= sortBy === 'newly-created' ? 'selected' : '' %>>Newly Created</option>
             <option value="random" <%= sortBy === 'random' ? 'selected' : '' %>>Random</option>
@@ -111,7 +111,7 @@
         <% matches.forEach(match => { %>
         <% const profile = match.viewee; %>
         <a href="/profiles/<%= profile.profileSlug || profile._id %>" 
-           class="flex items-center gap-4 bg-surface-white rounded-xl p-4 border border-outline-variant/30 shadow-[0px_4px_20px_rgba(0,35,102,0.05)] hover:shadow-[0px_8px_28px_rgba(0,35,102,0.12)] transition-all duration-300">
+           class="flex items-center gap-4 bg-white rounded-2xl p-4 material-shadow hover:shadow-lg transition-all duration-300">
           <!-- Score Circle -->
           <% 
             const score = match.finalScore;
@@ -124,17 +124,17 @@
           </div>
 
           <!-- Avatar -->
-          <div class="w-16 h-16 rounded-full overflow-hidden flex-shrink-0 bg-surface-container-low">
+          <div class="w-16 h-16 rounded-full overflow-hidden flex-shrink-0 bg-gray-100">
             <img src="https://ui-avatars.com/api/?name=<%= encodeURIComponent(profile.name || profile.username) %>&background=<%= profile.gender === 'male' ? '0077be' : 'e91e63' %>&color=fff&size=64&format=png" 
                  alt="<%= profile.name || profile.username %>" class="w-full h-full object-cover" loading="lazy">
           </div>
 
           <!-- Info -->
           <div class="flex-1 min-w-0">
-            <h3 class="text-lg font-semibold text-on-surface truncate">
+            <h3 class="text-lg font-semibold text-gray-900 truncate">
               <%= profile.username %>
             </h3>
-            <div class="flex items-center text-on-surface-variant text-sm gap-3 mt-1">
+            <div class="flex items-center text-gray-500 text-sm gap-3 mt-1">
               <% if (profile.city) { %>
                 <span class="flex items-center gap-1"><i class="ri-map-pin-line"></i> <%= profile.city %></span>
               <% } %>
@@ -147,7 +147,7 @@
             </div>
           </div>
 
-          <div class="flex-shrink-0 text-outline">
+          <div class="flex-shrink-0 text-gray-400">
             <i class="ri-arrow-right-s-line text-2xl"></i>
           </div>
         </a>
@@ -158,7 +158,7 @@
       <% if (totalPages > 1) { %>
       <div class="flex justify-center items-center gap-2 sm:gap-4 mt-12 overflow-x-auto pb-2">
         <% if (page > 1) { %>
-        <a href="/matches?page=<%= page - 1 %>&sortBy=<%= sortBy %>" class="flex items-center gap-1 sm:gap-2 px-2 sm:px-4 py-2 border border-outline-variant rounded-lg text-on-surface-variant hover:border-primary hover:text-primary transition-all duration-300 whitespace-nowrap flex-shrink-0">
+        <a href="/matches?page=<%= page - 1 %>&sortBy=<%= sortBy %>" class="flex items-center gap-1 sm:gap-2 px-2 sm:px-4 py-2 border border-gray-300 rounded-button text-gray-600 hover:border-primary hover:text-primary transition-all duration-300 whitespace-nowrap flex-shrink-0">
           <i class="ri-arrow-left-line"></i>
           <span class="hidden sm:inline">Prev</span>
         </a>
@@ -167,15 +167,15 @@
         <div class="flex items-center gap-1 sm:gap-2 flex-shrink-0">
           <% for (let i = Math.max(1, page - 2); i <= Math.min(totalPages, page + 2); i++) { %>
           <% if (i === page) { %>
-          <span class="w-10 h-10 flex items-center justify-center bg-primary text-on-primary rounded-lg"><%= i %></span>
+          <span class="w-10 h-10 flex items-center justify-center bg-primary text-white rounded-button"><%= i %></span>
           <% } else { %>
-          <a href="/matches?page=<%= i %>&sortBy=<%= sortBy %>" class="w-10 h-10 flex items-center justify-center border border-outline-variant rounded-lg text-on-surface-variant hover:border-primary hover:text-primary transition-all duration-300"><%= i %></a>
+          <a href="/matches?page=<%= i %>&sortBy=<%= sortBy %>" class="w-10 h-10 flex items-center justify-center border border-gray-300 rounded-button text-gray-600 hover:border-primary hover:text-primary transition-all duration-300"><%= i %></a>
           <% } %>
           <% } %>
         </div>
 
         <% if (page < totalPages) { %>
-        <a href="/matches?page=<%= page + 1 %>&sortBy=<%= sortBy %>" class="flex items-center gap-1 sm:gap-2 px-2 sm:px-4 py-2 border border-outline-variant rounded-lg text-on-surface-variant hover:border-primary hover:text-primary transition-all duration-300 whitespace-nowrap flex-shrink-0">
+        <a href="/matches?page=<%= page + 1 %>&sortBy=<%= sortBy %>" class="flex items-center gap-1 sm:gap-2 px-2 sm:px-4 py-2 border border-gray-300 rounded-button text-gray-600 hover:border-primary hover:text-primary transition-all duration-300 whitespace-nowrap flex-shrink-0">
           <span class="hidden sm:inline">Next</span>
           <span class="sm:hidden">Next</span>
           <i class="ri-arrow-right-line"></i>
@@ -187,18 +187,18 @@
       <% } else { %>
       <!-- No matches yet -->
       <div class="text-center py-16">
-        <div class="w-20 h-20 bg-surface-container-low rounded-full flex items-center justify-center mx-auto mb-6">
-          <i class="ri-user-search-line text-4xl text-outline"></i>
+        <div class="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
+          <i class="ri-user-search-line text-4xl text-gray-400"></i>
         </div>
-        <h3 class="text-headline-md font-headline-md text-on-surface mb-2">No matches yet</h3>
-        <p class="text-on-surface-variant mb-6">
+        <h3 class="text-xl font-semibold text-gray-600 mb-2">No matches yet</h3>
+        <p class="text-gray-500 mb-6">
           <% if (currentUser && !currentUser.isApproved) { %>
             Your profile is pending approval. Matches will appear once your profile is approved.
           <% } else { %>
             We're computing your matches. Check back soon, or browse profiles to find your match manually.
           <% } %>
         </p>
-        <a href="/profiles" class="inline-block px-6 py-3 bg-primary text-on-primary hover:bg-primary-container rounded-xl font-medium shadow-[0px_4px_20px_rgba(0,35,102,0.15)] transition-all duration-300">
+        <a href="/profiles" class="inline-block px-6 py-3 bg-primary text-white hover:bg-pink-600 rounded-xl font-medium material-shadow transition-all duration-300">
           Browse All Profiles
         </a>
       </div>
