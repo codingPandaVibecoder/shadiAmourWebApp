@@ -99,7 +99,7 @@ const globalSeoSettingsSchema = new mongoose.Schema({
   // Homepage SEO
   homepageMetaTitle: {
     type: String,
-    maxlength: 60,
+    maxlength: 80,
   },
   homepageMetaDescription: {
     type: String,

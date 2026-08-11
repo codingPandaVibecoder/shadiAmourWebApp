@@ -2,33 +2,41 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Account FAQs - shadiamour | Help & Support</title>
-  <meta name="description" content="Frequently asked questions about shadiamour accounts. Learn about sending requests, chatting, profile management, and how our Muslim matrimony platform works.">
-  <meta name="keywords" content="shadiamour FAQ, account help, matrimony questions, profile management, how to send requests, Muslim marriage platform help">
-  
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Account FAQs | shadiAmour Help Centre</title>
+
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="Find answers to common questions about creating, managing, and securing your shadiAmour account." />
+  <meta name="keywords" content="shadiamour FAQ, account help, matrimony questions, profile management, how to send requests, Muslim marriage platform help" />
+  <link rel="canonical" href="https://shadiamour.com/account-faqs" />
+
   <!-- Open Graph / Social Media -->
-  <meta property="og:title" content="Account FAQs - shadiamour">
-  <meta property="og:description" content="Get answers to common questions about your shadiamour account, requests, chatting, and profile management.">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://shadiamour.com/account-faqs">
+  <meta property="og:title" content="Account FAQs | shadiAmour Help Centre" />
+  <meta property="og:description" content="Find answers to common questions about creating, managing, and securing your shadiAmour account." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://shadiamour.com/account-faqs" />
 
-  <!-- Tailwind CSS -->
-  <link rel="stylesheet" href="/css/output.css">
-  <!-- Remix Icons -->
-  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+  <!-- Favicons -->
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+  <link rel="manifest" href="/images/site.webmanifest">
+  <meta name="theme-color" content="#00113a">
 
-  <!-- Custom CSS -->
-  <link rel="stylesheet" href="/css/style.css">
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="/css/output.css" />
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css"></noscript>
 
   <style>
     .faq-item {
       cursor: pointer;
-      transition: all 0.3s ease;
+      transition: background-color 0.3s ease;
     }
     .faq-item:hover {
-      background-color: #f9fafb;
+      background-color: #f4f3f9;
     }
     .faq-answer {
       max-height: 0;
@@ -46,11 +54,19 @@
       transition: transform 0.3s ease;
     }
     .category-tab {
+      background-color: #ffffff;
+      color: #444650;
+      border: 1px solid #c5c6d2;
       transition: all 0.2s ease;
     }
+    .category-tab:hover {
+      border-color: #002366;
+      color: #002366;
+    }
     .category-tab.active {
-      background-color: #4a7c59;
-      color: white;
+      background-color: #00113a;
+      color: #ffffff;
+      border-color: #00113a;
     }
   </style>
   <%- include('partials/clarity') %>
@@ -58,516 +74,225 @@
   <%- include('partials/analytics') %>
 </head>
 
-<body class="bg-gray-50 font-['Roboto']">
+<body class="bg-background text-on-background font-body-md antialiased flex flex-col min-h-screen">
   <%- include('partials/header') %>
 
-  <main class="pt-24 pb-16 min-h-screen">
-    <div class="max-w-4xl mx-auto px-6">
-      <!-- Header Section -->
-      <div class="text-center mb-8">
-        <h1 class="text-4xl font-bold text-gray-900 mb-4 font-['Playfair_Display']">Account FAQs</h1>
-        <p class="text-gray-600 text-lg">Frequently Asked Questions About Your Account</p>
-        <p class="text-gray-500 mt-2">Find answers to common questions about using shadiamour</p>
+  <main class="flex-grow pt-[92px]">
+    <!-- Hero -->
+    <section class="py-section-padding px-margin-x max-w-container-max mx-auto text-center flex flex-col items-center">
+      <div class="inline-flex items-center gap-2 px-4 py-1.5 bg-secondary-container/20 border border-secondary-container/40 rounded-full text-secondary font-label-md text-sm font-medium mb-6">
+        <i class="ri-questionnaire-line"></i>
+        <span>Help Centre</span>
       </div>
+      <h1 class="text-display-lg-mobile md:text-display-lg font-display-lg-mobile md:font-display-lg text-primary mb-6 leading-tight">
+        Account FAQs
+      </h1>
+      <p class="text-body-lg font-body-lg text-on-surface-variant max-w-2xl mx-auto">
+        Find answers to common questions about creating, managing, and securing your shadiAmour account.
+      </p>
+    </section>
 
-      <!-- Quick Help Box -->
-      <div class="bg-gradient-to-r from-[#4a7c59] to-[#2d5a3a] rounded-2xl p-6 text-white mb-8 shadow-lg">
-        <div class="flex items-center justify-between flex-wrap gap-4">
-          <div>
-            <h2 class="text-xl font-semibold mb-1">Can't find what you're looking for?</h2>
-            <p class="text-white/80">Our support team is here to help you</p>
+    <section class="px-margin-x max-w-container-max mx-auto pb-section-padding">
+      <div class="max-w-4xl mx-auto">
+        <!-- Quick Help Box -->
+        <div class="bg-primary rounded-xl border border-primary-container shadow-[0px_4px_20px_rgba(0,35,102,0.15)] p-6 text-on-primary mb-8">
+          <div class="flex items-center justify-between flex-wrap gap-4">
+            <div>
+              <h2 class="text-headline-md font-headline-md text-on-primary mb-1">Can't find what you're looking for?</h2>
+              <p class="text-on-primary/80">Our support team is here to help you</p>
+            </div>
+            <a href="mailto:contact@shadiamour.com" class="inline-flex items-center px-5 py-2.5 bg-on-primary text-primary rounded-full font-medium hover:bg-secondary-container transition-colors">
+              <i class="ri-mail-line mr-2"></i>
+              Contact Support
+            </a>
           </div>
-          <a href="mailto:contact@shadiamour.com" class="inline-flex items-center px-5 py-2.5 bg-white text-[#4a7c59] rounded-full font-medium hover:bg-gray-100 transition-colors">
-            <i class="ri-mail-line mr-2"></i>
-            Contact Support
-          </a>
         </div>
-      </div>
 
-      <!-- Category Tabs -->
-      <div class="flex flex-wrap gap-2 mb-6">
-        <button onclick="showCategory('all')" class="category-tab active px-4 py-2 rounded-full text-sm font-medium bg-gray-200 text-gray-700">
-          All Questions
-        </button>
-        <button onclick="showCategory('getting-started')" class="category-tab px-4 py-2 rounded-full text-sm font-medium bg-gray-200 text-gray-700">
-          <i class="ri-play-circle-line mr-1"></i>
-          Getting Started
-        </button>
-        <button onclick="showCategory('requests')" class="category-tab px-4 py-2 rounded-full text-sm font-medium bg-gray-200 text-gray-700">
-          <i class="ri-send-plane-line mr-1"></i>
-          Requests
-        </button>
-        <button onclick="showCategory('chatting')" class="category-tab px-4 py-2 rounded-full text-sm font-medium bg-gray-200 text-gray-700">
-          <i class="ri-chat-3-line mr-1"></i>
-          Chatting
-        </button>
-        <button onclick="showCategory('profile')" class="category-tab px-4 py-2 rounded-full text-sm font-medium bg-gray-200 text-gray-700">
-          <i class="ri-user-settings-line mr-1"></i>
-          Profile
-        </button>
-        <button onclick="showCategory('membership')" class="category-tab px-4 py-2 rounded-full text-sm font-medium bg-gray-200 text-gray-700">
-          <i class="ri-vip-crown-line mr-1"></i>
-          Membership
-        </button>
-      </div>
+        <!-- Category Tabs -->
+        <div class="flex flex-wrap gap-2 mb-6">
+          <button onclick="showCategory('all')" class="category-tab active px-4 py-2 rounded-full text-sm font-medium">
+            All Questions
+          </button>
+          <button onclick="showCategory('getting-started')" class="category-tab px-4 py-2 rounded-full text-sm font-medium">
+            <i class="ri-rocket-line mr-1"></i>
+            Getting Started
+          </button>
+          <button onclick="showCategory('profile')" class="category-tab px-4 py-2 rounded-full text-sm font-medium">
+            <i class="ri-user-settings-line mr-1"></i>
+            Profile &amp; Privacy
+          </button>
+          <button onclick="showCategory('membership')" class="category-tab px-4 py-2 rounded-full text-sm font-medium">
+            <i class="ri-vip-crown-line mr-1"></i>
+            Membership &amp; Billing
+          </button>
+          <button onclick="showCategory('safety')" class="category-tab px-4 py-2 rounded-full text-sm font-medium">
+            <i class="ri-shield-check-line mr-1"></i>
+            Safety &amp; Support
+          </button>
+        </div>
 
       <!-- Main Content -->
-      <div class="bg-white rounded-2xl material-shadow overflow-hidden">
+      <div class="bg-surface-white rounded-xl border border-outline-variant/30 shadow-[0px_4px_20px_rgba(0,35,102,0.05)] overflow-hidden">
         
         <!-- GETTING STARTED SECTION -->
-        <div class="p-6 border-b border-gray-100">
-          <h2 class="text-xl font-bold text-gray-900 font-['Playfair_Display'] flex items-center">
-            <i class="ri-play-circle-fill text-[#4a7c59] mr-2"></i>
+        <div class="faq-section-header p-6 border-b border-outline-variant/30 bg-surface-container-low">
+          <h2 class="text-headline-md font-headline-md text-primary flex items-center">
+            <i class="ri-rocket-line text-premium-gold mr-2"></i>
             Getting Started
           </h2>
         </div>
 
-        <div class="divide-y divide-gray-100" data-category="getting-started">
+        <div class="divide-y divide-outline-variant/30" data-category="getting-started">
           <!-- FAQ Item 1 -->
           <div class="faq-item p-6" onclick="toggleFaq(this)">
             <div class="flex items-start justify-between">
-              <h3 class="text-lg font-medium text-gray-900 pr-4">How do I create an account on shadiamour?</h3>
-              <i class="ri-arrow-down-s-line faq-icon text-gray-400 text-xl flex-shrink-0"></i>
+              <h3 class="text-body-lg font-body-lg font-medium text-on-surface pr-4">How do I create an account?</h3>
+              <i class="ri-arrow-down-s-line faq-icon text-outline text-xl flex-shrink-0"></i>
             </div>
-            <div class="faq-answer text-gray-600">
-              <p class="mb-3">Creating an account is simple and free:</p>
-              <ol class="list-decimal list-inside space-y-2 ml-2">
-                <li>Click on <strong>"Register"</strong> in the navigation menu</li>
-                <li>Enter your email address and create a password</li>
-                <li>Verify your email with the code sent to you</li>
-                <li>Complete your profile with accurate information about yourself or your child</li>
-                <li>Add a profile photo (optional but recommended)</li>
-                <li>Your profile will be reviewed and approved by our team</li>
-              </ol>
-              <p class="mt-3 text-sm text-gray-500">
-                <i class="ri-information-line mr-1"></i>
-                Note: Profiles are created by parents/guardians on behalf of their children seeking marriage.
-              </p>
+            <div class="faq-answer text-on-surface-variant">
+              <p>Click "Sign Up," enter your details, and complete your profile. It takes about 2 minutes. Your profile is then manually reviewed by our team before it goes live.</p>
             </div>
           </div>
 
           <!-- FAQ Item 2 -->
           <div class="faq-item p-6" onclick="toggleFaq(this)">
             <div class="flex items-start justify-between">
-              <h3 class="text-lg font-medium text-gray-900 pr-4">Do I need to log in to view profiles?</h3>
-              <i class="ri-arrow-down-s-line faq-icon text-gray-400 text-xl flex-shrink-0"></i>
+              <h3 class="text-body-lg font-body-lg font-medium text-on-surface pr-4">How long does profile verification take?</h3>
+              <i class="ri-arrow-down-s-line faq-icon text-outline text-xl flex-shrink-0"></i>
             </div>
-            <div class="faq-answer text-gray-600">
-              <p class="mb-3">You can browse profiles without logging in, but to interact with them, you'll need an account:</p>
-              <ul class="list-disc list-inside space-y-2 ml-2">
-                <li><strong>Without login:</strong> View basic profile information and photos</li>
-                <li><strong>With login:</strong> Send interest requests, chat with matches, and access full profile details</li>
-              </ul>
-              <p class="mt-3">We recommend creating an account to get the full experience of our platform.</p>
-            </div>
-          </div>
-
-          <!-- FAQ Item 3 -->
-          <div class="faq-item p-6" onclick="toggleFaq(this)">
-            <div class="flex items-start justify-between">
-              <h3 class="text-lg font-medium text-gray-900 pr-4">Is my profile visible to everyone immediately after registration?</h3>
-              <i class="ri-arrow-down-s-line faq-icon text-gray-400 text-xl flex-shrink-0"></i>
-            </div>
-            <div class="faq-answer text-gray-600">
-              <p class="mb-3">No, your profile goes through an approval process:</p>
-              <ol class="list-decimal list-inside space-y-2 ml-2">
-                <li>After completing registration, your profile is submitted for review</li>
-                <li>Our team verifies the information for authenticity and appropriateness</li>
-                <li>Once approved, your profile becomes visible to other users</li>
-                <li>You'll receive an email notification when your profile is approved</li>
-              </ol>
-              <p class="mt-3 text-sm text-gray-500">
-                This process typically takes 24-48 hours and helps maintain the quality and safety of our community.
-              </p>
+            <div class="faq-answer text-on-surface-variant">
+              <p>Most profiles are reviewed within 24-48 hours. You'll receive an email once your profile is approved.</p>
             </div>
           </div>
         </div>
 
-        <!-- REQUESTS SECTION -->
-        <div class="p-6 border-b border-t border-gray-100 bg-gray-50">
-          <h2 class="text-xl font-bold text-gray-900 font-['Playfair_Display'] flex items-center">
-            <i class="ri-send-plane-fill text-[#4a7c59] mr-2"></i>
-            Sending & Receiving Requests
+        <!-- PROFILE & PRIVACY SECTION -->
+        <div class="faq-section-header p-6 border-b border-t border-outline-variant/30 bg-surface-container-low">
+          <h2 class="text-headline-md font-headline-md text-primary flex items-center">
+            <i class="ri-user-settings-line text-premium-gold mr-2"></i>
+            Profile &amp; Privacy
           </h2>
         </div>
 
-        <div class="divide-y divide-gray-100" data-category="requests">
-          <!-- FAQ Item 4 -->
+        <div class="divide-y divide-outline-variant/30" data-category="profile">
+          <!-- FAQ Item: edit profile -->
           <div class="faq-item p-6" onclick="toggleFaq(this)">
             <div class="flex items-start justify-between">
-              <h3 class="text-lg font-medium text-gray-900 pr-4">How do I send an interest request to someone?</h3>
-              <i class="ri-arrow-down-s-line faq-icon text-gray-400 text-xl flex-shrink-0"></i>
+              <h3 class="text-body-lg font-body-lg font-medium text-on-surface pr-4">Can I edit my profile after it's approved?</h3>
+              <i class="ri-arrow-down-s-line faq-icon text-outline text-xl flex-shrink-0"></i>
             </div>
-            <div class="faq-answer text-gray-600">
-              <p class="mb-3">To send an interest request:</p>
-              <ol class="list-decimal list-inside space-y-2 ml-2">
-                <li>Log in to your account</li>
-                <li>Browse profiles or use filters to find potential matches</li>
-                <li>Visit the profile you're interested in</li>
-                <li>Click the <strong>"Send Interest"</strong> or <strong>"Express Interest"</strong> button</li>
-                <li>Your request will be sent, and the other person will be notified</li>
-              </ol>
-              <div class="mt-4 p-3 bg-amber-50 rounded-lg">
-                <p class="text-amber-800 text-sm">
-                  <i class="ri-alert-line mr-1"></i>
-                  <strong>Important:</strong> You can only have up to <strong>5 pending requests</strong> at any time. Wait for responses or cancel existing requests to send new ones.
-                </p>
-              </div>
+            <div class="faq-answer text-on-surface-variant">
+              <p>Yes, you can update your profile at any time from your account settings. Significant changes may be re-reviewed by our team.</p>
             </div>
           </div>
 
-          <!-- FAQ Item 5 -->
+          <!-- FAQ Item: parent/guardian -->
           <div class="faq-item p-6" onclick="toggleFaq(this)">
             <div class="flex items-start justify-between">
-              <h3 class="text-lg font-medium text-gray-900 pr-4">What information is shared when I send a request?</h3>
-              <i class="ri-arrow-down-s-line faq-icon text-gray-400 text-xl flex-shrink-0"></i>
+              <h3 class="text-body-lg font-body-lg font-medium text-on-surface pr-4">Can my parent or guardian manage my profile?</h3>
+              <i class="ri-arrow-down-s-line faq-icon text-outline text-xl flex-shrink-0"></i>
             </div>
-            <div class="faq-answer text-gray-600">
-              <p class="mb-3">When you send an interest request, the receiver can see:</p>
-              <ul class="list-disc list-inside space-y-2 ml-2">
-                <li>Your profile information (name, age, education, occupation, etc.)</li>
-                <li>Your profile photo (if uploaded)</li>
-                <li>Your location and other profile details</li>
-              </ul>
-              <div class="mt-4 p-3 bg-green-50 rounded-lg">
-                <p class="text-green-800 text-sm">
-                  <i class="ri-shield-check-line mr-1"></i>
-                  <strong>Privacy Protected:</strong> Your phone number and personal contact details are <strong>NOT shared</strong> with the request. Contact information is only shared after mutual acceptance.
-                </p>
-              </div>
+            <div class="faq-answer text-on-surface-variant">
+              <p>Yes. shadiAmour supports family involvement — a parent, guardian, or sibling can create or help manage a profile with the individual's knowledge and consent.</p>
             </div>
           </div>
 
-          <!-- FAQ Item 6 -->
+          <!-- FAQ Item: control visibility -->
           <div class="faq-item p-6" onclick="toggleFaq(this)">
             <div class="flex items-start justify-between">
-              <h3 class="text-lg font-medium text-gray-900 pr-4">What happens when someone accepts my request?</h3>
-              <i class="ri-arrow-down-s-line faq-icon text-gray-400 text-xl flex-shrink-0"></i>
+              <h3 class="text-body-lg font-body-lg font-medium text-on-surface pr-4">How do I control who sees my profile?</h3>
+              <i class="ri-arrow-down-s-line faq-icon text-outline text-xl flex-shrink-0"></i>
             </div>
-            <div class="faq-answer text-gray-600">
-              <p class="mb-3">When your request is accepted:</p>
-              <ol class="list-decimal list-inside space-y-2 ml-2">
-                <li>You'll receive a notification that your request was accepted</li>
-                <li>The other person's profile information is shared back with you</li>
-                <li>A chat conversation is automatically created between you</li>
-                <li>Both parties can now message each other directly on the platform</li>
-                <li>You can view each other's full profile details</li>
-              </ol>
-              <p class="mt-3 text-gray-500 text-sm">
-                This mutual acceptance ensures that both parties are interested before any communication begins.
-              </p>
+            <div class="faq-answer text-on-surface-variant">
+              <p>Your privacy settings let you control profile visibility and what information (like photos or contact details) is shared, and with whom.</p>
             </div>
           </div>
 
-          <!-- FAQ Item 7 -->
+          <!-- FAQ Item: delete account -->
           <div class="faq-item p-6" onclick="toggleFaq(this)">
             <div class="flex items-start justify-between">
-              <h3 class="text-lg font-medium text-gray-900 pr-4">Can I cancel a pending request?</h3>
-              <i class="ri-arrow-down-s-line faq-icon text-gray-400 text-xl flex-shrink-0"></i>
+              <h3 class="text-body-lg font-body-lg font-medium text-on-surface pr-4">How do I delete my account?</h3>
+              <i class="ri-arrow-down-s-line faq-icon text-outline text-xl flex-shrink-0"></i>
             </div>
-            <div class="faq-answer text-gray-600">
-              <p class="mb-3">Yes, you can cancel a pending request at any time:</p>
-              <ol class="list-decimal list-inside space-y-2 ml-2">
-                <li>Go to your <strong>"Sent Requests"</strong> section in your account</li>
-                <li>Find the pending request you wish to cancel</li>
-                <li>Click <strong>"Cancel Request"</strong></li>
-                <li>The request will be removed, and the other person will no longer see it</li>
-              </ol>
-              <p class="mt-3">Cancelling a request frees up one of your 5 pending request slots.</p>
+            <div class="faq-answer text-on-surface-variant">
+              <p>Go to Account Settings &gt; Delete Account, or email <a href="mailto:support@shadiamour.com" class="text-primary hover:underline">support@shadiamour.com</a> and we'll process your request in line with our Privacy Policy.</p>
             </div>
           </div>
 
-          <!-- FAQ Item 8 -->
+          <!-- FAQ Item: forgot password -->
           <div class="faq-item p-6" onclick="toggleFaq(this)">
             <div class="flex items-start justify-between">
-              <h3 class="text-lg font-medium text-gray-900 pr-4">Can I revoke access after accepting a request?</h3>
-              <i class="ri-arrow-down-s-line faq-icon text-gray-400 text-xl flex-shrink-0"></i>
+              <h3 class="text-body-lg font-body-lg font-medium text-on-surface pr-4">I forgot my password — what do I do?</h3>
+              <i class="ri-arrow-down-s-line faq-icon text-outline text-xl flex-shrink-0"></i>
             </div>
-            <div class="faq-answer text-gray-600">
-              <p class="mb-3">Yes, you have control over your connections:</p>
-              <ul class="list-disc list-inside space-y-2 ml-2">
-                <li>Go to your <strong>"Accepted Requests"</strong> or <strong>"Connections"</strong> section</li>
-                <li>Find the connection you wish to revoke</li>
-                <li>Click <strong>"Revoke Access"</strong></li>
-                <li>The other person will no longer be able to view your full profile or message you</li>
-              </ul>
-              <p class="mt-3 text-sm text-gray-500">
-                <i class="ri-information-line mr-1"></i>
-                This feature allows you to manage your connections and maintain control over who can contact you.
-              </p>
-            </div>
-          </div>
-
-          <!-- FAQ Item 9 -->
-          <div class="faq-item p-6" onclick="toggleFaq(this)">
-            <div class="flex items-start justify-between">
-              <h3 class="text-lg font-medium text-gray-900 pr-4">Why can I only send 5 pending requests?</h3>
-              <i class="ri-arrow-down-s-line faq-icon text-gray-400 text-xl flex-shrink-0"></i>
-            </div>
-            <div class="faq-answer text-gray-600">
-              <p class="mb-3">The 5-request limit is designed to:</p>
-              <ul class="list-disc list-inside space-y-2 ml-2">
-                <li><strong>Encourage thoughtful engagement:</strong> Focus on profiles you're genuinely interested in</li>
-                <li><strong>Prevent spam:</strong> Protect users from receiving excessive unwanted requests</li>
-                <li><strong>Maintain quality:</strong> Ensure serious users who take time to review profiles</li>
-                <li><strong>Fair experience:</strong> Give everyone equal opportunity to connect</li>
-              </ul>
-              <p class="mt-3">Once a request is accepted, rejected, or cancelled, you can send a new one.</p>
+            <div class="faq-answer text-on-surface-variant">
+              <p>Click "Forgot Password" on the <a href="/login" class="text-primary hover:underline">login page</a> and follow the instructions sent to your registered email.</p>
             </div>
           </div>
         </div>
 
-        <!-- CHATTING SECTION -->
-        <div class="p-6 border-b border-t border-gray-100 bg-gray-50">
-          <h2 class="text-xl font-bold text-gray-900 font-['Playfair_Display'] flex items-center">
-            <i class="ri-chat-3-fill text-[#4a7c59] mr-2"></i>
-            Chatting & Communication
+        <!-- MEMBERSHIP & BILLING SECTION -->
+        <div class="faq-section-header p-6 border-b border-t border-outline-variant/30 bg-surface-container-low">
+          <h2 class="text-headline-md font-headline-md text-primary flex items-center">
+            <i class="ri-vip-crown-line text-premium-gold mr-2"></i>
+            Membership &amp; Billing
           </h2>
         </div>
 
-        <div class="divide-y divide-gray-100" data-category="chatting">
-          <!-- FAQ Item 10 -->
+        <div class="divide-y divide-outline-variant/30" data-category="membership">
+          <!-- FAQ Item: upgrade -->
           <div class="faq-item p-6" onclick="toggleFaq(this)">
             <div class="flex items-start justify-between">
-              <h3 class="text-lg font-medium text-gray-900 pr-4">How do I start chatting with someone?</h3>
-              <i class="ri-arrow-down-s-line faq-icon text-gray-400 text-xl flex-shrink-0"></i>
+              <h3 class="text-body-lg font-body-lg font-medium text-on-surface pr-4">How do I upgrade my plan?</h3>
+              <i class="ri-arrow-down-s-line faq-icon text-outline text-xl flex-shrink-0"></i>
             </div>
-            <div class="faq-answer text-gray-600">
-              <p class="mb-3">To start chatting:</p>
-              <ol class="list-decimal list-inside space-y-2 ml-2">
-                <li>First, one of you must send an interest request</li>
-                <li>The other person must accept the request</li>
-                <li>Once accepted, a chat room is automatically created</li>
-                <li>Go to <strong>"Chats"</strong> or <strong>"Inbox"</strong> in your account</li>
-                <li>Click on the conversation to start messaging</li>
-              </ol>
-              <p class="mt-3 text-sm text-gray-500">
-                <i class="ri-shield-check-line mr-1"></i>
-                You cannot message someone without mutual consent (both parties accepting the connection).
-              </p>
+            <div class="faq-answer text-on-surface-variant">
+              <p>Go to Account Settings &gt; Membership, and select the plan that's right for you. You can also compare all plans on our <a href="/pricing" class="text-primary hover:underline">Pricing</a> page.</p>
             </div>
           </div>
 
-          <!-- FAQ Item 11 -->
+          <!-- FAQ Item: cancel/downgrade -->
           <div class="faq-item p-6" onclick="toggleFaq(this)">
             <div class="flex items-start justify-between">
-              <h3 class="text-lg font-medium text-gray-900 pr-4">Are my chat messages private?</h3>
-              <i class="ri-arrow-down-s-line faq-icon text-gray-400 text-xl flex-shrink-0"></i>
+              <h3 class="text-body-lg font-body-lg font-medium text-on-surface pr-4">How do I cancel or downgrade my plan?</h3>
+              <i class="ri-arrow-down-s-line faq-icon text-outline text-xl flex-shrink-0"></i>
             </div>
-            <div class="faq-answer text-gray-600">
-              <p class="mb-3">Your conversations are private between you and the other person. However:</p>
-              <ul class="list-disc list-inside space-y-2 ml-2">
-                <li>Messages are stored securely on our servers</li>
-                <li>Platform administrators may access chats for safety and moderation purposes</li>
-                <li>This helps us prevent harassment, inappropriate behaviour, and ensure community safety</li>
-              </ul>
-              <p class="mt-3">We take privacy seriously and only review conversations when necessary for safety reasons.</p>
-            </div>
-          </div>
-
-          <!-- FAQ Item 12 -->
-          <div class="faq-item p-6" onclick="toggleFaq(this)">
-            <div class="flex items-start justify-between">
-              <h3 class="text-lg font-medium text-gray-900 pr-4">Will I be notified of new messages?</h3>
-              <i class="ri-arrow-down-s-line faq-icon text-gray-400 text-xl flex-shrink-0"></i>
-            </div>
-            <div class="faq-answer text-gray-600">
-              <p class="mb-3">Yes, we provide notifications to keep you updated:</p>
-              <ul class="list-disc list-inside space-y-2 ml-2">
-                <li><strong>On-site notifications:</strong> You'll see a badge indicator when you have unread messages</li>
-                <li><strong>Email notifications:</strong> If enabled, you'll receive emails about new messages</li>
-                <li>Real-time updates when you're online on the platform</li>
-              </ul>
+            <div class="faq-answer text-on-surface-variant">
+              <p>You can downgrade or cancel from Account Settings &gt; Membership at any time. See our <a href="/refund-policy" class="text-primary hover:underline">Refund Policy</a> for eligibility on refunds.</p>
             </div>
           </div>
         </div>
 
-        <!-- PROFILE SECTION -->
-        <div class="p-6 border-b border-t border-gray-100 bg-gray-50">
-          <h2 class="text-xl font-bold text-gray-900 font-['Playfair_Display'] flex items-center">
-            <i class="ri-user-settings-fill text-[#4a7c59] mr-2"></i>
-            Profile Management
+        <!-- SAFETY & SUPPORT SECTION -->
+        <div class="faq-section-header p-6 border-b border-t border-outline-variant/30 bg-surface-container-low">
+          <h2 class="text-headline-md font-headline-md text-primary flex items-center">
+            <i class="ri-shield-check-line text-premium-gold mr-2"></i>
+            Safety &amp; Support
           </h2>
         </div>
 
-        <div class="divide-y divide-gray-100" data-category="profile">
-          <!-- FAQ Item 13 -->
+        <div class="divide-y divide-outline-variant/30" data-category="safety">
+          <!-- FAQ Item: report -->
           <div class="faq-item p-6" onclick="toggleFaq(this)">
             <div class="flex items-start justify-between">
-              <h3 class="text-lg font-medium text-gray-900 pr-4">How do I update my profile information?</h3>
-              <i class="ri-arrow-down-s-line faq-icon text-gray-400 text-xl flex-shrink-0"></i>
+              <h3 class="text-body-lg font-body-lg font-medium text-on-surface pr-4">How do I report a suspicious or fake profile?</h3>
+              <i class="ri-arrow-down-s-line faq-icon text-outline text-xl flex-shrink-0"></i>
             </div>
-            <div class="faq-answer text-gray-600">
-              <p class="mb-3">Updating your profile is easy:</p>
-              <ol class="list-decimal list-inside space-y-2 ml-2">
-                <li>Log in to your account</li>
-                <li>Go to <strong>"Account"</strong> → <strong>"Profile Info"</strong> or visit <a href="/account/info" class="text-[#4a7c59] hover:underline">/account/info</a></li>
-                <li>Edit any fields you wish to update</li>
-                <li>Click <strong>"Save Changes"</strong></li>
-              </ol>
-              <p class="mt-3 text-sm text-gray-500">
-                Some changes may require re-approval by our team to maintain profile quality.
-              </p>
+            <div class="faq-answer text-on-surface-variant">
+              <p>Use the "Report" button on any profile, or email <a href="mailto:issues@shadiamour.com" class="text-primary hover:underline">issues@shadiamour.com</a> with details.</p>
             </div>
           </div>
 
-          <!-- FAQ Item 14 -->
+          <!-- FAQ Item: who to contact -->
           <div class="faq-item p-6" onclick="toggleFaq(this)">
             <div class="flex items-start justify-between">
-              <h3 class="text-lg font-medium text-gray-900 pr-4">How do I change my profile photo?</h3>
-              <i class="ri-arrow-down-s-line faq-icon text-gray-400 text-xl flex-shrink-0"></i>
+              <h3 class="text-body-lg font-body-lg font-medium text-on-surface pr-4">Who do I contact for help?</h3>
+              <i class="ri-arrow-down-s-line faq-icon text-outline text-xl flex-shrink-0"></i>
             </div>
-            <div class="faq-answer text-gray-600">
-              <p class="mb-3">To change your profile photo:</p>
-              <ol class="list-decimal list-inside space-y-2 ml-2">
-                <li>Go to your account settings page</li>
-                <li>Click on your current profile photo or the upload area</li>
-                <li>Select a new image from your device</li>
-                <li>The photo will be uploaded and optimised automatically</li>
-              </ol>
-              <div class="mt-4 p-3 bg-blue-50 rounded-lg">
-                <p class="text-blue-800 text-sm">
-                  <i class="ri-image-line mr-1"></i>
-                  <strong>Photo Guidelines:</strong> Use a clear, recent photo. Avoid group photos. Ensure the image is appropriate and respectful according to Islamic guidelines.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <!-- FAQ Item 15 -->
-          <div class="faq-item p-6" onclick="toggleFaq(this)">
-            <div class="flex items-start justify-between">
-              <h3 class="text-lg font-medium text-gray-900 pr-4">How do I delete my account?</h3>
-              <i class="ri-arrow-down-s-line faq-icon text-gray-400 text-xl flex-shrink-0"></i>
-            </div>
-            <div class="faq-answer text-gray-600">
-              <p class="mb-3">To permanently delete your account:</p>
-              <ol class="list-decimal list-inside space-y-2 ml-2">
-                <li>Send an email to <a href="mailto:contact@shadiamour.com" class="text-[#4a7c59] hover:underline">contact@shadiamour.com</a></li>
-                <li>Use the subject line: <strong>"Account Deletion Request"</strong></li>
-                <li>Include your registered email address in the message</li>
-                <li>Our team will process your request and confirm deletion</li>
-              </ol>
-              <div class="mt-4 p-3 bg-red-50 rounded-lg">
-                <p class="text-red-800 text-sm">
-                  <i class="ri-alert-line mr-1"></i>
-                  <strong>Warning:</strong> Account deletion is permanent. All your data, conversations, and connections will be removed and cannot be recovered.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <!-- FAQ Item 16 -->
-          <div class="faq-item p-6" onclick="toggleFaq(this)">
-            <div class="flex items-start justify-between">
-              <h3 class="text-lg font-medium text-gray-900 pr-4">I forgot my password. How do I reset it?</h3>
-              <i class="ri-arrow-down-s-line faq-icon text-gray-400 text-xl flex-shrink-0"></i>
-            </div>
-            <div class="faq-answer text-gray-600">
-              <p class="mb-3">To reset your password:</p>
-              <ol class="list-decimal list-inside space-y-2 ml-2">
-                <li>Go to the <a href="/login" class="text-[#4a7c59] hover:underline">login page</a></li>
-                <li>Click on <strong>"Forgot Password?"</strong></li>
-                <li>Enter your registered email address</li>
-                <li>Check your email for a password reset link</li>
-                <li>Click the link and create a new password</li>
-              </ol>
-              <p class="mt-3 text-sm text-gray-500">
-                The reset link expires after a limited time for security purposes. If it expires, simply request another one.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <!-- MEMBERSHIP SECTION -->
-        <div class="p-6 border-b border-t border-gray-100 bg-gray-50">
-          <h2 class="text-xl font-bold text-gray-900 font-['Playfair_Display'] flex items-center">
-            <i class="ri-vip-crown-fill text-[#4a7c59] mr-2"></i>
-            Membership & Pricing
-          </h2>
-        </div>
-
-        <div class="divide-y divide-gray-100" data-category="membership">
-          <!-- FAQ Item 17 -->
-          <div class="faq-item p-6" onclick="toggleFaq(this)">
-            <div class="flex items-start justify-between">
-              <h3 class="text-lg font-medium text-gray-900 pr-4">Is shadiamour free to use?</h3>
-              <i class="ri-arrow-down-s-line faq-icon text-gray-400 text-xl flex-shrink-0"></i>
-            </div>
-            <div class="faq-answer text-gray-600">
-              <p class="mb-3">Yes! Our Standard plan is completely free:</p>
-              <ul class="list-disc list-inside space-y-2 ml-2">
-                <li>Create and manage your profile</li>
-                <li>Browse all profiles on the platform</li>
-                <li>Access WhatsApp groups for additional exposure</li>
-                <li>Send and receive interest requests</li>
-                <li>Chat with accepted connections</li>
-                <li>Phone number included for direct contact</li>
-              </ul>
-              <p class="mt-3">
-                We also offer Premium plans with additional benefits for those seeking a more personalised matchmaking experience. 
-                <a href="/pricing" class="text-[#4a7c59] hover:underline">View our pricing plans</a>
-              </p>
-            </div>
-          </div>
-
-          <!-- FAQ Item 18 -->
-          <div class="faq-item p-6" onclick="toggleFaq(this)">
-            <div class="flex items-start justify-between">
-              <h3 class="text-lg font-medium text-gray-900 pr-4">What are the benefits of Premium membership?</h3>
-              <i class="ri-arrow-down-s-line faq-icon text-gray-400 text-xl flex-shrink-0"></i>
-            </div>
-            <div class="faq-answer text-gray-600">
-              <p class="mb-3">Premium memberships offer enhanced features:</p>
-              <div class="space-y-4 mt-4">
-                <div class="p-3 bg-gray-50 rounded-lg">
-                  <h4 class="font-semibold text-gray-900">Premium (£50 one-time)</h4>
-                  <ul class="list-disc list-inside text-sm mt-2 space-y-1">
-                    <li>Profile shared across 10+ WhatsApp groups</li>
-                    <li>Your number never shared without consent</li>
-                    <li>Receive only verified, preference-matched profiles</li>
-                  </ul>
-                </div>
-                <div class="p-3 bg-gray-50 rounded-lg">
-                  <h4 class="font-semibold text-gray-900">Premium Plus (£100 + £200 on match)</h4>
-                  <ul class="list-disc list-inside text-sm mt-2 space-y-1">
-                    <li>All Premium benefits</li>
-                    <li>1-2 carefully selected profiles every week</li>
-                    <li>Update requirements anytime</li>
-                    <li>Regular updates until your ideal match is found</li>
-                  </ul>
-                </div>
-                <div class="p-3 bg-gray-50 rounded-lg">
-                  <h4 class="font-semibold text-gray-900">Executive (£150 + £450 on match)</h4>
-                  <ul class="list-disc list-inside text-sm mt-2 space-y-1">
-                    <li>All Premium Plus benefits</li>
-                    <li>We manage all communication for you</li>
-                    <li>Discreet information gathering on your behalf</li>
-                    <li>Anonymous enquiries handled by our team</li>
-                  </ul>
-                </div>
-              </div>
-              <p class="mt-4">
-                <a href="/pricing" class="text-[#4a7c59] hover:underline font-medium">View detailed pricing →</a>
-              </p>
-            </div>
-          </div>
-
-          <!-- FAQ Item 19 -->
-          <div class="faq-item p-6" onclick="toggleFaq(this)">
-            <div class="flex items-start justify-between">
-              <h3 class="text-lg font-medium text-gray-900 pr-4">What is your refund policy?</h3>
-              <i class="ri-arrow-down-s-line faq-icon text-gray-400 text-xl flex-shrink-0"></i>
-            </div>
-            <div class="faq-answer text-gray-600">
-              <p class="mb-3">We offer a generous refund policy:</p>
-              <ul class="list-disc list-inside space-y-2 ml-2">
-                <li><strong>Within 15 days:</strong> 100% full refund, no questions asked</li>
-                <li><strong>After 15 days:</strong> Refund only if we fail to deliver the committed services</li>
-              </ul>
-              <p class="mt-3">
-                For full details, please read our <a href="/refund-policy" class="text-[#4a7c59] hover:underline">Refund Policy</a>.
-              </p>
+            <div class="faq-answer text-on-surface-variant">
+              <p class="mb-2">General support: <a href="mailto:support@shadiamour.com" class="text-primary hover:underline">support@shadiamour.com</a></p>
+              <p class="mb-2">Bug reports: <a href="mailto:issues@shadiamour.com" class="text-primary hover:underline">issues@shadiamour.com</a></p>
+              <p>Or call us: <a href="tel:+447454516156" class="text-primary hover:underline">+44 7454 516156</a></p>
             </div>
           </div>
         </div>
@@ -575,16 +300,16 @@
       </div>
 
       <!-- Still Have Questions -->
-      <div class="mt-8 bg-white rounded-2xl p-8 material-shadow text-center">
-        <i class="ri-question-answer-line text-4xl text-[#4a7c59] mb-4"></i>
-        <h2 class="text-2xl font-bold text-gray-900 mb-2 font-['Playfair_Display']">Still Have Questions?</h2>
-        <p class="text-gray-600 mb-6">Our support team is ready to help you with any queries</p>
+      <div class="mt-8 bg-surface-white rounded-xl border border-outline-variant/30 shadow-[0px_4px_20px_rgba(0,35,102,0.05)] p-8 text-center">
+        <i class="ri-question-answer-line text-4xl text-premium-gold mb-4"></i>
+        <h2 class="text-headline-md font-headline-md text-primary mb-2">Still Have Questions?</h2>
+        <p class="text-on-surface-variant mb-6">Our support team is ready to help you with any queries</p>
         <div class="flex flex-wrap justify-center gap-4">
-          <a href="mailto:contact@shadiamour.com" class="inline-flex items-center px-6 py-3 bg-[#4a7c59] text-white rounded-full font-medium hover:bg-[#3d6649] transition-colors">
+          <a href="mailto:support@shadiamour.com" class="inline-flex items-center px-6 py-3 bg-primary text-on-primary rounded-full font-medium hover:bg-primary-container transition-colors">
             <i class="ri-mail-line mr-2"></i>
             Email Support
           </a>
-          <a href="/gdpr-faqs" class="inline-flex items-center px-6 py-3 bg-white border border-gray-300 text-gray-700 rounded-full font-medium hover:bg-gray-50 transition-colors">
+          <a href="/gdpr-faqs" class="inline-flex items-center px-6 py-3 bg-neutral-gray border border-outline-variant text-on-surface-variant rounded-full font-medium hover:border-primary hover:text-primary transition-colors">
             <i class="ri-shield-check-line mr-2"></i>
             GDPR FAQs
           </a>
@@ -593,23 +318,24 @@
 
       <!-- Quick Links -->
       <div class="mt-8 text-center">
-        <p class="text-gray-600 mb-4">Related Pages</p>
+        <p class="text-on-surface-variant mb-4">Related Pages</p>
         <div class="flex flex-wrap justify-center gap-4">
-          <a href="/pricing" class="inline-flex items-center px-4 py-2 bg-white rounded-full shadow-sm hover:shadow-md transition-shadow text-gray-700 hover:text-[#4a7c59]">
+          <a href="/pricing" class="inline-flex items-center px-4 py-2 bg-neutral-gray border border-outline-variant rounded-full text-on-surface-variant hover:border-primary hover:text-primary transition-colors">
             <i class="ri-price-tag-3-line mr-2"></i>
             Pricing
           </a>
-          <a href="/refund-policy" class="inline-flex items-center px-4 py-2 bg-white rounded-full shadow-sm hover:shadow-md transition-shadow text-gray-700 hover:text-[#4a7c59]">
+          <a href="/refund-policy" class="inline-flex items-center px-4 py-2 bg-neutral-gray border border-outline-variant rounded-full text-on-surface-variant hover:border-primary hover:text-primary transition-colors">
             <i class="ri-refund-2-line mr-2"></i>
             Refund Policy
           </a>
-          <a href="/code-of-conduct" class="inline-flex items-center px-4 py-2 bg-white rounded-full shadow-sm hover:shadow-md transition-shadow text-gray-700 hover:text-[#4a7c59]">
+          <a href="/code-of-conduct" class="inline-flex items-center px-4 py-2 bg-neutral-gray border border-outline-variant rounded-full text-on-surface-variant hover:border-primary hover:text-primary transition-colors">
             <i class="ri-file-list-3-line mr-2"></i>
             Code of Conduct
           </a>
         </div>
       </div>
-    </div>
+      </div>
+    </section>
   </main>
 
   <%- include('partials/footer') %>
@@ -638,7 +364,7 @@
         document.querySelectorAll('[data-category]').forEach(section => {
           section.style.display = 'block';
         });
-        document.querySelectorAll('.bg-gray-50.border-b').forEach(header => {
+        document.querySelectorAll('.faq-section-header').forEach(header => {
           header.style.display = 'block';
         });
       } else {

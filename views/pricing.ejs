@@ -2,25 +2,33 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pricing & Membership Plans - shadiamour | UK Muslim Matrimony</title>
-  <meta name="description" content="shadiamour membership pricing. Free Standard plan available. Premium plans from £50. 100% money back guarantee. Find your ideal Muslim marriage match with flexible membership options.">
-  <meta name="keywords" content="shadiamour pricing, Muslim matrimony membership, marriage service cost, premium matchmaking, UK Muslim marriage platform, rishta service pricing">
-  
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pricing Plans | shadiAmour Membership Options</title>
+
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="Compare shadiAmour's membership plans — free Standard, Premium, Premium Plus, and Executive — and find the right fit for your halal marriage journey." />
+  <meta name="keywords" content="shadiamour pricing, Muslim matrimony membership, marriage service cost, premium matchmaking, UK Muslim marriage platform, rishta service pricing" />
+  <link rel="canonical" href="https://shadiamour.com/pricing" />
+
   <!-- Open Graph / Social Media -->
-  <meta property="og:title" content="Pricing & Membership Plans - shadiamour">
-  <meta property="og:description" content="Flexible membership options starting from FREE. Premium plans with personalised matchmaking. 100% money back guarantee.">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://shadiamour.com/pricing">
+  <meta property="og:title" content="Pricing Plans | shadiAmour Membership Options" />
+  <meta property="og:description" content="Compare shadiAmour's membership plans — free Standard, Premium, Premium Plus, and Executive — and find the right fit for your halal marriage journey." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://shadiamour.com/pricing" />
 
-  <!-- Tailwind CSS -->
-  <link rel="stylesheet" href="/css/output.css">
-  <!-- Remix Icons -->
-  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+  <!-- Favicons -->
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+  <link rel="manifest" href="/images/site.webmanifest">
+  <meta name="theme-color" content="#00113a">
 
-  <!-- Custom CSS -->
-  <link rel="stylesheet" href="/css/style.css">
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="/css/output.css" />
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css"></noscript>
 
   <!-- FAQ Schema for pricing page -->
   <script type="application/ld+json">
@@ -30,120 +38,64 @@
       "mainEntity": [
         {
           "@type": "Question",
-          "name": "What does 'on match' mean in shadiamour pricing?",
+          "name": "Is there a free trial of paid plans?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "For Premium Plus and Executive plans, you pay an initial fee to join. The 'on match' fee is only charged when we successfully introduce you to someone and both parties agree to proceed with the proposal."
+            "text": "Our Standard plan is free forever — think of it as the way to try the platform before deciding if a paid plan's extra support is right for you."
           }
         },
         {
           "@type": "Question",
-          "name": "Can I upgrade my shadiamour plan later?",
+          "name": "Can I upgrade or downgrade later?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Yes! You can upgrade from any plan at any time. Contact us and we'll help you move to a higher tier and unlock additional features."
+            "text": "Yes, you can change your plan at any time from your account settings."
           }
         },
         {
           "@type": "Question",
-          "name": "How much does Muslim matchmaking cost in the UK?",
+          "name": "Is there a refund if I'm not satisfied?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "shadiamour offers a free Standard plan. Paid plans start from £50 (Premium) for profile sharing across 10+ WhatsApp groups, £100 (Premium Plus) for curated weekly matches, and £150 (Executive) for fully managed matchmaking. All paid plans include a 100% money-back guarantee."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Does shadiamour offer a money-back guarantee?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Yes. shadiamour offers a 100% money-back guarantee within the first 15 days — no questions asked. After that, refunds are available if we fail to deliver the committed services."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Is shadiamour free to use?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Yes, the Standard plan is completely free. You can create a profile, browse all profiles on the website and in WhatsApp groups, and connect directly. Premium features are available from £50."
+            "text": "Yes — see our Refund Policy for the full 15-day money-back guarantee."
           }
         }
       ]
     }
   </script>
 
-  <style>
-    .pricing-card {
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-    .pricing-card:hover {
-      transform: translateY(-8px);
-    }
-    .popular-badge {
-      position: absolute;
-      top: -12px;
-      right: 20px;
-      background: linear-gradient(135deg, #4a7c59 0%, #2d5a3a 100%);
-      color: white;
-      padding: 4px 16px;
-      border-radius: 20px;
-      font-size: 12px;
-      font-weight: 600;
-      box-shadow: 0 4px 6px rgba(74, 124, 89, 0.3);
-    }
-    .price-tag {
-      background: linear-gradient(135deg, #4a7c59 0%, #2d5a3a 100%);
-      color: white;
-      border-radius: 12px;
-      padding: 12px 24px;
-      display: inline-block;
-    }
-    .standard-card {
-      border-top: 4px solid #9ca3af;
-    }
-    .premium-card {
-      border-top: 4px solid #4a7c59;
-    }
-    .premium-plus-card {
-      border-top: 4px solid #d4a373;
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
-    }
-    .executive-card {
-      border-top: 4px solid #8b7355;
-    }
-    .feature-check {
-      color: #4a7c59;
-    }
-    .guarantee-shine {
-      background: linear-gradient(135deg, #fef3c7 0%, #fde68a 50%, #fef3c7 100%);
-    }
-  </style>
   <%- include('partials/clarity') %>
   <%- include('partials/thirdparty') %>
   <%- include('partials/analytics') %>
 </head>
 
-<body class="bg-gray-50 font-['Roboto']">
+<body class="bg-background text-on-background font-body-md antialiased flex flex-col min-h-screen">
   <%- include('partials/header') %>
 
-  <main class="pt-24 pb-16 min-h-screen">
-    <div class="max-w-7xl mx-auto px-6">
-      <!-- Header Section -->
-      <div class="text-center mb-12">
-        <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4 font-['Playfair_Display']">Membership Options</h1>
-        <p class="text-gray-600 text-lg max-w-2xl mx-auto">
-          UK's trusted Muslim marriage platform, striving to find your ideal match, by the will of Allah.
-        </p>
+  <main class="flex-grow pt-[92px]">
+    <!-- Hero -->
+    <section class="py-section-padding px-margin-x max-w-container-max mx-auto text-center flex flex-col items-center">
+      <div class="inline-flex items-center gap-2 px-4 py-1.5 bg-secondary-container/20 border border-secondary-container/40 rounded-full text-secondary font-label-md text-sm font-medium mb-6">
+        <i class="ri-price-tag-3-line"></i>
+        <span>Membership Options</span>
       </div>
+      <h1 class="text-display-lg-mobile md:text-display-lg font-display-lg-mobile md:font-display-lg text-primary mb-6 leading-tight">
+        Pricing Plans
+      </h1>
+      <p class="text-body-lg font-body-lg text-on-surface-variant max-w-2xl mx-auto">
+        Find the plan that fits how much support you want on your journey to naseeb. All paid plans are backed by our 15-day money-back guarantee.
+      </p>
+    </section>
 
+    <section class="px-margin-x max-w-container-max mx-auto pb-section-padding">
       <!-- Money Back Guarantee Banner -->
-      <div class="guarantee-shine rounded-2xl p-6 mb-12 text-center shadow-md border border-yellow-200">
+      <div class="bg-primary rounded-xl border border-primary-container shadow-[0px_4px_20px_rgba(0,35,102,0.15)] p-6 md:p-8 mb-12 text-on-primary">
         <div class="flex flex-col md:flex-row items-center justify-center gap-4">
           <div class="flex items-center">
-            <i class="ri-shield-check-fill text-3xl text-amber-600 mr-3"></i>
+            <i class="ri-shield-check-fill text-4xl text-premium-gold mr-3"></i>
             <div class="text-left">
-              <h3 class="font-bold text-amber-900 text-lg">100% Money Back Guarantee</h3>
-              <p class="text-amber-800 text-sm">Our commitment: real, suitable proposals. If we cannot deliver, we'll return your payment in full.</p>
+              <h3 class="font-bold text-on-primary text-lg">100% Money Back Guarantee</h3>
+              <p class="text-on-primary/80 text-sm">Our commitment: real, suitable proposals. If we cannot deliver, we'll return your payment in full — within 15 days, no questions asked.</p>
             </div>
           </div>
         </div>
@@ -153,152 +105,131 @@
       <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
         
         <!-- Standard Plan -->
-        <div class="pricing-card standard-card bg-white rounded-2xl p-6 shadow-lg relative">
+        <div class="pricing-card bg-surface-white rounded-xl border border-outline-variant/30 shadow-[0px_4px_20px_rgba(0,35,102,0.05)] p-6 relative hover:-translate-y-2 transition-all duration-300">
           <div class="text-center mb-6">
-            <h2 class="text-2xl font-bold text-gray-900 font-['Playfair_Display'] mb-2">Standard</h2>
-            <p class="text-gray-500 text-sm italic">Free if you recommend us to 5 friends/family.</p>
+            <h2 class="text-headline-md font-headline-md text-primary mb-2">Standard</h2>
+            <p class="text-on-surface-variant text-sm">Free — the forever-free way to start</p>
           </div>
-          
-          <div class="space-y-3 mb-6">
-            <div class="flex items-start">
-              <i class="ri-checkbox-circle-fill feature-check text-lg mr-2 mt-0.5"></i>
-              <span class="text-gray-700 text-sm">Create profile on website</span>
-            </div>
-            <div class="flex items-start">
-              <i class="ri-checkbox-circle-fill feature-check text-lg mr-2 mt-0.5"></i>
-              <span class="text-gray-700 text-sm">Access all profiles (website + WhatsApp groups)</span>
-            </div>
-            <div class="flex items-start">
-              <i class="ri-checkbox-circle-fill feature-check text-lg mr-2 mt-0.5"></i>
-              <span class="text-gray-700 text-sm">Request profile share in WhatsApp groups</span>
-            </div>
-            <div class="flex items-start">
-              <i class="ri-checkbox-circle-fill feature-check text-lg mr-2 mt-0.5"></i>
-              <span class="text-gray-700 text-sm">Phone number included for direct contact</span>
-            </div>
-          </div>
-          
+          <ul class="space-y-3 mb-6">
+            <li class="flex items-start">
+              <i class="ri-checkbox-circle-fill text-halal-green text-lg mr-2 mt-0.5"></i>
+              <span class="text-on-surface-variant text-sm">Create your profile</span>
+            </li>
+            <li class="flex items-start">
+              <i class="ri-checkbox-circle-fill text-halal-green text-lg mr-2 mt-0.5"></i>
+              <span class="text-on-surface-variant text-sm">Browse all member profiles on the website and in community WhatsApp groups</span>
+            </li>
+            <li class="flex items-start">
+              <i class="ri-checkbox-circle-fill text-halal-green text-lg mr-2 mt-0.5"></i>
+              <span class="text-on-surface-variant text-sm">Send and receive connection requests</span>
+            </li>
+            <li class="flex items-start">
+              <i class="ri-checkbox-circle-fill text-halal-green text-lg mr-2 mt-0.5"></i>
+              <span class="text-on-surface-variant text-sm">Full access to halal chat once connected</span>
+            </li>
+          </ul>
           <div class="text-center">
-            <div class="price-tag bg-gray-500">
-              <span class="text-2xl font-bold">Free</span>
-            </div>
+            <span class="text-3xl font-extrabold text-primary">Free</span>
           </div>
-          
           <div class="mt-6">
-            <a href="/register" data-track="true" data-event-name="pricing_plan_click" data-category="conversion" data-label="Standard Plan Free" class="block w-full text-center py-3 px-4 bg-gray-100 text-gray-700 rounded-full font-medium hover:bg-gray-200 transition-colors">
+            <a href="/register" data-track="true" data-event-name="pricing_plan_click" data-category="conversion" data-label="Standard Plan Free" class="block w-full text-center py-3 px-4 bg-neutral-gray text-on-surface rounded-xl font-medium border border-outline-variant/30 hover:border-primary hover:text-primary transition-colors">
               Get Started Free
             </a>
           </div>
         </div>
 
         <!-- Premium Plan -->
-        <div class="pricing-card premium-card bg-white rounded-2xl p-6 shadow-lg relative">
+        <div class="pricing-card bg-surface-white rounded-xl border border-outline-variant/30 shadow-[0px_4px_20px_rgba(0,35,102,0.05)] p-6 relative hover:-translate-y-2 transition-all duration-300">
           <div class="text-center mb-6">
-            <h2 class="text-2xl font-bold text-gray-900 font-['Playfair_Display'] mb-2">Premium</h2>
-            <p class="text-[#4a7c59] text-sm font-medium">Standard benefits PLUS</p>
+            <h2 class="text-headline-md font-headline-md text-primary mb-2">Premium</h2>
+            <p class="text-premium-gold text-sm font-medium">Everything in Standard, plus</p>
           </div>
-          
-          <div class="space-y-3 mb-6">
-            <div class="flex items-start">
-              <i class="ri-checkbox-circle-fill feature-check text-lg mr-2 mt-0.5"></i>
-              <span class="text-gray-700 text-sm">Profile shared regularly across all platforms (incl. 10 WhatsApp groups)</span>
-            </div>
-            <div class="flex items-start">
-              <i class="ri-checkbox-circle-fill feature-check text-lg mr-2 mt-0.5"></i>
-              <span class="text-gray-700 text-sm">Your number never shared without consent</span>
-            </div>
-            <div class="flex items-start">
-              <i class="ri-checkbox-circle-fill feature-check text-lg mr-2 mt-0.5"></i>
-              <span class="text-gray-700 text-sm">Receive only fully verified & preference-matched profiles</span>
-            </div>
-          </div>
-          
+          <ul class="space-y-3 mb-6">
+            <li class="flex items-start">
+              <i class="ri-checkbox-circle-fill text-halal-green text-lg mr-2 mt-0.5"></i>
+              <span class="text-on-surface-variant text-sm">1–2 hand-picked, preference-matched profiles delivered weekly</span>
+            </li>
+            <li class="flex items-start">
+              <i class="ri-checkbox-circle-fill text-halal-green text-lg mr-2 mt-0.5"></i>
+              <span class="text-on-surface-variant text-sm">Priority profile visibility</span>
+            </li>
+            <li class="flex items-start">
+              <i class="ri-checkbox-circle-fill text-halal-green text-lg mr-2 mt-0.5"></i>
+              <span class="text-on-surface-variant text-sm">Enhanced privacy controls</span>
+            </li>
+          </ul>
           <div class="text-center">
-            <div class="price-tag">
-              <span class="text-2xl font-bold">£50</span>
-              <span class="text-sm opacity-90 ml-1">one-time</span>
-            </div>
+            <span class="text-3xl font-extrabold text-primary">£50</span>
+            <span class="text-on-surface-variant text-sm ml-1">one-time</span>
           </div>
-          
           <div class="mt-6">
-            <a href="/register" data-track="true" data-event-name="pricing_plan_click" data-category="conversion" data-label="Premium Plan £50" class="block w-full text-center py-3 px-4 bg-[#4a7c59] text-white rounded-full font-medium hover:bg-[#3d6649] transition-colors">
+            <a href="/register" data-track="true" data-event-name="pricing_plan_click" data-category="conversion" data-label="Premium Plan £50" class="block w-full text-center py-3 px-4 bg-primary text-on-primary rounded-xl font-medium hover:bg-primary-container transition-colors">
               Choose Premium
             </a>
           </div>
         </div>
 
         <!-- Premium Plus Plan - MOST POPULAR -->
-        <div class="pricing-card premium-plus-card bg-white rounded-2xl p-6 shadow-xl relative">
-          <div class="popular-badge">
+        <div class="pricing-card bg-surface-white rounded-xl border-2 border-premium-gold shadow-[0px_10px_40px_rgba(197,160,89,0.15)] p-6 relative hover:-translate-y-2 transition-all duration-300">
+          <div class="absolute -top-3 right-5 bg-gradient-to-r from-[#C5A059] to-[#a3843f] text-white px-4 py-1 rounded-full text-xs font-semibold shadow">
             <i class="ri-star-fill mr-1"></i>
             Most Popular
           </div>
-          
           <div class="text-center mb-6">
-            <h2 class="text-2xl font-bold text-gray-900 font-['Playfair_Display'] mb-2">Premium Plus</h2>
-            <p class="text-[#d4a373] text-sm font-medium">Standard + Premium benefits PLUS</p>
+            <h2 class="text-headline-md font-headline-md text-primary mb-2">Premium Plus</h2>
+            <p class="text-premium-gold text-sm font-medium">Everything in Premium, plus</p>
           </div>
-          
-          <div class="space-y-3 mb-6">
-            <div class="flex items-start">
-              <i class="ri-checkbox-circle-fill feature-check text-lg mr-2 mt-0.5"></i>
-              <span class="text-gray-700 text-sm">1-2 carefully selected profiles every week (based on preferences)</span>
-            </div>
-            <div class="flex items-start">
-              <i class="ri-checkbox-circle-fill feature-check text-lg mr-2 mt-0.5"></i>
-              <span class="text-gray-700 text-sm">Update requirements anytime for better accuracy</span>
-            </div>
-            <div class="flex items-start">
-              <i class="ri-checkbox-circle-fill feature-check text-lg mr-2 mt-0.5"></i>
-              <span class="text-gray-700 text-sm">Regular updates & close contact until your ideal proposal is confirmed</span>
-            </div>
-          </div>
-          
+          <ul class="space-y-3 mb-6">
+            <li class="flex items-start">
+              <i class="ri-checkbox-circle-fill text-halal-green text-lg mr-2 mt-0.5"></i>
+              <span class="text-on-surface-variant text-sm">Increased frequency of curated matches</span>
+            </li>
+            <li class="flex items-start">
+              <i class="ri-checkbox-circle-fill text-halal-green text-lg mr-2 mt-0.5"></i>
+              <span class="text-on-surface-variant text-sm">Dedicated matchmaking consultant check-ins</span>
+            </li>
+            <li class="flex items-start">
+              <i class="ri-checkbox-circle-fill text-halal-green text-lg mr-2 mt-0.5"></i>
+              <span class="text-on-surface-variant text-sm">Advanced search and filtering tools</span>
+            </li>
+          </ul>
           <div class="text-center">
-            <div class="price-tag" style="background: linear-gradient(135deg, #d4a373 0%, #b8956a 100%);">
-              <span class="text-2xl font-bold">£100</span>
-              <div class="text-xs opacity-90 mt-1">+ £200 on match</div>
-            </div>
+            <span class="text-3xl font-extrabold text-primary">£100</span>
+            <span class="text-on-surface-variant text-sm ml-1">+ £200 on match</span>
           </div>
-          
           <div class="mt-6">
-            <a href="/register" data-track="true" data-event-name="pricing_plan_click" data-category="conversion" data-label="Premium Plus Plan £100" class="block w-full text-center py-3 px-4 bg-[#d4a373] text-white rounded-full font-medium hover:bg-[#c49363] transition-colors">
+            <a href="/register" data-track="true" data-event-name="pricing_plan_click" data-category="conversion" data-label="Premium Plus Plan £100" class="block w-full text-center py-3 px-4 bg-premium-gold text-white rounded-xl font-medium hover:bg-[#a3843f] transition-colors">
               Choose Premium Plus
             </a>
           </div>
         </div>
 
         <!-- Executive Plan -->
-        <div class="pricing-card executive-card bg-white rounded-2xl p-6 shadow-lg relative">
+        <div class="pricing-card bg-surface-white rounded-xl border border-outline-variant/30 shadow-[0px_4px_20px_rgba(0,35,102,0.05)] p-6 relative hover:-translate-y-2 transition-all duration-300">
           <div class="text-center mb-6">
-            <h2 class="text-2xl font-bold text-gray-900 font-['Playfair_Display'] mb-2">Executive</h2>
-            <p class="text-[#8b7355] text-sm font-medium">Standard + Premium + Premium Plus benefits PLUS</p>
+            <h2 class="text-headline-md font-headline-md text-primary mb-2">Executive</h2>
+            <p class="text-premium-gold text-sm font-medium">Everything in Premium Plus, plus</p>
           </div>
-          
-          <div class="space-y-3 mb-6">
-            <div class="flex items-start">
-              <i class="ri-checkbox-circle-fill feature-check text-lg mr-2 mt-0.5"></i>
-              <span class="text-gray-700 text-sm">We manage all communication with potential matches for you</span>
-            </div>
-            <div class="flex items-start">
-              <i class="ri-checkbox-circle-fill feature-check text-lg mr-2 mt-0.5"></i>
-              <span class="text-gray-700 text-sm">Discreetly obtain any information you wish to know</span>
-            </div>
-            <div class="flex items-start">
-              <i class="ri-checkbox-circle-fill feature-check text-lg mr-2 mt-0.5"></i>
-              <span class="text-gray-700 text-sm">Our team provides details promptly & anonymously, so you can address concerns/questions before proceeding</span>
-            </div>
-          </div>
-          
+          <ul class="space-y-3 mb-6">
+            <li class="flex items-start">
+              <i class="ri-checkbox-circle-fill text-halal-green text-lg mr-2 mt-0.5"></i>
+              <span class="text-on-surface-variant text-sm">Fully managed communication — our team handles enquiries on your behalf</span>
+            </li>
+            <li class="flex items-start">
+              <i class="ri-checkbox-circle-fill text-halal-green text-lg mr-2 mt-0.5"></i>
+              <span class="text-on-surface-variant text-sm">Personalised matchmaking strategy sessions</span>
+            </li>
+            <li class="flex items-start">
+              <i class="ri-checkbox-circle-fill text-halal-green text-lg mr-2 mt-0.5"></i>
+              <span class="text-on-surface-variant text-sm">White-glove support throughout your search</span>
+            </li>
+          </ul>
           <div class="text-center">
-            <div class="price-tag" style="background: linear-gradient(135deg, #8b7355 0%, #6d5a44 100%);">
-              <span class="text-2xl font-bold">£150</span>
-              <div class="text-xs opacity-90 mt-1">+ £450 on match</div>
-            </div>
+            <span class="text-3xl font-extrabold text-primary">£150</span>
+            <span class="text-on-surface-variant text-sm ml-1">+ £450 on match</span>
           </div>
-          
           <div class="mt-6">
-            <a href="/register" data-track="true" data-event-name="pricing_plan_click" data-category="conversion" data-label="Executive Plan £150" class="block w-full text-center py-3 px-4 bg-[#8b7355] text-white rounded-full font-medium hover:bg-[#7a6549] transition-colors">
+            <a href="/register" data-track="true" data-event-name="pricing_plan_click" data-category="conversion" data-label="Executive Plan £150" class="block w-full text-center py-3 px-4 bg-primary text-on-primary rounded-xl font-medium hover:bg-primary-container transition-colors">
               Choose Executive
             </a>
           </div>
@@ -307,127 +238,126 @@
 
       <!-- Price Note -->
       <div class="text-center mb-12">
-        <p class="text-gray-500 text-sm">*All fees are listed per person</p>
+        <p class="text-outline text-sm">*All fees are listed per person</p>
       </div>
 
       <!-- Feature Comparison Table -->
-      <div class="bg-white rounded-2xl shadow-lg overflow-hidden mb-12">
-        <div class="p-6 bg-gray-50 border-b">
-          <h2 class="text-2xl font-bold text-gray-900 font-['Playfair_Display'] text-center">
-            <i class="ri-list-check-2 text-[#4a7c59] mr-2"></i>
+      <div class="bg-surface-white rounded-xl border border-outline-variant/30 shadow-[0px_4px_20px_rgba(0,35,102,0.05)] overflow-hidden mb-12">
+        <div class="p-6 bg-surface-container-low border-b border-outline-variant/30">
+          <h2 class="text-headline-md font-headline-md text-primary text-center">
+            <i class="ri-list-check-2 text-premium-gold mr-2"></i>
             Compare All Features
           </h2>
         </div>
-        
         <div class="overflow-x-auto">
           <table class="w-full">
             <thead>
-              <tr class="bg-gray-50">
-                <th class="text-left p-4 font-semibold text-gray-900">Feature</th>
-                <th class="text-center p-4 font-semibold text-gray-600">Standard</th>
-                <th class="text-center p-4 font-semibold text-[#4a7c59]">Premium</th>
-                <th class="text-center p-4 font-semibold text-[#d4a373]">Premium Plus</th>
-                <th class="text-center p-4 font-semibold text-[#8b7355]">Executive</th>
+              <tr class="bg-surface-container-low">
+                <th class="text-left p-4 font-semibold text-on-surface">Feature</th>
+                <th class="text-center p-4 font-semibold text-on-surface-variant">Standard</th>
+                <th class="text-center p-4 font-semibold text-premium-gold">Premium</th>
+                <th class="text-center p-4 font-semibold text-[#a3843f]">Premium Plus</th>
+                <th class="text-center p-4 font-semibold text-primary-container">Executive</th>
               </tr>
             </thead>
-            <tbody class="divide-y divide-gray-100">
+            <tbody class="divide-y divide-outline-variant/30">
               <tr>
-                <td class="p-4 text-gray-700">Create profile on website</td>
-                <td class="p-4 text-center"><i class="ri-checkbox-circle-fill text-green-500 text-xl"></i></td>
-                <td class="p-4 text-center"><i class="ri-checkbox-circle-fill text-green-500 text-xl"></i></td>
-                <td class="p-4 text-center"><i class="ri-checkbox-circle-fill text-green-500 text-xl"></i></td>
-                <td class="p-4 text-center"><i class="ri-checkbox-circle-fill text-green-500 text-xl"></i></td>
+                <td class="p-4 text-on-surface-variant">Create your profile</td>
+                <td class="p-4 text-center"><i class="ri-checkbox-circle-fill text-halal-green text-xl"></i></td>
+                <td class="p-4 text-center"><i class="ri-checkbox-circle-fill text-halal-green text-xl"></i></td>
+                <td class="p-4 text-center"><i class="ri-checkbox-circle-fill text-halal-green text-xl"></i></td>
+                <td class="p-4 text-center"><i class="ri-checkbox-circle-fill text-halal-green text-xl"></i></td>
               </tr>
-              <tr class="bg-gray-50">
-                <td class="p-4 text-gray-700">Access all profiles</td>
-                <td class="p-4 text-center"><i class="ri-checkbox-circle-fill text-green-500 text-xl"></i></td>
-                <td class="p-4 text-center"><i class="ri-checkbox-circle-fill text-green-500 text-xl"></i></td>
-                <td class="p-4 text-center"><i class="ri-checkbox-circle-fill text-green-500 text-xl"></i></td>
-                <td class="p-4 text-center"><i class="ri-checkbox-circle-fill text-green-500 text-xl"></i></td>
-              </tr>
-              <tr>
-                <td class="p-4 text-gray-700">WhatsApp group access</td>
-                <td class="p-4 text-center"><i class="ri-checkbox-circle-fill text-green-500 text-xl"></i></td>
-                <td class="p-4 text-center"><i class="ri-checkbox-circle-fill text-green-500 text-xl"></i></td>
-                <td class="p-4 text-center"><i class="ri-checkbox-circle-fill text-green-500 text-xl"></i></td>
-                <td class="p-4 text-center"><i class="ri-checkbox-circle-fill text-green-500 text-xl"></i></td>
-              </tr>
-              <tr class="bg-gray-50">
-                <td class="p-4 text-gray-700">Phone number for direct contact</td>
-                <td class="p-4 text-center"><i class="ri-checkbox-circle-fill text-green-500 text-xl"></i></td>
-                <td class="p-4 text-center"><i class="ri-checkbox-circle-fill text-green-500 text-xl"></i></td>
-                <td class="p-4 text-center"><i class="ri-checkbox-circle-fill text-green-500 text-xl"></i></td>
-                <td class="p-4 text-center"><i class="ri-checkbox-circle-fill text-green-500 text-xl"></i></td>
+              <tr class="bg-surface-container-low">
+                <td class="p-4 text-on-surface-variant">Browse all member profiles</td>
+                <td class="p-4 text-center"><i class="ri-checkbox-circle-fill text-halal-green text-xl"></i></td>
+                <td class="p-4 text-center"><i class="ri-checkbox-circle-fill text-halal-green text-xl"></i></td>
+                <td class="p-4 text-center"><i class="ri-checkbox-circle-fill text-halal-green text-xl"></i></td>
+                <td class="p-4 text-center"><i class="ri-checkbox-circle-fill text-halal-green text-xl"></i></td>
               </tr>
               <tr>
-                <td class="p-4 text-gray-700">Profile shared across 10+ WhatsApp groups</td>
-                <td class="p-4 text-center"><i class="ri-close-circle-line text-gray-300 text-xl"></i></td>
-                <td class="p-4 text-center"><i class="ri-checkbox-circle-fill text-green-500 text-xl"></i></td>
-                <td class="p-4 text-center"><i class="ri-checkbox-circle-fill text-green-500 text-xl"></i></td>
-                <td class="p-4 text-center"><i class="ri-checkbox-circle-fill text-green-500 text-xl"></i></td>
+                <td class="p-4 text-on-surface-variant">Send &amp; receive connection requests</td>
+                <td class="p-4 text-center"><i class="ri-checkbox-circle-fill text-halal-green text-xl"></i></td>
+                <td class="p-4 text-center"><i class="ri-checkbox-circle-fill text-halal-green text-xl"></i></td>
+                <td class="p-4 text-center"><i class="ri-checkbox-circle-fill text-halal-green text-xl"></i></td>
+                <td class="p-4 text-center"><i class="ri-checkbox-circle-fill text-halal-green text-xl"></i></td>
               </tr>
-              <tr class="bg-gray-50">
-                <td class="p-4 text-gray-700">Number protected (never shared without consent)</td>
-                <td class="p-4 text-center"><i class="ri-close-circle-line text-gray-300 text-xl"></i></td>
-                <td class="p-4 text-center"><i class="ri-checkbox-circle-fill text-green-500 text-xl"></i></td>
-                <td class="p-4 text-center"><i class="ri-checkbox-circle-fill text-green-500 text-xl"></i></td>
-                <td class="p-4 text-center"><i class="ri-checkbox-circle-fill text-green-500 text-xl"></i></td>
-              </tr>
-              <tr>
-                <td class="p-4 text-gray-700">Verified & preference-matched profiles only</td>
-                <td class="p-4 text-center"><i class="ri-close-circle-line text-gray-300 text-xl"></i></td>
-                <td class="p-4 text-center"><i class="ri-checkbox-circle-fill text-green-500 text-xl"></i></td>
-                <td class="p-4 text-center"><i class="ri-checkbox-circle-fill text-green-500 text-xl"></i></td>
-                <td class="p-4 text-center"><i class="ri-checkbox-circle-fill text-green-500 text-xl"></i></td>
-              </tr>
-              <tr class="bg-gray-50">
-                <td class="p-4 text-gray-700">1-2 curated profiles weekly</td>
-                <td class="p-4 text-center"><i class="ri-close-circle-line text-gray-300 text-xl"></i></td>
-                <td class="p-4 text-center"><i class="ri-close-circle-line text-gray-300 text-xl"></i></td>
-                <td class="p-4 text-center"><i class="ri-checkbox-circle-fill text-green-500 text-xl"></i></td>
-                <td class="p-4 text-center"><i class="ri-checkbox-circle-fill text-green-500 text-xl"></i></td>
+              <tr class="bg-surface-container-low">
+                <td class="p-4 text-on-surface-variant">Full access to halal chat</td>
+                <td class="p-4 text-center"><i class="ri-checkbox-circle-fill text-halal-green text-xl"></i></td>
+                <td class="p-4 text-center"><i class="ri-checkbox-circle-fill text-halal-green text-xl"></i></td>
+                <td class="p-4 text-center"><i class="ri-checkbox-circle-fill text-halal-green text-xl"></i></td>
+                <td class="p-4 text-center"><i class="ri-checkbox-circle-fill text-halal-green text-xl"></i></td>
               </tr>
               <tr>
-                <td class="p-4 text-gray-700">Update requirements anytime</td>
-                <td class="p-4 text-center"><i class="ri-close-circle-line text-gray-300 text-xl"></i></td>
-                <td class="p-4 text-center"><i class="ri-close-circle-line text-gray-300 text-xl"></i></td>
-                <td class="p-4 text-center"><i class="ri-checkbox-circle-fill text-green-500 text-xl"></i></td>
-                <td class="p-4 text-center"><i class="ri-checkbox-circle-fill text-green-500 text-xl"></i></td>
+                <td class="p-4 text-on-surface-variant">1–2 hand-picked profiles weekly</td>
+                <td class="p-4 text-center"><i class="ri-close-circle-line text-outline-variant text-xl"></i></td>
+                <td class="p-4 text-center"><i class="ri-checkbox-circle-fill text-halal-green text-xl"></i></td>
+                <td class="p-4 text-center"><i class="ri-checkbox-circle-fill text-halal-green text-xl"></i></td>
+                <td class="p-4 text-center"><i class="ri-checkbox-circle-fill text-halal-green text-xl"></i></td>
               </tr>
-              <tr class="bg-gray-50">
-                <td class="p-4 text-gray-700">Regular updates & close contact</td>
-                <td class="p-4 text-center"><i class="ri-close-circle-line text-gray-300 text-xl"></i></td>
-                <td class="p-4 text-center"><i class="ri-close-circle-line text-gray-300 text-xl"></i></td>
-                <td class="p-4 text-center"><i class="ri-checkbox-circle-fill text-green-500 text-xl"></i></td>
-                <td class="p-4 text-center"><i class="ri-checkbox-circle-fill text-green-500 text-xl"></i></td>
-              </tr>
-              <tr>
-                <td class="p-4 text-gray-700">We manage all communication for you</td>
-                <td class="p-4 text-center"><i class="ri-close-circle-line text-gray-300 text-xl"></i></td>
-                <td class="p-4 text-center"><i class="ri-close-circle-line text-gray-300 text-xl"></i></td>
-                <td class="p-4 text-center"><i class="ri-close-circle-line text-gray-300 text-xl"></i></td>
-                <td class="p-4 text-center"><i class="ri-checkbox-circle-fill text-green-500 text-xl"></i></td>
-              </tr>
-              <tr class="bg-gray-50">
-                <td class="p-4 text-gray-700">Discreet information gathering</td>
-                <td class="p-4 text-center"><i class="ri-close-circle-line text-gray-300 text-xl"></i></td>
-                <td class="p-4 text-center"><i class="ri-close-circle-line text-gray-300 text-xl"></i></td>
-                <td class="p-4 text-center"><i class="ri-close-circle-line text-gray-300 text-xl"></i></td>
-                <td class="p-4 text-center"><i class="ri-checkbox-circle-fill text-green-500 text-xl"></i></td>
+              <tr class="bg-surface-container-low">
+                <td class="p-4 text-on-surface-variant">Priority profile visibility</td>
+                <td class="p-4 text-center"><i class="ri-close-circle-line text-outline-variant text-xl"></i></td>
+                <td class="p-4 text-center"><i class="ri-checkbox-circle-fill text-halal-green text-xl"></i></td>
+                <td class="p-4 text-center"><i class="ri-checkbox-circle-fill text-halal-green text-xl"></i></td>
+                <td class="p-4 text-center"><i class="ri-checkbox-circle-fill text-halal-green text-xl"></i></td>
               </tr>
               <tr>
-                <td class="p-4 text-gray-700">Anonymous enquiries handled by our team</td>
-                <td class="p-4 text-center"><i class="ri-close-circle-line text-gray-300 text-xl"></i></td>
-                <td class="p-4 text-center"><i class="ri-close-circle-line text-gray-300 text-xl"></i></td>
-                <td class="p-4 text-center"><i class="ri-close-circle-line text-gray-300 text-xl"></i></td>
-                <td class="p-4 text-center"><i class="ri-checkbox-circle-fill text-green-500 text-xl"></i></td>
+                <td class="p-4 text-on-surface-variant">Enhanced privacy controls</td>
+                <td class="p-4 text-center"><i class="ri-close-circle-line text-outline-variant text-xl"></i></td>
+                <td class="p-4 text-center"><i class="ri-checkbox-circle-fill text-halal-green text-xl"></i></td>
+                <td class="p-4 text-center"><i class="ri-checkbox-circle-fill text-halal-green text-xl"></i></td>
+                <td class="p-4 text-center"><i class="ri-checkbox-circle-fill text-halal-green text-xl"></i></td>
               </tr>
-              <tr class="bg-[#4a7c59]/5">
-                <td class="p-4 font-semibold text-gray-900">Price</td>
-                <td class="p-4 text-center font-bold text-gray-600">Free</td>
-                <td class="p-4 text-center font-bold text-[#4a7c59]">£50</td>
-                <td class="p-4 text-center font-bold text-[#d4a373]">£100<br><span class="text-xs font-normal">+£200 on match</span></td>
-                <td class="p-4 text-center font-bold text-[#8b7355]">£150<br><span class="text-xs font-normal">+£450 on match</span></td>
+              <tr class="bg-surface-container-low">
+                <td class="p-4 text-on-surface-variant">Increased frequency of curated matches</td>
+                <td class="p-4 text-center"><i class="ri-close-circle-line text-outline-variant text-xl"></i></td>
+                <td class="p-4 text-center"><i class="ri-close-circle-line text-outline-variant text-xl"></i></td>
+                <td class="p-4 text-center"><i class="ri-checkbox-circle-fill text-halal-green text-xl"></i></td>
+                <td class="p-4 text-center"><i class="ri-checkbox-circle-fill text-halal-green text-xl"></i></td>
+              </tr>
+              <tr>
+                <td class="p-4 text-on-surface-variant">Dedicated consultant check-ins</td>
+                <td class="p-4 text-center"><i class="ri-close-circle-line text-outline-variant text-xl"></i></td>
+                <td class="p-4 text-center"><i class="ri-close-circle-line text-outline-variant text-xl"></i></td>
+                <td class="p-4 text-center"><i class="ri-checkbox-circle-fill text-halal-green text-xl"></i></td>
+                <td class="p-4 text-center"><i class="ri-checkbox-circle-fill text-halal-green text-xl"></i></td>
+              </tr>
+              <tr class="bg-surface-container-low">
+                <td class="p-4 text-on-surface-variant">Advanced search &amp; filtering tools</td>
+                <td class="p-4 text-center"><i class="ri-close-circle-line text-outline-variant text-xl"></i></td>
+                <td class="p-4 text-center"><i class="ri-close-circle-line text-outline-variant text-xl"></i></td>
+                <td class="p-4 text-center"><i class="ri-checkbox-circle-fill text-halal-green text-xl"></i></td>
+                <td class="p-4 text-center"><i class="ri-checkbox-circle-fill text-halal-green text-xl"></i></td>
+              </tr>
+              <tr>
+                <td class="p-4 text-on-surface-variant">Fully managed communication</td>
+                <td class="p-4 text-center"><i class="ri-close-circle-line text-outline-variant text-xl"></i></td>
+                <td class="p-4 text-center"><i class="ri-close-circle-line text-outline-variant text-xl"></i></td>
+                <td class="p-4 text-center"><i class="ri-close-circle-line text-outline-variant text-xl"></i></td>
+                <td class="p-4 text-center"><i class="ri-checkbox-circle-fill text-halal-green text-xl"></i></td>
+              </tr>
+              <tr class="bg-surface-container-low">
+                <td class="p-4 text-on-surface-variant">Personalised strategy sessions</td>
+                <td class="p-4 text-center"><i class="ri-close-circle-line text-outline-variant text-xl"></i></td>
+                <td class="p-4 text-center"><i class="ri-close-circle-line text-outline-variant text-xl"></i></td>
+                <td class="p-4 text-center"><i class="ri-close-circle-line text-outline-variant text-xl"></i></td>
+                <td class="p-4 text-center"><i class="ri-checkbox-circle-fill text-halal-green text-xl"></i></td>
+              </tr>
+              <tr>
+                <td class="p-4 text-on-surface-variant">White-glove support</td>
+                <td class="p-4 text-center"><i class="ri-close-circle-line text-outline-variant text-xl"></i></td>
+                <td class="p-4 text-center"><i class="ri-close-circle-line text-outline-variant text-xl"></i></td>
+                <td class="p-4 text-center"><i class="ri-close-circle-line text-outline-variant text-xl"></i></td>
+                <td class="p-4 text-center"><i class="ri-checkbox-circle-fill text-halal-green text-xl"></i></td>
+              </tr>
+              <tr class="bg-primary-fixed/30">
+                <td class="p-4 font-semibold text-on-surface">Price</td>
+                <td class="p-4 text-center font-bold text-on-surface-variant">Free</td>
+                <td class="p-4 text-center font-bold text-premium-gold">£50</td>
+                <td class="p-4 text-center font-bold text-[#a3843f]">£100<br><span class="text-xs font-normal">+£200 on match</span></td>
+                <td class="p-4 text-center font-bold text-primary-container">£150<br><span class="text-xs font-normal">+£450 on match</span></td>
               </tr>
             </tbody>
           </table>
@@ -435,81 +365,70 @@
       </div>
 
       <!-- Why Choose Us Section -->
-      <div class="bg-white rounded-2xl p-8 shadow-lg mb-12">
-        <h2 class="text-2xl font-bold text-gray-900 font-['Playfair_Display'] text-center mb-8">
-          <i class="ri-heart-line text-[#4a7c59] mr-2"></i>
-          Why Choose shadiamour?
+      <div class="bg-surface-white rounded-xl border border-outline-variant/30 shadow-[0px_4px_20px_rgba(0,35,102,0.05)] p-8 mb-12">
+        <h2 class="text-headline-md font-headline-md text-primary text-center mb-8">
+          <i class="ri-heart-line text-premium-gold mr-2"></i>
+          Why Choose shadiAmour?
         </h2>
-        
         <div class="grid md:grid-cols-3 gap-8">
           <div class="text-center">
-            <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <i class="ri-shield-check-line text-2xl text-[#4a7c59]"></i>
+            <div class="w-16 h-16 bg-primary-fixed rounded-full flex items-center justify-center mx-auto mb-4">
+              <i class="ri-shield-check-line text-2xl text-primary-container"></i>
             </div>
-            <h3 class="font-semibold text-gray-900 mb-2">100% Money Back Guarantee</h3>
-            <p class="text-gray-600 text-sm">Not satisfied within 15 days? Get a full refund, no questions asked.</p>
+            <h3 class="font-semibold text-on-surface mb-2">100% Money Back Guarantee</h3>
+            <p class="text-on-surface-variant text-sm">Not satisfied within 15 days? Get a full refund, no questions asked.</p>
           </div>
-          
           <div class="text-center">
-            <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <i class="ri-user-heart-line text-2xl text-[#4a7c59]"></i>
+            <div class="w-16 h-16 bg-primary-fixed rounded-full flex items-center justify-center mx-auto mb-4">
+              <i class="ri-user-heart-line text-2xl text-primary-container"></i>
             </div>
-            <h3 class="font-semibold text-gray-900 mb-2">Family-Focused Approach</h3>
-            <p class="text-gray-600 text-sm">Profiles created by parents/guardians, ensuring family involvement in the marriage process.</p>
+            <h3 class="font-semibold text-on-surface mb-2">Family-Focused Approach</h3>
+            <p class="text-on-surface-variant text-sm">Profiles created with family involvement, ensuring parents and guardians stay part of the marriage process.</p>
           </div>
-          
           <div class="text-center">
-            <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <i class="ri-verified-badge-line text-2xl text-[#4a7c59]"></i>
+            <div class="w-16 h-16 bg-primary-fixed rounded-full flex items-center justify-center mx-auto mb-4">
+              <i class="ri-verified-badge-line text-2xl text-primary-container"></i>
             </div>
-            <h3 class="font-semibold text-gray-900 mb-2">Verified Profiles</h3>
-            <p class="text-gray-600 text-sm">We review and verify profiles to ensure authenticity and quality.</p>
+            <h3 class="font-semibold text-on-surface mb-2">Verified Profiles</h3>
+            <p class="text-on-surface-variant text-sm">We manually review and verify every profile to ensure authenticity and quality.</p>
           </div>
         </div>
       </div>
 
       <!-- FAQ Section -->
-      <div class="bg-white rounded-2xl p-8 shadow-lg mb-12">
-        <h2 class="text-2xl font-bold text-gray-900 font-['Playfair_Display'] text-center mb-8">
-          <i class="ri-question-line text-[#4a7c59] mr-2"></i>
+      <div class="bg-surface-white rounded-xl border border-outline-variant/30 shadow-[0px_4px_20px_rgba(0,35,102,0.05)] p-8 mb-12">
+        <h2 class="text-headline-md font-headline-md text-primary text-center mb-8">
+          <i class="ri-question-line text-premium-gold mr-2"></i>
           Pricing FAQs
         </h2>
-        
         <div class="space-y-6 max-w-3xl mx-auto">
-          <div class="border-b border-gray-200 pb-4">
-            <h3 class="font-semibold text-gray-900 mb-2">What does "on match" mean?</h3>
-            <p class="text-gray-600 text-sm">For Premium Plus and Executive plans, you pay an initial fee to join. The "on match" fee is only charged when we successfully introduce you to someone and both parties agree to proceed with the proposal.</p>
+          <div class="border-b border-outline-variant/30 pb-4">
+            <h3 class="font-semibold text-on-surface mb-2">Is there a free trial of paid plans?</h3>
+            <p class="text-on-surface-variant text-sm">Our Standard plan is free forever — think of it as the way to try the platform before deciding if a paid plan's extra support is right for you.</p>
           </div>
-          
-          <div class="border-b border-gray-200 pb-4">
-            <h3 class="font-semibold text-gray-900 mb-2">Can I upgrade my plan later?</h3>
-            <p class="text-gray-600 text-sm">Yes! You can upgrade from any plan at any time. Contact us and we'll help you move to a higher tier and unlock additional features.</p>
+          <div class="border-b border-outline-variant/30 pb-4">
+            <h3 class="font-semibold text-on-surface mb-2">Can I upgrade or downgrade later?</h3>
+            <p class="text-on-surface-variant text-sm">Yes, you can change your plan at any time from your account settings.</p>
           </div>
-          
-          <div class="border-b border-gray-200 pb-4">
-            <h3 class="font-semibold text-gray-900 mb-2">How do I make a payment?</h3>
-            <p class="text-gray-600 text-sm">After registration, our team will contact you with payment details. We accept various payment methods for your convenience.</p>
-          </div>
-          
           <div class="pb-4">
-            <h3 class="font-semibold text-gray-900 mb-2">What if I'm not satisfied?</h3>
-            <p class="text-gray-600 text-sm">We offer a 100% money-back guarantee within the first 15 days. After that, refunds are available if we fail to deliver the committed services. <a href="/refund-policy" class="text-[#4a7c59] hover:underline">Read our full refund policy</a>.</p>
+            <h3 class="font-semibold text-on-surface mb-2">Is there a refund if I'm not satisfied?</h3>
+            <p class="text-on-surface-variant text-sm">Yes — see our <a href="/refund-policy" class="text-primary hover:underline">Refund Policy</a> for the full 15-day money-back guarantee.</p>
           </div>
         </div>
       </div>
 
       <!-- CTA Section -->
-      <div class="bg-gradient-to-r from-[#4a7c59] to-[#2d5a3a] rounded-2xl p-8 text-center text-white shadow-lg">
-        <h2 class="text-2xl md:text-3xl font-bold mb-4 font-['Playfair_Display']">Ready to Find Your Ideal Match?</h2>
-        <p class="text-white/90 mb-6 max-w-2xl mx-auto">
-          Join thousands of Muslim families who have trusted shadiamour for their marriage journey.
+      <div class="bg-primary rounded-xl p-8 text-center text-on-primary shadow-[0px_4px_20px_rgba(0,35,102,0.15)]">
+        <h2 class="text-headline-lg font-headline-lg text-on-primary mb-4">Ready to Find Your Ideal Match?</h2>
+        <p class="text-on-primary/80 mb-6 max-w-2xl mx-auto">
+          Join thousands of Muslim professionals who have trusted shadiAmour for their marriage journey.
         </p>
         <div class="flex flex-wrap justify-center gap-4">
-          <a href="/register" data-track="true" data-event-name="pricing_cta_register" data-category="conversion" data-label="Create Free Account from Pricing" class="inline-flex items-center px-8 py-3 bg-white text-[#4a7c59] rounded-full font-semibold hover:bg-gray-100 transition-colors">
+          <a href="/register" data-track="true" data-event-name="pricing_cta_register" data-category="conversion" data-label="Create Free Account from Pricing" class="inline-flex items-center px-8 py-3 bg-on-primary text-primary rounded-full font-semibold hover:bg-secondary-container transition-colors">
             <i class="ri-user-add-line mr-2"></i>
             Create Free Account
           </a>
-          <a href="mailto:contact@shadiamour.com" data-track="true" data-event-name="pricing_contact_us" data-category="conversion" data-label="Contact Us from Pricing" class="inline-flex items-center px-8 py-3 bg-transparent border-2 border-white text-white rounded-full font-semibold hover:bg-white/10 transition-colors">
+          <a href="mailto:contact@shadiamour.com" data-track="true" data-event-name="pricing_contact_us" data-category="conversion" data-label="Contact Us from Pricing" class="inline-flex items-center px-8 py-3 bg-transparent border-2 border-on-primary/60 text-on-primary rounded-full font-semibold hover:bg-on-primary/10 transition-colors">
             <i class="ri-mail-line mr-2"></i>
             Contact Us
           </a>
@@ -518,19 +437,19 @@
 
       <!-- Quick Links -->
       <div class="mt-8 text-center">
-        <p class="text-gray-600 mb-4">Related Pages</p>
+        <p class="text-on-surface-variant mb-4">Related Pages</p>
         <div class="flex flex-wrap justify-center gap-4">
-          <a href="/refund-policy" class="inline-flex items-center px-4 py-2 bg-white rounded-full shadow-sm hover:shadow-md transition-shadow text-gray-700 hover:text-[#4a7c59]">
+          <a href="/refund-policy" class="inline-flex items-center px-4 py-2 bg-neutral-gray border border-outline-variant rounded-full text-on-surface-variant hover:border-primary hover:text-primary transition-colors">
             <i class="ri-refund-2-line mr-2"></i>
             Refund Policy
           </a>
-          <a href="/account-faqs" class="inline-flex items-center px-4 py-2 bg-white rounded-full shadow-sm hover:shadow-md transition-shadow text-gray-700 hover:text-[#4a7c59]">
+          <a href="/account-faqs" class="inline-flex items-center px-4 py-2 bg-neutral-gray border border-outline-variant rounded-full text-on-surface-variant hover:border-primary hover:text-primary transition-colors">
             <i class="ri-question-line mr-2"></i>
             Account FAQs
           </a>
-          <a href="/terms" class="inline-flex items-center px-4 py-2 bg-white rounded-full shadow-sm hover:shadow-md transition-shadow text-gray-700 hover:text-[#4a7c59]">
+          <a href="/terms" class="inline-flex items-center px-4 py-2 bg-neutral-gray border border-outline-variant rounded-full text-on-surface-variant hover:border-primary hover:text-primary transition-colors">
             <i class="ri-file-list-line mr-2"></i>
-            Terms & Conditions
+            Terms &amp; Conditions
           </a>
         </div>
       </div>

@@ -4,10 +4,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title><%= globalSeoSettings && globalSeoSettings.homepageMetaTitle ? globalSeoSettings.homepageMetaTitle : "shadiAmour | Halal Muslim Matchmaking for Young Professionals in the UK" %></title>
+  <title><%= globalSeoSettings && globalSeoSettings.homepageMetaTitle ? globalSeoSettings.homepageMetaTitle : "Muslim Marriage UK | Best Muslim Matchmaking Service London Leicester | shadiamour" %></title>
 
   <!-- SEO Meta Tags -->
-  <meta name="description" content="<%= globalSeoSettings && globalSeoSettings.homepageMetaDescription ? globalSeoSettings.homepageMetaDescription : "Join shadiAmour — the UK's modern halal matchmaking platform for young Muslim professionals. Verified profiles, free to join, serious marriage only." %>">  
+  <meta name="description" content="<%= globalSeoSettings && globalSeoSettings.homepageMetaDescription ? globalSeoSettings.homepageMetaDescription : "UK's most trusted Muslim marriage site. Verified profiles for halal rishta in London, Leicester & Birmingham. Free to join. Browse 1,000+ Muslim singles." %>">  
   <meta name="keywords" content="Find your perfect Muslim spouse through shadiAmour - the UK's leading halal marriage site. Verified Muslim profiles for marriage in London, Leicester & Birmingham. Trusted Islamic matrimonial service with Muslim rishta connections.">
   <meta name="author" content="shadiamour">
   <link rel="canonical" href="https://shadiamour.com">
@@ -21,15 +21,15 @@
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://shadiamour.com/">
-  <meta property="og:title" content="<%= globalSeoSettings && globalSeoSettings.homepageMetaTitle ? globalSeoSettings.homepageMetaTitle : 'shadiAmour | Halal Muslim Matchmaking for Young Professionals in the UK' %>">
-  <meta property="og:description" content="<%= globalSeoSettings && globalSeoSettings.homepageMetaDescription ? globalSeoSettings.homepageMetaDescription : "Join shadiAmour — the UK's modern halal matchmaking platform for young Muslim professionals. Verified profiles, free to join, serious marriage only." %>">
+  <meta property="og:title" content="<%= globalSeoSettings && globalSeoSettings.homepageMetaTitle ? globalSeoSettings.homepageMetaTitle : 'Muslim Marriage UK | Best Muslim Matchmaking Service London Leicester' %>">
+  <meta property="og:description" content="<%= globalSeoSettings && globalSeoSettings.homepageMetaDescription ? globalSeoSettings.homepageMetaDescription : 'Join the UKs most trusted halal marriage site. Find verified Muslim profiles for marriage in London, Leicester & Birmingham. Islamic matrimonial service with proven results.' %>">
   <meta property="og:image" content="https://shadiamour.com/images/homepageman.jpg">
 
   <!-- Twitter -->
   <meta property="twitter:card" content="summary_large_image">
   <meta property="twitter:url" content="https://shadiamour.com/">
-  <meta property="twitter:title" content="<%= globalSeoSettings && globalSeoSettings.homepageMetaTitle ? globalSeoSettings.homepageMetaTitle : 'shadiAmour | Halal Muslim Matchmaking for Young Professionals in the UK' %>">
-  <meta property="twitter:description" content="<%= globalSeoSettings && globalSeoSettings.homepageMetaDescription ? globalSeoSettings.homepageMetaDescription : "Join shadiAmour — the UK's modern halal matchmaking platform for young Muslim professionals. Verified profiles, free to join, serious marriage only." %>">
+  <meta property="twitter:title" content="<%= globalSeoSettings && globalSeoSettings.homepageMetaTitle ? globalSeoSettings.homepageMetaTitle : 'Muslim Marriage UK | Best Muslim Matchmaking Service London Leicester' %>">
+  <meta property="twitter:description" content="<%= globalSeoSettings && globalSeoSettings.homepageMetaDescription ? globalSeoSettings.homepageMetaDescription : 'Discover your perfect Muslim spouse through the UKs leading Islamic matrimonial service. Verified profiles, halal connections.' %>">
   <meta property="twitter:image" content="https://shadiamour.com/images/homepageman.jpg">
 
   <!-- Preload hero images for LCP -->
@@ -140,44 +140,44 @@
       "review": [
         {
           "@type": "Review",
-          "author": { "@type": "Person", "name": "Ibrahim S." },
+          "author": { "@type": "Person", "name": "Ahmed K." },
           "datePublished": "2026-02-17",
-          "reviewBody": "As a junior doctor in London, I genuinely didn't have time to meet anyone. shadiAmour matched me with someone who understood my schedule and, more importantly, shared my intention — marriage. Alhamdulillah, we got engaged within four months.",
+          "reviewBody": "I found my wife through shadiamour, the best Muslim matchmaking platform in the UK. The service is genuine, privacy-focused, and rooted in Islamic values. Highly recommended for Muslims seeking halal marriage.",
           "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" }
         },
         {
           "@type": "Review",
-          "author": { "@type": "Person", "name": "Maryam K." },
+          "author": { "@type": "Person", "name": "Fatima S." },
           "datePublished": "2026-03-17",
-          "reviewBody": "I'm a project manager and I'd all but given up on finding someone who took deen seriously. The verified profiles made all the difference — no time wasters. My husband and I met through shadiAmour and our nikkah was beautiful.",
+          "reviewBody": "Excellent Muslim matrimony service! The profiles are authentic, the process is simple, and Alhamdulillah I found my spouse here. shadiamour is perfect for serious Muslim marriage seekers in London and beyond.",
           "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" }
         },
         {
           "@type": "Review",
-          "author": { "@type": "Person", "name": "Omar F." },
+          "author": { "@type": "Person", "name": "Mohammad A." },
           "datePublished": "2026-03-27",
-          "reviewBody": "Being a finance professional in Birmingham, my days are long. shadiAmour's approach is efficient and halal at the same time. The team hand-picked matches for me and I found my wife within weeks. JazakAllah khair.",
+          "reviewBody": "This is the best Muslim marriage platform I've ever used. It respects Islamic principles, offers privacy, and truly connects compatible matches. A must for anyone looking for Muslim matchmaking in the UK.",
           "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" }
         },
         {
           "@type": "Review",
-          "author": { "@type": "Person", "name": "Khadija B." },
+          "author": { "@type": "Person", "name": "Zainab H." },
           "datePublished": "2026-04-10",
-          "reviewBody": "As a solicitor, I was careful about my privacy online. shadiAmour kept everything confidential — I only shared my details when I felt ready. I found a genuinely respectful, career-minded spouse. Highly recommended.",
+          "reviewBody": "Professional and respectful service. The support team was very helpful, and the matchmaking system worked perfectly. I found my naseeb through this blessed Muslim marriage site in Leicester.",
           "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" }
         },
         {
           "@type": "Review",
-          "author": { "@type": "Person", "name": "Bilal T." },
+          "author": { "@type": "Person", "name": "Yusuf M." },
           "datePublished": "2026-04-03",
-          "reviewBody": "I work in tech and wanted someone who matched my ambitions without compromising on Islamic values. shadiAmour understood that balance perfectly. The whole process was respectful, private, and marriage-focused.",
+          "reviewBody": "Trustworthy and reliable — shadiamour is my go-to for Muslim matrimony. Easy to use, full of genuine profiles, and most importantly, it delivers results. Highly recommend for Muslims in London looking for marriage.",
           "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" }
         },
         {
           "@type": "Review",
-          "author": { "@type": "Person", "name": "Safiya A." },
+          "author": { "@type": "Person", "name": "Aisha R." },
           "datePublished": "2026-04-13",
-          "reviewBody": "After years of being too busy to look, I finally found my naseeb here. The consultants genuinely care — they guided me through every step. Alhamdulillah, shadiAmour changed my life.",
+          "reviewBody": "Amazing Muslim matchmaking experience! The platform balances Islamic values with modern features, making it easy to connect with serious Muslims. BarakAllahu feeki for creating such a trusted UK matrimonial service.",
           "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" }
         }
       ]
@@ -256,17 +256,17 @@
         <div class="space-y-8 animate-in fade-in slide-in-from-left duration-1000">
           <span class="bg-primary-fixed text-on-primary-fixed px-4 py-1 rounded-full text-label-md font-label-md inline-block uppercase tracking-widest">Premium Matrimonial Service</span>
           <h1 class="text-4xl md:text-display-lg font-display-lg text-primary leading-tight">
-            Find Your Naseeb — Halal Matchmaking for the Modern Muslim Professional
+            Shadi Amour | Halal Muslim Matchmaking for Young Singles in the UK
           </h1>
           <p class="text-body-lg font-body-lg text-on-surface-variant max-w-xl">
-            shadiAmour connects serious, career-focused Muslim singles across London, Birmingham, and Manchester who are ready for marriage — the halal way. No swiping, no games, just verified profiles and purposeful connections.
+            Join Shadi Amour — the modern halal Muslim matchmaking platform where young Muslims find love and marriage with purpose across London, Birmingham, and Manchester.
           </p>
           <div class="flex flex-wrap gap-4 pt-4">
             <a class="bg-primary text-on-primary px-10 py-5 rounded-xl font-bold text-body-md shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all flex items-center gap-2" href="/register" data-track="true" data-event-name="hero_register_click" data-category="cta" data-label="Hero Register Now Free">
               Register Now Free <span class="material-symbols-outlined">arrow_forward</span>
             </a>
-            <a class="border-2 border-primary text-primary px-10 py-5 rounded-xl font-bold text-body-md hover:bg-primary/5 transition-all" href="/profiles" data-track="true" data-event-name="hero_browse_profiles_click" data-category="cta" data-label="Hero Browse Profiles">
-              Browse Profiles
+            <a class="border-2 border-primary text-primary px-10 py-5 rounded-xl font-bold text-body-md hover:bg-primary/5 transition-all" href="#how-it-works">
+              How It Works
             </a>
           </div>
           <div class="grid grid-cols-2 sm:grid-cols-4 gap-6 pt-10 border-t border-outline-variant">
@@ -278,7 +278,7 @@
             <div class="flex flex-col items-center sm:items-start text-center sm:text-left">
               <span class="material-symbols-outlined text-primary text-3xl mb-2" style="font-variation-settings: 'FILL' 1;">mosque</span>
               <span class="font-bold text-primary block">Halal Only</span>
-              <span class="text-label-md text-on-surface-variant">Marriage-focused, never casual</span>
+              <span class="text-label-md text-on-surface-variant">Marriage-focused platform</span>
             </div>
             <div class="flex flex-col items-center sm:items-start text-center sm:text-left">
               <span class="material-symbols-outlined text-primary text-3xl mb-2" style="font-variation-settings: 'FILL' 1;">lock</span>
@@ -286,9 +286,9 @@
               <span class="text-label-md text-on-surface-variant">Your data stays protected</span>
             </div>
             <div class="flex flex-col items-center sm:items-start text-center sm:text-left">
-              <span class="material-symbols-outlined text-primary text-3xl mb-2" style="font-variation-settings: 'FILL' 1;">schedule</span>
-              <span class="font-bold text-primary block">Built for Professionals</span>
-              <span class="text-label-md text-on-surface-variant">Understands busy modern lives</span>
+              <span class="material-symbols-outlined text-primary text-3xl mb-2" style="font-variation-settings: 'FILL' 1;">location_on</span>
+              <span class="font-bold text-primary block">UK Focused</span>
+              <span class="text-label-md text-on-surface-variant">London • Leicester • Birmingham</span>
             </div>
           </div>
         </div>
@@ -328,28 +328,21 @@
     <!-- ── Search Selection ─────────────────────────────────────────────────── -->
     <section class="bg-neutral-gray py-12 px-margin-x">
       <div class="max-w-container-max mx-auto grid md:grid-cols-2 gap-8">
-        <a class="group bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all border border-outline-variant overflow-hidden relative flex flex-col" href="/profiles?gender=male" data-track="true" data-event-name="browse_men_click" data-category="engagement" data-label="Browse Muslim Men">
-          <div class="relative h-44 md:h-56 overflow-hidden">
-            <img class="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500" src="https://res.cloudinary.com/dhuc2plh0/image/upload/c_fill,w_700,h_450,q_auto,f_auto/v1759650466/covermain_tfda9t.jpg" srcset="https://res.cloudinary.com/dhuc2plh0/image/upload/c_fill,w_400,h_260,q_auto,f_auto/v1759650466/covermain_tfda9t.jpg 400w, https://res.cloudinary.com/dhuc2plh0/image/upload/c_fill,w_700,h_450,q_auto,f_auto/v1759650466/covermain_tfda9t.jpg 700w" sizes="(max-width: 768px) 100vw, 50vw" alt="Muslim men for marriage in UK - halal matchmaking service London Leicester" width="700" height="450" loading="lazy">
-          </div>
-          <div class="relative z-10 p-8 flex flex-col flex-grow">
+        <a class="group bg-white p-8 rounded-2xl shadow-sm hover:shadow-xl transition-all border border-outline-variant flex items-center justify-between overflow-hidden relative" href="/profiles?gender=male" data-track="true" data-event-name="browse_men_click" data-category="engagement" data-label="Browse Muslim Men">
+          <div class="relative z-10">
             <h3 class="text-headline-md font-headline-md text-primary mb-2">Find Muslim Men for Marriage UK</h3>
             <p class="text-on-surface-variant max-w-sm">Discover your ideal Muslim husband through our verified halal Muslim matchmaking service. Connect with single Muslim men seeking serious marriage across London, Birmingham, Manchester, and Leicester. Our Muslim marriage app features Pakistani, Bangladeshi, and British Muslim singles ready for halal dating and modern Nikkah partnerships.</p>
             <span class="mt-4 inline-block font-bold text-primary group-hover:translate-x-2 transition-transform">Browse Men →</span>
           </div>
+          <span class="material-symbols-outlined text-8xl text-primary/5 absolute -right-4 -bottom-4 group-hover:scale-110 transition-transform" style="font-variation-settings: 'FILL' 1;">person</span>
         </a>
-        <a class="group bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all border border-outline-variant overflow-hidden relative flex flex-col" href="/profiles?gender=female" data-track="true" data-event-name="browse_women_click" data-category="engagement" data-label="Browse Muslim Women">
-          <div class="relative h-44 md:h-56 overflow-hidden">
-            <picture>
-              <source type="image/webp" srcset="/images/homepagewoman.webp">
-              <img class="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500" src="/images/homepagewoman.jpg" alt="Muslim women for marriage UK - Islamic matrimonial service Birmingham London" width="700" height="450" loading="lazy">
-            </picture>
-          </div>
-          <div class="relative z-10 p-8 flex flex-col flex-grow">
+        <a class="group bg-white p-8 rounded-2xl shadow-sm hover:shadow-xl transition-all border border-outline-variant flex items-center justify-between overflow-hidden relative" href="/profiles?gender=female" data-track="true" data-event-name="browse_women_click" data-category="engagement" data-label="Browse Muslim Women">
+          <div class="relative z-10">
             <h3 class="text-headline-md font-headline-md text-primary mb-2">Muslim Women for Marriage</h3>
             <p class="text-on-surface-variant max-w-sm">Browse authentic profiles of Muslim women seeking halal love marriage in the UK. Our online Muslim matchmaking platform connects you with single Muslim women ready for Islamic matrimony, Muslim engagement, and serious Muslim relationships. Find your Muslim soulmate among verified profiles in London and beyond.</p>
             <span class="mt-4 inline-block font-bold text-primary group-hover:translate-x-2 transition-transform">Browse Women →</span>
           </div>
+          <span class="material-symbols-outlined text-8xl text-primary/5 absolute -right-4 -bottom-4 group-hover:scale-110 transition-transform" style="font-variation-settings: 'FILL' 1;">woman</span>
         </a>
       </div>
     </section>
@@ -365,25 +358,25 @@
         <div class="bg-white p-8 rounded-2xl border border-outline-variant relative group">
           <div class="w-16 h-16 bg-primary text-on-primary rounded-full flex items-center justify-center font-bold text-2xl mx-auto mb-6 group-hover:scale-110 transition-transform">1</div>
           <h3 class="font-bold text-lg text-primary mb-3">Create Your Free Profile</h3>
-          <p class="text-on-surface-variant text-sm">Takes 2 minutes, no payment required</p>
+          <p class="text-on-surface-variant text-sm">Takes 2 minutes — no payment required</p>
         </div>
         <!-- Step 2 -->
         <div class="bg-white p-8 rounded-2xl border border-outline-variant relative group">
           <div class="w-16 h-16 bg-primary text-on-primary rounded-full flex items-center justify-center font-bold text-2xl mx-auto mb-6 group-hover:scale-110 transition-transform">2</div>
-          <h3 class="font-bold text-lg text-primary mb-3">Browse Verified Profiles</h3>
-          <p class="text-on-surface-variant text-sm">Filter by city, age, profession, and background</p>
+          <h3 class="font-bold text-lg text-primary mb-3">Browse Verified UK Muslim Profiles</h3>
+          <p class="text-on-surface-variant text-sm">Filter by city, age, background and more</p>
         </div>
         <!-- Step 3 -->
         <div class="bg-white p-8 rounded-2xl border border-outline-variant relative group">
           <div class="w-16 h-16 bg-primary text-on-primary rounded-full flex items-center justify-center font-bold text-2xl mx-auto mb-6 group-hover:scale-110 transition-transform">3</div>
           <h3 class="font-bold text-lg text-primary mb-3">Send Connection Requests</h3>
-          <p class="text-on-surface-variant text-sm">You're always in control of who you connect with</p>
+          <p class="text-on-surface-variant text-sm">You are in full control of who you connect with</p>
         </div>
         <!-- Step 4 -->
         <div class="bg-white p-8 rounded-2xl border border-outline-variant relative group">
           <div class="w-16 h-16 bg-primary text-on-primary rounded-full flex items-center justify-center font-bold text-2xl mx-auto mb-6 group-hover:scale-110 transition-transform">4</div>
           <h3 class="font-bold text-lg text-primary mb-3">Connect Through Halal Chat</h3>
-          <p class="text-on-surface-variant text-sm">Respectful, private, and built for marriage</p>
+          <p class="text-on-surface-variant text-sm">Respectful, private, and purpose-built for marriage</p>
         </div>
       </div>
       <div class="mt-12 flex justify-center gap-4">
@@ -479,9 +472,9 @@
         <div class="bg-surface-container-low p-8 rounded-3xl relative">
           <span class="material-symbols-outlined text-6xl text-primary/10 absolute top-4 right-8">format_quote</span>
           <div class="flex items-center gap-4 mb-6">
-            <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-on-primary font-bold">I</div>
+            <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-on-primary font-bold">A</div>
             <div>
-              <h4 class="font-bold text-primary">Ibrahim S.</h4>
+              <h4 class="font-bold text-primary">Ahmed K.</h4>
               <div class="flex text-premium-gold scale-75 origin-left">
                 <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
                 <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
@@ -491,16 +484,16 @@
               </div>
             </div>
           </div>
-          <p class="text-on-surface-variant italic mb-6">"As a junior doctor in London, I genuinely didn't have time to meet anyone. shadiAmour matched me with someone who understood my schedule and, more importantly, shared my intention — marriage. Alhamdulillah, we got engaged within four months."</p>
+          <p class="text-on-surface-variant italic mb-6">"Alhamdulillah, I found my Muslim soulmate through ShadiAmour - the most trusted halal Muslim matchmaking platform in London. The service connects serious Muslim singles seeking modern Nikkah and halal love marriage. Highly recommended for young Muslim marriage seekers!"</p>
           <span class="text-label-md text-on-surface-variant opacity-60">2 months ago</span>
         </div>
         <!-- Testimonial 2 -->
         <div class="bg-surface-container-low p-8 rounded-3xl relative">
           <span class="material-symbols-outlined text-6xl text-primary/10 absolute top-4 right-8">format_quote</span>
           <div class="flex items-center gap-4 mb-6">
-            <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-on-primary font-bold">M</div>
+            <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-on-primary font-bold">F</div>
             <div>
-              <h4 class="font-bold text-primary">Maryam K.</h4>
+              <h4 class="font-bold text-primary">Fatima S.</h4>
               <div class="flex text-premium-gold scale-75 origin-left">
                 <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
                 <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
@@ -510,16 +503,16 @@
               </div>
             </div>
           </div>
-          <p class="text-on-surface-variant italic mb-6">"I'm a project manager and I'd all but given up on finding someone who took deen seriously. The verified profiles made all the difference — no time wasters. My husband and I met through shadiAmour and our nikkah was beautiful."</p>
+          <p class="text-on-surface-variant italic mb-6">"Excellent Muslim matrimony service! The profiles are authentic, the process is simple, and Alhamdulillah I found my spouse here. shadiAmour is perfect for serious Muslim marriage seekers in London and beyond."</p>
           <span class="text-label-md text-on-surface-variant opacity-60">1 month ago</span>
         </div>
         <!-- Testimonial 3 -->
         <div class="bg-surface-container-low p-8 rounded-3xl relative">
           <span class="material-symbols-outlined text-6xl text-primary/10 absolute top-4 right-8">format_quote</span>
           <div class="flex items-center gap-4 mb-6">
-            <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-on-primary font-bold">O</div>
+            <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-on-primary font-bold">M</div>
             <div>
-              <h4 class="font-bold text-primary">Omar F.</h4>
+              <h4 class="font-bold text-primary">Mohammad A.</h4>
               <div class="flex text-premium-gold scale-75 origin-left">
                 <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
                 <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
@@ -529,16 +522,16 @@
               </div>
             </div>
           </div>
-          <p class="text-on-surface-variant italic mb-6">"Being a finance professional in Birmingham, my days are long. shadiAmour's approach is efficient and halal at the same time. The team hand-picked matches for me and I found my wife within weeks. JazakAllah khair."</p>
+          <p class="text-on-surface-variant italic mb-6">"This is the best Muslim marriage platform I’ve ever used. It respects Islamic principles, offers privacy, and truly connects compatible matches. A must for anyone looking for Muslim matchmaking in the UK."</p>
           <span class="text-label-md text-on-surface-variant opacity-60">3 weeks ago</span>
         </div>
         <!-- Testimonial 4 -->
         <div class="bg-surface-container-low p-8 rounded-3xl relative">
           <span class="material-symbols-outlined text-6xl text-primary/10 absolute top-4 right-8">format_quote</span>
           <div class="flex items-center gap-4 mb-6">
-            <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-on-primary font-bold">K</div>
+            <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-on-primary font-bold">Z</div>
             <div>
-              <h4 class="font-bold text-primary">Khadija B.</h4>
+              <h4 class="font-bold text-primary">Zainab H.</h4>
               <div class="flex text-premium-gold scale-75 origin-left">
                 <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
                 <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
@@ -548,16 +541,16 @@
               </div>
             </div>
           </div>
-          <p class="text-on-surface-variant italic mb-6">"As a solicitor, I was careful about my privacy online. shadiAmour kept everything confidential — I only shared my details when I felt ready. I found a genuinely respectful, career-minded spouse. Highly recommended."</p>
+          <p class="text-on-surface-variant italic mb-6">"Professional and respectful service. The support team was very helpful, and the matchmaking system worked perfectly. I found my naseeb through this blessed Muslim marriage site in Leicester."</p>
           <span class="text-label-md text-on-surface-variant opacity-60">1 week ago</span>
         </div>
         <!-- Testimonial 5 -->
         <div class="bg-surface-container-low p-8 rounded-3xl relative">
           <span class="material-symbols-outlined text-6xl text-primary/10 absolute top-4 right-8">format_quote</span>
           <div class="flex items-center gap-4 mb-6">
-            <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-on-primary font-bold">B</div>
+            <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-on-primary font-bold">Y</div>
             <div>
-              <h4 class="font-bold text-primary">Bilal T.</h4>
+              <h4 class="font-bold text-primary">Yusuf M.</h4>
               <div class="flex text-premium-gold scale-75 origin-left">
                 <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
                 <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
@@ -567,16 +560,16 @@
               </div>
             </div>
           </div>
-          <p class="text-on-surface-variant italic mb-6">"I work in tech and wanted someone who matched my ambitions without compromising on Islamic values. shadiAmour understood that balance perfectly. The whole process was respectful, private, and marriage-focused."</p>
+          <p class="text-on-surface-variant italic mb-6">"Trustworthy and reliable — shadiAmour is my go-to for Muslim matrimony. Easy to use, full of genuine profiles, and most importantly, it delivers results. Highly recommend for Muslims in London looking for marriage."</p>
           <span class="text-label-md text-on-surface-variant opacity-60">2 weeks ago</span>
         </div>
         <!-- Testimonial 6 -->
         <div class="bg-surface-container-low p-8 rounded-3xl relative">
           <span class="material-symbols-outlined text-6xl text-primary/10 absolute top-4 right-8">format_quote</span>
           <div class="flex items-center gap-4 mb-6">
-            <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-on-primary font-bold">S</div>
+            <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-on-primary font-bold">A</div>
             <div>
-              <h4 class="font-bold text-primary">Safiya A.</h4>
+              <h4 class="font-bold text-primary">Aisha R.</h4>
               <div class="flex text-premium-gold scale-75 origin-left">
                 <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
                 <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
@@ -586,7 +579,7 @@
               </div>
             </div>
           </div>
-          <p class="text-on-surface-variant italic mb-6">"After years of being too busy to look, I finally found my naseeb here. The consultants genuinely care — they guided me through every step. Alhamdulillah, shadiAmour changed my life."</p>
+          <p class="text-on-surface-variant italic mb-6">"Amazing Muslim matchmaking experience! The platform balances Islamic values with modern features, making it easy to connect with serious Muslims. BarakAllahu feeki for creating such a trusted UK matrimonial service."</p>
           <span class="text-label-md text-on-surface-variant opacity-60">4 days ago</span>
         </div>
       </div>
@@ -607,7 +600,7 @@
     <!-- ── Why Choose Us ────────────────────────────────────────────────────── -->
     <section class="py-section-padding bg-neutral-gray px-margin-x overflow-hidden">
       <div class="max-w-container-max mx-auto text-center mb-16">
-        <h2 class="text-headline-lg font-headline-lg text-primary mb-4">Why Young Muslim Professionals Choose shadiAmour</h2>
+        <h2 class="text-headline-lg font-headline-lg text-primary mb-4">Why Muslims Across the UK Choose shadiamour</h2>
         <p class="text-on-surface-variant">The trusted platform for serious, halal marriage seekers</p>
       </div>
       <div class="max-w-container-max mx-auto grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -616,42 +609,42 @@
             <span class="material-symbols-outlined text-primary">verified</span>
           </div>
           <h3 class="font-bold text-primary mb-3">Halal Only</h3>
-          <p class="text-sm text-on-surface-variant">Every connection is purposeful, respectful, and marriage-focused.</p>
+          <p class="text-sm text-on-surface-variant">Serious marriage — never casual dating or socialising. Every connection is purposeful and respectful.</p>
         </div>
         <div class="bg-white p-8 rounded-2xl border border-outline-variant hover:shadow-xl transition-all">
           <div class="w-12 h-12 bg-primary/5 rounded-full flex items-center justify-center mb-6">
-            <span class="material-symbols-outlined text-primary">schedule</span>
+            <span class="material-symbols-outlined text-primary">location_on</span>
           </div>
-          <h3 class="font-bold text-primary mb-3">Made for Busy Lives</h3>
-          <p class="text-sm text-on-surface-variant">Efficient matching that respects your time and career.</p>
+          <h3 class="font-bold text-primary mb-3">UK-Focused</h3>
+          <p class="text-sm text-on-surface-variant">Built for British Muslims, not a generic global app. We understand the needs of the UK Muslim community.</p>
         </div>
         <div class="bg-white p-8 rounded-2xl border border-outline-variant hover:shadow-xl transition-all">
           <div class="w-12 h-12 bg-primary/5 rounded-full flex items-center justify-center mb-6">
             <span class="material-symbols-outlined text-primary">security</span>
           </div>
           <h3 class="font-bold text-primary mb-3">Verified Profiles</h3>
-          <p class="text-sm text-on-surface-variant">Real people, real intentions, manually approved.</p>
+          <p class="text-sm text-on-surface-variant">Real people with real intentions — moderated and approved. No fake profiles or time wasters.</p>
         </div>
         <div class="bg-white p-8 rounded-2xl border border-outline-variant hover:shadow-xl transition-all">
           <div class="w-12 h-12 bg-primary/5 rounded-full flex items-center justify-center mb-6">
             <span class="material-symbols-outlined text-primary">visibility_off</span>
           </div>
           <h3 class="font-bold text-primary mb-3">Privacy by Design</h3>
-          <p class="text-sm text-on-surface-variant">You control who sees your profile and details.</p>
+          <p class="text-sm text-on-surface-variant">Your personal details stay protected at every step. Control who sees your profile and information.</p>
         </div>
         <div class="bg-white p-8 rounded-2xl border border-outline-variant hover:shadow-xl transition-all">
           <div class="w-12 h-12 bg-primary/5 rounded-full flex items-center justify-center mb-6">
             <span class="material-symbols-outlined text-primary">support_agent</span>
           </div>
           <h3 class="font-bold text-primary mb-3">Personal Support</h3>
-          <p class="text-sm text-on-surface-variant">Real matchmaking consultants, not just an app.</p>
+          <p class="text-sm text-on-surface-variant">Our team is here if you need guidance along the way. Real humans ready to help you find your naseeb.</p>
         </div>
         <div class="bg-white p-8 rounded-2xl border border-outline-variant hover:shadow-xl transition-all">
           <div class="w-12 h-12 bg-primary/5 rounded-full flex items-center justify-center mb-6">
             <span class="material-symbols-outlined text-primary">volunteer_activism</span>
           </div>
           <h3 class="font-bold text-primary mb-3">Free to Join</h3>
-          <p class="text-sm text-on-surface-variant">Create a profile and start browsing at no cost.</p>
+          <p class="text-sm text-on-surface-variant">Create your profile and browse matches completely free. No hidden costs to get started.</p>
         </div>
       </div>
     </section>
@@ -660,8 +653,8 @@
     <section id="booking" class="py-section-padding px-margin-x max-w-container-max mx-auto overflow-hidden">
       <div class="grid lg:grid-cols-2 gap-16 items-center">
         <div>
-          <h2 class="text-headline-lg font-headline-lg text-primary mb-6">Book a Free Consultation</h2>
-          <p class="text-body-lg text-on-surface-variant mb-12">Not sure where to start? Our matchmaking consultants offer free, confidential, no-obligation guidance to help you find the right match.</p>
+          <h2 class="text-headline-lg font-headline-lg text-primary mb-6">Book a Free Reservation — Get Expert Guidance</h2>
+          <p class="text-body-lg text-on-surface-variant mb-12">Not sure where to start? Our marriage consultants are here to help you find the right match — <span class="text-halal-green font-bold">completely free.</span></p>
           <div class="space-y-8">
             <div class="flex gap-6">
               <div class="flex-shrink-0 w-12 h-12 rounded-full bg-primary/5 flex items-center justify-center text-primary">

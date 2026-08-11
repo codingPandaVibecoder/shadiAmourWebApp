@@ -565,11 +565,7 @@
                 <div class="match-score-badge <%= fmClass %>" style="top: 44px; right: 8px;" title="Compatibility Score"><%= fmScore %>%</div>
               <% } %>
               <div class="relative h-64 w-full overflow-hidden">
-                <% if (profile.profilePic && profile.profilePic.url) { %>
-                <img src="<%= profile.profilePic.url.replace('/upload/', '/upload/c_fill,w_300,h_400,q_auto,f_auto/') %>" srcset="<%= profile.profilePic.url.replace('/upload/', '/upload/c_fill,w_200,h_267,q_auto,f_auto/') %> 200w, <%= profile.profilePic.url.replace('/upload/', '/upload/c_fill,w_300,h_400,q_auto,f_auto/') %> 300w, <%= profile.profilePic.url.replace('/upload/', '/upload/c_fill,w_400,h_533,q_auto,f_auto/') %> 400w" sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 300px" alt="<%= profile.name || profile.username %><%= profile.age ? ', ' + profile.age + ' year old' : '' %><%= profile.work ? ' ' + profile.work : '' %> - Muslim matrimony profile<%= profile.city ? ' in ' + profile.city : '' %>" class="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500" loading="lazy" width="300" height="400" onerror="this.src='https://ui-avatars.com/api/?name=<%= encodeURIComponent(profile.name || profile.username) %>&background=<%= profile.gender === 'male' ? '0077be' : 'e91e63' %>&color=fff&size=300&format=png'">
-                <% } else { %>
-                <img src="https://ui-avatars.com/api/?name=<%= encodeURIComponent(profile.name || profile.username) %>&background=<%= profile.gender === 'male' ? '0077be' : 'e91e63' %>&color=fff&size=300&format=png" alt="<%= profile.name || profile.username %>" class="w-full h-full object-cover" loading="lazy">
-                <% } %>
+                <img src="https://ui-avatars.com/api/?name=<%= encodeURIComponent(profile.name || profile.username) %>&background=<%= profile.gender === 'male' ? '0077be' : 'e91e63' %>&color=fff&size=300&format=png" alt="<%= profile.name || profile.username %><%= profile.age ? ', ' + profile.age + ' year old' : '' %><%= profile.work ? ' ' + profile.work : '' %> - Muslim matrimony profile<%= profile.city ? ' in ' + profile.city : '' %>" class="w-full h-full object-cover" loading="lazy">
               </div>
               <div class="p-5 flex flex-col flex-grow">
                 <div class="flex items-center justify-between mb-2">
@@ -637,11 +633,7 @@
               Your Profile (Pending)
             </div>
             <div class="relative h-64 w-full overflow-hidden">
-              <% if (currentUserProfile.profilePic && currentUserProfile.profilePic.url) { %>
-              <img src="<%= currentUserProfile.profilePic.url.replace('/upload/', '/upload/c_fill,w_300,h_400,q_auto,f_auto/') %>" alt="<%= currentUserProfile.name || currentUserProfile.username %>" class="w-full h-full object-cover object-top" loading="lazy" onload="this.classList.add('loaded')">
-              <% } else { %>
               <img src="https://ui-avatars.com/api/?name=<%= encodeURIComponent(currentUserProfile.name || currentUserProfile.username) %>&background=<%= currentUserProfile.gender === 'male' ? '0077be' : 'e91e63' %>&color=fff&size=300&format=png" alt="<%= currentUserProfile.name || currentUserProfile.username %>" class="w-full h-full object-cover" loading="lazy">
-              <% } %>
             </div>
             <div class="p-5 flex flex-col flex-grow">
               <h3 class="text-[20px] font-headline-md text-primary leading-tight mb-1"><%= currentUserProfile.username %></h3>
@@ -676,11 +668,8 @@
           %>
           <a href="/profiles/<%= profile.profileSlug || profile._id %>" data-track="true" data-event-name="profile_card_click" data-category="engagement" data-label="<%= profile.username %>" class="bg-surface-white rounded-[16px] overflow-hidden shadow-[0px_4px_20px_rgba(0,35,102,0.05)] border border-outline-variant/20 hover:-translate-y-1 transition-transform duration-300 flex flex-col h-full block relative group">
             <div class="relative h-64 w-full overflow-hidden">
-              <% if (profile.profilePic && profile.profilePic.url) { %>
-              <img src="<%= profile.profilePic.url.replace('/upload/', '/upload/c_fill,w_300,h_400,q_auto,f_auto/') %>" srcset="<%= profile.profilePic.url.replace('/upload/', '/upload/c_fill,w_200,h_267,q_auto,f_auto/') %> 200w, <%= profile.profilePic.url.replace('/upload/', '/upload/c_fill,w_300,h_400,q_auto,f_auto/') %> 300w, <%= profile.profilePic.url.replace('/upload/', '/upload/c_fill,w_400,h_533,q_auto,f_auto/') %> 400w" sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 300px" alt="<%= profile.name || profile.username %><%= profile.age ? ', ' + profile.age + ' year old' : '' %><%= profile.work ? ' ' + profile.work : '' %> - Muslim marriage profile<%= profile.city ? ' in ' + profile.city : '' %>" class="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500" loading="lazy" width="300" height="400" onerror="this.src='https://ui-avatars.com/api/?name=<%= encodeURIComponent(profile.name || profile.username) %>&background=<%= profile.gender === 'male' ? '0077be' : 'e91e63' %>&color=fff&size=300&format=png'">
-              <% } else { %>
-              <img src="https://ui-avatars.com/api/?name=<%= encodeURIComponent(profile.name || profile.username) %>&background=<%= profile.gender === 'male' ? '0077be' : 'e91e63' %>&color=fff&size=300&format=png" alt="<%= profile.name || profile.username %><%= profile.age ? ', ' + profile.age + ' year old' : '' %><%= profile.work ? ' ' + profile.work : '' %> - Muslim marriage profile<%= profile.city ? ' in ' + profile.city : '' %>" class="w-full h-full object-cover" loading="lazy">
-              <% } %>
+                            <img src="https://ui-avatars.com/api/?name=<%= encodeURIComponent(profile.name || profile.username) %>&background=<%= profile.gender === 'male' ? '0077be' : 'e91e63' %>&color=fff&size=300&format=png" alt="<%= profile.name || profile.username %><%= profile.age ? ', ' + profile.age + ' year old' : '' %><%= profile.work ? ' ' + profile.work : '' %> - Muslim marriage profile<%= profile.city ? ' in ' + profile.city : '' %>" class="w-full h-full object-cover" loading="lazy">
+
               <!-- Staff Verified badge (staff-added only) -->
               <% if (profile.registrationSource === 'admin') { %>
               <div class="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-full flex items-center gap-1.5 shadow-sm border border-premium-gold/30">
