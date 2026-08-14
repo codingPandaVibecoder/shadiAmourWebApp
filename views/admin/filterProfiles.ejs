@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Filter Profiles | shadiamour Admin</title>
+  <link rel="stylesheet" href="/css/output.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+  <style>
+    .material-shadow { box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); }
+  </style>
+</head>
+<body class="bg-gray-50 font-['Roboto'] min-h-screen">
+
+  <!-- Top Bar -->
+  <header class="bg-white border-b border-gray-200 sticky top-0 z-50">
+    <div class="max-w-full mx-auto px-4 py-3">
+      <div class="flex items-center justify-between gap-4">
+        <div class="flex items-center gap-3">
+          <a href="/admin/dashboard" class="p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors">
+            <i class="ri-arrow-left-line text-xl"></i>
+          </a>
+          <h1 class="text-lg font-bold text-gray-900">Filter Profiles</h1>
+        </div>
+        <div class="flex items-center gap-3 text-sm">
+          <span class="text-gray-500"><%= isAdmin ? 'Admin' : 'Moderator' %></span>
+          <a href="/logout" class="text-red-500 hover:text-red-700 font-medium">Logout</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <%
+    const f = filters || {};
+    const sel = (name, val) => f[name] !== undefined && String(f[name]) === String(val) ? 'selected' : '';
+    const chk = (name, val) => f[name] !== undefined && String(f[name]) === String(val) ? 'checked' : '';
+    const yesNo = [['', 'All'], ['true', 'Yes'], ['false', 'No']];
+    const yesNoNa = [['', 'All'], ['true', 'Yes'], ['false', 'No'], ['N/A', 'N/A']];
+    const heights = [
+      { cm: 152, d: "5'0\"" }, { cm: 155, d: "5'1\"" }, { cm: 157, d: "5'2\"" },
+      { cm: 160, d: "5'3\"" }, { cm: 163, d: "5'4\"" }, { cm: 165, d: "5'5\"" },
+      { cm: 168, d: "5'6\"" }, { cm: 170, d: "5'7\"" }, { cm: 173, d: "5'8\"" },
+      { cm: 175, d: "5'9\"" }, { cm: 178, d: "5'10\"" }, { cm: 180, d: "5'11\"" },
+      { cm: 183, d: "6'0\"" }, { cm: 185, d: "6'1\"" }, { cm: 188, d: "6'2\"" },
+      { cm: 191, d: "6'3\"" }, { cm: 193, d: "6'4\"" }, { cm: 196, d: "6'5\"" },
+      { cm: 198, d: "6'6\"" }, { cm: 201, d: "6'7\"" }
+    ];
+    const countries = ['United Kingdom','Pakistan','Bangladesh','India','United States','Canada','United Arab Emirates','Saudi Arabia','Australia','Germany','France','Malaysia','Singapore','Other'];
+    const nationalities = ['British','Pakistani','Indian','Bangladeshi','Other','N/A'];
+    const ethnicities = ['British','Pakistani','Indian','Bangladeshi','Arab','African','Mixed','Other','N/A'];
+    const sects = ['Sunni','Shia','Sufi','Salafi','Ahmadi','Other','N/A'];
+    const educations = ['Below High School','High School','Diploma',"Bachelor's Degree","Master's Degree","PhD","Other","N/A"];
+    const eyeColors = ['Black','Dark Brown','Brown','Hazel','Green','Blue','Grey','Other'];
+    const hairColors = ['Black','Dark Brown','Brown','Light Brown','Blonde','Grey','Other'];
+    const complexions = ['Fair','Wheatish','Light Brown','Medium Brown','Dark Brown','Other'];
+    const builds = ['Slim','Average','Athletic','Heavy','Other'];
+    const maritalStatuses = ['Single','Divorced','Widowed','N/A'];
+    const livingArrangements = ['With In-laws','Independent','Near Family','Both Families Nearby','Other','N/A'];
+    const profilesFor = ['Self','Son','Daughter','Brother','Sister','Other'];
+    const whoCompleted = ['Self','Parent/Guardian','Sibling','Other'];
+    const registrationSources = ['register','admin','google'];
+    const approvalStatuses = [['pending','Pending'],['approved','Approved'],['rejected','Rejected']];
+    function qs(extraPage) {
+      const p = new URLSearchParams();
+      Object.keys(f).forEach(k => { if (k !== 'page' && f[k]) p.set(k, f[k]); });
+      if (extraPage) p.set('page', extraPage);
+      const s = p.toString();
+      return s ? '?' + s : '';
+    }
+    function fmtVal(key, val) {
+      const s = String(val);
+      if (s === 'true') return 'Yes';
+      if (s === 'false') return 'No';
+      if (key === 'gender') return s === 'male' ? 'Male' : s === 'female' ? 'Female' : s;
+      if (key === 'registrationSource') return s === 'admin' ? 'Staff' : s === 'google' ? 'Google' : 'Registered';
+      return s.charAt(0).toUpperCase() + s.slice(1);
+    }
+    function activeChips(f) {
+      const chips = [];
+      const order = [
+        ['username', 'Username'], ['email', 'Email'], ['profileSlug', 'Profile Slug'],
+        ['gender', 'Gender'], ['profileFor', 'Profile For'], ['whoCompletedProfile', 'Profile Completed By'], ['registrationSource', 'Registration'],
+        ['country', 'Country'], ['city', 'City'], ['state', 'State / Province'], ['nationality', 'Nationality'],
+        ['eyeColor', 'Eye Color'], ['hairColor', 'Hair Color'], ['complexion', 'Complexion'], ['build', 'Build'], ['beard', 'Beard'], ['wearHijab', 'Hijab'], ['disability', 'Disability'],
+        ['religion', 'Religion'], ['caste', 'Caste'], ['ethnicity', 'Ethnicity'], ['islamicSect', 'Islamic Sect'], ['preferredIslamicSect', 'Preferred Sect'], ['highestEducation', 'Education'], ['work', 'Work'], ['languagesSpoken', 'Languages'],
+        ['maritalStatus', 'Marital Status'], ['livingArrangementsAfterMarriage', 'Living Arrangements'], ['willingToRelocate', 'Relocate'], ['willingToConsiderANonUkCitizen', 'Consider Non-UK'], ['willingToSharePhotosUponRequest', 'Share Photos'], ['willingToMeetUpOutside', 'Meet Up'], ['waliMyContactDetails', 'Wali Contact'],
+        ['bornMuslim', 'Born Muslim'], ['smoker', 'Smoker'], ['prays', 'Prays'], ['celebratesMilaad', 'Celebrates Milaad'], ['celebrateKhatams', 'Celebrates Khatams'],
+        ['acceptSomeoneWithChildren', 'Accept Children'], ['acceptADivorcedPerson', 'Accept Divorced'], ['acceptAWidow', 'Accept Widow'], ['agreesWithPolygamy', 'Agrees Polygamy'], ['ConsiderARevert', 'Consider Revert'], ['AcceptSomeoneWithBeard', 'Accept Beard'], ['AcceptSomeoneWithHijab', 'Accept Hijab'], ['allowParnterToWork', 'Allow Partner Work'], ['allowPartnerToStudy', 'Allow Partner Study'], ['acceptSomeoneInOtherCountry', 'Accept in Another Country'],
+        ['isApproved', 'Approved'], ['isFeatured', 'Featured'], ['isDeactivated', 'Deactivated'], ['idVerified', 'ID Verified'], ['faceVerified', 'Face Verified'], ['approvalStatus', 'Approval'], ['profileCompletenessTier', 'Profile Tier']
+      ];
+      order.forEach(function (pair) {
+        const k = pair[0];
+        if (f[k] !== undefined && f[k] !== '') chips.push({ label: pair[1], val: fmtVal(k, f[k]) });
+      });
+      if (f.minAge || f.maxAge) chips.push({ label: 'Age', val: (f.minAge || '18') + ' – ' + (f.maxAge || '70') });
+      if (f.minHeight || f.maxHeight) {
+        const hd = function (v) { const h = heights.find(function (x) { return String(x.cm) === String(v); }); return h ? h.d : v; };
+        chips.push({ label: 'Height', val: (f.minHeight ? hd(f.minHeight) : "4'11\"") + ' – ' + (f.maxHeight ? hd(f.maxHeight) : "6'7\"") });
+      }
+      if (f.minSiblings || f.maxSiblings) chips.push({ label: 'Siblings', val: (f.minSiblings || '0') + ' – ' + (f.maxSiblings || '10') });
+      return chips;
+    }
+  %>
+
+  <main class="py-6 min-h-screen">
+    <div class="max-w-full mx-auto px-4">
+
+      <!-- Page Header -->
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+        <div>
+          <h1 class="text-2xl font-bold text-gray-900">Filter Profiles</h1>
+          <p class="text-gray-600 mt-1">Find a specific profile using every field on the platform</p>
+        </div>
+        <div class="text-sm text-gray-500">
+          <% if (hasFilters) { %>
+            Showing <span class="font-semibold text-gray-900"><%= profiles.length %></span> of <span class="font-semibold text-gray-900"><%= totalProfiles %></span> profiles
+          <% } else { %>
+            Apply filters to find matching profiles
+          <% } %>
+        </div>
+      </div>
+
+      <!-- Filter Form -->
+      <form id="filterForm" action="/admin/filter-profiles" method="GET" class="bg-white rounded-xl border border-gray-200 material-shadow p-6 mb-6">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
+
+          <!-- ── Search ── -->
+          <div class="pb-6">
+            <h2 class="text-sm font-bold text-white uppercase tracking-wider mb-4 flex items-center gap-2 bg-black px-4 py-3 rounded-lg">
+              <i class="ri-search-line text-amber-300"></i> Search
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+              <div>
+                <label class="block text-label-md font-label-md text-on-surface-variant mb-2 uppercase tracking-wider">Username</label>
+                <input type="text" name="username" value="<%= f.username || '' %>" placeholder="e.g. aisha_khan" class="block w-full px-3 py-2.5 border border-outline-variant rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-on-surface bg-white text-sm">
+              </div>
+              <div>
+                <label class="block text-label-md font-label-md text-on-surface-variant mb-2 uppercase tracking-wider">Email</label>
+                <input type="text" name="email" value="<%= f.email || '' %>" placeholder="email@example.com" class="block w-full px-3 py-2.5 border border-outline-variant rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-on-surface bg-white text-sm">
+              </div>
+              <div>
+                <label class="block text-label-md font-label-md text-on-surface-variant mb-2 uppercase tracking-wider">Profile Slug</label>
+                <input type="text" name="profileSlug" value="<%= f.profileSlug || '' %>" placeholder="profile-slug" class="block w-full px-3 py-2.5 border border-outline-variant rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-on-surface bg-white text-sm">
+              </div>
+            </div>
+          </div>
+
+          <!-- ── Basics ── -->
+          <div class="pb-6">
+            <h2 class="text-sm font-bold text-white uppercase tracking-wider mb-4 flex items-center gap-2 bg-black px-4 py-3 rounded-lg">
+              <i class="ri-user-line text-amber-300"></i> Basics
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+              <div>
+                <label class="block text-label-md font-label-md text-on-surface-variant mb-2 uppercase tracking-wider">Gender</label>
+                <div class="flex flex-wrap gap-4">
+                  <label class="flex items-center cursor-pointer">
+                    <input type="radio" name="gender" value="" class="h-4 w-4 text-primary focus:ring-primary border-outline-variant" <%= !f.gender ? 'checked' : '' %>>
+                    <span class="ml-2 text-sm text-on-surface">All</span>
+                  </label>
+                  <label class="flex items-center cursor-pointer">
+                    <input type="radio" name="gender" value="male" class="h-4 w-4 text-primary focus:ring-primary border-outline-variant" <%= chk('gender','male') %>>
+                    <span class="ml-2 text-sm text-on-surface">Male</span>
+                  </label>
+                  <label class="flex items-center cursor-pointer">
+                    <input type="radio" name="gender" value="female" class="h-4 w-4 text-primary focus:ring-primary border-outline-variant" <%= chk('gender','female') %>>
+                    <span class="ml-2 text-sm text-on-surface">Female</span>
+                  </label>
+                </div>
+              </div>
+              <div>
+                <label class="block text-label-md font-label-md text-on-surface-variant mb-2 uppercase tracking-wider">Age Range</label>
+                <div class="grid grid-cols-2 gap-3">
+                  <select name="minAge" class="block w-full px-3 py-2.5 border border-outline-variant rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-on-surface bg-white text-sm">
+                    <option value="">Min Age</option>
+                    <% for (let a = 18; a <= 70; a++) { %>
+                    <option value="<%= a %>" <%= sel('minAge', a) %>><%= a %></option>
+                    <% } %>
+                  </select>
+                  <select name="maxAge" class="block w-full px-3 py-2.5 border border-outline-variant rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-on-surface bg-white text-sm">
+                    <option value="">Max Age</option>
+                    <% for (let a = 18; a <= 70; a++) { %>
+                    <option value="<%= a %>" <%= sel('maxAge', a) %>><%= a %></option>
+                    <% } %>
+                  </select>
+                </div>
+              </div>
+              <div>
+                <label class="block text-label-md font-label-md text-on-surface-variant mb-2 uppercase tracking-wider">Height Range</label>
+                <div class="grid grid-cols-2 gap-3">
+                  <select name="minHeight" class="block w-full px-3 py-2.5 border border-outline-variant rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-on-surface bg-white text-sm">
+                    <option value="">Min Height</option>
+                    <% heights.forEach(h => { %>
+                    <option value="<%= h.cm %>" <%= sel('minHeight', h.cm) %>><%= h.d %></option>
+                    <% }) %>
+                  </select>
+                  <select name="maxHeight" class="block w-full px-3 py-2.5 border border-outline-variant rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-on-surface bg-white text-sm">
+                    <option value="">Max Height</option>
+                    <% heights.forEach(h => { %>
+                    <option value="<%= h.cm %>" <%= sel('maxHeight', h.cm) %>><%= h.d %></option>
+                    <% }) %>
+                  </select>
+                </div>
+              </div>
+              <div>
+                <label class="block text-label-md font-label-md text-on-surface-variant mb-2 uppercase tracking-wider">Profile For</label>
+                <select name="profileFor" class="block w-full px-3 py-2.5 border border-outline-variant rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-on-surface bg-white text-sm">
+                  <option value="">All</option>
+                  <% profilesFor.forEach(o => { %>
+                  <option value="<%= o %>" <%= sel('profileFor', o) %>><%= o %></option>
+                  <% }) %>
+                </select>
+              </div>
+              <div>
+                <label class="block text-label-md font-label-md text-on-surface-variant mb-2 uppercase tracking-wider">Profile Completed By</label>
+                <select name="whoCompletedProfile" class="block w-full px-3 py-2.5 border border-outline-variant rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-on-surface bg-white text-sm">
+                  <option value="">All</option>
+                  <% whoCompleted.forEach(o => { %>
+                  <option value="<%= o %>" <%= sel('whoCompletedProfile', o) %>><%= o %></option>
+                  <% }) %>
+                </select>
+              </div>
+              <div>
+                <label class="block text-label-md font-label-md text-on-surface-variant mb-2 uppercase tracking-wider">Registration Source</label>
+                <select name="registrationSource" class="block w-full px-3 py-2.5 border border-outline-variant rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-on-surface bg-white text-sm">
+                  <option value="">All</option>
+                  <% registrationSources.forEach(o => { %>
+                  <option value="<%= o %>" <%= sel('registrationSource', o) %>><%= o %></option>
+                  <% }) %>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-span-full border-t border-gray-200"></div>
+
+          <!-- ── Location ── -->
+          <div class="pb-6">
+            <h2 class="text-sm font-bold text-white uppercase tracking-wider mb-4 flex items-center gap-2 bg-black px-4 py-3 rounded-lg">
+              <i class="ri-map-pin-line text-amber-300"></i> Location
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-label-md font-label-md text-on-surface-variant mb-2 uppercase tracking-wider">Country</label>
+                <select name="country" id="filterCountry" class="block w-full px-3 py-2.5 border border-outline-variant rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-on-surface bg-white text-sm">
+                  <option value="">All Countries</option>
+                  <% countries.forEach(o => { %>
+                  <option value="<%= o %>" <%= sel('country', o) %>><%= o %></option>
+                  <% }) %>
+                </select>
+              </div>
+              <div>
+                <label class="block text-label-md font-label-md text-on-surface-variant mb-2 uppercase tracking-wider">City</label>
+                <select name="city" id="filterCity" class="block w-full px-3 py-2.5 border border-outline-variant rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-on-surface bg-white text-sm" disabled>
+                  <option value="">Select country first</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-label-md font-label-md text-on-surface-variant mb-2 uppercase tracking-wider">State / Province</label>
+                <select name="state" id="filterState" class="block w-full px-3 py-2.5 border border-outline-variant rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-on-surface bg-white text-sm" disabled>
+                  <option value="">Select country first</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-label-md font-label-md text-on-surface-variant mb-2 uppercase tracking-wider">Nationality</label>
+                <select name="nationality" class="block w-full px-3 py-2.5 border border-outline-variant rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-on-surface bg-white text-sm">
+                  <option value="">All</option>
+                  <% nationalities.forEach(o => { %>
+                  <option value="<%= o %>" <%= sel('nationality', o) %>><%= o %></option>
+                  <% }) %>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- ── Appearance ── -->
+          <div class="pb-6">
+            <h2 class="text-sm font-bold text-white uppercase tracking-wider mb-4 flex items-center gap-2 bg-black px-4 py-3 rounded-lg">
+              <i class="ri-face-line text-amber-300"></i> Appearance
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+              <div>
+                <label class="block text-label-md font-label-md text-on-surface-variant mb-2 uppercase tracking-wider">Eye Color</label>
+                <select name="eyeColor" class="block w-full px-3 py-2.5 border border-outline-variant rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-on-surface bg-white text-sm">
+                  <option value="">All</option>
+                  <% eyeColors.forEach(o => { %>
+                  <option value="<%= o %>" <%= sel('eyeColor', o) %>><%= o %></option>
+                  <% }) %>
+                </select>
+              </div>
+              <div>
+                <label class="block text-label-md font-label-md text-on-surface-variant mb-2 uppercase tracking-wider">Hair Color</label>
+                <select name="hairColor" class="block w-full px-3 py-2.5 border border-outline-variant rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-on-surface bg-white text-sm">
+                  <option value="">All</option>
+                  <% hairColors.forEach(o => { %>
+                  <option value="<%= o %>" <%= sel('hairColor', o) %>><%= o %></option>
+                  <% }) %>
+                </select>
+              </div>
+              <div>
+                <label class="block text-label-md font-label-md text-on-surface-variant mb-2 uppercase tracking-wider">Complexion</label>
+                <select name="complexion" class="block w-full px-3 py-2.5 border border-outline-variant rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-on-surface bg-white text-sm">
+                  <option value="">All</option>
+                  <% complexions.forEach(o => { %>
+                  <option value="<%= o %>" <%= sel('complexion', o) %>><%= o %></option>
+                  <% }) %>
+                </select>
+              </div>
+              <div>
+                <label class="block text-label-md font-label-md text-on-surface-variant mb-2 uppercase tracking-wider">Build</label>
+                <select name="build" class="block w-full px-3 py-2.5 border border-outline-variant rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-on-surface bg-white text-sm">
+                  <option value="">All</option>
+                  <% builds.forEach(o => { %>
+                  <option value="<%= o %>" <%= sel('build', o) %>><%= o %></option>
+                  <% }) %>
+                </select>
+              </div>
+              <div>
+                <label class="block text-label-md font-label-md text-on-surface-variant mb-2 uppercase tracking-wider">Beard</label>
+                <select name="beard" class="block w-full px-3 py-2.5 border border-outline-variant rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-on-surface bg-white text-sm">
+                  <option value="">All</option>
+                  <option value="Yes" <%= sel('beard','Yes') %>>Yes</option>
+                  <option value="No" <%= sel('beard','No') %>>No</option>
+                  <option value="N/A" <%= sel('beard','N/A') %>>N/A</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-label-md font-label-md text-on-surface-variant mb-2 uppercase tracking-wider">Wears Hijab</label>
+                <select name="wearHijab" class="block w-full px-3 py-2.5 border border-outline-variant rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-on-surface bg-white text-sm">
+                  <option value="">All</option>
+                  <option value="Yes" <%= sel('wearHijab','Yes') %>>Yes</option>
+                  <option value="No" <%= sel('wearHijab','No') %>>No</option>
+                  <option value="Sometimes" <%= sel('wearHijab','Sometimes') %>>Sometimes</option>
+                  <option value="N/A" <%= sel('wearHijab','N/A') %>>N/A</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-span-full border-t border-gray-200"></div>
+
+          <!-- ── Background & Education ── -->
+          <div class="pb-6">
+            <h2 class="text-sm font-bold text-white uppercase tracking-wider mb-4 flex items-center gap-2 bg-black px-4 py-3 rounded-lg">
+              <i class="ri-graduation-cap-line text-amber-300"></i> Background &amp; Education
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+              <div>
+                <label class="block text-label-md font-label-md text-on-surface-variant mb-2 uppercase tracking-wider">Religion</label>
+                <select name="religion" class="block w-full px-3 py-2.5 border border-outline-variant rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-on-surface bg-white text-sm">
+                  <option value="">All</option>
+                  <option value="Islam" <%= sel('religion','Islam') %>>Islam</option>
+                  <option value="Other" <%= sel('religion','Other') %>>Other</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-label-md font-label-md text-on-surface-variant mb-2 uppercase tracking-wider">Caste</label>
+                <input type="text" name="caste" value="<%= f.caste || '' %>" placeholder="e.g. Sheikh, Syed" class="block w-full px-3 py-2.5 border border-outline-variant rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-on-surface bg-white text-sm">
+              </div>
+              <div>
+                <label class="block text-label-md font-label-md text-on-surface-variant mb-2 uppercase tracking-wider">Ethnicity</label>
+                <select name="ethnicity" class="block w-full px-3 py-2.5 border border-outline-variant rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-on-surface bg-white text-sm">
+                  <option value="">All</option>
+                  <% ethnicities.forEach(o => { %>
+                  <option value="<%= o %>" <%= sel('ethnicity', o) %>><%= o %></option>
+                  <% }) %>
+                </select>
+              </div>
+              <div>
+                <label class="block text-label-md font-label-md text-on-surface-variant mb-2 uppercase tracking-wider">Islamic Sect</label>
+                <select name="islamicSect" class="block w-full px-3 py-2.5 border border-outline-variant rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-on-surface bg-white text-sm">
+                  <option value="">All</option>
+                  <% sects.forEach(o => { %>
+                  <option value="<%= o %>" <%= sel('islamicSect', o) %>><%= o %></option>
+                  <% }) %>
+                </select>
+              </div>
+              <div>
+                <label class="block text-label-md font-label-md text-on-surface-variant mb-2 uppercase tracking-wider">Preferred Islamic Sect</label>
+                <select name="preferredIslamicSect" class="block w-full px-3 py-2.5 border border-outline-variant rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-on-surface bg-white text-sm">
+                  <option value="">Any</option>
+                  <option value="Any Islamic Sect" <%= sel('preferredIslamicSect','Any Islamic Sect') %>>Any Islamic Sect</option>
+                  <% sects.forEach(o => { %>
+                  <option value="<%= o %>" <%= sel('preferredIslamicSect', o) %>><%= o %></option>
+                  <% }) %>
+                </select>
+              </div>
+              <div>
+                <label class="block text-label-md font-label-md text-on-surface-variant mb-2 uppercase tracking-wider">Highest Education</label>
+                <select name="highestEducation" class="block w-full px-3 py-2.5 border border-outline-variant rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-on-surface bg-white text-sm">
+                  <option value="">All</option>
+                  <% educations.forEach(o => { %>
+                  <option value="<%= o %>" <%= sel('highestEducation', o) %>><%= o %></option>
+                  <% }) %>
+                </select>
+              </div>
+              <div>
+                <label class="block text-label-md font-label-md text-on-surface-variant mb-2 uppercase tracking-wider">Work / Occupation</label>
+                <input type="text" name="work" value="<%= f.work || '' %>" placeholder="e.g. Doctor, Engineer" class="block w-full px-3 py-2.5 border border-outline-variant rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-on-surface bg-white text-sm">
+              </div>
+              <div>
+                <label class="block text-label-md font-label-md text-on-surface-variant mb-2 uppercase tracking-wider">Languages Spoken</label>
+                <input type="text" name="languagesSpoken" value="<%= f.languagesSpoken || '' %>" placeholder="e.g. Urdu" class="block w-full px-3 py-2.5 border border-outline-variant rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-on-surface bg-white text-sm">
+              </div>
+            </div>
+          </div>
+
+          <!-- ── Lifestyle & Values ── -->
+          <div class="pb-6">
+            <h2 class="text-sm font-bold text-white uppercase tracking-wider mb-4 flex items-center gap-2 bg-black px-4 py-3 rounded-lg">
+              <i class="ri-heart-line text-amber-300"></i> Lifestyle &amp; Values
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+              <div>
+                <label class="block text-label-md font-label-md text-on-surface-variant mb-2 uppercase tracking-wider">Marital Status</label>
+                <select name="maritalStatus" class="block w-full px-3 py-2.5 border border-outline-variant rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-on-surface bg-white text-sm">
+                  <option value="">All</option>
+                  <% maritalStatuses.forEach(o => { %>
+                  <option value="<%= o %>" <%= sel('maritalStatus', o) %>><%= o %></option>
+                  <% }) %>
+                </select>
+              </div>
+              <div>
+                <label class="block text-label-md font-label-md text-on-surface-variant mb-2 uppercase tracking-wider">Smoker</label>
+                <select name="smoker" class="block w-full px-3 py-2.5 border border-outline-variant rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-on-surface bg-white text-sm">
+                  <% yesNo.forEach(o => { %>
+                  <option value="<%= o[0] %>" <%= sel('smoker', o[0]) %>><%= o[1] %></option>
+                  <% }) %>
+                </select>
+              </div>
+              <div>
+                <label class="block text-label-md font-label-md text-on-surface-variant mb-2 uppercase tracking-wider">Born Muslim</label>
+                <select name="bornMuslim" class="block w-full px-3 py-2.5 border border-outline-variant rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-on-surface bg-white text-sm">
+                  <% yesNo.forEach(o => { %>
+                  <option value="<%= o[0] %>" <%= sel('bornMuslim', o[0]) %>><%= o[1] %></option>
+                  <% }) %>
+                </select>
+              </div>
+              <div>
+                <label class="block text-label-md font-label-md text-on-surface-variant mb-2 uppercase tracking-wider">Prays</label>
+                <select name="prays" class="block w-full px-3 py-2.5 border border-outline-variant rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-on-surface bg-white text-sm">
+                  <% yesNo.forEach(o => { %>
+                  <option value="<%= o[0] %>" <%= sel('prays', o[0]) %>><%= o[1] %></option>
+                  <% }) %>
+                </select>
+              </div>
+              <div>
+                <label class="block text-label-md font-label-md text-on-surface-variant mb-2 uppercase tracking-wider">Celebrates Milaad</label>
+                <select name="celebratesMilaad" class="block w-full px-3 py-2.5 border border-outline-variant rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-on-surface bg-white text-sm">
+                  <% yesNo.forEach(o => { %>
+                  <option value="<%= o[0] %>" <%= sel('celebratesMilaad', o[0]) %>><%= o[1] %></option>
+                  <% }) %>
+                </select>
+              </div>
+              <div>
+                <label class="block text-label-md font-label-md text-on-surface-variant mb-2 uppercase tracking-wider">Celebrates Khatams</label>
+                <select name="celebrateKhatams" class="block w-full px-3 py-2.5 border border-outline-variant rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-on-surface bg-white text-sm">
+                  <% yesNo.forEach(o => { %>
+                  <option value="<%= o[0] %>" <%= sel('celebrateKhatams', o[0]) %>><%= o[1] %></option>
+                  <% }) %>
+                </select>
+              </div>
+              <div>
+                <label class="block text-label-md font-label-md text-on-surface-variant mb-2 uppercase tracking-wider">Disability</label>
+                <select name="disability" class="block w-full px-3 py-2.5 border border-outline-variant rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-on-surface bg-white text-sm">
+                  <option value="">All</option>
+                  <option value="no" <%= sel('disability','no') %>>No</option>
+                  <option value="Yes" <%= sel('disability','Yes') %>>Yes</option>
+                  <option value="Other" <%= sel('disability','Other') %>>Other</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-label-md font-label-md text-on-surface-variant mb-2 uppercase tracking-wider">Living Arrangements</label>
+                <select name="livingArrangementsAfterMarriage" class="block w-full px-3 py-2.5 border border-outline-variant rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-on-surface bg-white text-sm">
+                  <option value="">All</option>
+                  <% livingArrangements.forEach(o => { %>
+                  <option value="<%= o %>" <%= sel('livingArrangementsAfterMarriage', o) %>><%= o %></option>
+                  <% }) %>
+                </select>
+              </div>
+              <div>
+                <label class="block text-label-md font-label-md text-on-surface-variant mb-2 uppercase tracking-wider">Willing to Relocate</label>
+                <select name="willingToRelocate" class="block w-full px-3 py-2.5 border border-outline-variant rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-on-surface bg-white text-sm">
+                  <option value="">All</option>
+                  <option value="Yes" <%= sel('willingToRelocate','Yes') %>>Yes</option>
+                  <option value="No" <%= sel('willingToRelocate','No') %>>No</option>
+                  <option value="Depends" <%= sel('willingToRelocate','Depends') %>>Depends</option>
+                  <option value="N/A" <%= sel('willingToRelocate','N/A') %>>N/A</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-label-md font-label-md text-on-surface-variant mb-2 uppercase tracking-wider">Consider Non-UK Citizen</label>
+                <select name="willingToConsiderANonUkCitizen" class="block w-full px-3 py-2.5 border border-outline-variant rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-on-surface bg-white text-sm">
+                  <option value="">All</option>
+                  <option value="Yes" <%= sel('willingToConsiderANonUkCitizen','Yes') %>>Yes</option>
+                  <option value="No" <%= sel('willingToConsiderANonUkCitizen','No') %>>No</option>
+                  <option value="Depends on location" <%= sel('willingToConsiderANonUkCitizen','Depends on location') %>>Depends on location</option>
+                  <option value="N/A" <%= sel('willingToConsiderANonUkCitizen','N/A') %>>N/A</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-label-md font-label-md text-on-surface-variant mb-2 uppercase tracking-wider">Share Photos on Request</label>
+                <select name="willingToSharePhotosUponRequest" class="block w-full px-3 py-2.5 border border-outline-variant rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-on-surface bg-white text-sm">
+                  <% yesNoNa.forEach(o => { %>
+                  <option value="<%= o[0] %>" <%= sel('willingToSharePhotosUponRequest', o[0]) %>><%= o[1] %></option>
+                  <% }) %>
+                </select>
+              </div>
+              <div>
+                <label class="block text-label-md font-label-md text-on-surface-variant mb-2 uppercase tracking-wider">Meet Up Outside</label>
+                <select name="willingToMeetUpOutside" class="block w-full px-3 py-2.5 border border-outline-variant rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-on-surface bg-white text-sm">
+                  <% yesNoNa.forEach(o => { %>
+                  <option value="<%= o[0] %>" <%= sel('willingToMeetUpOutside', o[0]) %>><%= o[1] %></option>
+                  <% }) %>
+                </select>
+              </div>
+              <div>
+                <label class="block text-label-md font-label-md text-on-surface-variant mb-2 uppercase tracking-wider">Wali Contact Details</label>
+                <select name="waliMyContactDetails" class="block w-full px-3 py-2.5 border border-outline-variant rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-on-surface bg-white text-sm">
+                  <% yesNoNa.forEach(o => { %>
+                  <option value="<%= o[0] %>" <%= sel('waliMyContactDetails', o[0]) %>><%= o[1] %></option>
+                  <% }) %>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-span-full border-t border-gray-200"></div>
+
+          <!-- ── Preferences ── -->
+          <div class="lg:col-span-2 pb-6">
+            <h2 class="text-sm font-bold text-white uppercase tracking-wider mb-4 flex items-center gap-2 bg-black px-4 py-3 rounded-lg">
+              <i class="ri-heart-add-line text-amber-300"></i> Preferences (Looking For)
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+              <% [
+                ['acceptSomeoneWithChildren','Accept Someone with Children'],
+                ['acceptADivorcedPerson','Accept a Divorced Person'],
+                ['acceptAWidow','Accept a Widow'],
+                ['agreesWithPolygamy','Agrees with Polygamy'],
+                ['ConsiderARevert','Consider a Revert'],
+                ['AcceptSomeoneWithBeard','Accept Someone with Beard'],
+                ['AcceptSomeoneWithHijab','Accept Someone with Hijab'],
+                ['allowParnterToWork','Allow Partner to Work'],
+                ['allowPartnerToStudy','Allow Partner to Study']
+              ].forEach(pair => { %>
+              <div>
+                <label class="block text-label-md font-label-md text-on-surface-variant mb-2 uppercase tracking-wider"><%= pair[1] %></label>
+                <select name="<%= pair[0] %>" class="block w-full px-3 py-2.5 border border-outline-variant rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-on-surface bg-white text-sm">
+                  <% yesNo.forEach(o => { %>
+                  <option value="<%= o[0] %>" <%= sel(pair[0], o[0]) %>><%= o[1] %></option>
+                  <% }) %>
+                </select>
+              </div>
+              <% }) %>
+              <div>
+                <label class="block text-label-md font-label-md text-on-surface-variant mb-2 uppercase tracking-wider">Accept Someone in Another Country</label>
+                <select name="acceptSomeoneInOtherCountry" class="block w-full px-3 py-2.5 border border-outline-variant rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-on-surface bg-white text-sm">
+                  <option value="">All</option>
+                  <option value="Yes" <%= sel('acceptSomeoneInOtherCountry','Yes') %>>Yes</option>
+                  <option value="No" <%= sel('acceptSomeoneInOtherCountry','No') %>>No</option>
+                  <option value="Depends" <%= sel('acceptSomeoneInOtherCountry','Depends') %>>Depends</option>
+                  <option value="N/A" <%= sel('acceptSomeoneInOtherCountry','N/A') %>>N/A</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="mt-6 pt-6 border-t border-gray-200 flex flex-wrap items-center justify-between gap-4">
+          <button type="submit" class="inline-flex items-center gap-2 px-8 py-3 bg-primary text-white rounded-lg font-semibold hover:bg-primary-container transition-colors">
+            <i class="ri-filter-line"></i> Apply Filters
+          </button>
+          <a href="/admin/filter-profiles" class="inline-flex items-center gap-2 px-6 py-3 bg-gray-100 text-gray-700 rounded-lg font-medium hover:bg-gray-200 transition-colors">
+            <i class="ri-refresh-line"></i> Clear All Filters
+          </a>
+        </div>
+      </form>
+
+      <% if (hasFilters) { %>
+      <% const chips = activeChips(f); %>
+      <!-- Applied Filters -->
+      <div class="bg-gray-50 border border-gray-200 rounded-lg p-4 mb-4 flex flex-wrap items-center gap-2">
+        <span class="text-sm font-bold text-gray-700 uppercase tracking-wider">Applied Filters:</span>
+        <% chips.forEach(c => { %>
+        <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-white border border-gray-300 text-xs font-medium text-gray-700">
+          <i class="ri-check-line text-green-500"></i> <%= c.label %>: <span class="text-gray-900 font-semibold"><%= c.val %></span>
+        </span>
+        <% }) %>
+        <a href="/admin/filter-profiles" class="ml-auto inline-flex items-center gap-1 text-xs font-semibold text-red-600 hover:text-red-700 transition-colors">
+          <i class="ri-close-line"></i> Clear All
+        </a>
+      </div>
+      <% } %>
+
+      <!-- Results -->
+      <% if (hasFilters) { %>
+      <div class="bg-white rounded-xl border border-gray-200 material-shadow overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="w-full">
+            <thead class="bg-gray-50 border-b border-gray-200">
+              <tr>
+                <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Profile</th>
+                <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Location</th>
+                <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Details</th>
+                <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Status</th>
+                <th class="px-4 py-3 text-right text-xs font-semibold text-gray-600 uppercase tracking-wider">Actions</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200">
+              <% if (profiles && profiles.length > 0) { %>
+                <% profiles.forEach(profile => { %>
+                <tr class="hover:bg-gray-50 transition-colors">
+                  <!-- Profile -->
+                  <td class="px-4 py-3">
+                    <div class="flex items-center gap-3">
+                      <div class="w-10 h-10 rounded-full overflow-hidden bg-gray-100 flex-shrink-0">
+                        <% if (profile.profilePic && profile.profilePic.url) { %>
+                        <img src="<%= profile.profilePic.url %>" alt="<%= profile.username %>" class="w-full h-full object-cover">
+                        <% } else { %>
+                        <div class="w-full h-full flex items-center justify-center bg-primary/10 text-primary font-bold uppercase">
+                          <%= (profile.name || profile.username || '?').charAt(0) %>
+                        </div>
+                        <% } %>
+                      </div>
+                      <div>
+                        <p class="font-medium text-gray-900 text-sm"><%= profile.username %></p>
+                        <p class="text-xs text-gray-500"><%= profile.name || '—' %> · <%= profile.gender === 'male' ? 'Male' : 'Female' %> · <%= profile.age || 'N/A' %> yrs</p>
+                      </div>
+                    </div>
+                  </td>
+                  <!-- Location -->
+                  <td class="px-4 py-3">
+                    <p class="text-sm text-gray-900"><%= profile.city || 'N/A' %><% if (profile.country) { %>, <%= profile.country %><% } %></p>
+                    <p class="text-xs text-gray-500"><%= profile.ethnicity || '—' %></p>
+                  </td>
+                  <!-- Details -->
+                  <td class="px-4 py-3">
+                    <p class="text-sm text-gray-700"><%= profile.work || '—' %></p>
+                    <p class="text-xs text-gray-500"><%= profile.highestEducation || '—' %> · <%= profile.maritalStatus || '—' %></p>
+                  </td>
+                  <!-- Status -->
+                  <td class="px-4 py-3">
+                    <div class="flex flex-wrap gap-1">
+                      <% if (profile.isDeactivated) { %>
+                      <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-200 text-gray-700"><i class="ri-eye-off-line mr-1"></i> Deactivated</span>
+                      <% } else if (profile.isApproved) { %>
+                      <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800"><i class="ri-check-line mr-1"></i> Approved</span>
+                      <% } else { %>
+                      <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-yellow-100 text-yellow-800"><i class="ri-time-line mr-1"></i> Pending</span>
+                      <% } %>
+                      <% if (profile.isFeatured) { %>
+                      <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-amber-100 text-amber-800"><i class="ri-star-line mr-1"></i> Featured</span>
+                      <% } %>
+                      <% if (profile.registrationSource === 'admin') { %>
+                      <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800"><i class="ri-user-star-line mr-1"></i> Staff</span>
+                      <% } %>
+                    </div>
+                  </td>
+                  <!-- Actions -->
+                  <td class="px-4 py-3 text-right">
+                    <div class="flex items-center justify-end gap-2">
+                      <a href="/profiles/<%= profile.profileSlug || profile._id %>" target="_blank" class="p-2 text-gray-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors" title="View Profile"><i class="ri-external-link-line"></i></a>
+                      <a href="/admin/user/<%= profile._id %>" class="p-2 text-gray-500 hover:text-primary hover:bg-primary/10 rounded-lg transition-colors" title="Edit Profile"><i class="ri-edit-line"></i></a>
+                    </div>
+                  </td>
+                </tr>
+                <% }) %>
+              <% } else { %>
+              <tr>
+                <td colspan="5" class="px-4 py-12 text-center">
+                  <div class="text-gray-500">
+                    <i class="ri-search-line text-4xl text-gray-300 mb-2"></i>
+                    <p class="font-medium">No profiles match your filters</p>
+                    <p class="text-sm">Try adjusting or clearing the filters above</p>
+                  </div>
+                </td>
+              </tr>
+              <% } %>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Pagination -->
+        <% if (totalPages > 1) { %>
+        <div class="px-4 py-3 border-t border-gray-200 flex items-center justify-between flex-wrap gap-2">
+          <div class="text-sm text-gray-500">Page <%= page %> of <%= totalPages %></div>
+          <div class="flex items-center gap-2">
+            <% if (page > 1) { %>
+            <a href="/admin/filter-profiles<%= qs(page - 1) %>" class="px-3 py-1.5 text-sm border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"><i class="ri-arrow-left-s-line"></i> Previous</a>
+            <% } %>
+            <% for (let i = Math.max(1, page - 2); i <= Math.min(totalPages, page + 2); i++) { %>
+            <a href="/admin/filter-profiles<%= qs(i) %>" class="px-3 py-1.5 text-sm rounded-lg transition-colors <%= i === page ? 'bg-primary text-white' : 'border border-gray-300 hover:bg-gray-50' %>"><%= i %></a>
+            <% } %>
+            <% if (page < totalPages) { %>
+            <a href="/admin/filter-profiles<%= qs(page + 1) %>" class="px-3 py-1.5 text-sm border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">Next <i class="ri-arrow-right-s-line"></i></a>
+            <% } %>
+          </div>
+        </div>
+        <% } %>
+      </div>
+      <% } else { %>
+      <div class="bg-white rounded-xl border border-gray-200 material-shadow">
+        <div class="py-16 px-6 text-center">
+          <i class="ri-filter-3-line text-5xl text-gray-300"></i>
+          <p class="mt-4 font-semibold text-gray-700">No filters applied</p>
+          <p class="mt-1 text-sm text-gray-500">Choose one or more filters above and click <span class="font-semibold text-gray-700">Apply Filters</span> to find matching profiles.</p>
+        </div>
+      </div>
+      <% } %>
+    </div>
+  </main>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const cityData = {
+        'United Kingdom': ['London','Birmingham','Manchester','Glasgow','Liverpool','Leeds','Sheffield','Edinburgh','Bristol','Leicester','Bradford','Cardiff','Nottingham','Newcastle','Other'],
+        'Pakistan': ['Karachi','Lahore','Islamabad','Rawalpindi','Faisalabad','Multan','Peshawar','Quetta','Sialkot','Gujranwala','Hyderabad','Abbottabad','Bahawalpur','Sargodha','Sukkur','Larkana','Mardan','Gujrat','Sahiwal','Mirpur','Sheikhupura','Jhang','Rahim Yar Khan','Kasur','Muzaffargarh','Nawabshah','Chiniot','Kamoke','Hafizabad','Sadiqabad','Burewala','Jacobabad','Shikarpur','Kohat','Jhelum','Khanewal','Gojra','Mandi Bahauddin','Daska','Dera Ghazi Khan','Dera Ismail Khan','Mingora','Bannu','Khuzdar','Other'],
+        'Bangladesh': ['Dhaka','Chittagong','Sylhet','Khulna','Rajshahi','Comilla','Gazipur','Narayanganj','Other'],
+        'India': ['Mumbai','Delhi','Bangalore','Hyderabad','Chennai','Kolkata','Ahmedabad','Pune','Lucknow','Jaipur','Other'],
+        'United States': ['New York','Los Angeles','Chicago','Houston','Dallas','San Francisco','Miami','Atlanta','Washington DC','Boston','Other'],
+        'Canada': ['Toronto','Vancouver','Montreal','Calgary','Ottawa','Edmonton','Mississauga','Brampton','Other'],
+        'United Arab Emirates': ['Dubai','Abu Dhabi','Sharjah','Ajman','Al Ain','Ras Al Khaimah','Other'],
+        'Saudi Arabia': ['Riyadh','Jeddah','Mecca','Medina','Dammam','Dhahran','Other'],
+        'Australia': ['Sydney','Melbourne','Brisbane','Perth','Adelaide','Gold Coast','Other'],
+        'Germany': ['Berlin','Munich','Frankfurt','Hamburg','Cologne','Dusseldorf','Other'],
+        'France': ['Paris','Lyon','Marseille','Toulouse','Nice','Strasbourg','Other'],
+        'Malaysia': ['Kuala Lumpur','George Town','Johor Bahru','Ipoh','Shah Alam','Other'],
+        'Singapore': ['Singapore','Other'],
+        'Other': ['Other']
+      };
+      const stateData = {
+        'United Kingdom': ['England','Scotland','Wales','Northern Ireland','Other'],
+        'Pakistan': ['Punjab','Sindh','Khyber Pakhtunkhwa','Balochistan','Islamabad Capital Territory','Gilgit-Baltistan','Azad Kashmir','Other'],
+        'Bangladesh': ['Dhaka Division','Chittagong Division','Sylhet Division','Khulna Division','Rajshahi Division','Barisal Division','Rangpur Division','Mymensingh Division','Other'],
+        'India': ['Delhi','Maharashtra','Uttar Pradesh','Gujarat','Karnataka','Tamil Nadu','West Bengal','Telangana','Punjab','Haryana','Rajasthan','Kerala','Other'],
+        'United States': ['California','New York','Texas','Florida','Illinois','New Jersey','Virginia','Georgia','Washington','Massachusetts','Pennsylvania','Michigan','Other'],
+        'Canada': ['Ontario','British Columbia','Alberta','Quebec','Manitoba','Saskatchewan','Nova Scotia','Other'],
+        'United Arab Emirates': ['Dubai','Abu Dhabi','Sharjah','Ajman','Al Ain','Ras Al Khaimah','Fujairah','Umm Al-Quwain','Other'],
+        'Saudi Arabia': ['Riyadh Province','Makkah Province','Madinah Province','Eastern Province','Asir Province','Other'],
+        'Australia': ['New South Wales','Victoria','Queensland','Western Australia','South Australia','Tasmania','Other'],
+        'Germany': ['Bavaria','Berlin','Hesse','Hamburg','North Rhine-Westphalia','Baden-Württemberg','Other'],
+        'France': ["Île-de-France","Provence-Alpes-Côte d'Azur","Auvergne-Rhône-Alpes","Hauts-de-France","Occitanie","Other"],
+        'Malaysia': ['Selangor','Kuala Lumpur','Penang','Johor','Perak','Sabah','Sarawak','Other'],
+        'Singapore': ['Central','East','North','North-East','West','Other'],
+        'Other': ['Other']
+      };
+
+      const countrySel = document.getElementById('filterCountry');
+      const citySel = document.getElementById('filterCity');
+      const stateSel = document.getElementById('filterState');
+
+      function fillSelect(sel, items, placeholder, selected) {
+        if (!items || items.length === 0) {
+          sel.innerHTML = '<option value="">' + placeholder + '</option>';
+          sel.disabled = true;
+          return;
+        }
+        sel.innerHTML = '<option value="">' + placeholder + '</option>';
+        items.forEach(function (v) {
+          const opt = document.createElement('option');
+          opt.value = v;
+          opt.textContent = v;
+          if (selected && String(v).toLowerCase() === String(selected).toLowerCase()) opt.selected = true;
+          sel.appendChild(opt);
+        });
+        sel.disabled = false;
+      }
+
+      countrySel.addEventListener('change', function () {
+        const c = this.value;
+        fillSelect(citySel, cityData[c], 'All Cities', '');
+        fillSelect(stateSel, stateData[c], 'All States / Provinces', '');
+      });
+
+      // Restore selections from query params (fall back to server-rendered values) on load
+      (function init() {
+        const params = new URLSearchParams(window.location.search);
+        const country = params.get('country') || (countrySel ? countrySel.value : '');
+        const city = params.get('city') || (citySel ? citySel.value : '');
+        const state = params.get('state') || (stateSel ? stateSel.value : '');
+        if (country && countrySel) {
+          countrySel.value = country;
+          fillSelect(citySel, cityData[country], 'All Cities', city);
+          fillSelect(stateSel, stateData[country], 'All States / Provinces', state);
+        }
+      })();
+
+      // Submit: send ONLY non-empty filter values in the query string
+      const filterForm = document.getElementById('filterForm');
+      if (filterForm) {
+        filterForm.addEventListener('submit', function (e) {
+          e.preventDefault();
+          const params = new URLSearchParams();
+          new FormData(filterForm).forEach(function (v, k) {
+            if (v !== '' && v !== null && v !== undefined) params.set(k, v);
+          });
+          const s = params.toString();
+          window.location.href = '/admin/filter-profiles' + (s ? '?' + s : '');
+        });
+      }
+    });
+  </script>
+</body>
+</html>

@@ -3702,6 +3702,125 @@ app.get("/admin/dashboard", requireAdminOrModerator, async (req, res) => {
   }
 });
 
+// ── Admin: Filter Profiles (comprehensive profile finder) ─────────────────
+app.get("/admin/filter-profiles", requireAdminOrModerator, async (req, res) => {
+  if (!req.session.isAdmin && !req.session.isModerator) {
+    return res.redirect("/admin");
+  }
+  const page = parseInt(req.query.page) > 0 ? parseInt(req.query.page) : 1;
+  const limit = 25;
+  const skip = (page - 1) * limit;
+  const q = req.query || {};
+
+  // Clean filters: only non-empty values, excluding pagination
+  const filters = {};
+  Object.keys(q).forEach((k) => {
+    if (k !== "page" && q[k] !== undefined && q[k] !== null && q[k] !== "") filters[k] = q[k];
+  });
+  const hasFilters = Object.keys(filters).length > 0;
+
+  const filter = {};
+
+  // --- Free-text fields (case-insensitive regex) ---
+  const textFields = {
+    username: "username",
+    email: "email",
+    profileSlug: "profileSlug",
+    city: "city",
+    state: "state",
+    country: "country",
+    nationality: "nationality",
+    caste: "caste",
+    work: "work",
+    languagesSpoken: "languagesSpoken",
+  };
+  for (const [param, field] of Object.entries(textFields)) {
+    if (q[param]) filter[field] = { $regex: q[param], $options: "i" };
+  }
+
+  // --- Boolean fields (form sends 'true'/'false') ---
+  const boolFields = [
+    "bornMuslim", "smoker", "prays", "celebratesMilaad", "celebrateKhatams",
+    "isApproved", "isFeatured", "isDeactivated", "idVerified", "faceVerified",
+    "acceptSomeoneWithChildren", "acceptADivorcedPerson", "acceptAWidow",
+    "agreesWithPolygamy", "ConsiderARevert", "AcceptSomeoneWithBeard",
+    "AcceptSomeoneWithHijab", "allowParnterToWork", "allowPartnerToStudy",
+  ];
+  for (const f of boolFields) {
+    if (q[f] === "true") filter[f] = true;
+    else if (q[f] === "false") filter[f] = false;
+  }
+
+  // --- Exact string/enum fields ---
+  const exactFields = [
+    "gender", "religion", "ethnicity", "maritalStatus", "islamicSect",
+    "preferredIslamicSect", "highestEducation", "eyeColor", "hairColor",
+    "complexion", "build", "beard", "wearHijab", "disability",
+    "livingArrangementsAfterMarriage", "willingToRelocate",
+    "willingToConsiderANonUkCitizen", "willingToSharePhotosUponRequest",
+    "willingToMeetUpOutside", "waliMyContactDetails", "profileFor",
+    "whoCompletedProfile", "registrationSource", "approvalStatus",
+    "profileCompletenessTier", "acceptSomeoneInOtherCountry",
+  ];
+  for (const f of exactFields) {
+    if (q[f] !== undefined && q[f] !== "") filter[f] = q[f];
+  }
+
+  // --- Numeric ranges ---
+  if (q.minAge || q.maxAge) {
+    filter.age = {};
+    if (q.minAge) filter.age.$gte = parseInt(q.minAge, 10);
+    if (q.maxAge) filter.age.$lte = parseInt(q.maxAge, 10);
+  }
+  if (q.minHeight || q.maxHeight) {
+    filter.height = {};
+    if (q.minHeight) filter.height.$gte = parseFloat(q.minHeight);
+    if (q.maxHeight) filter.height.$lte = parseFloat(q.maxHeight);
+  }
+  if (q.minSiblings || q.maxSiblings) {
+    filter.siblings = {};
+    if (q.minSiblings) filter.siblings.$gte = parseInt(q.minSiblings, 10);
+    if (q.maxSiblings) filter.siblings.$lte = parseInt(q.maxSiblings, 10);
+  }
+
+  try {
+    let profiles = [];
+    let totalProfiles = 0;
+    let totalPages = 0;
+
+    // Only query when at least one filter is active (don't show all profiles by default)
+    if (hasFilters) {
+      totalProfiles = await User.countDocuments(filter);
+      totalPages = Math.ceil(totalProfiles / limit);
+      profiles = await User.find(filter)
+        .sort({ createdAt: -1, _id: -1 })
+        .skip(skip)
+        .limit(limit)
+        .select(
+          "username name age gender city country work highestEducation ethnicity maritalStatus isApproved approvalStatus profileSlug profilePic isDeactivated isFeatured registrationSource"
+        )
+        .lean();
+    }
+
+    return res.render("admin/filterProfiles", {
+      profiles,
+      filters,
+      page,
+      totalPages,
+      totalProfiles,
+      isAdmin: req.session.isAdmin || false,
+      hasFilters,
+    });
+  } catch (error) {
+    console.error("Error filtering profiles:", error);
+    return res.status(500).render("error", {
+      title: "Error",
+      message: "Failed to filter profiles",
+      error: process.env.NODE_ENV === "development" ? error : {},
+    });
+  }
+});
+
 // API endpoint for loading more users (pagination, filtering, searching)
 app.get("/api/admin/users", requireAdminOrModerator, async (req, res) => {
   try {
