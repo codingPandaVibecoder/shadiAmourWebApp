@@ -89,6 +89,45 @@
     .seo-body .border-primary\/10 {
       border-color: rgba(0, 35, 102, 0.12);
     }
+    .seo-body h3 {
+      font-family: 'Manrope', sans-serif;
+      font-size: 19px;
+      line-height: 28px;
+      font-weight: 700;
+      color: #00113a;
+      margin: 1.75rem 0 0.75rem;
+    }
+    .seo-table-wrap {
+      overflow-x: auto;
+      margin: 1.5rem 0;
+    }
+    .seo-body table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 15px;
+      line-height: 24px;
+    }
+    .seo-body th,
+    .seo-body td {
+      text-align: left;
+      vertical-align: top;
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid #e4e5e9;
+      color: #444650;
+    }
+    .seo-body th {
+      background-color: #f5f6f8;
+      color: #00113a;
+      font-weight: 700;
+    }
+    .seo-body .arabic {
+      direction: rtl;
+      text-align: right;
+      font-size: 22px;
+      line-height: 2.2;
+      color: #1a1b20;
+      margin: 1rem 0 1.5rem;
+    }
   </style>
 
   <!-- Structured Data -->
@@ -105,9 +144,15 @@
     },
     "url": "https://shadiamour.com<%= canonicalPath %>",
     "serviceType": "Muslim Marriage and Matchmaking",
-    "areaServed": ["United Kingdom", "Pakistan", "Global"]
+    "areaServed": <%- JSON.stringify(typeof areaServed !== 'undefined' && areaServed ? areaServed : ["United Kingdom", "Pakistan", "Global"]) %>
   }
   </script>
+  <% if (typeof lastReviewedISO !== 'undefined' && lastReviewedISO) { %>
+  <script type="application/ld+json"><%- JSON.stringify({ "@context": "https://schema.org", "@type": "Article", headline: h1, description: metaDescription, dateModified: lastReviewedISO, datePublished: lastReviewedISO, inLanguage: "en-GB", author: { "@type": "Organization", name: "shadiamour" }, publisher: { "@type": "Organization", name: "shadiamour", url: "https://shadiamour.com" }, mainEntityOfPage: "https://shadiamour.com" + canonicalPath }) %></script>
+  <% } %>
+  <% if (typeof howTo !== 'undefined' && howTo) { %>
+  <script type="application/ld+json"><%- JSON.stringify({ "@context": "https://schema.org", "@type": "HowTo", name: howTo.name, step: howTo.steps.map(function (s, i) { return { "@type": "HowToStep", position: i + 1, name: s.name, text: s.text }; }) }) %></script>
+  <% } %>
   <% if (typeof pageFaqSchema !== 'undefined' && pageFaqSchema && pageFaqSchema.length > 0) { %>
   <script type="application/ld+json"><%- JSON.stringify({ "@context": "https://schema.org", "@type": "FAQPage", "mainEntity": pageFaqSchema.map(function(faq){ return { "@type": "Question", "name": faq.q, "acceptedAnswer": { "@type": "Answer", "text": faq.a } }; }) }) %></script>
   <% } else { %>
@@ -164,6 +209,9 @@
     <!-- Article Body -->
     <section class="max-w-container-max mx-auto px-margin-x py-section-padding">
       <div class="bg-surface-white rounded-xl border border-outline-variant p-6 md:p-10" style="box-shadow: 0px 4px 20px rgba(0, 35, 102, 0.05);">
+        <% if (typeof lastReviewed !== 'undefined' && lastReviewed) { %>
+        <p class="text-label-md font-label-md text-on-surface-variant mb-6 pb-6 border-b border-outline-variant">Last reviewed: <%= lastReviewed %></p>
+        <% } %>
         <div class="seo-body max-w-none">
           <%- bodyContent %>
         </div>

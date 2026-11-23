@@ -168,18 +168,13 @@ async function bulkSubmitAllPublicUrls() {
   ];
   allUrls.push(...staticPages);
 
-  // ---- SEO Landing Pages (mirrors App.js seoPages array paths) ----
-  const seoLandingPaths = [
-    "/muslim-marriage", "/muslim-matrimonial", "/muslim-matchmaking",
-    "/halal-marriage", "/muslim-rishta", "/find-muslim-spouse",
-    "/best-muslim-marriage-website", "/free-muslim-marriage-site",
-    "/trusted-muslim-matchmaking", "/verified-muslim-profiles",
-    "/online-rishta-pakistan", "/rishta-lahore", "/rishta-karachi",
-    "/muslim-marriage-uk", "/british-pakistani-marriage",
-    "/muslim-singles-uk", "/muslim-second-marriage",
-    "/divorced-muslim-marriage", "/muslim-marriage-over-30",
+  // ---- UK marriage guidance pages (mirrors views/uk-marriage-guidance-pages.js) ----
+  const marriageGuidancePaths = [
+    "/is-nikah-legal-in-uk", "/mahr-in-the-uk", "/wali-for-nikah-uk",
+    "/khula-in-the-uk", "/istikhara-for-marriage",
+    "/nikah-ceremony-uk-step-by-step",
   ];
-  allUrls.push(...seoLandingPaths);
+  allUrls.push(...marriageGuidancePaths);
 
   // ---- City Hub Pages ----
   const cityHubPaths = [
@@ -191,12 +186,6 @@ async function bulkSubmitAllPublicUrls() {
     "/muslim-matrimony-nottingham",
   ];
   allUrls.push(...cityHubPaths);
-
-  // ---- Pakistan City Pages ----
-  const pakistanCityPaths = [
-    "/rishta-islamabad", "/rishta-rawalpindi", "/rishta-faisalabad",
-  ];
-  allUrls.push(...pakistanCityPaths);
 
   // ---- Published Blog Posts from DB ----
   try {

@@ -454,567 +454,20 @@ app.get("/register", (req, res) => {
   });
 });
 
-// SEO LANDING PAGES (REWRITTEN CONTENT VARIANT)
 // ============================================
-const seoPages = [
-  {
-    path: "/muslim-marriage",
-    pageTitle: "Muslim Marriage UK — The Islamic Approach to Finding a Spouse | shadiAmour",
-    h1: "Muslim Marriage UK — The Islamic Approach to Finding a Spouse",
-    heroSubtitle: "From sincere intention to istikhara to the wali's involvement — understand the Islamic roadmap for finding a spouse, and see how shadiAmour supports every stage of it.",
-    metaDescription: "Understand the Islamic approach to Muslim marriage in the UK — Quranic principles, Nikah guidance, and how shadiAmour helps British Muslims find a halal spouse.",
-    keywords: "Muslim marriage UK, Islamic marriage guide, Nikah UK, Muslim marriage website UK, halal marriage process, Muslim marriage site UK",
-    canonicalPath: "/muslim-marriage",
-    ctaHeading: "Take the First Step Toward Nikah",
-    ctaSubtext: "Join the UK Muslims who have found their spouse through shadiAmour — a platform built on halal principles from day one.",
-    relatedLinks: [
-      { url: "/halal-marriage", label: "What Makes a Marriage Process Halal" },
-      { url: "/muslim-matrimonial", label: "Building Your Matrimonial Biodata" },
-      { url: "/muslim-matchmaking", label: "How Our Matchmaking Works" },
-      { url: "/find-muslim-spouse", label: "A Step-by-Step Guide to Finding a Spouse" },
-      { url: "/verified-muslim-profiles", label: "Why Verified Profiles Matter" }
-    ],
-    pageFaqSchema: [
-      { q: "What does Islam actually say about marriage?", a: "Nikah is strongly encouraged in Islam and is described as fulfilling half of a believer's religion. It is a sacred bond meant to establish a household rooted in sakeenah (tranquillity), mawaddah (affection), and rahmah (mercy)." },
-      { q: "Will using a marriage website compromise my deen?", a: "Not on shadiAmour. The platform exists exclusively for Muslims with genuine marriage intentions, with no dating culture and no encouragement of unsupervised private chatting." },
-      { q: "Do I need my wali to be involved if I use shadiAmour?", a: "We actively encourage wali participation, consistent with Islamic guidance. The platform is structured to make family involvement easy, not to sidestep it." },
-      { q: "How is this different from a regular dating app?", a: "shadiAmour exists solely for marriage. Every profile is checked by our moderation team, there is no swipe-based browsing culture, and the whole experience is oriented around Nikah." },
-      { q: "Does it cost anything to search for a spouse here?", a: "No. Creating a profile, browsing verified members, and expressing interest are all free." }
-    ],
-    pageFaqs: [
-      { q: "What does Islam actually say about marriage?", a: "Nikah is strongly encouraged in Islam and is described as fulfilling half of a believer's religion. It is a sacred bond meant to establish a household rooted in sakeenah (tranquillity), mawaddah (affection), and rahmah (mercy)." },
-      { q: "Will using a marriage website compromise my deen?", a: "Not on shadiAmour. The platform exists exclusively for Muslims with genuine marriage intentions, with no dating culture and no encouragement of unsupervised private chatting." },
-      { q: "Do I need my wali to be involved if I use shadiAmour?", a: "We actively encourage wali participation, consistent with Islamic guidance. The platform is structured to make family involvement easy, not to sidestep it." },
-      { q: "How is this different from a regular dating app?", a: "shadiAmour exists solely for marriage. Every profile is checked by our moderation team, there is no swipe-based browsing culture, and the whole experience is oriented around Nikah." },
-      { q: "Does it cost anything to search for a spouse here?", a: "No. Creating a profile, browsing verified members, and expressing interest are all free." }
-    ],
-    bodyContent: `
-      <div class="prose max-w-none">
-        <p class="text-lg text-gray-700 mb-6 leading-relaxed">In Islam, marriage (Nikah) is far more than a civil contract — it is half of one's deen and one of the most spiritually significant acts a Muslim can undertake. The Prophet Muhammad ■ said: "When a man marries, he has fulfilled half of his religion, so let him fear Allah regarding the remaining half." (Al-Bayhaqi). shadiAmour exists to make that search safer and more dignified for British Muslims.</p>
-
-        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">The Quranic Foundation</h2>
-        <p class="text-gray-700 mb-6 leading-relaxed">Allah describes the marital bond as one built on sakeenah (tranquillity), mawaddah (deep affection), and rahmah (mercy) — "And of His signs is that He created for you from yourselves mates that you may find tranquillity in them..." (Quran 30:21). These qualities are not automatic; they are responsibilities both spouses cultivate daily.</p>
-
-        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">The Islamic Process of Seeking a Spouse</h2>
-        <ul class="list-none space-y-3 mb-6">
-          <li class="flex items-start gap-3"><span class="text-primary mt-1">•</span><span class="text-gray-700">Sincere Intention (Niyyah) — approaching the search to please Allah and fulfil the Sunnah.</span></li>
-          <li class="flex items-start gap-3"><span class="text-primary mt-1">•</span><span class="text-gray-700">Istikhara — seeking Allah's guidance before committing to a proposal.</span></li>
-          <li class="flex items-start gap-3"><span class="text-primary mt-1">•</span><span class="text-gray-700">Wali Involvement — a guardian who protects and supports, not obstructs.</span></li>
-          <li class="flex items-start gap-3"><span class="text-primary mt-1">•</span><span class="text-gray-700">Halal Meeting — respectful, modest, purposeful conversation, never unchaperoned dating.</span></li>
-        </ul>
-
-        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">How shadiAmour Supports This Process</h2>
-        <p class="text-gray-700 mb-6 leading-relaxed">shadiAmour is a marriage-only environment with verified profiles, wali-friendly account management, and UK GDPR-compliant data protection — giving British Muslims a trustworthy, halal-first alternative to mainstream dating apps.</p>
-
-        <div class="bg-primary/5 rounded-2xl p-6 border border-primary/10 mt-8">
-          <p class="text-gray-700 font-medium">Muslim Marriage London • Muslim Matchmaking Leicester • Muslim Rishta Birmingham • Halal Marriage Manchester • Muslim Matrimony Bradford • Islamic Marriage Luton • Muslim Shaadi Bolton • Muslim Matrimonial Sites Oldham • Online Nikah UK • Pakistani Muslim Marriage UK • Bengali Muslim Matrimony UK</p>
-        </div>
-      </div>
-    `
-  },
-  {
-    path: "/halal-marriage",
-    pageTitle: "Halal Marriage UK — Marrying the Right Way, Without Compromise | shadiAmour",
-    h1: "Halal Marriage UK — Marrying the Right Way, Without Compromise",
-    heroSubtitle: "Halal marriage isn't just about who you marry — it's about how you get there. See what makes the process halal, and how shadiAmour keeps it that way.",
-    metaDescription: "Learn what makes a marriage process halal in Islam — boundaries, family involvement, and supervised meetings — and find a halal marriage partner on shadiAmour.",
-    keywords: "halal marriage UK, halal marriage site, halal marriage process, halal way to find a partner, halal Muslim marriage website, halal marriage steps",
-    canonicalPath: "/halal-marriage",
-    ctaHeading: "Start Your Halal Search Today",
-    ctaSubtext: "Join a marriage-only platform built around Islamic boundaries from the very first click.",
-    relatedLinks: [
-      { url: "/muslim-marriage", label: "The Islamic Approach to Marriage" },
-      { url: "/muslim-rishta", label: "Modern Rishta the Respectable Way" },
-      { url: "/trusted-muslim-matchmaking", label: "Why Trust Comes First" },
-      { url: "/verified-muslim-profiles", label: "Why Verified Profiles Matter" },
-      { url: "/best-muslim-marriage-website", label: "What Sets shadiAmour Apart" }
-    ],
-    pageFaqSchema: [
-      { q: "What exactly does \"halal marriage\" mean?", a: "It describes the entire process of coming together — how two people meet, communicate, and who is involved — not just that both parties are Muslim." },
-      { q: "Is private messaging before family involvement allowed?", a: "Islamic boundaries discourage khulwa (unsupervised private seclusion). shadiAmour encourages purposeful, compatibility-focused conversation with family awareness rather than open-ended chatting." },
-      { q: "Does shadiAmour require wali involvement?", a: "Family and wali involvement is built into the platform's design rather than treated as an afterthought, and is actively encouraged for every member." },
-      { q: "How does shadiAmour keep the environment halal?", a: "Every profile is created with the explicit intention of Nikah, and our moderation team reviews profiles to keep the environment serious, respectful, and free of dating-app culture." },
-      { q: "Is joining shadiAmour free?", a: "Yes — creating a profile and browsing verified members is free." }
-    ],
-    pageFaqs: [
-      { q: "What exactly does \"halal marriage\" mean?", a: "It describes the entire process of coming together — how two people meet, communicate, and who is involved — not just that both parties are Muslim." },
-      { q: "Is private messaging before family involvement allowed?", a: "Islamic boundaries discourage khulwa (unsupervised private seclusion). shadiAmour encourages purposeful, compatibility-focused conversation with family awareness rather than open-ended chatting." },
-      { q: "Does shadiAmour require wali involvement?", a: "Family and wali involvement is built into the platform's design rather than treated as an afterthought, and is actively encouraged for every member." },
-      { q: "How does shadiAmour keep the environment halal?", a: "Every profile is created with the explicit intention of Nikah, and our moderation team reviews profiles to keep the environment serious, respectful, and free of dating-app culture." },
-      { q: "Is joining shadiAmour free?", a: "Yes — creating a profile and browsing verified members is free." }
-    ],
-    bodyContent: `
-      <div class="prose max-w-none">
-        <p class="text-lg text-gray-700 mb-6 leading-relaxed">"Halal marriage" is not simply marriage between two Muslims — it describes the entire process by which two people come together: how they meet, how they communicate, and who is involved along the way. A halal approach protects both parties from the emotional and spiritual harm caused by undisciplined, dating-style interactions.</p>
-
-        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">What Makes the Process Halal</h2>
-        <ul class="list-none space-y-3 mb-6">
-          <li class="flex items-start gap-3"><span class="text-primary mt-1">•</span><span class="text-gray-700">The intention is marriage from the very first conversation, never casual companionship.</span></li>
-          <li class="flex items-start gap-3"><span class="text-primary mt-1">•</span><span class="text-gray-700">There is no khulwa (unsupervised private seclusion) between unrelated men and women.</span></li>
-          <li class="flex items-start gap-3"><span class="text-primary mt-1">•</span><span class="text-gray-700">A wali or family member is aware of, and ideally involved in, the process.</span></li>
-          <li class="flex items-start gap-3"><span class="text-primary mt-1">•</span><span class="text-gray-700">Conversations stay purposeful — discussing compatibility, values, and future goals rather than open-ended chatting.</span></li>
-        </ul>
-
-        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Why This Matters More Than Ever in the UK</h2>
-        <p class="text-gray-700 mb-6 leading-relaxed">Mainstream dating apps normalise extended, unchaperoned, often non-committal interactions that conflict directly with Islamic boundaries. Many British Muslims feel caught between this culture and a desire to do things the right way — which is exactly the gap a halal marriage site is designed to close.</p>
-
-        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">How shadiAmour Keeps the Process Halal</h2>
-        <p class="text-gray-700 mb-6 leading-relaxed">Every profile on shadiAmour is created with the explicit intention of Nikah. Family and wali involvement is built into the platform rather than treated as an afterthought, and our moderation team reviews profiles to keep the environment serious, respectful, and free of dating-app culture.</p>
-
-        <div class="bg-primary/5 rounded-2xl p-6 border border-primary/10 mt-8">
-          <p class="text-gray-700 font-medium">Muslim Marriage London • Muslim Matchmaking Leicester • Muslim Rishta Birmingham • Halal Marriage Manchester • Muslim Matrimony Bradford • Islamic Marriage Luton • Muslim Shaadi Bolton • Muslim Matrimonial Sites Oldham • Online Nikah UK • Pakistani Muslim Marriage UK • Bengali Muslim Matrimony UK</p>
-        </div>
-      </div>
-    `
-  },
-  {
-    path: "/muslim-matrimonial",
-    pageTitle: "Muslim Matrimonial UK — Building Your Biodata for a Respectable Rishta | shadiAmour",
-    h1: "Muslim Matrimonial UK — Building Your Biodata for a Respectable Rishta",
-    heroSubtitle: "A strong matrimonial biodata is the foundation of a respectable rishta. Here's what belongs in yours, and how shadiAmour brings the tradition online.",
-    metaDescription: "Everything you need to know about the Muslim matrimonial process in the UK — biodata, family introductions, and matrimonial etiquette — powered by shadiAmour.",
-    keywords: "Muslim matrimonial UK, Muslim matrimonial site, Muslim matrimony website, matrimonial biodata Muslim, Muslim matrimonial profile UK",
-    canonicalPath: "/muslim-matrimonial",
-    ctaHeading: "Build Your Matrimonial Profile Today",
-    ctaSubtext: "Registration is free and every profile is reviewed by our moderation team before it goes live.",
-    relatedLinks: [
-      { url: "/muslim-rishta", label: "The Rishta Tradition, Modernised" },
-      { url: "/verified-muslim-profiles", label: "How Verification Works" },
-      { url: "/muslim-matchmaking", label: "How Our Matchmaking Works" },
-      { url: "/find-muslim-spouse", label: "A Step-by-Step Guide to Finding a Spouse" },
-      { url: "/muslim-marriage", label: "The Islamic Approach to Marriage" }
-    ],
-    pageFaqSchema: [
-      { q: "What is a matrimonial biodata?", a: "A clear, honest summary of who you are — your family background, religious practice, education, and what you're looking for in a spouse — traditionally used by families to review a match." },
-      { q: "What should I include in my profile?", a: "Religious practice, family background, education and career, and clear expectations of what you're looking for and what you won't compromise on." },
-      { q: "Can my parents be involved in reviewing my profile?", a: "Yes. A matrimonial biodata is built for parents and guardians to review alongside their son or daughter, keeping the process transparent and rooted in family involvement." },
-      { q: "Are shadiAmour matrimonial profiles checked?", a: "Yes — every profile is reviewed by our moderation team for accuracy and seriousness before it goes live." },
-      { q: "Is it free to create a matrimonial profile?", a: "Yes, creating and browsing profiles on shadiAmour is free." }
-    ],
-    pageFaqs: [
-      { q: "What is a matrimonial biodata?", a: "A clear, honest summary of who you are — your family background, religious practice, education, and what you're looking for in a spouse — traditionally used by families to review a match." },
-      { q: "What should I include in my profile?", a: "Religious practice, family background, education and career, and clear expectations of what you're looking for and what you won't compromise on." },
-      { q: "Can my parents be involved in reviewing my profile?", a: "Yes. A matrimonial biodata is built for parents and guardians to review alongside their son or daughter, keeping the process transparent and rooted in family involvement." },
-      { q: "Are shadiAmour matrimonial profiles checked?", a: "Yes — every profile is reviewed by our moderation team for accuracy and seriousness before it goes live." },
-      { q: "Is it free to create a matrimonial profile?", a: "Yes, creating and browsing profiles on shadiAmour is free." }
-    ],
-    bodyContent: `
-      <div class="prose max-w-none">
-        <p class="text-lg text-gray-700 mb-6 leading-relaxed">The matrimonial tradition — rooted in South Asian and broader Muslim culture — centres on a structured biodata: a clear, honest summary of who you are, your family background, your religious practice, and what you are looking for in a spouse. A matrimonial site simply brings this tradition online, while keeping its dignity intact.</p>
-
-        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">What Belongs in a Strong Matrimonial Profile</h2>
-        <ul class="list-none space-y-3 mb-6">
-          <li class="flex items-start gap-3"><span class="text-primary mt-1">•</span><span class="text-gray-700">Religious practice — sect, level of observance, and importance of deen in daily life.</span></li>
-          <li class="flex items-start gap-3"><span class="text-primary mt-1">•</span><span class="text-gray-700">Family background — parents' origin, profession, and household values.</span></li>
-          <li class="flex items-start gap-3"><span class="text-primary mt-1">•</span><span class="text-gray-700">Education and career — honestly presented, without exaggeration.</span></li>
-          <li class="flex items-start gap-3"><span class="text-primary mt-1">•</span><span class="text-gray-700">Clear expectations — what you are looking for, and what you are not willing to compromise on.</span></li>
-        </ul>
-
-        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Why Families Still Value the Matrimonial Process</h2>
-        <p class="text-gray-700 mb-6 leading-relaxed">Unlike casual dating profiles, a matrimonial biodata is built for parents and guardians to review alongside their son or daughter. It keeps the process transparent and rooted in family involvement — a structure many British Muslim families actively prefer over informal introductions.</p>
-
-        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">shadiAmour's Matrimonial Profile Standards</h2>
-        <p class="text-gray-700 mb-6 leading-relaxed">shadiAmour profiles are structured around the same information a traditional matrimonial biodata would include, reviewed by our moderation team for accuracy and seriousness before they go live — giving families confidence in every profile they view.</p>
-
-        <div class="bg-primary/5 rounded-2xl p-6 border border-primary/10 mt-8">
-          <p class="text-gray-700 font-medium">Muslim Marriage London • Muslim Matchmaking Leicester • Muslim Rishta Birmingham • Halal Marriage Manchester • Muslim Matrimony Bradford • Islamic Marriage Luton • Muslim Shaadi Bolton • Muslim Matrimonial Sites Oldham • Online Nikah UK • Pakistani Muslim Marriage UK • Bengali Muslim Matrimony UK</p>
-        </div>
-      </div>
-    `
-  },
-  {
-    path: "/muslim-matchmaking",
-    pageTitle: "Muslim Matchmaking UK — Where Tradition Meets Trusted Technology | shadiAmour",
-    h1: "Muslim Matchmaking UK — Where Tradition Meets Trusted Technology",
-    heroSubtitle: "The trusted auntie network, extended online. See what real compatibility looks like, and how shadiAmour blends smart filters with family judgement.",
-    metaDescription: "Discover how Muslim matchmaking works in the UK — combining family wisdom, Islamic compatibility, and smart filters — through shadiAmour's matchmaking platform.",
-    keywords: "Muslim matchmaking UK, Muslim matchmaking service, online Muslim matchmaking, Islamic matchmaking site, Muslim matchmaker UK",
-    canonicalPath: "/muslim-matchmaking",
-    ctaHeading: "Let Your Search Reach Further",
-    ctaSubtext: "Join shadiAmour and filter by the things that genuinely matter — practice, values, and family expectations.",
-    relatedLinks: [
-      { url: "/muslim-matrimonial", label: "Building Your Matrimonial Biodata" },
-      { url: "/muslim-rishta", label: "The Rishta Tradition, Modernised" },
-      { url: "/trusted-muslim-matchmaking", label: "Why Trust Comes First" },
-      { url: "/find-muslim-spouse", label: "A Step-by-Step Guide to Finding a Spouse" },
-      { url: "/muslim-marriage", label: "The Islamic Approach to Marriage" }
-    ],
-    pageFaqSchema: [
-      { q: "How is online matchmaking different from the traditional \"auntie network\"?", a: "It doesn't replace that wisdom — it extends it, reaching beyond the limits of one's immediate community while keeping the same compatibility-first approach." },
-      { q: "What does real compatibility depend on?", a: "Shared level of religious practice, aligned views on family roles and long-term goals, compatible expectations around extended family, and similar attitudes toward finances and education." },
-      { q: "Can filters alone find me the right match?", a: "No. Filters for age, location, and sect are useful, but they cannot measure sabr, akhlaq, or how someone handles disagreement — good matchmaking blends filtering with family judgement." },
-      { q: "What can I filter by on shadiAmour?", a: "Location, sect, ethnicity, and religious practice, while keeping wali and family involvement built into every profile." },
-      { q: "Is shadiAmour's matchmaking free to use?", a: "Yes — searching and filtering profiles is free." }
-    ],
-    pageFaqs: [
-      { q: "How is online matchmaking different from the traditional \"auntie network\"?", a: "It doesn't replace that wisdom — it extends it, reaching beyond the limits of one's immediate community while keeping the same compatibility-first approach." },
-      { q: "What does real compatibility depend on?", a: "Shared level of religious practice, aligned views on family roles and long-term goals, compatible expectations around extended family, and similar attitudes toward finances and education." },
-      { q: "Can filters alone find me the right match?", a: "No. Filters for age, location, and sect are useful, but they cannot measure sabr, akhlaq, or how someone handles disagreement — good matchmaking blends filtering with family judgement." },
-      { q: "What can I filter by on shadiAmour?", a: "Location, sect, ethnicity, and religious practice, while keeping wali and family involvement built into every profile." },
-      { q: "Is shadiAmour's matchmaking free to use?", a: "Yes — searching and filtering profiles is free." }
-    ],
-    bodyContent: `
-      <div class="prose max-w-none">
-        <p class="text-lg text-gray-700 mb-6 leading-relaxed">For generations, Muslim matchmaking relied on the trusted "auntie network" — relatives and community elders who knew families well enough to suggest a suitable match. Online matchmaking doesn't replace this wisdom; it extends it, reaching beyond the limits of one's immediate community while keeping the same compatibility-first approach.</p>
-
-        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">What Real Compatibility Looks Like</h2>
-        <ul class="list-none space-y-3 mb-6">
-          <li class="flex items-start gap-3"><span class="text-primary mt-1">•</span><span class="text-gray-700">Shared level of religious practice — not just shared label of "Muslim."</span></li>
-          <li class="flex items-start gap-3"><span class="text-primary mt-1">•</span><span class="text-gray-700">Aligned views on family roles, parenting, and long-term life goals.</span></li>
-          <li class="flex items-start gap-3"><span class="text-primary mt-1">•</span><span class="text-gray-700">Compatible expectations around extended family involvement.</span></li>
-          <li class="flex items-start gap-3"><span class="text-primary mt-1">•</span><span class="text-gray-700">Similar attitudes toward finances, education, and where you intend to settle.</span></li>
-        </ul>
-
-        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">The Limits of Algorithms Alone</h2>
-        <p class="text-gray-700 mb-6 leading-relaxed">Filters for age, location, and sect are useful, but they cannot measure sabr, akhlaq, or how someone handles disagreement. Good matchmaking blends practical filtering with space for family judgement and personal discernment.</p>
-
-        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">How shadiAmour Approaches Matchmaking</h2>
-        <p class="text-gray-700 mb-6 leading-relaxed">shadiAmour lets you filter by location, sect, ethnicity, and religious practice, while keeping wali and family involvement built into every profile — so technology supports the matchmaking process rather than replacing the human judgement behind it.</p>
-
-        <div class="bg-primary/5 rounded-2xl p-6 border border-primary/10 mt-8">
-          <p class="text-gray-700 font-medium">Muslim Marriage London • Muslim Matchmaking Leicester • Muslim Rishta Birmingham • Halal Marriage Manchester • Muslim Matrimony Bradford • Islamic Marriage Luton • Muslim Shaadi Bolton • Muslim Matrimonial Sites Oldham • Online Nikah UK • Pakistani Muslim Marriage UK • Bengali Muslim Matrimony UK</p>
-        </div>
-      </div>
-    `
-  },
-  {
-    path: "/muslim-rishta",
-    pageTitle: "Muslim Rishta UK — Modern Rishta the Respectable Way | shadiAmour",
-    h1: "Muslim Rishta UK — Modern Rishta the Respectable Way",
-    heroSubtitle: "The rishta tradition has always relied on family trust and respectful pacing. See why it's getting harder to find locally, and how shadiAmour extends it online.",
-    metaDescription: "Find a respectable Muslim rishta in the UK the halal way — understand rishta etiquette, family involvement, and how shadiAmour modernises the rishta process.",
-    keywords: "Muslim rishta UK, rishta website UK, Pakistani rishta UK, Bengali rishta UK, online rishta service, Muslim rishta site",
-    canonicalPath: "/muslim-rishta",
-    ctaHeading: "Extend Your Rishta Search",
-    ctaSubtext: "Join shadiAmour to reach verified families beyond your immediate network, without losing the etiquette that makes rishta work.",
-    relatedLinks: [
-      { url: "/muslim-matrimonial", label: "Building Your Matrimonial Biodata" },
-      { url: "/halal-marriage", label: "What Makes a Marriage Process Halal" },
-      { url: "/muslim-matchmaking", label: "How Our Matchmaking Works" },
-      { url: "/verified-muslim-profiles", label: "Why Verified Profiles Matter" },
-      { url: "/find-muslim-spouse", label: "A Step-by-Step Guide to Finding a Spouse" }
-    ],
-    pageFaqSchema: [
-      { q: "What is rishta?", a: "The South Asian Muslim tradition of proposing marriage through family introduction, where families know each other, expectations are discussed openly, and the process moves at a respectful pace." },
-      { q: "Why is the traditional rishta process getting harder?", a: "Smaller, more dispersed Muslim communities, fewer extended family networks living locally, and diaspora families wanting matches that respect both British upbringing and cultural roots." },
-      { q: "What rishta etiquette should still apply online?", a: "Approach with sincerity, be transparent with your own family early, and avoid prolonged one-to-one contact before family involvement begins." },
-      { q: "Does shadiAmour support rishta for specific communities?", a: "Yes — Pakistani, Bengali, Arab, and Indian Muslim families can all use shadiAmour to extend their rishta search beyond their immediate network." },
-      { q: "Is starting a rishta search on shadiAmour free?", a: "Yes, creating a profile and searching is free." }
-    ],
-    pageFaqs: [
-      { q: "What is rishta?", a: "The South Asian Muslim tradition of proposing marriage through family introduction, where families know each other, expectations are discussed openly, and the process moves at a respectful pace." },
-      { q: "Why is the traditional rishta process getting harder?", a: "Smaller, more dispersed Muslim communities, fewer extended family networks living locally, and diaspora families wanting matches that respect both British upbringing and cultural roots." },
-      { q: "What rishta etiquette should still apply online?", a: "Approach with sincerity, be transparent with your own family early, and avoid prolonged one-to-one contact before family involvement begins." },
-      { q: "Does shadiAmour support rishta for specific communities?", a: "Yes — Pakistani, Bengali, Arab, and Indian Muslim families can all use shadiAmour to extend their rishta search beyond their immediate network." },
-      { q: "Is starting a rishta search on shadiAmour free?", a: "Yes, creating a profile and searching is free." }
-    ],
-    bodyContent: `
-      <div class="prose max-w-none">
-        <p class="text-lg text-gray-700 mb-6 leading-relaxed">Rishta — the South Asian Muslim tradition of proposing marriage through family introduction — remains one of the most trusted ways Muslims in the UK find a spouse. It carries built-in safeguards: families know each other, expectations are discussed openly, and the process moves at a respectful pace.</p>
-
-        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Why the Traditional Rishta Process Is Getting Harder</h2>
-        <ul class="list-none space-y-3 mb-6">
-          <li class="flex items-start gap-3"><span class="text-primary mt-1">•</span><span class="text-gray-700">Smaller, more dispersed Muslim communities across UK towns and suburbs.</span></li>
-          <li class="flex items-start gap-3"><span class="text-primary mt-1">•</span><span class="text-gray-700">Fewer extended family networks living locally to make introductions.</span></li>
-          <li class="flex items-start gap-3"><span class="text-primary mt-1">•</span><span class="text-gray-700">Diaspora families wanting matches that respect both British upbringing and cultural roots.</span></li>
-          <li class="flex items-start gap-3"><span class="text-primary mt-1">•</span><span class="text-gray-700">Pressure to find a rishta quickly, without lowering standards on deen or compatibility.</span></li>
-        </ul>
-
-        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Rishta Etiquette Worth Preserving</h2>
-        <p class="text-gray-700 mb-6 leading-relaxed">Even online, good rishta etiquette holds: approach with sincerity, be transparent with your own family early, and avoid prolonged one-to-one contact before family involvement begins.</p>
-
-        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">shadiAmour's Modern Take on Rishta</h2>
-        <p class="text-gray-700 mb-6 leading-relaxed">shadiAmour gives Pakistani, Bengali, Arab, and Indian Muslim families a verified, structured place to extend their rishta search beyond their immediate network — without abandoning the family involvement and etiquette that make the rishta process trusted in the first place.</p>
-
-        <div class="bg-primary/5 rounded-2xl p-6 border border-primary/10 mt-8">
-          <p class="text-gray-700 font-medium">Muslim Marriage London • Muslim Matchmaking Leicester • Muslim Rishta Birmingham • Halal Marriage Manchester • Muslim Matrimony Bradford • Islamic Marriage Luton • Muslim Shaadi Bolton • Muslim Matrimonial Sites Oldham • Online Nikah UK • Pakistani Muslim Marriage UK • Bengali Muslim Matrimony UK</p>
-        </div>
-      </div>
-    `
-  },
-  {
-    path: "/find-muslim-spouse",
-    pageTitle: "How to Find a Muslim Spouse in the UK — A Step-by-Step Guide | shadiAmour",
-    h1: "How to Find a Muslim Spouse in the UK — A Step-by-Step Guide",
-    heroSubtitle: "A practical, six-step path to finding a Muslim spouse — from setting your niyyah to a halal meeting — with shadiAmour supporting every step.",
-    metaDescription: "A practical step-by-step guide to finding a Muslim spouse in the UK — from intention to Nikah — with shadiAmour supporting every step.",
-    keywords: "find Muslim spouse UK, how to find a Muslim spouse, find a Muslim partner UK, find Muslim husband UK, find Muslim wife UK",
-    canonicalPath: "/find-muslim-spouse",
-    ctaHeading: "Start Step One Today",
-    ctaSubtext: "Create your free shadiAmour profile and put this guide into practice.",
-    relatedLinks: [
-      { url: "/muslim-marriage", label: "The Islamic Approach to Marriage" },
-      { url: "/halal-marriage", label: "What Makes a Marriage Process Halal" },
-      { url: "/muslim-matchmaking", label: "How Our Matchmaking Works" },
-      { url: "/verified-muslim-profiles", label: "Why Verified Profiles Matter" },
-      { url: "/muslim-matrimonial", label: "Building Your Matrimonial Biodata" }
-    ],
-    pageFaqSchema: [
-      { q: "What's the first step to finding a Muslim spouse?", a: "Setting your niyyah — being clear with yourself that this search is for marriage, not validation or distraction." },
-      { q: "How does istikhara fit into the process?", a: "It should become a habit — praying for guidance before, not just after, a proposal comes your way." },
-      { q: "When should I involve my wali or family?", a: "Early. Don't wait until things are \"serious\" to bring them in." },
-      { q: "What should I prioritise when evaluating a match?", a: "Deen, character, and compatibility first; everything else is secondary." },
-      { q: "How does shadiAmour support this journey?", a: "With verified profiles, wali-friendly account options, and a marriage-only environment, giving each step in this guide a practical home." }
-    ],
-    pageFaqs: [
-      { q: "What's the first step to finding a Muslim spouse?", a: "Setting your niyyah — being clear with yourself that this search is for marriage, not validation or distraction." },
-      { q: "How does istikhara fit into the process?", a: "It should become a habit — praying for guidance before, not just after, a proposal comes your way." },
-      { q: "When should I involve my wali or family?", a: "Early. Don't wait until things are \"serious\" to bring them in." },
-      { q: "What should I prioritise when evaluating a match?", a: "Deen, character, and compatibility first; everything else is secondary." },
-      { q: "How does shadiAmour support this journey?", a: "With verified profiles, wali-friendly account options, and a marriage-only environment, giving each step in this guide a practical home." }
-    ],
-    bodyContent: `
-      <div class="prose max-w-none">
-        <p class="text-lg text-gray-700 mb-6 leading-relaxed">Finding a Muslim spouse in the UK doesn't have to mean choosing between an outdated approach and a haram one. Here is a practical, step-by-step path that stays true to Islamic principles while using the tools available to you today.</p>
-
-        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">A Step-by-Step Guide</h2>
-        <ul class="list-none space-y-3 mb-6">
-          <li class="flex items-start gap-3"><span class="text-primary mt-1">•</span><span class="text-gray-700">Step 1 — Set your niyyah. Be clear with yourself that this search is for marriage, not validation or distraction.</span></li>
-          <li class="flex items-start gap-3"><span class="text-primary mt-1">•</span><span class="text-gray-700">Step 2 — Make istikhara a habit. Pray for guidance before, not just after, a proposal comes your way.</span></li>
-          <li class="flex items-start gap-3"><span class="text-primary mt-1">•</span><span class="text-gray-700">Step 3 — Define your real priorities. Deen, character, and compatibility first; list everything else as secondary.</span></li>
-          <li class="flex items-start gap-3"><span class="text-primary mt-1">•</span><span class="text-gray-700">Step 4 — Involve your wali or family early. Don't wait until things are "serious" to bring them in.</span></li>
-          <li class="flex items-start gap-3"><span class="text-primary mt-1">•</span><span class="text-gray-700">Step 5 — Choose a halal-first platform. A marriage-only environment with verification saves you time and protects your deen.</span></li>
-          <li class="flex items-start gap-3"><span class="text-primary mt-1">•</span><span class="text-gray-700">Step 6 — Meet halal, decide clearly. Supervised conversation, honest questions, and a timely decision — yes or no.</span></li>
-        </ul>
-
-        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Where shadiAmour Fits In</h2>
-        <p class="text-gray-700 mb-6 leading-relaxed">shadiAmour is built around this exact journey — verified profiles, wali-friendly account options, and a marriage-only environment — so each step above has a practical home rather than staying theoretical.</p>
-
-        <div class="bg-primary/5 rounded-2xl p-6 border border-primary/10 mt-8">
-          <p class="text-gray-700 font-medium">Muslim Marriage London • Muslim Matchmaking Leicester • Muslim Rishta Birmingham • Halal Marriage Manchester • Muslim Matrimony Bradford • Islamic Marriage Luton • Muslim Shaadi Bolton • Muslim Matrimonial Sites Oldham • Online Nikah UK • Pakistani Muslim Marriage UK • Bengali Muslim Matrimony UK</p>
-        </div>
-      </div>
-    `
-  },
-  {
-    path: "/verified-muslim-profiles",
-    pageTitle: "Verified Muslim Profiles — Why Authenticity Matters in Your Marriage Search | shadiAmour",
-    h1: "Verified Muslim Profiles — Why Authenticity Matters in Your Marriage Search",
-    heroSubtitle: "Fake profiles and time-wasters don't just waste your time — they damage trust in the whole matrimonial process. See how shadiAmour keeps every profile genuine.",
-    metaDescription: "Learn why profile verification matters in Muslim matrimony and how shadiAmour's verification process protects you from fake accounts and time-wasters.",
-    keywords: "verified Muslim profiles, verified Muslim matrimony, Muslim marriage site verification, genuine Muslim profiles UK, safe Muslim marriage site",
-    canonicalPath: "/verified-muslim-profiles",
-    ctaHeading: "Search With Confidence",
-    ctaSubtext: "Every profile you see on shadiAmour has already passed our moderation review.",
-    relatedLinks: [
-      { url: "/trusted-muslim-matchmaking", label: "Why Trust Comes First" },
-      { url: "/muslim-matrimonial", label: "Building Your Matrimonial Biodata" },
-      { url: "/halal-marriage", label: "What Makes a Marriage Process Halal" },
-      { url: "/best-muslim-marriage-website", label: "What Sets shadiAmour Apart" },
-      { url: "/find-muslim-spouse", label: "A Step-by-Step Guide to Finding a Spouse" }
-    ],
-    pageFaqSchema: [
-      { q: "Why does verification matter so much in Muslim matrimony?", a: "Fake profiles and time-wasters don't just waste your time — they can damage trust in the entire matrimonial process, and affect your family's reputation in tight-knit communities." },
-      { q: "How can I spot a genuine profile?", a: "Genuine profiles tend to include consistent, specific details about family, religious practice, and intentions. Vague answers or pressure to move off-platform quickly are signs to treat with caution." },
-      { q: "How does shadiAmour verify profiles?", a: "Every profile is reviewed by our moderation team before it goes live, with reporting tools available for ongoing checks." },
-      { q: "Can parents review profiles with confidence?", a: "Yes — verification gives parents and guardians confidence when reviewing profiles on a son or daughter's behalf." },
-      { q: "Does shadiAmour support family-managed accounts?", a: "Yes, family-managed accounts and wali involvement are both actively supported." }
-    ],
-    pageFaqs: [
-      { q: "Why does verification matter so much in Muslim matrimony?", a: "Fake profiles and time-wasters don't just waste your time — they can damage trust in the entire matrimonial process, and affect your family's reputation in tight-knit communities." },
-      { q: "How can I spot a genuine profile?", a: "Genuine profiles tend to include consistent, specific details about family, religious practice, and intentions. Vague answers or pressure to move off-platform quickly are signs to treat with caution." },
-      { q: "How does shadiAmour verify profiles?", a: "Every profile is reviewed by our moderation team before it goes live, with reporting tools available for ongoing checks." },
-      { q: "Can parents review profiles with confidence?", a: "Yes — verification gives parents and guardians confidence when reviewing profiles on a son or daughter's behalf." },
-      { q: "Does shadiAmour support family-managed accounts?", a: "Yes, family-managed accounts and wali involvement are both actively supported." }
-    ],
-    bodyContent: `
-      <div class="prose max-w-none">
-        <p class="text-lg text-gray-700 mb-6 leading-relaxed">One of the biggest fears Muslims face when searching for a spouse online is simple: is this person who they say they are? Fake profiles, inactive accounts, and time-wasters don't just waste your time — they can damage trust in the entire matrimonial process.</p>
-
-        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Why Verification Should Never Be Optional</h2>
-        <ul class="list-none space-y-3 mb-6">
-          <li class="flex items-start gap-3"><span class="text-primary mt-1">•</span><span class="text-gray-700">It protects your family's reputation, especially in tight-knit communities.</span></li>
-          <li class="flex items-start gap-3"><span class="text-primary mt-1">•</span><span class="text-gray-700">It reduces the emotional toll of investing time in a connection that was never real.</span></li>
-          <li class="flex items-start gap-3"><span class="text-primary mt-1">•</span><span class="text-gray-700">It gives parents and guardians confidence when reviewing profiles on a son or daughter's behalf.</span></li>
-          <li class="flex items-start gap-3"><span class="text-primary mt-1">•</span><span class="text-gray-700">It filters out the casual time-wasters that mainstream dating culture normalises.</span></li>
-        </ul>
-
-        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Spotting the Difference</h2>
-        <p class="text-gray-700 mb-6 leading-relaxed">Genuine matrimonial profiles tend to include consistent, specific details about family, religious practice, and intentions. Vague answers, reluctance to involve family, or pressure to move conversations off-platform quickly are all signs worth treating with caution.</p>
-
-        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">How shadiAmour Verifies Every Profile</h2>
-        <p class="text-gray-700 mb-6 leading-relaxed">Every profile on shadiAmour is reviewed by our moderation team before it goes live. We support family-managed accounts, encourage wali involvement, and provide reporting tools — giving you a matrimony search built on genuine, accountable profiles rather than guesswork.</p>
-
-        <div class="bg-primary/5 rounded-2xl p-6 border border-primary/10 mt-8">
-          <p class="text-gray-700 font-medium">Muslim Marriage London • Muslim Matchmaking Leicester • Muslim Rishta Birmingham • Halal Marriage Manchester • Muslim Matrimony Bradford • Islamic Marriage Luton • Muslim Shaadi Bolton • Muslim Matrimonial Sites Oldham • Online Nikah UK • Pakistani Muslim Marriage UK • Bengali Muslim Matrimony UK</p>
-        </div>
-      </div>
-    `
-  },
-  {
-    path: "/trusted-muslim-matchmaking",
-    pageTitle: "Trusted Muslim Matchmaking — Why Reputation and Safety Come First | shadiAmour",
-    h1: "Trusted Muslim Matchmaking — Why Reputation and Safety Come First",
-    heroSubtitle: "Marriage decisions affect two families, not just two people. See what actually builds trust in a matchmaking platform, and how shadiAmour earns it.",
-    metaDescription: "Discover why trust is the foundation of Muslim matchmaking and how shadiAmour has built a reputation as a trusted halal marriage platform in the UK.",
-    keywords: "trusted Muslim matchmaking, trusted Muslim marriage site UK, reliable Muslim matchmaking, trustworthy Muslim matrimony site, safe Muslim matchmaking UK",
-    canonicalPath: "/trusted-muslim-matchmaking",
-    ctaHeading: "Join a Platform Built on Trust",
-    ctaSubtext: "See why serious Muslim marriage seekers and their families rely on shadiAmour.",
-    relatedLinks: [
-      { url: "/verified-muslim-profiles", label: "Why Verified Profiles Matter" },
-      { url: "/best-muslim-marriage-website", label: "What Sets shadiAmour Apart" },
-      { url: "/halal-marriage", label: "What Makes a Marriage Process Halal" },
-      { url: "/muslim-matchmaking", label: "How Our Matchmaking Works" },
-      { url: "/free-muslim-marriage-site", label: "Halal Marriage Without the Price Barrier" }
-    ],
-    pageFaqSchema: [
-      { q: "Why is trust so important in Muslim matchmaking?", a: "Marriage decisions affect not just two individuals but two families and, often, an entire community's perception of them — without trust, even a well-designed platform fails." },
-      { q: "What builds real trust in a matchmaking platform?", a: "Consistent, visible moderation, transparent data policies, genuine support for family and wali involvement, and a track record of serious, marriage-focused users." },
-      { q: "Why does reputation matter more in tight-knit communities?", a: "Word travels quickly, so a platform's reputation for discretion, safety, and seriousness directly affects whether families feel comfortable using it." },
-      { q: "How does shadiAmour build this trust?", a: "By combining moderation, UK GDPR-compliant data protection, and wali-friendly account design with a strict marriage-only environment." },
-      { q: "Is shadiAmour data handling compliant with UK law?", a: "Yes, shadiAmour follows UK GDPR-compliant data protection standards." }
-    ],
-    pageFaqs: [
-      { q: "Why is trust so important in Muslim matchmaking?", a: "Marriage decisions affect not just two individuals but two families and, often, an entire community's perception of them — without trust, even a well-designed platform fails." },
-      { q: "What builds real trust in a matchmaking platform?", a: "Consistent, visible moderation, transparent data policies, genuine support for family and wali involvement, and a track record of serious, marriage-focused users." },
-      { q: "Why does reputation matter more in tight-knit communities?", a: "Word travels quickly, so a platform's reputation for discretion, safety, and seriousness directly affects whether families feel comfortable using it." },
-      { q: "How does shadiAmour build this trust?", a: "By combining moderation, UK GDPR-compliant data protection, and wali-friendly account design with a strict marriage-only environment." },
-      { q: "Is shadiAmour data handling compliant with UK law?", a: "Yes, shadiAmour follows UK GDPR-compliant data protection standards." }
-    ],
-    bodyContent: `
-      <div class="prose max-w-none">
-        <p class="text-lg text-gray-700 mb-6 leading-relaxed">Trust is the single most important currency in Muslim matchmaking. Without it, even the most well-designed platform fails — because marriage decisions affect not just two individuals, but two families and, often, an entire community's perception of them.</p>
-
-        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">What Builds Real Trust in a Matchmaking Platform</h2>
-        <ul class="list-none space-y-3 mb-6">
-          <li class="flex items-start gap-3"><span class="text-primary mt-1">•</span><span class="text-gray-700">Consistent, visible moderation rather than a one-time sign-up check.</span></li>
-          <li class="flex items-start gap-3"><span class="text-primary mt-1">•</span><span class="text-gray-700">Transparent policies on data use, privacy, and how profiles are reviewed.</span></li>
-          <li class="flex items-start gap-3"><span class="text-primary mt-1">•</span><span class="text-gray-700">Genuine support for family and wali involvement, not just an optional checkbox.</span></li>
-          <li class="flex items-start gap-3"><span class="text-primary mt-1">•</span><span class="text-gray-700">A track record of serious, marriage-focused users rather than casual browsers.</span></li>
-        </ul>
-
-        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Why Reputation Matters More in Tight-Knit Communities</h2>
-        <p class="text-gray-700 mb-6 leading-relaxed">In many British Muslim communities, word travels quickly. A platform's reputation for discretion, safety, and seriousness directly affects whether families feel comfortable using it — and whether a profile is taken seriously by others.</p>
-
-        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">How shadiAmour Earns That Trust</h2>
-        <p class="text-gray-700 mb-6 leading-relaxed">shadiAmour combines moderation, UK GDPR-compliant data protection, and wali-friendly account design with a strict marriage-only environment — building the kind of reputation that serious Muslim marriage seekers and their families can rely on.</p>
-
-        <div class="bg-primary/5 rounded-2xl p-6 border border-primary/10 mt-8">
-          <p class="text-gray-700 font-medium">Muslim Marriage London • Muslim Matchmaking Leicester • Muslim Rishta Birmingham • Halal Marriage Manchester • Muslim Matrimony Bradford • Islamic Marriage Luton • Muslim Shaadi Bolton • Muslim Matrimonial Sites Oldham • Online Nikah UK • Pakistani Muslim Marriage UK • Bengali Muslim Matrimony UK</p>
-        </div>
-      </div>
-    `
-  },
-  {
-    path: "/best-muslim-marriage-website",
-    pageTitle: "Best Muslim Marriage Website UK — What Sets shadiAmour Apart | shadiAmour",
-    h1: "Best Muslim Marriage Website UK — What Sets shadiAmour Apart",
-    heroSubtitle: "\"Best\" means something different to everyone, but a few criteria separate a serious halal-first platform from a dating app wearing a matrimonial label.",
-    metaDescription: "Looking for the best Muslim marriage website in the UK? See what makes shadiAmour the trusted choice for halal marriage, verified profiles, and wali-friendly matchmaking.",
-    keywords: "best Muslim marriage website UK, best Muslim matrimony site, best halal marriage site UK, top Muslim marriage website, best Islamic marriage site UK",
-    canonicalPath: "/best-muslim-marriage-website",
-    ctaHeading: "See the Difference for Yourself",
-    ctaSubtext: "Create a free profile and experience a platform built specifically around what matters.",
-    relatedLinks: [
-      { url: "/trusted-muslim-matchmaking", label: "Why Trust Comes First" },
-      { url: "/verified-muslim-profiles", label: "Why Verified Profiles Matter" },
-      { url: "/halal-marriage", label: "What Makes a Marriage Process Halal" },
-      { url: "/free-muslim-marriage-site", label: "Halal Marriage Without the Price Barrier" },
-      { url: "/muslim-marriage", label: "The Islamic Approach to Marriage" }
-    ],
-    pageFaqSchema: [
-      { q: "What should I look for in a Muslim marriage website?", a: "A marriage-only environment, genuine profile verification and active moderation, built-in support for wali and family involvement, a UK-focused community, and clear GDPR-compliant data protection." },
-      { q: "What makes shadiAmour stand out?", a: "It was built specifically around these criteria — a halal-first UK Muslim marriage platform with verified profiles, wali-friendly design, and a strict marriage-only intention behind every account." },
-      { q: "Which communities is shadiAmour built for?", a: "British Pakistani, Bengali, Arab, and Indian Muslim communities who want a structured, dignified alternative to mainstream apps." },
-      { q: "Who is shadiAmour best suited for?", a: "Serious marriage seekers, parents managing a profile on behalf of their child, and anyone who wants their search rooted in Islamic values rather than casual dating norms." },
-      { q: "Is shadiAmour free to use?", a: "Yes, creating a profile and browsing is free." }
-    ],
-    pageFaqs: [
-      { q: "What should I look for in a Muslim marriage website?", a: "A marriage-only environment, genuine profile verification and active moderation, built-in support for wali and family involvement, a UK-focused community, and clear GDPR-compliant data protection." },
-      { q: "What makes shadiAmour stand out?", a: "It was built specifically around these criteria — a halal-first UK Muslim marriage platform with verified profiles, wali-friendly design, and a strict marriage-only intention behind every account." },
-      { q: "Which communities is shadiAmour built for?", a: "British Pakistani, Bengali, Arab, and Indian Muslim communities who want a structured, dignified alternative to mainstream apps." },
-      { q: "Who is shadiAmour best suited for?", a: "Serious marriage seekers, parents managing a profile on behalf of their child, and anyone who wants their search rooted in Islamic values rather than casual dating norms." },
-      { q: "Is shadiAmour free to use?", a: "Yes, creating a profile and browsing is free." }
-    ],
-    bodyContent: `
-      <div class="prose max-w-none">
-        <p class="text-lg text-gray-700 mb-6 leading-relaxed">"Best" means something different for every Muslim marriage seeker — but a handful of criteria consistently separate a serious, halal-first platform from a generic dating app wearing a matrimonial label.</p>
-
-        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">What to Look for in a Muslim Marriage Website</h2>
-        <ul class="list-none space-y-3 mb-6">
-          <li class="flex items-start gap-3"><span class="text-primary mt-1">•</span><span class="text-gray-700">A marriage-only environment, with no casual chatting or dating culture.</span></li>
-          <li class="flex items-start gap-3"><span class="text-primary mt-1">•</span><span class="text-gray-700">Genuine profile verification and active moderation.</span></li>
-          <li class="flex items-start gap-3"><span class="text-primary mt-1">•</span><span class="text-gray-700">Built-in support for wali and family involvement.</span></li>
-          <li class="flex items-start gap-3"><span class="text-primary mt-1">•</span><span class="text-gray-700">A UK-focused community that understands British Muslim cultural context.</span></li>
-          <li class="flex items-start gap-3"><span class="text-primary mt-1">•</span><span class="text-gray-700">Clear, GDPR-compliant data protection.</span></li>
-        </ul>
-
-        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Where shadiAmour Stands Out</h2>
-        <p class="text-gray-700 mb-6 leading-relaxed">shadiAmour was built specifically around these criteria — a halal-first UK Muslim marriage platform with verified profiles, wali-friendly design, and a strict marriage-only intention behind every account. It is built for British Pakistani, Bengali, Arab, and Indian Muslim communities who want a structured, dignified alternative to mainstream apps.</p>
-
-        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Who shadiAmour Is Best Suited For</h2>
-        <p class="text-gray-700 mb-6 leading-relaxed">Serious marriage seekers, parents managing a profile on behalf of their child, and anyone who wants their search rooted in Islamic values rather than casual dating norms will find shadiAmour designed with exactly their needs in mind.</p>
-
-        <div class="bg-primary/5 rounded-2xl p-6 border border-primary/10 mt-8">
-          <p class="text-gray-700 font-medium">Muslim Marriage London • Muslim Matchmaking Leicester • Muslim Rishta Birmingham • Halal Marriage Manchester • Muslim Matrimony Bradford • Islamic Marriage Luton • Muslim Shaadi Bolton • Muslim Matrimonial Sites Oldham • Online Nikah UK • Pakistani Muslim Marriage UK • Bengali Muslim Matrimony UK</p>
-        </div>
-      </div>
-    `
-  },
-  {
-    path: "/free-muslim-marriage-site",
-    pageTitle: "Free Muslim Marriage Site UK — Halal Marriage Without the Price Barrier | shadiAmour",
-    h1: "Free Muslim Marriage Site UK — Halal Marriage Without the Price Barrier",
-    heroSubtitle: "Cost should never delay fulfilling half of your deen. See why free access matters, and how shadiAmour keeps standards high without charging for essentials.",
-    metaDescription: "Find out how to search for a Muslim spouse in the UK without cost barriers — explore shadiAmour's free Muslim marriage site features for serious marriage seekers.",
-    keywords: "free Muslim marriage site UK, free Muslim matrimony site, free Muslim marriage website, free halal marriage site UK, free Muslim matchmaking UK",
-    canonicalPath: "/free-muslim-marriage-site",
-    ctaHeading: "Join Free, Today",
-    ctaSubtext: "Create a profile, browse verified matches, and begin your halal search — no cost, no compromise.",
-    relatedLinks: [
-      { url: "/best-muslim-marriage-website", label: "What Sets shadiAmour Apart" },
-      { url: "/verified-muslim-profiles", label: "Why Verified Profiles Matter" },
-      { url: "/trusted-muslim-matchmaking", label: "Why Trust Comes First" },
-      { url: "/muslim-marriage", label: "The Islamic Approach to Marriage" },
-      { url: "/find-muslim-spouse", label: "A Step-by-Step Guide to Finding a Spouse" }
-    ],
-    pageFaqSchema: [
-      { q: "Why does free access matter for a Muslim marriage site?", a: "Cost should never be the reason a sincere Muslim marriage seeker delays fulfilling half of their deen — free access removes the price barrier so intention and compatibility decide who finds a spouse." },
-      { q: "Who benefits most from free access?", a: "Marriage-minded young Muslims, students, those early in their careers, and parents managing a profile for their son or daughter without financial pressure." },
-      { q: "Does free mean lower standards?", a: "No. A free Muslim marriage site can still maintain serious verification, moderation, and a marriage-only environment." },
-      { q: "What does shadiAmour offer for free?", a: "Creating a profile, browsing verified matches, and beginning your halal marriage search — all without a financial barrier." },
-      { q: "Are there any paid features?", a: "The core marriage search experience is free; the focus stays on finding a sincere, compatible spouse rather than monetisation." }
-    ],
-    pageFaqs: [
-      { q: "Why does free access matter for a Muslim marriage site?", a: "Cost should never be the reason a sincere Muslim marriage seeker delays fulfilling half of their deen — free access removes the price barrier so intention and compatibility decide who finds a spouse." },
-      { q: "Who benefits most from free access?", a: "Marriage-minded young Muslims, students, those early in their careers, and parents managing a profile for their son or daughter without financial pressure." },
-      { q: "Does free mean lower standards?", a: "No. A free Muslim marriage site can still maintain serious verification, moderation, and a marriage-only environment." },
-      { q: "What does shadiAmour offer for free?", a: "Creating a profile, browsing verified matches, and beginning your halal marriage search — all without a financial barrier." },
-      { q: "Are there any paid features?", a: "The core marriage search experience is free; the focus stays on finding a sincere, compatible spouse rather than monetisation." }
-    ],
-    bodyContent: `
-      <div class="prose max-w-none">
-        <p class="text-lg text-gray-700 mb-6 leading-relaxed">Cost should never be the reason a sincere Muslim marriage seeker delays fulfilling half of their deen. A free-to-join Muslim marriage site removes the price barrier so that intention and compatibility — not budget — decide who finds a spouse.</p>
-
-        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Why Free Access Matters</h2>
-        <ul class="list-none space-y-3 mb-6">
-          <li class="flex items-start gap-3"><span class="text-primary mt-1">•</span><span class="text-gray-700">Marriage-minded young Muslims, students, and those early in their careers shouldn't be priced out of a halal search.</span></li>
-          <li class="flex items-start gap-3"><span class="text-primary mt-1">•</span><span class="text-gray-700">Parents managing a profile for their son or daughter can explore options without financial pressure.</span></li>
-          <li class="flex items-start gap-3"><span class="text-primary mt-1">•</span><span class="text-gray-700">Free access encourages more genuine profiles to join, which strengthens the platform for everyone.</span></li>
-        </ul>
-
-        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">Free Doesn't Mean Lower Standards</h2>
-        <p class="text-gray-700 mb-6 leading-relaxed">A free Muslim marriage site can still maintain serious verification, moderation, and a marriage-only environment. Affordability and authenticity are not in conflict — they simply require a platform built around community trust rather than aggressive monetisation.</p>
-
-        <h2 class="text-2xl font-bold text-gray-800 mb-4 mt-8 font-['Playfair_Display']">shadiAmour's Approach to Accessibility</h2>
-        <p class="text-gray-700 mb-6 leading-relaxed">shadiAmour lets you create a profile, browse verified matches, and begin your halal marriage search without a financial barrier standing between you and your niyyah — keeping the focus where it belongs: on finding a sincere, compatible spouse.</p>
-
-        <div class="bg-primary/5 rounded-2xl p-6 border border-primary/10 mt-8">
-          <p class="text-gray-700 font-medium">Muslim Marriage London • Muslim Matchmaking Leicester • Muslim Rishta Birmingham • Halal Marriage Manchester • Muslim Matrimony Bradford • Islamic Marriage Luton • Muslim Shaadi Bolton • Muslim Matrimonial Sites Oldham • Online Nikah UK • Pakistani Muslim Marriage UK • Bengali Muslim Matrimony UK</p>
-        </div>
-      </div>
-    `
-  }
-];
-
-seoPages.forEach(function(page) {
-  app.get(page.path, (req, res) => {
-    res.render("seo-page", page);
-  });
-});
+// UK MARRIAGE GUIDANCE PAGES
 // ============================================
-// END SEO LANDING PAGES
+require("./views/uk-marriage-guidance-pages")(app);
+// ============================================
+// END UK MARRIAGE GUIDANCE PAGES
+// ============================================
+
+// ============================================
+// RETIRED PAGE REDIRECTS
+// ============================================
+require("./views/legacy-page-redirects")(app);
+// ============================================
+// END RETIRED PAGE REDIRECTS
 // ============================================
 
 // ============================================
@@ -1024,24 +477,6 @@ require("./views/citylandingpages")(app);
 // ============================================
 // END UK CITY LANDING PAGES
 // ============================================
-
-// ============================================
-// RISHTA IN PAKISTAN PAGES
-// ============================================
-require("./views/rishta-in-pakistan-pages")(app);
-// ============================================
-// END RISHTA IN PAKISTAN PAGES
-// ============================================
-
-// ============================================
-// UK & NICHE PAGES
-// ============================================
-require("./views/uk-and-niche-pages")(app);
-// ============================================
-// END UK & NICHE PAGES
-// ============================================
-
-
 
 app.get("/onboarding", isLoggedIn, findUser, (req, res) => {
   const user = req.userData;
@@ -7769,11 +7204,6 @@ app.get("/sitemap.xml", async (req, res) => {
       { city: "Glasgow", slug: "muslim-matrimony-glasgow" },
       { city: "Nottingham", slug: "muslim-matrimony-nottingham" },
     ];
-    const pakistanCityPages = [
-      { slug: "rishta-islamabad" },
-      { slug: "rishta-rawalpindi" },
-      { slug: "rishta-faisalabad" },
-    ];
 
     let sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
@@ -7861,97 +7291,38 @@ app.get("/sitemap.xml", async (req, res) => {
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://shadiamour.com/muslim-marriage</loc>
+    <loc>https://shadiamour.com/is-nikah-legal-in-uk</loc>
+    <lastmod>2026-11-14</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://shadiamour.com/muslim-matrimonial</loc>
+    <loc>https://shadiamour.com/mahr-in-the-uk</loc>
+    <lastmod>2026-11-14</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://shadiamour.com/muslim-matchmaking</loc>
+    <loc>https://shadiamour.com/wali-for-nikah-uk</loc>
+    <lastmod>2026-11-14</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://shadiamour.com/halal-marriage</loc>
+    <loc>https://shadiamour.com/khula-in-the-uk</loc>
+    <lastmod>2026-11-14</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://shadiamour.com/muslim-rishta</loc>
+    <loc>https://shadiamour.com/istikhara-for-marriage</loc>
+    <lastmod>2026-11-14</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://shadiamour.com/find-muslim-spouse</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://shadiamour.com/best-muslim-marriage-website</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://shadiamour.com/free-muslim-marriage-site</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://shadiamour.com/trusted-muslim-matchmaking</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://shadiamour.com/verified-muslim-profiles</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://shadiamour.com/online-rishta-pakistan</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://shadiamour.com/rishta-lahore</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://shadiamour.com/rishta-karachi</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://shadiamour.com/muslim-marriage-uk</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://shadiamour.com/british-pakistani-marriage</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://shadiamour.com/muslim-singles-uk</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://shadiamour.com/muslim-second-marriage</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://shadiamour.com/divorced-muslim-marriage</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://shadiamour.com/muslim-marriage-over-30</loc>
+    <loc>https://shadiamour.com/nikah-ceremony-uk-step-by-step</loc>
+    <lastmod>2026-11-14</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -8006,16 +7377,6 @@ app.get("/sitemap.xml", async (req, res) => {
       sitemap += `
   <url>
     <loc>https://shadiamour.com/${hub.slug}</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>`;
-    });
-
-    // Add Pakistan city pages (Islamabad, Rawalpindi, Faisalabad)
-    pakistanCityPages.forEach((pkCity) => {
-      sitemap += `
-  <url>
-    <loc>https://shadiamour.com/${pkCity.slug}</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>`;
