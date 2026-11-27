@@ -1,10 +1,4 @@
-const { SendMailClient } = require("zeptomail");
-
-// Initialize ZeptoMail client
-const client = new SendMailClient({
-  url: "api.zeptomail.com/",
-  token: process.env.ZEPTOMAIL_TOKEN,
-});
+const zeptoMail = require("./zeptomailClient");
 
 // Generate 4-digit verification code
 function generateVerificationCode() {
@@ -14,7 +8,7 @@ function generateVerificationCode() {
 // Helper function to send email via ZeptoMail
 async function sendZeptoMail(to, subject, htmlBody, textBody) {
   try {
-    const response = await client.sendMail({
+    const response = await zeptoMail.sendMail({
       from: {
         address: process.env.ZEPTOMAIL_FROM_EMAIL || "noreply@shadiamour.com",
         name: process.env.ZEPTOMAIL_FROM_NAME || "shadiamour",

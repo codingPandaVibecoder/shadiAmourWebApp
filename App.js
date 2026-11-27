@@ -1,4 +1,19 @@
 require("dotenv").config(); // MUST be first!
+
+// **SAFETY NET**: one stray library promise must never take the site down.
+// An orphaned rejection inside a mail SDK previously killed the process on every
+// non-JSON error response from the mail API; log and keep serving instead.
+process.on("unhandledRejection", (reason) => {
+  console.error("🔥 Unhandled promise rejection (process kept alive):", reason);
+});
+
+// After an uncaught exception the process state is unknown, so log and let the
+// platform restart us rather than serving requests from a broken process.
+process.on("uncaughtException", (error) => {
+  console.error("🔥 Uncaught exception (shutting down):", error);
+  process.exit(1);
+});
+
 const { muslimMaleNames, muslimFemaleNames } = require("./config/seoData");
 const Blog = require("./models/Blog");
 const IslamicFAQ = require("./models/IslamicFAQ");

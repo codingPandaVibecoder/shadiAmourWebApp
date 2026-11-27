@@ -1,17 +1,7 @@
 const { Queue, Worker } = require("bullmq");
 const { createRedisConnection } = require("../config/redis");
 const NotificationService = require("./notificationService");
-const { SendMailClient } = require("zeptomail");
-console.log("🔑 Initializing ZeptoMail client...");
-console.log("Token exists:", !!process.env.ZEPTOMAIL_TOKEN);
-console.log("Token starts with 'Zoho-':", process.env.ZEPTOMAIL_TOKEN?.startsWith("Zoho-"));
-
-// Initialize ZeptoMail client
-const zeptoClient = new SendMailClient({
-  url: "api.zeptomail.com/",
-  token: process.env.ZEPTOMAIL_TOKEN,
-});
-console.log("✅ ZeptoMail client initialized");
+const zeptoMail = require("./zeptomailClient");
 
 // Create separate connections for queue and worker
 const queueConnection = createRedisConnection();
@@ -360,7 +350,7 @@ async function sendEmail(to, template) {
 
   try {
     console.log("🚀 Sending email via ZeptoMail...");
-    const response = await zeptoClient.sendMail(emailPayload);
+    const response = await zeptoMail.sendMail(emailPayload);
     
     console.log("✅ ZeptoMail API Response:", JSON.stringify(response, null, 2));
     console.log(`✅ Email sent successfully to: ${to}`);
